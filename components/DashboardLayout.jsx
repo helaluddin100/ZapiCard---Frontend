@@ -106,6 +106,23 @@ export default function DashboardLayout({ children }) {
 
         {/* Main Content */}
         <main className="flex-1 lg:ml-0">
+          {/* Desktop Header */}
+          <div className="hidden lg:block bg-white border-b border-gray-200 px-8 py-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-semibold text-gray-900">Dashboard</h2>
+                <p className="text-sm text-gray-600">Welcome back, John Doe</p>
+              </div>
+              <div className="flex items-center gap-4">
+                <button className="p-2 rounded-lg hover:bg-gray-100 transition">
+                  <User className="w-5 h-5 text-gray-600" />
+                </button>
+                <button className="p-2 rounded-lg hover:bg-gray-100 transition">
+                  <LogOut className="w-5 h-5 text-gray-600" />
+                </button>
+              </div>
+            </div>
+          </div>
           <div className="p-4 lg:p-8">
             {children}
           </div>
