@@ -12,14 +12,15 @@ export default function Header() {
                             Zapi Card
                         </Link>
                     </div>
-                    <div className="hidden md:flex items-center space-x-8">
-                        <Link href="/#features" className="text-gray-700 hover:text-blue-600 transition">Features</Link>
-                        <Link href="/#pricing" className="text-gray-700 hover:text-blue-600 transition">Pricing</Link>
-                        <Link href="/testimonials" className="text-gray-700 hover:text-blue-600 transition">Testimonials</Link>
-                        <Link href="/#faq" className="text-gray-700 hover:text-blue-600 transition">FAQ</Link>
-                        <Link href="/login" className="text-gray-700 hover:text-blue-600 transition">Login</Link>
-                        <Link href="/signup" className="btn-primary">Sign Up</Link>
-                    </div>
+            <div className="hidden md:flex items-center space-x-8">
+              <Link href="/#features" className="text-gray-700 hover:text-blue-600 transition">Features</Link>
+              <Link href="/#pricing" className="text-gray-700 hover:text-blue-600 transition">Pricing</Link>
+              <Link href="/testimonials" className="text-gray-700 hover:text-blue-600 transition">Testimonials</Link>
+              <Link href="/about" className="text-gray-700 hover:text-blue-600 transition">About</Link>
+              <Link href="/contact" className="text-gray-700 hover:text-blue-600 transition">Contact</Link>
+              <Link href="/login" className="text-gray-700 hover:text-blue-600 transition">Login</Link>
+              <Link href="/signup" className="btn-primary">Sign Up</Link>
+            </div>
                 </div>
             </div>
         </nav>

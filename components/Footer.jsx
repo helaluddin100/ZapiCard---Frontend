@@ -25,14 +25,14 @@ export default function Footer() {
                             <li><Link href="/nfc-order" className="hover:text-white transition">Order NFC Card</Link></li>
                         </ul>
                     </div>
-                    <div>
-                        <h4 className="font-semibold mb-4">Company</h4>
-                        <ul className="space-y-2 text-gray-400">
-                            <li><Link href="#" className="hover:text-white transition">About</Link></li>
-                            <li><Link href="#" className="hover:text-white transition">Blog</Link></li>
-                            <li><Link href="#" className="hover:text-white transition">Contact</Link></li>
-                        </ul>
-                    </div>
+          <div>
+            <h4 className="font-semibold mb-4">Company</h4>
+            <ul className="space-y-2 text-gray-400">
+              <li><Link href="/about" className="hover:text-white transition">About</Link></li>
+              <li><Link href="/contact" className="hover:text-white transition">Contact</Link></li>
+              <li><Link href="/testimonials" className="hover:text-white transition">Testimonials</Link></li>
+            </ul>
+          </div>
                     <div>
                         <h4 className="font-semibold mb-4">Connect</h4>
                         <div className="flex space-x-4">
