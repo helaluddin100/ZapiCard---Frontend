@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+}
+
+@layer components {
+  .gradient-primary {
+    @apply bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500;
+  }
+  
+  .gradient-secondary {
+    @apply bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600;
+  }
+  
+  .gradient-accent {
+    @apply bg-gradient-to-r from-orange-400 via-pink-500 to-red-500;
+  }
+  
+  .glass-effect {
+    @apply bg-white/80 backdrop-blur-lg border border-white/20 shadow-xl;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-2xl hover:-translate-y-1;
+  }
+  
+  .btn-primary {
+    @apply px-6 py-3 rounded-lg font-semibold text-white gradient-primary hover:shadow-lg transition-all duration-300 transform hover:scale-105;
+  }
+  
+  .btn-secondary {
+    @apply px-6 py-3 rounded-lg font-semibold text-white gradient-secondary hover:shadow-lg transition-all duration-300 transform hover:scale-105;
+  }
+  
+  .btn-outline {
+    @apply px-6 py-3 rounded-lg font-semibold border-2 border-blue-500 text-blue-600 hover:bg-blue-50 transition-all duration-300;
+  }
+}
+
