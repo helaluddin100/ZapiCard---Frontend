@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { Mail, Lock, ArrowRight } from 'lucide-react'
+import { Chrome, Facebook } from 'lucide-react'
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -75,7 +76,7 @@ export default function LoginPage() {
                 <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
                 <span className="ml-2 text-sm text-gray-600">Remember me</span>
               </label>
-              <Link href="#" className="text-sm text-blue-600 hover:text-blue-700">
+              <Link href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-700">
                 Forgot password?
               </Link>
             </div>
@@ -88,6 +89,44 @@ export default function LoginPage() {
               <ArrowRight className="ml-2 w-5 h-5" />
             </button>
           </form>
+
+          {/* Divider */}
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">Or continue with</span>
+            </div>
+          </div>
+
+          {/* Social Login Buttons */}
+          <div className="space-y-3">
+            <button
+              type="button"
+              onClick={() => {
+                // Mock Google login - no backend
+                console.log('Google login')
+                alert('Google login would be implemented here')
+              }}
+              className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition-all duration-300"
+            >
+              <Chrome className="w-5 h-5 text-red-500" />
+              Continue with Google
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                // Mock Facebook login - no backend
+                console.log('Facebook login')
+                alert('Facebook login would be implemented here')
+              }}
+              className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition-all duration-300"
+            >
+              <Facebook className="w-5 h-5 text-blue-600" />
+              Continue with Facebook
+            </button>
+          </div>
 
           <div className="mt-6 text-center">
             <p className="text-gray-600">

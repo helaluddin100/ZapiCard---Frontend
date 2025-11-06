@@ -150,31 +150,157 @@ export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-        <div className="max-w-7xl mx-auto">
+      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600">
+        {/* Animated Background Gradient */}
+        <div className="absolute inset-0 z-0">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            className="absolute inset-0 bg-gradient-to-br from-blue-500/50 via-purple-500/50 to-pink-500/50"
+            animate={{
+              backgroundPosition: ['0% 0%', '100% 100%'],
+            }}
+            transition={{
+              duration: 10,
+              repeat: Infinity,
+              repeatType: 'reverse',
+            }}
+          />
+        </div>
+
+        {/* Floating Elements */}
+        <div className="absolute inset-0 z-5 overflow-hidden pointer-events-none">
+          {[...Array(6)].map((_, i) => {
+            const randomLeft = 10 + Math.random() * 80
+            const randomTop = 10 + Math.random() * 80
+            return (
+              <motion.div
+                key={i}
+                className="absolute w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/10 backdrop-blur-sm"
+                initial={{
+                  scale: 0,
+                  opacity: 0,
+                }}
+                animate={{
+                  y: [0, -30, 0],
+                  x: [0, 20, 0],
+                  scale: [0, 1, 0.8],
+                  opacity: [0, 0.5, 0],
+                }}
+                transition={{
+                  duration: 8 + i * 2,
+                  repeat: Infinity,
+                  delay: i * 0.5,
+                  ease: "easeInOut",
+                }}
+                style={{
+                  left: `${randomLeft}%`,
+                  top: `${randomTop}%`,
+                }}
+              />
+            )
+          })}
+        </div>
+
+        {/* Content */}
+        <div className="relative z-20 max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
             className="text-center"
           >
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 gradient-primary bg-clip-text text-transparent">
+            {/* Animated Badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="inline-block mb-6"
+            >
+              <span className="px-4 py-2 rounded-full bg-white/20 backdrop-blur-md text-white text-sm font-semibold border border-white/30">
+                ✨ Smart Networking Revolution
+              </span>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 text-white drop-shadow-2xl"
+            >
               Your Smart Visiting Card
               <br />
-              <span className="text-gray-900">In Your Pocket</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
+              <span className="bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 bg-clip-text text-transparent animate-gradient">
+                In Your Pocket
+              </span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="text-xl md:text-2xl lg:text-3xl text-white/90 mb-8 max-w-3xl mx-auto font-medium drop-shadow-lg"
+            >
               Create, share, and manage your digital business card with QR codes and NFC technology.
-              Network smarter, not harder.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/signup" className="btn-primary text-lg">
-                Create Your Card
+              <br />
+              <span className="text-white/80 text-lg md:text-xl">Network smarter, not harder.</span>
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            >
+              <Link
+                href="/signup"
+                className="group relative px-8 py-4 bg-white text-blue-600 rounded-xl font-bold text-lg shadow-2xl hover:shadow-white/50 transition-all duration-300 transform hover:scale-105 overflow-hidden"
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  Create Your Card
+                  <motion.span
+                    animate={{ x: [0, 5, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  >
+                    →
+                  </motion.span>
+                </span>
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  initial={false}
+                />
               </Link>
-              <Link href="/nfc-order" className="btn-secondary text-lg">
+              <Link
+                href="/nfc-order"
+                className="group px-8 py-4 bg-white/10 backdrop-blur-md text-white border-2 border-white/30 rounded-xl font-bold text-lg hover:bg-white/20 transition-all duration-300 transform hover:scale-105"
+              >
                 Order NFC Card
               </Link>
-            </div>
+            </motion.div>
+
+
+            {/* Stats */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.1 }}
+              className="mt-12 grid grid-cols-3 gap-8 max-w-2xl mx-auto"
+            >
+              {[
+                { number: '10K+', label: 'Active Users' },
+                { number: '50K+', label: 'Cards Created' },
+                { number: '4.9★', label: 'User Rating' }
+              ].map((stat, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 1.2 + idx * 0.1 }}
+                  className="text-center"
+                >
+                  <div className="text-3xl md:text-4xl font-bold text-white mb-1">{stat.number}</div>
+                  <div className="text-white/80 text-sm md:text-base">{stat.label}</div>
+                </motion.div>
+              ))}
+            </motion.div>
           </motion.div>
         </div>
       </section>
