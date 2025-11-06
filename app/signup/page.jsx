@@ -35,7 +35,7 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center px-4 py-12 pt-24">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -53,15 +53,13 @@ export default function SignupPage() {
           {/* Progress Steps */}
           <div className="flex items-center justify-center mb-8">
             <div className="flex items-center">
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                step >= 1 ? 'gradient-primary text-white' : 'bg-gray-200 text-gray-500'
-              }`}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${step >= 1 ? 'gradient-primary text-white' : 'bg-gray-200 text-gray-500'
+                }`}>
                 {step > 1 ? <CheckCircle2 className="w-5 h-5" /> : '1'}
               </div>
               <div className={`w-16 h-1 ${step >= 2 ? 'gradient-primary' : 'bg-gray-200'}`}></div>
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                step >= 2 ? 'gradient-primary text-white' : 'bg-gray-200 text-gray-500'
-              }`}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${step >= 2 ? 'gradient-primary text-white' : 'bg-gray-200 text-gray-500'
+                }`}>
                 {step > 2 ? <CheckCircle2 className="w-5 h-5" /> : '2'}
               </div>
             </div>

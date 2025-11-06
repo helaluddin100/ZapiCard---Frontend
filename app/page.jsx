@@ -2,11 +2,11 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { 
-  QrCode, 
-  Radio, 
-  Calendar, 
-  CheckCircle2, 
+import {
+  QrCode,
+  Radio,
+  Calendar,
+  CheckCircle2,
   Star,
   ChevronDown,
   Facebook,
@@ -149,27 +149,6 @@ export default function Home() {
 
   return (
     <>
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 glass-effect">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-bold gradient-primary bg-clip-text text-transparent">
-                Zapi Card
-              </h1>
-            </div>
-            <div className="hidden md:flex items-center space-x-8">
-              <Link href="#features" className="text-gray-700 hover:text-blue-600 transition">Features</Link>
-              <Link href="#pricing" className="text-gray-700 hover:text-blue-600 transition">Pricing</Link>
-              <Link href="#testimonials" className="text-gray-700 hover:text-blue-600 transition">Testimonials</Link>
-              <Link href="#faq" className="text-gray-700 hover:text-blue-600 transition">FAQ</Link>
-              <Link href="/login" className="text-gray-700 hover:text-blue-600 transition">Login</Link>
-              <Link href="/signup" className="btn-primary">Sign Up</Link>
-            </div>
-          </div>
-        </div>
-      </nav>
-
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
         <div className="max-w-7xl mx-auto">
@@ -185,7 +164,7 @@ export default function Home() {
               <span className="text-gray-900">In Your Pocket</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Create, share, and manage your digital business card with QR codes and NFC technology. 
+              Create, share, and manage your digital business card with QR codes and NFC technology.
               Network smarter, not harder.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -256,7 +235,7 @@ export default function Home() {
       <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl font-bold text-center mb-4">Simple, Transparent Pricing</h2>
-          <p className="text-center text-gray-600 mb-12">Choose the plan that's right for you</p>
+          <p className="text-center text-gray-600 mb-12">Choose the plan that&rsquo;s right for you</p>
           <div className="grid md:grid-cols-3 gap-8">
             {pricingPlans.map((plan, idx) => (
               <motion.div
@@ -265,11 +244,10 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className={`relative p-8 rounded-2xl ${
-                  plan.popular 
-                    ? 'gradient-primary text-white scale-105' 
-                    : 'bg-white border-2 border-gray-200'
-                } card-hover`}
+                className={`relative p-8 rounded-2xl ${plan.popular
+                  ? 'gradient-primary text-white scale-105'
+                  : 'bg-white border-2 border-gray-200'
+                  } card-hover`}
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1 bg-yellow-400 text-gray-900 rounded-full text-sm font-bold">
@@ -289,13 +267,12 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
-                <Link 
-                  href="/signup" 
-                  className={`block text-center py-3 rounded-lg font-semibold transition ${
-                    plan.popular 
-                      ? 'bg-white text-blue-600 hover:bg-gray-100' 
-                      : 'btn-primary'
-                  }`}
+                <Link
+                  href="/signup"
+                  className={`block text-center py-3 rounded-lg font-semibold transition ${plan.popular
+                    ? 'bg-white text-blue-600 hover:bg-gray-100'
+                    : 'btn-primary'
+                    }`}
                 >
                   {plan.cta}
                 </Link>
@@ -308,7 +285,13 @@ export default function Home() {
       {/* Testimonials */}
       <section id="testimonials" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-cyan-50">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12">What Our Users Say</h2>
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold mb-4">What Our Users Say</h2>
+            <p className="text-gray-600 mb-6">Join thousands of satisfied professionals</p>
+            <Link href="/testimonials" className="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center">
+              View All Testimonials →
+            </Link>
+          </div>
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, idx) => (
               <motion.div
@@ -324,10 +307,10 @@ export default function Home() {
                     <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
-                <p className="text-gray-700 mb-4 italic">"{testimonial.text}"</p>
+                <p className="text-gray-700 mb-4 italic">&ldquo;{testimonial.text}&ldquo;</p>
                 <div className="flex items-center">
-                  <img 
-                    src={testimonial.image} 
+                  <img
+                    src={testimonial.image}
                     alt={testimonial.name}
                     className="w-12 h-12 rounded-full mr-3 object-cover"
                   />
@@ -360,7 +343,7 @@ export default function Home() {
                   className="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-gray-50 transition"
                 >
                   <span className="font-semibold text-lg">{faq.question}</span>
-                  <ChevronDown 
+                  <ChevronDown
                     className={`w-5 h-5 transition-transform ${openFaq === faq.id ? 'transform rotate-180' : ''}`}
                   />
                 </button>
@@ -379,50 +362,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <h3 className="text-2xl font-bold mb-4 gradient-primary bg-clip-text text-transparent">
-                Zapi Card
-              </h3>
-              <p className="text-gray-400">
-                Smart visiting cards for the modern professional. Network smarter, not harder.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Product</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="#features" className="hover:text-white transition">Features</Link></li>
-                <li><Link href="#pricing" className="hover:text-white transition">Pricing</Link></li>
-                <li><Link href="/nfc-order" className="hover:text-white transition">Order NFC Card</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Company</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="#" className="hover:text-white transition">About</Link></li>
-                <li><Link href="#" className="hover:text-white transition">Blog</Link></li>
-                <li><Link href="#" className="hover:text-white transition">Contact</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Connect</h4>
-              <div className="flex space-x-4">
-                <a href="#" className="text-gray-400 hover:text-white transition"><Facebook className="w-5 h-5" /></a>
-                <a href="#" className="text-gray-400 hover:text-white transition"><Twitter className="w-5 h-5" /></a>
-                <a href="#" className="text-gray-400 hover:text-white transition"><Instagram className="w-5 h-5" /></a>
-                <a href="#" className="text-gray-400 hover:text-white transition"><Linkedin className="w-5 h-5" /></a>
-              </div>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 Zapi Card. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
     </>
   )
 }
