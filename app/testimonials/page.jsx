@@ -663,8 +663,8 @@ export default function TestimonialsPage() {
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                       className={`px-5 py-2.5 rounded-xl font-semibold transition-all ${currentPage === page
-                          ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
-                          : 'bg-white text-gray-700 border-2 border-gray-300 hover:border-blue-500 hover:bg-gray-50'
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
+                        : 'bg-white text-gray-700 border-2 border-gray-300 hover:border-blue-500 hover:bg-gray-50'
                         }`}
                     >
                       {page}
