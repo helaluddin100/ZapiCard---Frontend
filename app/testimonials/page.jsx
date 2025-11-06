@@ -11,7 +11,10 @@ import {
   List,
   Quote,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Sparkles,
+  CheckCircle2,
+  ArrowRight
 } from 'lucide-react'
 
 export default function TestimonialsPage() {
@@ -248,216 +251,379 @@ export default function TestimonialsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-      {/* Header */}
-      <section className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center">
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+          <div className="absolute top-40 right-10 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+          <div className="absolute -bottom-8 left-1/2 w-96 h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            className="text-center"
           >
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: 'spring' }}
+              className="inline-block mb-6"
+            >
+              <span className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 text-sm font-semibold border border-blue-200 flex items-center gap-2">
+                <Sparkles className="w-4 h-4" />
+                Testimonials
+              </span>
+            </motion.div>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 gradient-primary bg-clip-text text-transparent">
               What Our Users Say
             </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8">
               Join thousands of professionals who are networking smarter with Zapi Card
             </p>
-            <div className="flex items-center justify-center gap-2 mt-6">
-              <div className="flex">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                ))}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="flex items-center justify-center gap-3 flex-wrap"
+            >
+              <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-lg">
+                <div className="flex">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <span className="text-lg font-bold text-gray-900 ml-2">
+                  4.9/5
+                </span>
               </div>
-              <span className="text-lg font-semibold text-gray-900 ml-2">
-                4.9/5
-              </span>
-              <span className="text-gray-600 ml-2">
-                ({allTestimonials.length} reviews)
-              </span>
-            </div>
+              <div className="px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-lg">
+                <span className="text-gray-700 font-semibold">
+                  {allTestimonials.length}+ Reviews
+                </span>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
       {/* Filters and Search */}
-      <section className="px-4 sm:px-6 lg:px-8 mb-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <div className="flex flex-col md:flex-row gap-4">
-              {/* Search */}
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input
-                  type="text"
-                  placeholder="Search testimonials..."
-                  value={searchQuery}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value)
-                    setCurrentPage(1)
-                  }}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                />
+      <section className="px-4 sm:px-6 lg:px-8 mb-12 relative">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-blue-400 rounded-full filter blur-3xl"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-400 rounded-full filter blur-3xl"></div>
+        </div>
+        <div className="max-w-7xl mx-auto relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative group"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-500 rounded-3xl opacity-0 group-hover:opacity-10 transition-opacity blur-xl"></div>
+            <div className="relative glass-effect rounded-3xl p-6 md:p-8 shadow-2xl bg-white">
+              <div className="flex flex-col md:flex-row gap-4">
+                {/* Search */}
+                <div className="relative flex-1">
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <input
+                    type="text"
+                    placeholder="Search testimonials..."
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value)
+                      setCurrentPage(1)
+                    }}
+                    className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 focus:bg-white"
+                  />
+                </div>
+
+                {/* Rating Filter */}
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
+                    <Filter className="w-5 h-5 text-white" />
+                  </div>
+                  <select
+                    value={ratingFilter}
+                    onChange={(e) => {
+                      setRatingFilter(e.target.value)
+                      setCurrentPage(1)
+                    }}
+                    className="px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 focus:bg-white font-medium"
+                  >
+                    <option value="all">All Ratings</option>
+                    <option value="5">5 Stars</option>
+                    <option value="4">4 Stars</option>
+                    <option value="3">3 Stars</option>
+                  </select>
+                </div>
+
+                {/* View Mode */}
+                <div className="flex gap-2">
+                  <motion.button
+                    onClick={() => setViewMode('grid')}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`p-3 rounded-xl transition-all ${viewMode === 'grid'
+                      ? 'bg-gradient-to-br from-blue-500 to-purple-500 text-white shadow-lg'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                  >
+                    <Grid3x3 className="w-5 h-5" />
+                  </motion.button>
+                  <motion.button
+                    onClick={() => setViewMode('list')}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`p-3 rounded-xl transition-all ${viewMode === 'list'
+                      ? 'bg-gradient-to-br from-blue-500 to-purple-500 text-white shadow-lg'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                  >
+                    <List className="w-5 h-5" />
+                  </motion.button>
+                </div>
               </div>
 
-              {/* Rating Filter */}
-              <div className="flex items-center gap-2">
-                <Filter className="w-5 h-5 text-gray-400" />
-                <select
-                  value={ratingFilter}
-                  onChange={(e) => {
-                    setRatingFilter(e.target.value)
-                    setCurrentPage(1)
-                  }}
-                  className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                >
-                  <option value="all">All Ratings</option>
-                  <option value="5">5 Stars</option>
-                  <option value="4">4 Stars</option>
-                  <option value="3">3 Stars</option>
-                </select>
-              </div>
-
-              {/* View Mode */}
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={`p-2 rounded-lg transition ${viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                    }`}
-                >
-                  <Grid3x3 className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`p-2 rounded-lg transition ${viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                    }`}
-                >
-                  <List className="w-5 h-5" />
-                </button>
-              </div>
+              {/* Results Count */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="mt-6 pt-6 border-t border-gray-200 flex items-center justify-between"
+              >
+                <div className="text-sm font-medium text-gray-600">
+                  Showing <span className="font-bold text-gray-900">{paginatedTestimonials.length}</span> of{' '}
+                  <span className="font-bold text-gray-900">{filteredTestimonials.length}</span> testimonials
+                </div>
+                {filteredTestimonials.length > 0 && (
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    <span className="text-sm text-gray-600">All verified reviews</span>
+                  </div>
+                )}
+              </motion.div>
             </div>
-
-            {/* Results Count */}
-            <div className="mt-4 text-sm text-gray-600">
-              Showing {paginatedTestimonials.length} of {filteredTestimonials.length} testimonials
-            </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Testimonials Grid/List */}
-      <section className="px-4 sm:px-6 lg:px-8 pb-12">
-        <div className="max-w-7xl mx-auto">
+      <section className="px-4 sm:px-6 lg:px-8 pb-12 relative">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-purple-400 rounded-full filter blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-pink-400 rounded-full filter blur-3xl"></div>
+        </div>
+        <div className="max-w-7xl mx-auto relative z-10">
           {paginatedTestimonials.length === 0 ? (
-            <div className="text-center py-20 bg-white rounded-xl shadow-lg">
-              <p className="text-xl text-gray-600">No testimonials found matching your criteria.</p>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="text-center py-20 glass-effect rounded-2xl shadow-xl"
+            >
+              <p className="text-xl text-gray-600 font-medium">No testimonials found matching your criteria.</p>
+            </motion.div>
           ) : viewMode === 'grid' ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {paginatedTestimonials.map((testimonial, idx) => (
                 <motion.div
                   key={testimonial.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.05 }}
-                  className="bg-white rounded-xl shadow-lg p-6 card-hover"
+                  initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1, type: 'spring', stiffness: 100 }}
+                  whileHover={{ y: -10, scale: 1.02 }}
+                  className="relative group"
                 >
-                  <div className="flex items-start mb-4">
-                    <Quote className="w-8 h-8 text-blue-200 flex-shrink-0" />
-                    <div className="flex-1 ml-2">
-                      <div className="flex items-center mb-2">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`w-4 h-4 ${i < testimonial.rating
-                              ? 'fill-yellow-400 text-yellow-400'
-                              : 'fill-gray-200 text-gray-200'
-                              }`}
-                          />
-                        ))}
+                  {/* Decorative gradient background on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity blur-xl"></div>
+
+                  <div className="relative glass-effect rounded-2xl p-6 md:p-8 card-hover bg-white border border-gray-200/50 shadow-lg hover:shadow-2xl transition-all">
+                    {/* Quote Icon */}
+                    <div className="absolute top-4 right-4 opacity-10">
+                      <Quote className="w-16 h-16 text-blue-500" />
+                    </div>
+
+                    <div className="flex items-start mb-4 relative z-10">
+                      <div className="flex-1">
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: idx * 0.1 + 0.2 }}
+                          className="flex items-center gap-1 mb-3"
+                        >
+                          {[...Array(5)].map((_, i) => (
+                            <motion.div
+                              key={i}
+                              initial={{ opacity: 0, scale: 0 }}
+                              whileInView={{ opacity: 1, scale: 1 }}
+                              viewport={{ once: true }}
+                              transition={{ delay: idx * 0.1 + 0.3 + i * 0.05, type: 'spring' }}
+                            >
+                              <Star
+                                className={`w-4 h-4 ${i < testimonial.rating
+                                  ? 'fill-yellow-400 text-yellow-400'
+                                  : 'fill-gray-200 text-gray-200'
+                                  }`}
+                              />
+                            </motion.div>
+                          ))}
+                        </motion.div>
+                        {testimonial.verified && (
+                          <motion.span
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            className="inline-flex items-center gap-1 text-xs text-green-600 font-semibold bg-green-50 px-2 py-1 rounded-full"
+                          >
+                            <CheckCircle2 className="w-3 h-3" />
+                            Verified
+                          </motion.span>
+                        )}
                       </div>
-                      {testimonial.verified && (
-                        <span className="text-xs text-green-600 font-medium">✓ Verified Purchase</span>
-                      )}
                     </div>
-                  </div>
 
-                  <p className="text-gray-700 mb-4 italic line-clamp-4">
-                    &quot;{testimonial.text}&quot;
-                  </p>
+                    <motion.p
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: idx * 0.1 + 0.3 }}
+                      className="text-gray-700 mb-6 italic text-base leading-relaxed line-clamp-4 relative z-10"
+                    >
+                      &ldquo;{testimonial.text}&rdquo;
+                    </motion.p>
 
-                  <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    <div className="flex-1">
-                      <div className="font-semibold text-gray-900">{testimonial.name}</div>
-                      <div className="text-sm text-gray-600">{testimonial.role}</div>
-                      <div className="text-xs text-gray-500">{testimonial.company}</div>
+                    <div className="flex items-center gap-4 pt-4 border-t border-gray-200">
+                      <motion.div
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        className="relative"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full blur opacity-50"></div>
+                        <img
+                          src={testimonial.image}
+                          alt={testimonial.name}
+                          className="relative w-14 h-14 rounded-full object-cover border-2 border-white shadow-lg"
+                        />
+                      </motion.div>
+                      <div className="flex-1">
+                        <motion.div
+                          initial={{ opacity: 0, x: -10 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: idx * 0.1 + 0.4 }}
+                          className="font-bold text-gray-900"
+                        >
+                          {testimonial.name}
+                        </motion.div>
+                        <motion.div
+                          initial={{ opacity: 0, x: -10 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: idx * 0.1 + 0.5 }}
+                          className="text-sm text-gray-600 font-medium"
+                        >
+                          {testimonial.role}
+                        </motion.div>
+                        <motion.div
+                          initial={{ opacity: 0, x: -10 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: idx * 0.1 + 0.6 }}
+                          className="text-xs text-gray-500"
+                        >
+                          {testimonial.company}
+                        </motion.div>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="mt-3 text-xs text-gray-500">
-                    {new Date(testimonial.date).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: idx * 0.1 + 0.7 }}
+                      className="mt-4 text-xs text-gray-500"
+                    >
+                      {new Date(testimonial.date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </motion.div>
+
+                    {/* Decorative bottom accent */}
+                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-b-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   </div>
                 </motion.div>
               ))}
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-6">
               {paginatedTestimonials.map((testimonial, idx) => (
                 <motion.div
                   key={testimonial.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.05 }}
-                  className="bg-white rounded-xl shadow-lg p-6 card-hover"
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1, type: 'spring' }}
+                  whileHover={{ x: 5, scale: 1.01 }}
+                  className="relative group"
                 >
-                  <div className="flex flex-col md:flex-row gap-6">
-                    <div className="flex-shrink-0">
-                      <img
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        className="w-20 h-20 rounded-full object-cover"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between mb-3">
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <h3 className="font-semibold text-gray-900">{testimonial.name}</h3>
-                            {testimonial.verified && (
-                              <span className="text-xs text-green-600 font-medium">✓ Verified</span>
-                            )}
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity blur-xl"></div>
+                  <div className="relative glass-effect rounded-2xl p-6 md:p-8 card-hover bg-white border border-gray-200/50 shadow-lg hover:shadow-2xl transition-all">
+                    <div className="flex flex-col md:flex-row gap-6">
+                      <motion.div
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        className="flex-shrink-0 relative"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full blur opacity-50"></div>
+                        <img
+                          src={testimonial.image}
+                          alt={testimonial.name}
+                          className="relative w-20 h-20 rounded-full object-cover border-2 border-white shadow-lg"
+                        />
+                      </motion.div>
+                      <div className="flex-1">
+                        <div className="flex items-start justify-between mb-4">
+                          <div>
+                            <div className="flex items-center gap-2 mb-2">
+                              <h3 className="font-bold text-gray-900 text-lg">{testimonial.name}</h3>
+                              {testimonial.verified && (
+                                <span className="inline-flex items-center gap-1 text-xs text-green-600 font-semibold bg-green-50 px-2 py-1 rounded-full">
+                                  <CheckCircle2 className="w-3 h-3" />
+                                  Verified
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-sm text-gray-600 font-medium">{testimonial.role} at {testimonial.company}</p>
                           </div>
-                          <p className="text-sm text-gray-600">{testimonial.role} at {testimonial.company}</p>
+                          <div className="flex items-center gap-1">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`w-5 h-5 ${i < testimonial.rating
+                                  ? 'fill-yellow-400 text-yellow-400'
+                                  : 'fill-gray-200 text-gray-200'
+                                  }`}
+                              />
+                            ))}
+                          </div>
                         </div>
-                        <div className="flex items-center gap-1">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`w-4 h-4 ${i < testimonial.rating
-                                ? 'fill-yellow-400 text-yellow-400'
-                                : 'fill-gray-200 text-gray-200'
-                                }`}
-                            />
-                          ))}
+                        <div className="relative mb-4">
+                          <Quote className="absolute -top-2 -left-2 w-8 h-8 text-blue-200 opacity-50" />
+                          <p className="text-gray-700 italic text-base leading-relaxed pl-6">
+                            &ldquo;{testimonial.text}&rdquo;
+                          </p>
                         </div>
+                        <p className="text-xs text-gray-500">
+                          {new Date(testimonial.date).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          })}
+                        </p>
                       </div>
-                      <p className="text-gray-700 italic mb-3">
-                        &quot;{testimonial.text}&quot;
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {new Date(testimonial.date).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}
-                      </p>
                     </div>
                   </div>
                 </motion.div>
@@ -467,14 +633,21 @@ export default function TestimonialsPage() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="mt-12 flex items-center justify-center gap-2">
-              <button
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mt-12 flex items-center justify-center gap-2"
+            >
+              <motion.button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="p-2 rounded-lg border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition"
+                whileHover={{ scale: currentPage === 1 ? 1 : 1.05 }}
+                whileTap={{ scale: currentPage === 1 ? 1 : 0.95 }}
+                className="p-3 rounded-xl border-2 border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 hover:border-blue-500 transition-all"
               >
                 <ChevronLeft className="w-5 h-5" />
-              </button>
+              </motion.button>
 
               {[...Array(totalPages)].map((_, i) => {
                 const page = i + 1
@@ -484,16 +657,18 @@ export default function TestimonialsPage() {
                   (page >= currentPage - 1 && page <= currentPage + 1)
                 ) {
                   return (
-                    <button
+                    <motion.button
                       key={page}
                       onClick={() => handlePageChange(page)}
-                      className={`px-4 py-2 rounded-lg font-medium transition ${currentPage === page
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      className={`px-5 py-2.5 rounded-xl font-semibold transition-all ${currentPage === page
+                          ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
+                          : 'bg-white text-gray-700 border-2 border-gray-300 hover:border-blue-500 hover:bg-gray-50'
                         }`}
                     >
                       {page}
-                    </button>
+                    </motion.button>
                   )
                 } else if (page === currentPage - 2 || page === currentPage + 2) {
                   return <span key={page} className="px-2 text-gray-500">...</span>
@@ -501,40 +676,68 @@ export default function TestimonialsPage() {
                 return null
               })}
 
-              <button
+              <motion.button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className="p-2 rounded-lg border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition"
+                whileHover={{ scale: currentPage === totalPages ? 1 : 1.05 }}
+                whileTap={{ scale: currentPage === totalPages ? 1 : 0.95 }}
+                className="p-3 rounded-xl border-2 border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 hover:border-blue-500 transition-all"
               >
                 <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
           )}
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="px-4 sm:px-6 lg:px-8 pb-12">
-        <div className="max-w-4xl mx-auto">
+      <section className="px-4 sm:px-6 lg:px-8 pb-20 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-400 rounded-full filter blur-3xl"></div>
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-400 rounded-full filter blur-3xl"></div>
+        </div>
+        <div className="max-w-5xl mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl p-8 md:p-12 text-center text-white"
+            className="relative"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Ready to Join These Happy Users?
-            </h2>
-            <p className="text-xl mb-8 text-white/90">
-              Create your smart visiting card today and start networking smarter
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/signup" className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition inline-block">
-                Get Started Free
-              </Link>
-              <Link href="/" className="bg-white/20 backdrop-blur-sm text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/30 transition inline-block">
-                Learn More
-              </Link>
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-3xl blur-2xl opacity-50"></div>
+            <div className="relative bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-3xl p-12 md:p-16 text-center text-white overflow-hidden">
+              {/* Decorative elements */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full -ml-32 -mb-32"></div>
+
+              <motion.div
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ type: 'spring', delay: 0.2 }}
+                className="relative z-10"
+              >
+                <h2 className="text-3xl md:text-5xl font-bold mb-4">
+                  Ready to Join These Happy Users?
+                </h2>
+                <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-2xl mx-auto">
+                  Create your smart visiting card today and start networking smarter
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link
+                    href="/signup"
+                    className="group bg-white text-blue-600 px-8 py-4 rounded-xl font-bold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-2xl inline-flex items-center justify-center"
+                  >
+                    Get Started Free
+                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                  <Link
+                    href="/"
+                    className="bg-white/20 backdrop-blur-md text-white px-8 py-4 rounded-xl font-bold hover:bg-white/30 transition-all transform hover:scale-105 border-2 border-white/30 inline-flex items-center justify-center"
+                  >
+                    Learn More
+                  </Link>
+                </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>
