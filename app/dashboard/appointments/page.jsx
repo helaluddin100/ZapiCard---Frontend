@@ -15,7 +15,9 @@ import {
     Building2,
     CalendarDays,
     Loader2,
-    AlertCircle
+    AlertCircle,
+    ChevronLeft,
+    ChevronRight
 } from 'lucide-react'
 import DashboardLayout from '@/components/DashboardLayout'
 import { appointmentAPI } from '@/lib/api'
@@ -280,6 +282,284 @@ export default function AppointmentsPage() {
         }))
     }
 
+    // Calendar View Component
+    function CalendarView({ locations, selectedDate, setSelectedDate, daysOfWeek }) {
+        const [currentMonth, setCurrentMonth] = useState(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1))
+
+        // Sync currentMonth when selectedDate changes externally
+        useEffect(() => {
+            setCurrentMonth(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1))
+        }, [selectedDate])
+
+        const getDaysInMonth = (date) => {
+            const year = date.getFullYear()
+            const month = date.getMonth()
+            const firstDay = new Date(year, month, 1)
+            const lastDay = new Date(year, month + 1, 0)
+            const daysInMonth = lastDay.getDate()
+            const startingDayOfWeek = firstDay.getDay()
+
+            const days = []
+
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < startingDayOfWeek; i++) {
+                days.push(null)
+            }
+
+            // Add all days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                days.push(new Date(year, month, day))
+            }
+
+            return days
+        }
+
+        const getDayName = (date) => {
+            const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+            return dayNames[date.getDay()]
+        }
+
+        const getTimeSlotsForDate = (date) => {
+            if (!date) return []
+
+            const dayName = getDayName(date).toLowerCase()
+            const dateString = date.toISOString().split('T')[0]
+            const slots = []
+
+            locations.forEach(location => {
+                location.timeSlots?.forEach(slot => {
+                    // Check if slot applies to this date
+                    let applies = false
+
+                    // Priority 1: Specific date slot (highest priority)
+                    if (slot.specificDate || slot.specific_date) {
+                        const slotDate = new Date(slot.specificDate || slot.specific_date).toISOString().split('T')[0]
+                        if (slotDate === dateString) {
+                            applies = true
+                        }
+                    }
+                    // Priority 2: Monthly slot with specific days
+                    else if (slot.applyToMonth || slot.apply_to_month) {
+                        // If days are specified, only apply to those days
+                        if (slot.days && slot.days.length > 0) {
+                            const dayMap = {
+                                'sunday': 'sunday',
+                                'monday': 'monday',
+                                'tuesday': 'tuesday',
+                                'wednesday': 'wednesday',
+                                'thursday': 'thursday',
+                                'friday': 'friday',
+                                'saturday': 'saturday'
+                            }
+                            if (slot.days.includes(dayMap[dayName])) {
+                                applies = true
+                            }
+                        } else {
+                            // No days specified, apply to all days in the month
+                            applies = true
+                        }
+                    }
+                    // Priority 3: Weekly slot (specific days, not monthly)
+                    else if (slot.days && slot.days.length > 0) {
+                        const dayMap = {
+                            'sunday': 'sunday',
+                            'monday': 'monday',
+                            'tuesday': 'tuesday',
+                            'wednesday': 'wednesday',
+                            'thursday': 'thursday',
+                            'friday': 'friday',
+                            'saturday': 'saturday'
+                        }
+                        if (slot.days.includes(dayMap[dayName])) {
+                            applies = true
+                        }
+                    }
+
+                    if (applies && slot.isActive !== false) {
+                        slots.push({
+                            ...slot,
+                            locationName: location.name,
+                            locationId: location.id
+                        })
+                    }
+                })
+            })
+
+            return slots
+        }
+
+        const navigateMonth = (direction) => {
+            setCurrentMonth(prev => {
+                const newDate = new Date(prev)
+                if (direction === 'prev') {
+                    newDate.setMonth(prev.getMonth() - 1)
+                } else {
+                    newDate.setMonth(prev.getMonth() + 1)
+                }
+                return newDate
+            })
+        }
+
+        const monthNames = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ]
+
+        const days = getDaysInMonth(currentMonth)
+        const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
+        return (
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                {/* Calendar Header */}
+                <div className="flex items-center justify-between mb-6">
+                    <button
+                        onClick={() => navigateMonth('prev')}
+                        className="p-2 rounded-lg hover:bg-gray-100 transition"
+                    >
+                        <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <h2 className="text-2xl font-bold text-gray-900">
+                        {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
+                    </h2>
+                    <button
+                        onClick={() => navigateMonth('next')}
+                        className="p-2 rounded-lg hover:bg-gray-100 transition"
+                    >
+                        <ChevronRight className="w-5 h-5" />
+                    </button>
+                </div>
+
+                {/* Calendar Grid */}
+                <div className="grid grid-cols-7 gap-2 mb-4">
+                    {weekDays.map(day => (
+                        <div key={day} className="text-center font-semibold text-gray-700 py-2">
+                            {day}
+                        </div>
+                    ))}
+                </div>
+
+                <div className="grid grid-cols-7 gap-2">
+                    {days.map((date, index) => {
+                        const timeSlots = getTimeSlotsForDate(date)
+                        const isToday = date &&
+                            date.toDateString() === new Date().toDateString()
+                        const isSelected = date &&
+                            date.toDateString() === selectedDate.toDateString()
+
+                        return (
+                            <div
+                                key={index}
+                                className={`
+                                    min-h-[100px] border rounded-lg p-2
+                                    ${date ? 'bg-white hover:bg-gray-50 cursor-pointer' : 'bg-gray-50'}
+                                    ${isToday ? 'border-blue-500 border-2' : 'border-gray-200'}
+                                    ${isSelected ? 'ring-2 ring-blue-300' : ''}
+                                    transition
+                                `}
+                                onClick={() => date && setSelectedDate(date)}
+                            >
+                                {date && (
+                                    <>
+                                        <div className={`
+                                            text-sm font-medium mb-1
+                                            ${isToday ? 'text-blue-600' : 'text-gray-900'}
+                                        `}>
+                                            {date.getDate()}
+                                        </div>
+                                        <div className="space-y-1">
+                                            {timeSlots.slice(0, 3).map((slot, slotIndex) => (
+                                                <div
+                                                    key={slotIndex}
+                                                    className="text-xs bg-blue-50 text-blue-700 px-1 py-0.5 rounded truncate"
+                                                    title={`${slot.locationName}: ${slot.start || slot.start_time} - ${slot.end || slot.end_time}`}
+                                                >
+                                                    <div className="font-medium truncate">{slot.locationName}</div>
+                                                    <div className="text-blue-600">
+                                                        {slot.start || slot.start_time} - {slot.end || slot.end_time}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            {timeSlots.length > 3 && (
+                                                <div className="text-xs text-gray-500 font-medium">
+                                                    +{timeSlots.length - 3} more
+                                                </div>
+                                            )}
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        )
+                    })}
+                </div>
+
+                {/* Selected Date Details */}
+                {selectedDate && (
+                    <div className="mt-6 pt-6 border-t border-gray-200">
+                        <h3 className="text-lg font-bold text-gray-900 mb-4">
+                            {getDayName(selectedDate)}, {selectedDate.toLocaleDateString('en-US', {
+                                month: 'long',
+                                day: 'numeric',
+                                year: 'numeric'
+                            })}
+                        </h3>
+
+                        {getTimeSlotsForDate(selectedDate).length === 0 ? (
+                            <div className="text-center py-8 text-gray-500">
+                                <Clock className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                                <p>No appointments scheduled for this day</p>
+                            </div>
+                        ) : (
+                            <div className="space-y-3">
+                                {getTimeSlotsForDate(selectedDate).map((slot, index) => (
+                                    <div
+                                        key={index}
+                                        className="p-4 bg-gray-50 rounded-lg border border-gray-200"
+                                    >
+                                        <div className="flex items-start justify-between">
+                                            <div className="flex-1">
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
+                                                        <MapPin className="w-4 h-4 text-white" />
+                                                    </div>
+                                                    <div>
+                                                        <h4 className="font-semibold text-gray-900">{slot.locationName}</h4>
+                                                        <p className="text-sm text-gray-600">
+                                                            {locations.find(l => l.id === slot.locationId)?.address || ''}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-2 text-sm text-gray-700">
+                                                    <Clock className="w-4 h-4" />
+                                                    <span className="font-medium">
+                                                        {slot.start || slot.start_time} - {slot.end || slot.end_time}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* Legend */}
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                    <div className="flex items-center gap-4 text-sm">
+                        <div className="flex items-center gap-2">
+                            <div className="w-4 h-4 border-2 border-blue-500 rounded"></div>
+                            <span className="text-gray-600">Today</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <div className="w-4 h-4 bg-blue-50 border border-blue-200 rounded"></div>
+                            <span className="text-gray-600">Has Appointments</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <DashboardLayout>
             <div className="max-w-7xl mx-auto">
@@ -464,10 +744,12 @@ export default function AppointmentsPage() {
                         </div>
                     </div>
                 ) : (
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                        <h2 className="text-xl font-bold text-gray-900 mb-4">Calendar View</h2>
-                        <p className="text-gray-600">Calendar view coming soon...</p>
-                    </div>
+                    <CalendarView
+                        locations={locations}
+                        selectedDate={selectedDate}
+                        setSelectedDate={setSelectedDate}
+                        daysOfWeek={daysOfWeek}
+                    />
                 )}
 
                 {/* Location Modal */}
