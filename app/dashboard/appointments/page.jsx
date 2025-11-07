@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
     Calendar,
@@ -13,37 +13,18 @@ import {
     X,
     CheckCircle2,
     Building2,
-    CalendarDays
+    CalendarDays,
+    Loader2,
+    AlertCircle
 } from 'lucide-react'
 import DashboardLayout from '@/components/DashboardLayout'
+import { appointmentAPI } from '@/lib/api'
 
 export default function AppointmentsPage() {
-    const [locations, setLocations] = useState([
-        {
-            id: 1,
-            name: 'Hospital A',
-            address: '123 Medical Street',
-            timeSlots: [
-                { start: '09:00', end: '12:00', days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'] }
-            ]
-        },
-        {
-            id: 2,
-            name: 'Hospital B',
-            address: '456 Health Avenue',
-            timeSlots: [
-                { start: '14:00', end: '17:00', days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'] }
-            ]
-        },
-        {
-            id: 3,
-            name: 'Hospital C',
-            address: '789 Care Boulevard',
-            timeSlots: [
-                { start: '20:00', end: '22:00', days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'] }
-            ]
-        }
-    ])
+    const [locations, setLocations] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState('')
+    const [saving, setSaving] = useState(false)
 
     const [selectedLocation, setSelectedLocation] = useState(null)
     const [showLocationModal, setShowLocationModal] = useState(false)
@@ -77,43 +58,115 @@ export default function AppointmentsPage() {
         applyToMonth: false
     })
 
+    // Fetch locations on component mount
+    useEffect(() => {
+        fetchLocations()
+    }, [])
+
+    const fetchLocations = async () => {
+        try {
+            setLoading(true)
+            setError('')
+            const response = await appointmentAPI.getLocations()
+            if (response.status === 'success') {
+                // Transform API response to match frontend format
+                const transformedLocations = response.data.map(location => ({
+                    ...location,
+                    timeSlots: location.time_slots?.map(slot => ({
+                        id: slot.id,
+                        start: slot.start_time,
+                        end: slot.end_time,
+                        days: slot.days,
+                        specificDate: slot.specific_date,
+                        applyToMonth: slot.apply_to_month,
+                        isActive: slot.is_active
+                    })) || []
+                }))
+                setLocations(transformedLocations)
+            }
+        } catch (err) {
+            setError(err.message || 'Failed to load locations')
+            console.error('Error fetching locations:', err)
+        } finally {
+            setLoading(false)
+        }
+    }
+
     const handleAddLocation = () => {
         setEditingLocation(null)
-        setLocationForm({ name: '', address: '' })
+        setLocationForm({ name: '', address: '', phone: '', email: '' })
         setShowLocationModal(true)
     }
 
     const handleEditLocation = (location) => {
         setEditingLocation(location)
-        setLocationForm({ name: location.name, address: location.address })
+        setLocationForm({
+            name: location.name,
+            address: location.address || '',
+            phone: location.phone || '',
+            email: location.email || ''
+        })
         setShowLocationModal(true)
     }
 
-    const handleSaveLocation = () => {
-        if (editingLocation) {
-            setLocations(locations.map(loc =>
-                loc.id === editingLocation.id
-                    ? { ...loc, name: locationForm.name, address: locationForm.address }
-                    : loc
-            ))
-        } else {
-            const newLocation = {
-                id: Date.now(),
-                name: locationForm.name,
-                address: locationForm.address,
-                timeSlots: []
+    const handleSaveLocation = async () => {
+        try {
+            setSaving(true)
+            setError('')
+
+            if (editingLocation) {
+                const response = await appointmentAPI.updateLocation(editingLocation.id, {
+                    name: locationForm.name,
+                    address: locationForm.address,
+                    phone: locationForm.phone || null,
+                    email: locationForm.email || null,
+                })
+
+                if (response.status === 'success') {
+                    await fetchLocations() // Refresh locations
+                    setShowLocationModal(false)
+                    setLocationForm({ name: '', address: '', phone: '', email: '' })
+                }
+            } else {
+                const response = await appointmentAPI.createLocation({
+                    name: locationForm.name,
+                    address: locationForm.address,
+                    phone: locationForm.phone || null,
+                    email: locationForm.email || null,
+                })
+
+                if (response.status === 'success') {
+                    await fetchLocations() // Refresh locations
+                    setShowLocationModal(false)
+                    setLocationForm({ name: '', address: '', phone: '', email: '' })
+                }
             }
-            setLocations([...locations, newLocation])
+        } catch (err) {
+            setError(err.message || 'Failed to save location')
+            console.error('Error saving location:', err)
+        } finally {
+            setSaving(false)
         }
-        setShowLocationModal(false)
-        setLocationForm({ name: '', address: '' })
     }
 
-    const handleDeleteLocation = (id) => {
-        if (confirm('Are you sure you want to delete this location?')) {
-            setLocations(locations.filter(loc => loc.id !== id))
-            if (selectedLocation?.id === id) {
-                setSelectedLocation(null)
+    const handleDeleteLocation = async (id) => {
+        if (confirm('Are you sure you want to delete this location? This will also delete all associated time slots.')) {
+            try {
+                setSaving(true)
+                setError('')
+                const response = await appointmentAPI.deleteLocation(id)
+
+                if (response.status === 'success') {
+                    await fetchLocations() // Refresh locations
+                    if (selectedLocation?.id === id) {
+                        setSelectedLocation(null)
+                    }
+                }
+            } catch (err) {
+                setError(err.message || 'Failed to delete location')
+                console.error('Error deleting location:', err)
+            } finally {
+                setSaving(false)
             }
         }
     }
@@ -136,59 +189,85 @@ export default function AppointmentsPage() {
         setSelectedLocation(location)
         setEditingTimeSlot(timeSlot)
         setTimeSlotForm({
-            start: timeSlot.start,
-            end: timeSlot.end,
+            start: timeSlot.start || timeSlot.start_time || '09:00',
+            end: timeSlot.end || timeSlot.end_time || '17:00',
             days: timeSlot.days || [],
-            applyToAllDays: false,
-            specificDate: timeSlot.specificDate || null,
-            applyToMonth: false
+            applyToAllDays: timeSlot.days && timeSlot.days.length === 7,
+            specificDate: timeSlot.specificDate || timeSlot.specific_date || null,
+            applyToMonth: timeSlot.applyToMonth || timeSlot.apply_to_month || false
         })
         setShowTimeSlotModal(true)
     }
 
-    const handleSaveTimeSlot = () => {
+    const handleSaveTimeSlot = async () => {
         if (!selectedLocation) return
 
-        const newTimeSlot = {
-            start: timeSlotForm.start,
-            end: timeSlotForm.end,
-            days: timeSlotForm.applyToAllDays ? daysOfWeek.map(d => d.value) : timeSlotForm.days,
-            specificDate: timeSlotForm.specificDate || null,
-            applyToMonth: timeSlotForm.applyToMonth
-        }
+        try {
+            setSaving(true)
+            setError('')
 
-        if (editingTimeSlot) {
-            setLocations(locations.map(loc =>
-                loc.id === selectedLocation.id
-                    ? { ...loc, timeSlots: loc.timeSlots.map(ts => ts === editingTimeSlot ? newTimeSlot : ts) }
-                    : loc
-            ))
-        } else {
-            setLocations(locations.map(loc =>
-                loc.id === selectedLocation.id
-                    ? { ...loc, timeSlots: [...loc.timeSlots, newTimeSlot] }
-                    : loc
-            ))
-        }
+            const timeSlotData = {
+                location_id: selectedLocation.id,
+                start_time: timeSlotForm.start,
+                end_time: timeSlotForm.end,
+                days: timeSlotForm.applyToAllDays ? daysOfWeek.map(d => d.value) : (timeSlotForm.days.length > 0 ? timeSlotForm.days : null),
+                specific_date: timeSlotForm.specificDate || null,
+                apply_to_month: timeSlotForm.applyToMonth || false,
+            }
 
-        setShowTimeSlotModal(false)
-        setTimeSlotForm({
-            start: '09:00',
-            end: '17:00',
-            days: [],
-            applyToAllDays: false,
-            specificDate: null,
-            applyToMonth: false
-        })
+            if (editingTimeSlot) {
+                const response = await appointmentAPI.updateTimeSlot(editingTimeSlot.id, timeSlotData)
+                if (response.status === 'success') {
+                    await fetchLocations() // Refresh locations
+                    setShowTimeSlotModal(false)
+                    setTimeSlotForm({
+                        start: '09:00',
+                        end: '17:00',
+                        days: [],
+                        applyToAllDays: false,
+                        specificDate: null,
+                        applyToMonth: false
+                    })
+                }
+            } else {
+                const response = await appointmentAPI.createTimeSlot(timeSlotData)
+                if (response.status === 'success') {
+                    await fetchLocations() // Refresh locations
+                    setShowTimeSlotModal(false)
+                    setTimeSlotForm({
+                        start: '09:00',
+                        end: '17:00',
+                        days: [],
+                        applyToAllDays: false,
+                        specificDate: null,
+                        applyToMonth: false
+                    })
+                }
+            }
+        } catch (err) {
+            setError(err.message || 'Failed to save time slot')
+            console.error('Error saving time slot:', err)
+        } finally {
+            setSaving(false)
+        }
     }
 
-    const handleDeleteTimeSlot = (location, timeSlot) => {
+    const handleDeleteTimeSlot = async (location, timeSlot) => {
         if (confirm('Are you sure you want to delete this time slot?')) {
-            setLocations(locations.map(loc =>
-                loc.id === location.id
-                    ? { ...loc, timeSlots: loc.timeSlots.filter(ts => ts !== timeSlot) }
-                    : loc
-            ))
+            try {
+                setSaving(true)
+                setError('')
+                const response = await appointmentAPI.deleteTimeSlot(timeSlot.id)
+
+                if (response.status === 'success') {
+                    await fetchLocations() // Refresh locations
+                }
+            } catch (err) {
+                setError(err.message || 'Failed to delete time slot')
+                console.error('Error deleting time slot:', err)
+            } finally {
+                setSaving(false)
+            }
         }
     }
 
@@ -210,13 +289,29 @@ export default function AppointmentsPage() {
                     <p className="text-gray-600">Manage your availability and time slots across different locations</p>
                 </div>
 
+                {/* Error Message */}
+                {error && (
+                    <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-red-700">
+                        <AlertCircle className="w-5 h-5" />
+                        <span>{error}</span>
+                    </div>
+                )}
+
+                {/* Loading State */}
+                {loading && (
+                    <div className="flex items-center justify-center py-12">
+                        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+                        <span className="ml-3 text-gray-600">Loading locations...</span>
+                    </div>
+                )}
+
                 {/* View Toggle */}
                 <div className="mb-6 flex gap-4">
                     <button
                         onClick={() => setViewMode('locations')}
                         className={`px-6 py-2 rounded-lg font-medium transition ${viewMode === 'locations'
-                                ? 'gradient-primary text-white'
-                                : 'bg-white text-gray-700 hover:bg-gray-50'
+                            ? 'gradient-primary text-white'
+                            : 'bg-white text-gray-700 hover:bg-gray-50'
                             }`}
                     >
                         <Building2 className="w-4 h-4 inline mr-2" />
@@ -225,8 +320,8 @@ export default function AppointmentsPage() {
                     <button
                         onClick={() => setViewMode('calendar')}
                         className={`px-6 py-2 rounded-lg font-medium transition ${viewMode === 'calendar'
-                                ? 'gradient-primary text-white'
-                                : 'bg-white text-gray-700 hover:bg-gray-50'
+                            ? 'gradient-primary text-white'
+                            : 'bg-white text-gray-700 hover:bg-gray-50'
                             }`}
                     >
                         <CalendarDays className="w-4 h-4 inline mr-2" />
@@ -234,7 +329,7 @@ export default function AppointmentsPage() {
                     </button>
                 </div>
 
-                {viewMode === 'locations' ? (
+                {!loading && viewMode === 'locations' ? (
                     <div className="space-y-6">
                         {/* Add Location Button */}
                         <motion.button
@@ -311,21 +406,21 @@ export default function AppointmentsPage() {
                                                 </div>
                                             ) : (
                                                 <div className="space-y-3">
-                                                    {location.timeSlots.map((timeSlot, index) => (
+                                                    {location.timeSlots.map((timeSlot) => (
                                                         <div
-                                                            key={index}
+                                                            key={timeSlot.id}
                                                             className="p-4 bg-gray-50 rounded-lg flex items-center justify-between"
                                                         >
                                                             <div className="flex items-center gap-4">
                                                                 <div className="flex items-center gap-2">
                                                                     <Clock className="w-4 h-4 text-gray-500" />
                                                                     <span className="font-medium text-gray-900">
-                                                                        {timeSlot.start} - {timeSlot.end}
+                                                                        {timeSlot.start || timeSlot.start_time} - {timeSlot.end || timeSlot.end_time}
                                                                     </span>
                                                                 </div>
                                                                 <div className="flex items-center gap-2">
                                                                     {timeSlot.days && timeSlot.days.length > 0 ? (
-                                                                        <div className="flex gap-1">
+                                                                        <div className="flex gap-1 flex-wrap">
                                                                             {timeSlot.days.map((day, i) => (
                                                                                 <span
                                                                                     key={i}
@@ -335,8 +430,12 @@ export default function AppointmentsPage() {
                                                                                 </span>
                                                                             ))}
                                                                         </div>
+                                                                    ) : timeSlot.specificDate || timeSlot.specific_date ? (
+                                                                        <span className="text-sm text-gray-500">
+                                                                            {new Date(timeSlot.specificDate || timeSlot.specific_date).toLocaleDateString()}
+                                                                        </span>
                                                                     ) : (
-                                                                        <span className="text-sm text-gray-500">Specific date</span>
+                                                                        <span className="text-sm text-gray-500">Monthly</span>
                                                                     )}
                                                                 </div>
                                                             </div>
@@ -417,6 +516,32 @@ export default function AppointmentsPage() {
                                         rows={3}
                                     />
                                 </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Phone (Optional)
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={locationForm.phone}
+                                        onChange={(e) => setLocationForm({ ...locationForm, phone: e.target.value })}
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="e.g., +1234567890"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Email (Optional)
+                                    </label>
+                                    <input
+                                        type="email"
+                                        value={locationForm.email}
+                                        onChange={(e) => setLocationForm({ ...locationForm, email: e.target.value })}
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="location@example.com"
+                                    />
+                                </div>
                             </div>
 
                             <div className="flex gap-3 mt-6">
@@ -428,10 +553,20 @@ export default function AppointmentsPage() {
                                 </button>
                                 <button
                                     onClick={handleSaveLocation}
-                                    className="flex-1 px-4 py-2 gradient-primary text-white rounded-lg hover:shadow-lg transition"
+                                    disabled={saving}
+                                    className="flex-1 px-4 py-2 gradient-primary text-white rounded-lg hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                                 >
-                                    <Save className="w-4 h-4 inline mr-2" />
-                                    Save
+                                    {saving ? (
+                                        <>
+                                            <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                                            Saving...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Save className="w-4 h-4 inline mr-2" />
+                                            Save
+                                        </>
+                                    )}
                                 </button>
                             </div>
                         </motion.div>
@@ -515,8 +650,8 @@ export default function AppointmentsPage() {
                                                         type="button"
                                                         onClick={() => toggleDay(day.value)}
                                                         className={`px-4 py-2 rounded-lg font-medium transition ${timeSlotForm.days.includes(day.value)
-                                                                ? 'gradient-primary text-white'
-                                                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                                            ? 'gradient-primary text-white'
+                                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                                             }`}
                                                     >
                                                         {day.label}
@@ -568,10 +703,20 @@ export default function AppointmentsPage() {
                                 </button>
                                 <button
                                     onClick={handleSaveTimeSlot}
-                                    className="flex-1 px-4 py-2 gradient-primary text-white rounded-lg hover:shadow-lg transition"
+                                    disabled={saving}
+                                    className="flex-1 px-4 py-2 gradient-primary text-white rounded-lg hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                                 >
-                                    <Save className="w-4 h-4 inline mr-2" />
-                                    Save Time Slot
+                                    {saving ? (
+                                        <>
+                                            <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                                            Saving...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Save className="w-4 h-4 inline mr-2" />
+                                            Save Time Slot
+                                        </>
+                                    )}
                                 </button>
                             </div>
                         </motion.div>
