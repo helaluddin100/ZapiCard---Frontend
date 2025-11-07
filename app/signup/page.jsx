@@ -3,22 +3,71 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import { Mail, Lock, User, ArrowRight, Chrome, Facebook } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { Mail, Lock, User, ArrowRight, Chrome, Facebook, AlertCircle } from 'lucide-react'
+import authAPI from '@/lib/api'
 
 export default function SignupPage() {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
     confirmPassword: ''
   })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Mock signup - no backend
-    console.log('Signup attempt:', formData)
-    // In real app, redirect to dashboard
-    window.location.href = '/dashboard'
+    setError('')
+
+    // Validate passwords match
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match')
+      return
+    }
+
+    // Validate password length
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters')
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      const response = await authAPI.register(formData)
+
+      if (response.status === 'success') {
+        // Redirect to email verification page
+        router.push(`/verify-email?email=${encodeURIComponent(formData.email)}`)
+      }
+    } catch (err) {
+      setError(err.message || 'Registration failed. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleSocialLogin = async (provider) => {
+    setError('')
+    setLoading(true)
+
+    try {
+      if (provider === 'google') {
+        // Redirect to backend Google OAuth endpoint
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
+        window.location.href = apiUrl.replace('/api', '') + '/login/google'
+      } else if (provider === 'facebook') {
+        // Facebook OAuth will be implemented similarly
+        alert('Facebook signup will be implemented soon.')
+        setLoading(false)
+      }
+    } catch (err) {
+      setError(err.message || `${provider} signup failed`)
+      setLoading(false)
+    }
   }
 
   return (
@@ -37,28 +86,33 @@ export default function SignupPage() {
             <p className="text-gray-600 mt-2">Start building your smart visiting card</p>
           </div>
 
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center gap-2 mb-6"
+            >
+              <AlertCircle className="w-5 h-5" />
+              <span className="text-sm">{error}</span>
+            </motion.div>
+          )}
+
           {/* Social Login Buttons */}
           <div className="space-y-3 mb-6">
             <button
               type="button"
-              onClick={() => {
-                // Mock Google signup - no backend
-                console.log('Google signup')
-                alert('Google signup would be implemented here')
-              }}
-              className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition-all duration-300"
+              onClick={() => handleSocialLogin('google')}
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Chrome className="w-5 h-5 text-red-500" />
               Sign up with Google
             </button>
             <button
               type="button"
-              onClick={() => {
-                // Mock Facebook signup - no backend
-                console.log('Facebook signup')
-                alert('Facebook signup would be implemented here')
-              }}
-              className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition-all duration-300"
+              onClick={() => handleSocialLogin('facebook')}
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Facebook className="w-5 h-5 text-blue-600" />
               Sign up with Facebook
@@ -87,7 +141,8 @@ export default function SignupPage() {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+                  disabled={loading}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition disabled:bg-gray-100 disabled:cursor-not-allowed"
                   placeholder="John Doe"
                 />
               </div>
@@ -104,7 +159,8 @@ export default function SignupPage() {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+                  disabled={loading}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition disabled:bg-gray-100 disabled:cursor-not-allowed"
                   placeholder="you@example.com"
                 />
               </div>
@@ -121,7 +177,8 @@ export default function SignupPage() {
                   required
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+                  disabled={loading}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition disabled:bg-gray-100 disabled:cursor-not-allowed"
                   placeholder="••••••••"
                 />
               </div>
@@ -139,7 +196,8 @@ export default function SignupPage() {
                   required
                   value={formData.confirmPassword}
                   onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+                  disabled={loading}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition disabled:bg-gray-100 disabled:cursor-not-allowed"
                   placeholder="••••••••"
                 />
               </div>
@@ -147,10 +205,11 @@ export default function SignupPage() {
 
             <button
               type="submit"
-              className="w-full btn-primary flex items-center justify-center"
+              disabled={loading}
+              className="w-full btn-primary flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Create Account
-              <ArrowRight className="ml-2 w-5 h-5" />
+              {loading ? 'Creating Account...' : 'Create Account'}
+              {!loading && <ArrowRight className="ml-2 w-5 h-5" />}
             </button>
           </form>
 

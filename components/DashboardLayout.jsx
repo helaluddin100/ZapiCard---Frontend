@@ -3,13 +3,13 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import { 
-  LayoutDashboard, 
-  CreditCard, 
-  Plus, 
-  Menu, 
-  X, 
-  LogOut, 
+import {
+  LayoutDashboard,
+  CreditCard,
+  Plus,
+  Menu,
+  X,
+  LogOut,
   User,
   ShoppingCart
 } from 'lucide-react'
@@ -19,7 +19,8 @@ export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const menuItems = [
-    { href: '/dashboard', label: 'My Cards', icon: CreditCard },
+    { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { href: '/dashboard/my-cards', label: 'My Cards', icon: CreditCard },
     { href: '/dashboard/create', label: 'Create New Card', icon: Plus },
     { href: '/nfc-order', label: 'Order NFC Card', icon: ShoppingCart },
   ]
@@ -53,11 +54,14 @@ export default function DashboardLayout({ children }) {
                 Zapi Card
               </Link>
             </div>
-            
+
             <nav className="flex-1 p-4 space-y-2">
               {menuItems.map((item) => {
                 const Icon = item.icon
-                const isActive = pathname === item.href
+                // For dashboard, check if pathname starts with the href
+                const isActive = item.href === '/dashboard'
+                  ? pathname === '/dashboard' || pathname === '/dashboard/'
+                  : pathname === item.href || pathname.startsWith(item.href + '/')
                 return (
                   <Link
                     key={item.href}
@@ -65,8 +69,8 @@ export default function DashboardLayout({ children }) {
                     onClick={() => setSidebarOpen(false)}
                     className={`
                       flex items-center space-x-3 px-4 py-3 rounded-lg transition
-                      ${isActive 
-                        ? 'gradient-primary text-white' 
+                      ${isActive
+                        ? 'gradient-primary text-white'
                         : 'text-gray-700 hover:bg-gray-100'
                       }
                     `}
