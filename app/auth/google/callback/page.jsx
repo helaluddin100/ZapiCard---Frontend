@@ -5,10 +5,13 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { CheckCircle2, XCircle, RefreshCw } from 'lucide-react'
 import { setAuthToken } from '@/lib/api'
+import { useAuth } from '@/lib/auth'
+import authAPI from '@/lib/api'
 
 function GoogleCallbackHandler() {
     const router = useRouter()
     const searchParams = useSearchParams()
+    const { updateUser } = useAuth()
     const token = searchParams.get('token')
     const status = searchParams.get('status')
     const message = searchParams.get('message')
@@ -17,6 +20,21 @@ function GoogleCallbackHandler() {
         if (status === 'success' && token) {
             // Store token
             setAuthToken(token)
+
+            // Fetch user data and update context
+            const fetchUser = async () => {
+                try {
+                    const response = await authAPI.getCurrentUser()
+                    if (response.data) {
+                        updateUser(response.data)
+                    } else if (response.id) {
+                        updateUser(response)
+                    }
+                } catch (error) {
+                    console.error('Failed to fetch user:', error)
+                }
+            }
+            fetchUser()
 
             // Redirect to dashboard after a short delay
             setTimeout(() => {
@@ -28,7 +46,7 @@ function GoogleCallbackHandler() {
                 router.push(`/login?error=${encodeURIComponent(message || 'Google login failed')}`)
             }, 3000)
         }
-    }, [token, status, message, router])
+    }, [token, status, message, router, updateUser])
 
     if (status === 'success') {
         return (

@@ -7,10 +7,12 @@ import { useRouter } from 'next/navigation'
 import { Mail, CheckCircle2, XCircle, ArrowRight, RefreshCw, AlertCircle } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import authAPI from '@/lib/api'
+import { useAuth } from '@/lib/auth'
 
 function VerifyEmailForm() {
     const router = useRouter()
     const searchParams = useSearchParams()
+    const { updateUser } = useAuth()
     const email = searchParams.get('email')
     const [verificationCode, setVerificationCode] = useState(['', '', '', '', '', ''])
     const [status, setStatus] = useState('input') // 'input', 'verifying', 'success', 'error'
@@ -76,6 +78,10 @@ function VerifyEmailForm() {
             const response = await authAPI.verifyEmail(email, code)
 
             if (response.status === 'success') {
+                // Update auth context with user data
+                if (response.data?.user) {
+                    updateUser(response.data.user)
+                }
                 setStatus('success')
                 // Redirect to dashboard after 2 seconds
                 setTimeout(() => {

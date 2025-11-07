@@ -1,6 +1,7 @@
 import './globals.css'
 import { Inter, Poppins } from 'next/font/google'
 import ConditionalLayout from '@/components/ConditionalLayout'
+import AuthProviderWrapper from '@/lib/auth-wrapper'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const poppins = Poppins({
@@ -19,9 +20,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
       <body className="font-sans antialiased">
-        <ConditionalLayout>
-          {children}
-        </ConditionalLayout>
+        <AuthProviderWrapper>
+          <ConditionalLayout>
+            {children}
+          </ConditionalLayout>
+        </AuthProviderWrapper>
       </body>
     </html>
   )

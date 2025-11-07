@@ -6,9 +6,11 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Mail, Lock, User, ArrowRight, Chrome, Facebook, AlertCircle } from 'lucide-react'
 import authAPI from '@/lib/api'
+import { useAuth } from '@/lib/auth'
 
 export default function SignupPage() {
   const router = useRouter()
+  const { updateUser } = useAuth()
   const [formData, setFormData] = useState({
     name: '',
     email: '',

@@ -7,10 +7,12 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Mail, Lock, ArrowRight, AlertCircle } from 'lucide-react'
 import { Chrome, Facebook } from 'lucide-react'
 import authAPI from '@/lib/api'
+import { useAuth } from '@/lib/auth'
 
 function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { updateUser } = useAuth()
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -34,7 +36,9 @@ function LoginForm() {
     try {
       const response = await authAPI.login(formData.email, formData.password)
 
-      if (response.status === 'success') {
+      if (response.status === 'success' && response.data?.user) {
+        // Update auth context with user data
+        updateUser(response.data.user)
         // Redirect to dashboard on success
         router.push('/dashboard')
       }
