@@ -11,7 +11,8 @@ import {
   X,
   LogOut,
   User,
-  ShoppingCart
+  ShoppingCart,
+  Calendar
 } from 'lucide-react'
 import { useAuth } from '@/lib/auth'
 
@@ -32,6 +33,7 @@ export default function DashboardLayout({ children }) {
     { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/dashboard/my-cards', label: 'My Cards', icon: CreditCard },
     { href: '/dashboard/create', label: 'Create New Card', icon: Plus },
+    { href: '/dashboard/appointments', label: 'Appointments', icon: Calendar },
     { href: '/nfc-order', label: 'Order NFC Card', icon: ShoppingCart },
   ]
 
