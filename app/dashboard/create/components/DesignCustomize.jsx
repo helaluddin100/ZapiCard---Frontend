@@ -30,19 +30,23 @@ export default function DesignCustomize({ formData, setFormData, onNext, onBack 
     }
 
     const handleGradientToggle = (enabled) => {
-        if (enabled && !formData.gradientColors) {
+        if (enabled) {
+            // Enable gradient - use current colors or defaults
             setFormData({
                 ...formData,
                 useGradient: true,
                 gradientColors: {
-                    from: formData.primaryColor || '#3b82f6',
-                    to: formData.buttonColor || '#8b5cf6'
+                    from: formData.primaryColor || formData.gradientColors?.from || '#3b82f6',
+                    to: formData.buttonColor || formData.gradientColors?.to || '#8b5cf6'
                 }
             })
         } else {
+            // Disable gradient - save gradient colors to primary/button colors
             setFormData({
                 ...formData,
-                useGradient: false
+                useGradient: false,
+                primaryColor: formData.gradientColors?.from || formData.primaryColor || '#3b82f6',
+                buttonColor: formData.gradientColors?.to || formData.buttonColor || '#8b5cf6'
             })
         }
     }
@@ -130,14 +134,14 @@ export default function DesignCustomize({ formData, setFormData, onNext, onBack 
                             <div className="flex items-center gap-3">
                                 <input
                                     type="color"
-                                    value={formData.useGradient ? formData.gradientColors?.from || '#3b82f6' : formData.primaryColor || '#3b82f6'}
+                                    value={formData.useGradient ? (formData.gradientColors?.from || '#3b82f6') : (formData.primaryColor || '#3b82f6')}
                                     onChange={(e) => {
                                         if (formData.useGradient) {
                                             setFormData({
                                                 ...formData,
                                                 gradientColors: {
-                                                    ...formData.gradientColors,
-                                                    from: e.target.value
+                                                    from: e.target.value,
+                                                    to: formData.gradientColors?.to || formData.buttonColor || '#8b5cf6'
                                                 }
                                             })
                                         } else {
@@ -148,18 +152,19 @@ export default function DesignCustomize({ formData, setFormData, onNext, onBack 
                                 />
                                 <input
                                     type="text"
-                                    value={formData.useGradient ? formData.gradientColors?.from || '#3b82f6' : formData.primaryColor || '#3b82f6'}
+                                    value={formData.useGradient ? (formData.gradientColors?.from || '#3b82f6') : (formData.primaryColor || '#3b82f6')}
                                     onChange={(e) => {
+                                        const value = e.target.value
                                         if (formData.useGradient) {
                                             setFormData({
                                                 ...formData,
                                                 gradientColors: {
-                                                    ...formData.gradientColors,
-                                                    from: e.target.value
+                                                    from: value,
+                                                    to: formData.gradientColors?.to || formData.buttonColor || '#8b5cf6'
                                                 }
                                             })
                                         } else {
-                                            setFormData({ ...formData, primaryColor: e.target.value })
+                                            setFormData({ ...formData, primaryColor: value })
                                         }
                                     }}
                                     className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
@@ -175,13 +180,13 @@ export default function DesignCustomize({ formData, setFormData, onNext, onBack 
                             <div className="flex items-center gap-3">
                                 <input
                                     type="color"
-                                    value={formData.useGradient ? formData.gradientColors?.to || '#8b5cf6' : formData.buttonColor || '#8b5cf6'}
+                                    value={formData.useGradient ? (formData.gradientColors?.to || '#8b5cf6') : (formData.buttonColor || '#8b5cf6')}
                                     onChange={(e) => {
                                         if (formData.useGradient) {
                                             setFormData({
                                                 ...formData,
                                                 gradientColors: {
-                                                    ...formData.gradientColors,
+                                                    from: formData.gradientColors?.from || formData.primaryColor || '#3b82f6',
                                                     to: e.target.value
                                                 }
                                             })
@@ -193,18 +198,19 @@ export default function DesignCustomize({ formData, setFormData, onNext, onBack 
                                 />
                                 <input
                                     type="text"
-                                    value={formData.useGradient ? formData.gradientColors?.to || '#8b5cf6' : formData.buttonColor || '#8b5cf6'}
+                                    value={formData.useGradient ? (formData.gradientColors?.to || '#8b5cf6') : (formData.buttonColor || '#8b5cf6')}
                                     onChange={(e) => {
+                                        const value = e.target.value
                                         if (formData.useGradient) {
                                             setFormData({
                                                 ...formData,
                                                 gradientColors: {
-                                                    ...formData.gradientColors,
-                                                    to: e.target.value
+                                                    from: formData.gradientColors?.from || formData.primaryColor || '#3b82f6',
+                                                    to: value
                                                 }
                                             })
                                         } else {
-                                            setFormData({ ...formData, buttonColor: e.target.value })
+                                            setFormData({ ...formData, buttonColor: value })
                                         }
                                     }}
                                     className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"

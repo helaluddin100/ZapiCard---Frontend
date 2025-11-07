@@ -76,9 +76,26 @@ export default function CreateCardPage() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        // Generate QR code URL (mock)
-        const qrData = `https://zapicard.com/card/${Date.now()}`
-        const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrData)}&color=${formData.qrColor.replace('#', '')}&bgcolor=${formData.qrBackgroundColor.replace('#', '')}`
+
+        // Generate vCard data for QR code
+        const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:${formData.name || 'Name'}
+ORG:${formData.company || 'Company'}
+TITLE:${formData.title || 'Title'}
+EMAIL:${formData.email || ''}
+TEL:${formData.phone || ''}
+URL:${formData.website || ''}
+ADR:;;${formData.address || ''};;;;
+NOTE:${formData.bio || ''}
+END:VCARD`
+
+        // Generate QR code URL
+        const cardUrl = typeof window !== 'undefined'
+            ? `${window.location.origin}/card/${Date.now()}`
+            : 'https://zapicard.com/card/1'
+
+        const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(cardUrl)}&color=${(formData.qrColor || '#000000').replace('#', '')}&bgcolor=${(formData.qrBackgroundColor || '#ffffff').replace('#', '')}`
 
         setFormData({ ...formData, qrCode: qrCodeUrl })
 
