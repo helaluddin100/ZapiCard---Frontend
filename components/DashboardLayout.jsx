@@ -50,22 +50,23 @@ export default function DashboardLayout({ children }) {
         </button>
       </div>
 
-      <div className="flex">
-        {/* Sidebar */}
+      <div className="flex relative">
+        {/* Sidebar - Fixed on all screens */}
         <aside className={`
-          fixed lg:static inset-y-0 left-0 z-40
+          fixed inset-y-0 left-0 z-40
           w-64 bg-white border-r border-gray-200
+          h-screen overflow-y-auto
           transform transition-transform duration-300 ease-in-out
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}>
           <div className="h-full flex flex-col">
-            <div className="p-6 border-b border-gray-200">
+            <div className="p-6 border-b border-gray-200 flex-shrink-0">
               <Link href="/" className="text-2xl font-bold gradient-primary bg-clip-text text-transparent">
                 Zapi Card
               </Link>
             </div>
 
-            <nav className="flex-1 p-4 space-y-2">
+            <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
               {menuItems.map((item) => {
                 const Icon = item.icon
                 // For dashboard, check if pathname starts with the href
@@ -92,7 +93,7 @@ export default function DashboardLayout({ children }) {
               })}
             </nav>
 
-            <div className="p-4 border-t border-gray-200">
+            <div className="p-4 border-t border-gray-200 flex-shrink-0">
               {user && (
                 <>
                   <div className="flex items-center space-x-3 px-4 py-3 mb-2">
@@ -136,9 +137,9 @@ export default function DashboardLayout({ children }) {
         )}
 
         {/* Main Content */}
-        <main className="flex-1 lg:ml-0">
+        <main className="flex-1 w-full lg:ml-64">
           {/* Desktop Header */}
-          <div className="hidden lg:block bg-white border-b border-gray-200 px-8 py-4">
+          <div className="hidden lg:block bg-white border-b border-gray-200 px-8 py-4 sticky top-0 z-30">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-xl font-semibold text-gray-900">Dashboard</h2>
