@@ -63,7 +63,8 @@ export default function SignupPage() {
         window.location.href = apiUrl.replace('/api', '') + '/login/google'
       } else if (provider === 'facebook') {
         // Facebook OAuth will be implemented similarly
-        alert('Facebook signup will be implemented soon.')
+        // Facebook signup will be implemented soon
+        // You can add toast here if needed: showInfo('Facebook signup will be implemented soon.')
         setLoading(false)
       }
     } catch (err) {

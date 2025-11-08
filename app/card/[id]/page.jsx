@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { cardAPI } from '@/lib/api'
+import { useToast } from '@/lib/toast'
 import AppointmentModal from './components/AppointmentModal'
 import {
     Mail,
@@ -30,6 +31,7 @@ import {
 export default function PublicCardPage() {
     const params = useParams()
     const slug = params?.id
+    const { success } = useToast()
     const [showQR, setShowQR] = useState(false)
     const [cardData, setCardData] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -192,7 +194,7 @@ END:VCARD`
         } else {
             // Fallback: copy to clipboard
             navigator.clipboard.writeText(window.location.href)
-            alert('Link copied to clipboard!')
+            success('Link copied to clipboard!')
         }
     }
 

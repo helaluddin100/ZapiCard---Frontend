@@ -5,6 +5,7 @@ import Link from 'next/link'
 import DashboardLayout from '@/components/DashboardLayout'
 import { motion } from 'framer-motion'
 import { cardAPI } from '@/lib/api'
+import { useToast } from '@/lib/toast'
 import {
     Plus,
     QrCode,
@@ -21,6 +22,7 @@ import {
 } from 'lucide-react'
 
 export default function MyCardsPage() {
+    const { success, error: showError } = useToast()
     const [viewMode, setViewMode] = useState('grid')
     const [searchQuery, setSearchQuery] = useState('')
     const [cards, setCards] = useState([])
@@ -59,9 +61,10 @@ export default function MyCardsPage() {
             await cardAPI.deleteCard(cardId)
             // Remove the card from the list
             setCards(cards.filter(card => card.id !== cardId))
+            success('Card deleted successfully!')
         } catch (err) {
             console.error('Error deleting card:', err)
-            alert('Failed to delete card. Please try again.')
+            showError('Failed to delete card. Please try again.')
         }
     }
 

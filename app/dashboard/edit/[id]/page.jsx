@@ -6,6 +6,7 @@ import Link from 'next/link'
 import DashboardLayout from '@/components/DashboardLayout'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cardAPI } from '@/lib/api'
+import { useToast } from '@/lib/toast'
 import {
     ArrowLeft,
     CheckCircle2,
@@ -28,6 +29,7 @@ export default function EditCardPage() {
     const router = useRouter()
     const params = useParams()
     const cardId = params?.id
+    const { success, error: showError } = useToast()
 
     const [step, setStep] = useState(1)
     const [loading, setLoading] = useState(true)
@@ -164,15 +166,17 @@ END:VCARD`
             const response = await cardAPI.updateCard(cardId, cardData)
 
             if (response.status === 'success') {
-                alert('Card updated successfully!')
-                router.push('/dashboard/my-cards')
+                success('Card updated successfully!')
+                setTimeout(() => {
+                    router.push('/dashboard/my-cards')
+                }, 500)
             } else {
                 throw new Error(response.message || 'Failed to update card')
             }
         } catch (error) {
             console.error('Error updating card:', error)
             setError(error.message || 'Failed to update card. Please try again.')
-            alert(error.message || 'Failed to update card. Please try again.')
+            showError(error.message || 'Failed to update card. Please try again.')
         } finally {
             setSaving(false)
         }

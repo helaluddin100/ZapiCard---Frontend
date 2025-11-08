@@ -12,6 +12,7 @@ import {
     Upload,
     Palette
 } from 'lucide-react'
+import { useToast } from '@/lib/toast'
 
 // Import Components
 import PersonalInfo from './components/PersonalInfo'
@@ -21,6 +22,7 @@ import DesignCustomize from './components/DesignCustomize'
 import Preview from './components/Preview'
 
 export default function CreateCardPage() {
+    const { success, error: showError } = useToast()
     const [step, setStep] = useState(1)
     const [formData, setFormData] = useState({
         // Step 1: Personal Info
@@ -115,14 +117,16 @@ END:VCARD`
             const response = await cardAPI.createCard(cardData)
 
             if (response.status === 'success') {
-                alert('Card created successfully!')
-                window.location.href = '/dashboard/my-cards'
+                success('Card created successfully!')
+                setTimeout(() => {
+                    window.location.href = '/dashboard/my-cards'
+                }, 500)
             } else {
                 throw new Error(response.message || 'Failed to create card')
             }
         } catch (error) {
             console.error('Error creating card:', error)
-            alert(error.message || 'Failed to create card. Please try again.')
+            showError(error.message || 'Failed to create card. Please try again.')
         }
     }
 

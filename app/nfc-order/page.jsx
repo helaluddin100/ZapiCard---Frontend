@@ -140,7 +140,8 @@ export default function NFCOrderPage() {
         const cardElement = document.getElementById('card-preview')
         if (cardElement) {
             // This is a simplified version - in production, use html2canvas or similar
-            alert('Export functionality: In production, this would generate a print-ready PDF/SVG file (1050×663px @ 300DPI)')
+            // Export functionality: In production, this would generate a print-ready PDF/SVG file (1050×663px @ 300DPI)
+            // You can add toast here if needed
             console.log('Exporting card design with settings:', {
                 card: selectedCard,
                 material: selectedMaterial,

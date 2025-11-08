@@ -4,8 +4,10 @@ import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Calendar, Clock, MapPin, Video, User, Phone, Mail, FileText, Loader2, CheckCircle2, AlertCircle } from 'lucide-react'
 import { publicAppointmentAPI } from '@/lib/api'
+import { useToast } from '@/lib/toast'
 
 export default function AppointmentModal({ isOpen, onClose, cardSlug, cardId }) {
+    const { success: showSuccess, error: showError } = useToast()
     const [step, setStep] = useState(1)
     const [loading, setLoading] = useState(false)
     const [submitting, setSubmitting] = useState(false)
@@ -293,6 +295,7 @@ export default function AppointmentModal({ isOpen, onClose, cardSlug, cardId }) 
 
             if (response.status === 'success') {
                 setSuccess(true)
+                showSuccess('Appointment request submitted successfully!')
                 setTimeout(() => {
                     handleClose()
                 }, 2000)
@@ -301,7 +304,9 @@ export default function AppointmentModal({ isOpen, onClose, cardSlug, cardId }) 
             }
         } catch (err) {
             console.error('Error creating appointment:', err)
-            setError(err.message || 'Failed to submit appointment. Please try again.')
+            const errorMessage = err.message || 'Failed to submit appointment. Please try again.'
+            setError(errorMessage)
+            showError(errorMessage)
         } finally {
             setSubmitting(false)
         }

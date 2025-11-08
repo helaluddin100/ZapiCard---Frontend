@@ -60,7 +60,8 @@ function LoginForm() {
         window.location.href = apiUrl.replace('/api', '') + '/login/google'
       } else if (provider === 'facebook') {
         // Facebook OAuth will be implemented similarly
-        alert('Facebook login will be implemented soon.')
+        // Facebook login will be implemented soon
+        // You can add toast here if needed: showInfo('Facebook login will be implemented soon.')
         setLoading(false)
       }
     } catch (err) {
