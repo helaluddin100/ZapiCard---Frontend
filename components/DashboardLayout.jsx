@@ -317,7 +317,7 @@ export default function DashboardLayout({ children }) {
                                             </p>
                                             {data.patient_name && (
                                               <p className="text-xs text-gray-600 mt-1">
-                                                Patient: {data.patient_name}
+                                                Name: {data.patient_name}
                                               </p>
                                             )}
                                             {data.appointment_date && (
