@@ -1,8 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+/* React Quill Editor Styles */
+.quill-editor-wrapper .ql-container {
+    min-height: 200px;
+    max-height: 300px;
+    font-size: 14px;
+}
+
+.quill-editor-wrapper .ql-editor {
+    min-height: 200px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.quill-editor-wrapper .ql-toolbar {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    background-color: #f9fafb;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.quill-editor-wrapper .ql-container {
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.quill-editor-wrapper .ql-editor.ql-blank::before {
+    color: #9ca3af;
+    font-style: normal;
+}
 
 @layer base {
   body {

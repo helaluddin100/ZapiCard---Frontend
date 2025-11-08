@@ -80,7 +80,7 @@ export default function EditCardPage() {
 
             if (response.status === 'success' && response.data) {
                 const card = response.data
-                
+
                 // Map backend data to frontend form format
                 setFormData({
                     name: card.name || '',
@@ -137,7 +137,7 @@ EMAIL:${formData.email || ''}
 TEL:${formData.phone || ''}
 URL:${formData.website || ''}
 ADR:;;${formData.address || ''};;;;
-NOTE:${formData.bio || ''}
+NOTE:${formData.bio ? formData.bio.replace(/<[^>]*>/g, '') : ''}
 END:VCARD`
 
             // Prepare card data for backend

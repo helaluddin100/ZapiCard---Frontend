@@ -296,7 +296,10 @@ END:VCARD`
                         {/* Bio */}
                         {cardData.bio && (
                             <div className="mb-8 p-4 bg-gray-50 rounded-lg">
-                                <p className="text-gray-700 leading-relaxed">{cardData.bio}</p>
+                                <div
+                                    className="text-gray-700 leading-relaxed prose prose-sm max-w-none"
+                                    dangerouslySetInnerHTML={{ __html: cardData.bio }}
+                                />
                             </div>
                         )}
 

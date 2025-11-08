@@ -115,9 +115,10 @@ export default function Preview({ formData }) {
                         {/* Bio */}
                         {formData.bio && (
                             <div className="mb-8 p-4 bg-gray-50 rounded-lg">
-                                <p className="text-gray-700 leading-relaxed text-sm">
-                                    {formData.bio}
-                                </p>
+                                <div
+                                    className="text-gray-700 leading-relaxed text-sm prose prose-sm max-w-none"
+                                    dangerouslySetInnerHTML={{ __html: formData.bio }}
+                                />
                             </div>
                         )}
 

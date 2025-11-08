@@ -29,6 +29,8 @@ export default function CreateCardPage() {
         company: '',
         email: '',
         phone: '',
+        whatsapp: '',
+        secondary_phone: '',
         website: '',
         address: '',
         bio: '',
@@ -74,9 +76,11 @@ ORG:${formData.company || 'Company'}
 TITLE:${formData.title || 'Title'}
 EMAIL:${formData.email || ''}
 TEL:${formData.phone || ''}
+${formData.whatsapp ? `TEL;TYPE=CELL;PREF:${formData.whatsapp}` : ''}
+${formData.secondary_phone ? `TEL;TYPE=CELL:${formData.secondary_phone}` : ''}
 URL:${formData.website || ''}
 ADR:;;${formData.address || ''};;;;
-NOTE:${formData.bio || ''}
+NOTE:${formData.bio ? formData.bio.replace(/<[^>]*>/g, '') : ''}
 END:VCARD`
 
             // QR code will be generated on backend with actual card URL
@@ -88,6 +92,8 @@ END:VCARD`
                 company: formData.company,
                 email: formData.email,
                 phone: formData.phone,
+                whatsapp: formData.whatsapp,
+                secondary_phone: formData.secondary_phone,
                 website: formData.website,
                 address: formData.address,
                 bio: formData.bio,

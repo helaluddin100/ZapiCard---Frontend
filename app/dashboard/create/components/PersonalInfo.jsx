@@ -1,9 +1,40 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRight, User, Mail, Phone, Building, MapPin } from 'lucide-react'
+import { ArrowRight, User, Mail, Phone, Building, MapPin, MessageCircle } from 'lucide-react'
+import dynamic from 'next/dynamic'
+
+// Dynamically import ReactQuill to avoid SSR issues
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
+import 'react-quill/dist/quill.snow.css'
 
 export default function PersonalInfo({ formData, setFormData, onNext }) {
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    const quillModules = {
+        toolbar: [
+            [{ 'header': [1, 2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            [{ 'color': [] }, { 'background': [] }],
+            ['link'],
+            ['clean']
+        ],
+    }
+
+    const quillFormats = [
+        'header',
+        'bold', 'italic', 'underline', 'strike',
+        'list', 'bullet',
+        'color', 'background',
+        'link'
+    ]
+
     return (
         <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -23,7 +54,7 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
                         <input
                             type="text"
                             required
-                            value={formData.name}
+                            value={formData.name || ''}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                             placeholder="John Doe"
@@ -38,7 +69,7 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
                     <input
                         type="text"
                         required
-                        value={formData.title}
+                        value={formData.title || ''}
                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                         placeholder="Marketing Director"
@@ -54,7 +85,7 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
                         <input
                             type="text"
                             required
-                            value={formData.company}
+                            value={formData.company || ''}
                             onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                             className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                             placeholder="TechCorp Inc"
@@ -71,7 +102,7 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
                         <input
                             type="email"
                             required
-                            value={formData.email}
+                            value={formData.email || ''}
                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                             placeholder="john@example.com"
@@ -87,10 +118,42 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
                         <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                         <input
                             type="tel"
-                            value={formData.phone}
+                            value={formData.phone || ''}
                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                             className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                             placeholder="+1 (555) 123-4567"
+                        />
+                    </div>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                        WhatsApp
+                    </label>
+                    <div className="relative">
+                        <MessageCircle className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                        <input
+                            type="tel"
+                            value={formData.whatsapp || ''}
+                            onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
+                            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                            placeholder="+1 (555) 123-4567"
+                        />
+                    </div>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Secondary Phone
+                    </label>
+                    <div className="relative">
+                        <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                        <input
+                            type="tel"
+                            value={formData.secondary_phone || ''}
+                            onChange={(e) => setFormData({ ...formData, secondary_phone: e.target.value })}
+                            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                            placeholder="+1 (555) 987-6543"
                         />
                     </div>
                 </div>
@@ -101,7 +164,7 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
                     </label>
                     <input
                         type="url"
-                        value={formData.website}
+                        value={formData.website || ''}
                         onChange={(e) => setFormData({ ...formData, website: e.target.value })}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                         placeholder="https://example.com"
@@ -117,7 +180,7 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
                     <MapPin className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
                     <input
                         type="text"
-                        value={formData.address}
+                        value={formData.address || ''}
                         onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                         className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                         placeholder="123 Main St, City, State 12345"
@@ -129,13 +192,28 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                     Bio
                 </label>
-                <textarea
-                    value={formData.bio}
-                    onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                    rows={4}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                    placeholder="Tell people about yourself..."
-                />
+                {mounted ? (
+                    <div className="border border-gray-300 rounded-lg overflow-hidden quill-editor-wrapper">
+                        <ReactQuill
+                            theme="snow"
+                            value={formData.bio || ''}
+                            onChange={(value) => setFormData({ ...formData, bio: value })}
+                            modules={quillModules}
+                            formats={quillFormats}
+                            placeholder="Tell people about yourself..."
+                            className="bg-white"
+                            style={{ minHeight: '200px' }}
+                        />
+                    </div>
+                ) : (
+                    <textarea
+                        value={formData.bio || ''}
+                        onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                        rows={6}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                        placeholder="Tell people about yourself..."
+                    />
+                )}
             </div>
 
             <div className="flex justify-end pt-4 border-t border-gray-200">
@@ -147,4 +225,3 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
         </motion.div>
     )
 }
-
