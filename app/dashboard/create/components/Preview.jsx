@@ -160,26 +160,10 @@ export default function Preview({ formData }) {
 
                         {/* QR Code Preview */}
                         <div className="border-t border-gray-200 pt-6">
-                            <div className="flex justify-center">
-                                <div
-                                    className="p-4 rounded-lg"
-                                    style={{ backgroundColor: formData.qrBackgroundColor || '#ffffff' }}
-                                >
-                                    <div
-                                        className="w-32 h-32 flex items-center justify-center"
-                                        style={{
-                                            backgroundColor: formData.qrColor || '#000000',
-                                            borderRadius: formData.qrShape === 'circle' ? '50%' :
-                                                formData.qrShape === 'rounded' ? '8px' : '0'
-                                        }}
-                                    >
-                                        {formData.qrLogo !== 'none' && (
-                                            <div className="text-white text-2xl">
-                                                {formData.qrLogo === 'logo1' ? '🆔' :
-                                                    formData.qrLogo === 'logo2' ? '👤' : '📋'}
-                                            </div>
-                                        )}
-                                    </div>
+                            <div className="flex flex-col items-center">
+                                <p className="text-sm text-gray-500 mb-3">QR Code will be generated automatically</p>
+                                <div className="w-32 h-32 bg-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
+                                    <QrCode className="w-16 h-16 text-gray-400" />
                                 </div>
                             </div>
                         </div>

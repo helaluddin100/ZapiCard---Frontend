@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import DashboardLayout from '@/components/DashboardLayout'
 import { motion } from 'framer-motion'
+import { cardAPI } from '@/lib/api'
 import {
     Plus,
     QrCode,
@@ -15,53 +16,75 @@ import {
     List,
     Search,
     Filter,
-    CreditCard
+    CreditCard,
+    Loader2
 } from 'lucide-react'
 
 export default function MyCardsPage() {
     const [viewMode, setViewMode] = useState('grid')
     const [searchQuery, setSearchQuery] = useState('')
+    const [cards, setCards] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
 
-    // Mock data for cards
-    const cards = [
-        {
-            id: 1,
-            name: 'John Doe',
-            title: 'Marketing Director',
-            company: 'TechCorp',
-            qrCode: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://zapicard.com/card/1',
-            nfcEnabled: true,
-            views: 245,
-            createdAt: '2024-01-15',
-            image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop'
-        },
-        {
-            id: 2,
-            name: 'Sarah Johnson',
-            title: 'Product Manager',
-            company: 'StartupXYZ',
-            qrCode: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://zapicard.com/card/2',
-            nfcEnabled: false,
-            views: 189,
-            createdAt: '2024-01-20',
-            image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop'
-        },
-        {
-            id: 3,
-            name: 'Mike Chen',
-            title: 'Sales Executive',
-            company: 'Global Sales',
-            qrCode: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://zapicard.com/card/3',
-            nfcEnabled: true,
-            views: 312,
-            createdAt: '2024-02-01',
-            image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop'
+    useEffect(() => {
+        fetchCards()
+    }, [])
+
+    const fetchCards = async () => {
+        try {
+            setLoading(true)
+            setError(null)
+            const response = await cardAPI.getCards()
+            if (response.status === 'success' && response.data) {
+                setCards(response.data)
+            } else {
+                setCards([])
+            }
+        } catch (err) {
+            console.error('Error fetching cards:', err)
+            setError(err.message || 'Failed to fetch cards')
+            setCards([])
+        } finally {
+            setLoading(false)
         }
-    ]
+    }
+
+    const handleDelete = async (cardId) => {
+        if (!confirm('Are you sure you want to delete this card?')) {
+            return
+        }
+
+        try {
+            await cardAPI.deleteCard(cardId)
+            // Remove the card from the list
+            setCards(cards.filter(card => card.id !== cardId))
+        } catch (err) {
+            console.error('Error deleting card:', err)
+            alert('Failed to delete card. Please try again.')
+        }
+    }
+
+    const getInitials = (name) => {
+        if (!name) return 'JD'
+        return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+    }
+
+    const getCardBackground = (card) => {
+        if (card.use_gradient && card.gradient_colors) {
+            return {
+                background: `linear-gradient(135deg, ${card.gradient_colors.from} 0%, ${card.gradient_colors.to} 100%)`
+            }
+        }
+        return {
+            backgroundColor: card.primary_color || '#3b82f6'
+        }
+    }
 
     const filteredCards = cards.filter(card =>
-        card.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        card.company.toLowerCase().includes(searchQuery.toLowerCase())
+        card.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        card.company?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        card.title?.toLowerCase().includes(searchQuery.toLowerCase())
     )
 
     return (
@@ -113,20 +136,52 @@ export default function MyCardsPage() {
                     </div>
                 </div>
 
+                {/* Loading State */}
+                {loading && (
+                    <div className="text-center py-20">
+                        <Loader2 className="w-12 h-12 mx-auto text-blue-600 animate-spin mb-4" />
+                        <p className="text-gray-600">Loading your cards...</p>
+                    </div>
+                )}
+
+                {/* Error State */}
+                {error && !loading && (
+                    <div className="text-center py-20">
+                        <div className="text-red-400 mb-4">
+                            <CreditCard className="w-16 h-16 mx-auto" />
+                        </div>
+                        <h3 className="text-xl font-semibold text-gray-900 mb-2">Error loading cards</h3>
+                        <p className="text-gray-600 mb-6">{error}</p>
+                        <button onClick={fetchCards} className="btn-primary inline-flex items-center">
+                            Try Again
+                        </button>
+                    </div>
+                )}
+
                 {/* Cards Grid/List */}
-                {filteredCards.length === 0 ? (
+                {!loading && !error && filteredCards.length === 0 && (
                     <div className="text-center py-20">
                         <div className="text-gray-400 mb-4">
                             <CreditCard className="w-16 h-16 mx-auto" />
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">No cards found</h3>
-                        <p className="text-gray-600 mb-6">Create your first smart visiting card to get started</p>
-                        <Link href="/dashboard/create" className="btn-primary inline-flex items-center">
-                            <Plus className="w-5 h-5 mr-2" />
-                            Create Your First Card
-                        </Link>
+                        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                            {cards.length === 0 ? 'No cards found' : 'No cards match your search'}
+                        </h3>
+                        <p className="text-gray-600 mb-6">
+                            {cards.length === 0 
+                                ? 'Create your first smart visiting card to get started'
+                                : 'Try adjusting your search query'}
+                        </p>
+                        {cards.length === 0 && (
+                            <Link href="/dashboard/create" className="btn-primary inline-flex items-center">
+                                <Plus className="w-5 h-5 mr-2" />
+                                Create Your First Card
+                            </Link>
+                        )}
                     </div>
-                ) : viewMode === 'grid' ? (
+                )}
+
+                {!loading && !error && filteredCards.length > 0 && viewMode === 'grid' ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {filteredCards.map((card, idx) => (
                             <motion.div
@@ -136,45 +191,53 @@ export default function MyCardsPage() {
                                 transition={{ delay: idx * 0.1 }}
                                 className="bg-white rounded-xl shadow-lg overflow-hidden card-hover"
                             >
-                                <div className="relative h-48 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500">
-                                    <img
-                                        src={card.image}
-                                        alt={card.name}
-                                        className="w-full h-full object-cover opacity-80"
-                                    />
-                                    <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="relative h-48" style={getCardBackground(card)}>
+                                    {card.profile_photo ? (
                                         <img
-                                            src={card.qrCode}
-                                            alt="QR Code"
-                                            className="w-32 h-32 bg-white p-2 rounded-lg shadow-lg"
+                                            src={card.profile_photo}
+                                            alt={card.name}
+                                            className="w-full h-full object-cover opacity-80"
                                         />
-                                    </div>
-                                    {card.nfcEnabled && (
-                                        <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center">
-                                            <Radio className="w-3 h-3 mr-1" />
-                                            NFC
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center">
+                                            <div className="w-24 h-24 rounded-full bg-white/20 flex items-center justify-center">
+                                                <span className="text-4xl font-bold text-white">
+                                                    {getInitials(card.name)}
+                                                </span>
+                                            </div>
                                         </div>
                                     )}
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        {card.qr_code && (
+                                            <img
+                                                src={card.qr_code}
+                                                alt="QR Code"
+                                                className="w-32 h-32 bg-white p-2 rounded-lg shadow-lg"
+                                            />
+                                        )}
+                                    </div>
                                 </div>
                                 <div className="p-6">
-                                    <h3 className="text-xl font-bold text-gray-900 mb-1">{card.name}</h3>
-                                    <p className="text-gray-600 text-sm mb-1">{card.title}</p>
-                                    <p className="text-gray-500 text-sm mb-4">{card.company}</p>
+                                    <h3 className="text-xl font-bold text-gray-900 mb-1">{card.name || 'Untitled Card'}</h3>
+                                    {card.title && <p className="text-gray-600 text-sm mb-1">{card.title}</p>}
+                                    {card.company && <p className="text-gray-500 text-sm mb-4">{card.company}</p>}
                                     <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
                                         <span className="flex items-center">
                                             <Eye className="w-4 h-4 mr-1" />
-                                            {card.views} views
+                                            {card.views || 0} views
                                         </span>
-                                        <span>{new Date(card.createdAt).toLocaleDateString()}</span>
+                                        <span>{card.created_at ? new Date(card.created_at).toLocaleDateString() : ''}</span>
                                     </div>
                                     <div className="flex gap-2">
-                                        <Link
-                                            href={`/card/${card.id}`}
-                                            className="flex-1 btn-outline text-center py-2 text-sm"
-                                        >
-                                            <Eye className="w-4 h-4 inline mr-1" />
-                                            View
-                                        </Link>
+                                        {card.slug && (
+                                            <Link
+                                                href={`/card/${card.slug}`}
+                                                className="flex-1 btn-outline text-center py-2 text-sm"
+                                            >
+                                                <Eye className="w-4 h-4 inline mr-1" />
+                                                View
+                                            </Link>
+                                        )}
                                         <Link
                                             href={`/dashboard/edit/${card.id}`}
                                             className="flex-1 btn-outline text-center py-2 text-sm"
@@ -182,7 +245,10 @@ export default function MyCardsPage() {
                                             <Edit className="w-4 h-4 inline mr-1" />
                                             Edit
                                         </Link>
-                                        <button className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition">
+                                        <button 
+                                            onClick={() => handleDelete(card.id)}
+                                            className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition"
+                                        >
                                             <Trash2 className="w-4 h-4" />
                                         </button>
                                     </div>
@@ -201,38 +267,49 @@ export default function MyCardsPage() {
                                 className="border-b border-gray-200 last:border-0 p-6 hover:bg-gray-50 transition"
                             >
                                 <div className="flex items-center gap-6">
-                                    <img
-                                        src={card.image}
-                                        alt={card.name}
-                                        className="w-16 h-16 rounded-full object-cover"
-                                    />
+                                    {card.profile_photo ? (
+                                        <img
+                                            src={card.profile_photo}
+                                            alt={card.name}
+                                            className="w-16 h-16 rounded-full object-cover"
+                                        />
+                                    ) : (
+                                        <div 
+                                            className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-lg"
+                                            style={getCardBackground(card)}
+                                        >
+                                            {getInitials(card.name)}
+                                        </div>
+                                    )}
                                     <div className="flex-1">
                                         <div className="flex items-center gap-3 mb-1">
-                                            <h3 className="text-lg font-semibold text-gray-900">{card.name}</h3>
-                                            {card.nfcEnabled && (
-                                                <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-semibold flex items-center">
-                                                    <Radio className="w-3 h-3 mr-1" />
-                                                    NFC
-                                                </span>
-                                            )}
+                                            <h3 className="text-lg font-semibold text-gray-900">{card.name || 'Untitled Card'}</h3>
                                         </div>
-                                        <p className="text-gray-600 text-sm">{card.title} at {card.company}</p>
+                                        <p className="text-gray-600 text-sm">
+                                            {card.title && card.company 
+                                                ? `${card.title} at ${card.company}`
+                                                : card.title || card.company || 'No details'}
+                                        </p>
                                         <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
                                             <span className="flex items-center">
                                                 <Eye className="w-4 h-4 mr-1" />
-                                                {card.views} views
+                                                {card.views || 0} views
                                             </span>
-                                            <span>Created {new Date(card.createdAt).toLocaleDateString()}</span>
+                                            {card.created_at && (
+                                                <span>Created {new Date(card.created_at).toLocaleDateString()}</span>
+                                            )}
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <Link
-                                            href={`/card/${card.id}`}
-                                            className="btn-outline text-sm py-2 px-4"
-                                        >
-                                            <Eye className="w-4 h-4 inline mr-1" />
-                                            View
-                                        </Link>
+                                        {card.slug && (
+                                            <Link
+                                                href={`/card/${card.slug}`}
+                                                className="btn-outline text-sm py-2 px-4"
+                                            >
+                                                <Eye className="w-4 h-4 inline mr-1" />
+                                                View
+                                            </Link>
+                                        )}
                                         <Link
                                             href={`/dashboard/edit/${card.id}`}
                                             className="btn-outline text-sm py-2 px-4"
@@ -240,7 +317,10 @@ export default function MyCardsPage() {
                                             <Edit className="w-4 h-4 inline mr-1" />
                                             Edit
                                         </Link>
-                                        <button className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition">
+                                        <button 
+                                            onClick={() => handleDelete(card.id)}
+                                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition"
+                                        >
                                             <Trash2 className="w-5 h-5" />
                                         </button>
                                     </div>

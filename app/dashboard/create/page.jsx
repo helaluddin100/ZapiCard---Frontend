@@ -10,8 +10,7 @@ import {
     User,
     Link as LinkIcon,
     Upload,
-    Palette,
-    QrCode
+    Palette
 } from 'lucide-react'
 
 // Import Components
@@ -19,7 +18,6 @@ import PersonalInfo from './components/PersonalInfo'
 import SocialLinks from './components/SocialLinks'
 import PhotoLogo from './components/PhotoLogo'
 import DesignCustomize from './components/DesignCustomize'
-import QRCustomization from './components/QRCustomization'
 import Preview from './components/Preview'
 
 export default function CreateCardPage() {
@@ -46,39 +44,30 @@ export default function CreateCardPage() {
         gradientColors: {
             from: '#3b82f6',
             to: '#8b5cf6'
-        },
-        // Step 5: QR Customization
-        qrFrame: 'none',
-        qrLogo: 'none',
-        qrShape: 'square',
-        qrCorner: 'square',
-        qrColor: '#000000',
-        qrBackgroundColor: '#ffffff',
-        qrCustomLogo: null,
-        qrCode: null
+        }
     })
 
     const steps = [
         { number: 1, title: 'Personal Info', icon: User },
         { number: 2, title: 'Social Links', icon: LinkIcon },
         { number: 3, title: 'Photo & Logo', icon: Upload },
-        { number: 4, title: 'Design', icon: Palette },
-        { number: 5, title: 'QR Code', icon: QrCode }
+        { number: 4, title: 'Design', icon: Palette }
     ]
 
     const handleNext = () => {
-        if (step < 5) setStep(step + 1)
+        if (step < 4) setStep(step + 1)
     }
 
     const handleBack = () => {
         if (step > 1) setStep(step - 1)
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
-        // Generate vCard data for QR code
-        const vcard = `BEGIN:VCARD
+        try {
+            // Generate vCard data for QR code
+            const vcard = `BEGIN:VCARD
 VERSION:3.0
 FN:${formData.name || 'Name'}
 ORG:${formData.company || 'Company'}
@@ -90,19 +79,45 @@ ADR:;;${formData.address || ''};;;;
 NOTE:${formData.bio || ''}
 END:VCARD`
 
-        // Generate QR code URL
-        const cardUrl = typeof window !== 'undefined'
-            ? `${window.location.origin}/card/${Date.now()}`
-            : 'https://zapicard.com/card/1'
+            // QR code will be generated on backend with actual card URL
 
-        const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(cardUrl)}&color=${(formData.qrColor || '#000000').replace('#', '')}&bgcolor=${(formData.qrBackgroundColor || '#ffffff').replace('#', '')}`
+            // Prepare card data for backend
+            const cardData = {
+                name: formData.name,
+                title: formData.title,
+                company: formData.company,
+                email: formData.email,
+                phone: formData.phone,
+                website: formData.website,
+                address: formData.address,
+                bio: formData.bio,
+                social_links: formData.socialLinks || {},
+                profile_photo: formData.profilePhoto,
+                logo: formData.logo,
+                primary_color: formData.primaryColor,
+                button_color: formData.buttonColor,
+                use_gradient: formData.useGradient || false,
+                gradient_colors: formData.gradientColors || null,
+                // QR customization will use backend defaults
+                qr_data: vcard,
+            }
 
-        setFormData({ ...formData, qrCode: qrCodeUrl })
+            // Import cardAPI
+            const { cardAPI } = await import('@/lib/api')
 
-        // Mock save - no backend
-        console.log('Card saved:', { ...formData, qrCode: qrCodeUrl })
-        alert('Card created successfully!')
-        window.location.href = '/dashboard/my-cards'
+            // Create card via API
+            const response = await cardAPI.createCard(cardData)
+
+            if (response.status === 'success') {
+                alert('Card created successfully!')
+                window.location.href = '/dashboard/my-cards'
+            } else {
+                throw new Error(response.message || 'Failed to create card')
+            }
+        } catch (error) {
+            console.error('Error creating card:', error)
+            alert(error.message || 'Failed to create card. Please try again.')
+        }
     }
 
     const handleFileUpload = (field, file) => {
@@ -201,16 +216,6 @@ END:VCARD`
                                 {/* Step 4: Design & Customize */}
                                 {step === 4 && (
                                     <DesignCustomize
-                                        formData={formData}
-                                        setFormData={setFormData}
-                                        onNext={handleNext}
-                                        onBack={handleBack}
-                                    />
-                                )}
-
-                                {/* Step 5: QR Customization */}
-                                {step === 5 && (
-                                    <QRCustomization
                                         formData={formData}
                                         setFormData={setFormData}
                                         onNext={handleSubmit}
