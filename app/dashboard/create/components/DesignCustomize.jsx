@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowLeft, ArrowRight, Palette, Ruler, ChevronUp, HelpCircle } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Palette, Ruler, ChevronUp, HelpCircle, Loader2 } from 'lucide-react'
 
 const colorPresets = [
     { primary: '#455a64', button: '#e91e63' },
@@ -17,7 +17,7 @@ const colorPresets = [
     { primary: '#1565c0', button: '#e91e63' },
 ]
 
-export default function DesignCustomize({ formData, setFormData, onNext, onBack }) {
+export default function DesignCustomize({ formData, setFormData, onNext, onBack, buttonText = 'Next Step', disabled = false }) {
     const [isExpanded, setIsExpanded] = useState(true)
 
     const handlePresetSelect = (preset) => {
@@ -256,9 +256,10 @@ export default function DesignCustomize({ formData, setFormData, onNext, onBack 
                     <ArrowLeft className="w-5 h-5 mr-2" />
                     Back
                 </button>
-                <button type="button" onClick={onNext} className="btn-primary flex items-center">
-                    Next Step
-                    <ArrowRight className="w-5 h-5 ml-2" />
+                <button type="button" onClick={onNext} disabled={disabled} className="btn-primary flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
+                    {disabled && <Loader2 className="w-5 h-5 mr-2 animate-spin" />}
+                    {buttonText}
+                    {!disabled && <ArrowRight className="w-5 h-5 ml-2" />}
                 </button>
             </div>
         </motion.div>

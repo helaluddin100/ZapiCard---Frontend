@@ -1,7 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { useParams } from 'next/navigation'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { cardAPI } from '@/lib/api'
 import {
     Mail,
     Phone,
@@ -17,66 +20,167 @@ import {
     Github,
     QrCode,
     Radio,
-    Share2
+    Share2,
+    Loader2,
+    AlertCircle,
+    Link as LinkIcon
 } from 'lucide-react'
 
-export default function PublicCardPage({ params }) {
+export default function PublicCardPage() {
+    const params = useParams()
+    const slug = params?.id
     const [showQR, setShowQR] = useState(false)
+    const [cardData, setCardData] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
 
-    // Mock card data - in real app, fetch based on params.id
-    const cardData = {
-        id: params?.id || '1',
-        name: 'John Doe',
-        title: 'Marketing Director',
-        company: 'TechCorp Inc',
-        email: 'john.doe@techcorp.com',
-        phone: '+1 (555) 123-4567',
-        website: 'https://techcorp.com',
-        address: '123 Innovation Drive, San Francisco, CA 94105',
-        bio: 'Passionate marketing professional with 10+ years of experience in digital marketing and brand strategy. Always looking to connect with like-minded professionals.',
-        profilePhoto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
-        logo: null,
-        socialLinks: {
-            facebook: 'https://facebook.com/johndoe',
-            twitter: 'https://twitter.com/johndoe',
-            instagram: 'https://instagram.com/johndoe',
-            linkedin: 'https://linkedin.com/in/johndoe',
-            youtube: 'https://youtube.com/@johndoe',
-            github: 'https://github.com/johndoe'
-        },
-        appointmentEnabled: true,
-        appointmentLink: 'https://calendly.com/johndoe',
-        qrCode: 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://zapicard.com/card/1',
-        nfcEnabled: true
+    const loadCardData = useCallback(async () => {
+        if (!slug) return
+
+        try {
+            setLoading(true)
+            setError(null)
+            const response = await cardAPI.getCardBySlug(slug)
+
+            if (response.status === 'success' && response.data) {
+                setCardData(response.data)
+            } else {
+                setError('Card not found')
+            }
+        } catch (err) {
+            console.error('Error loading card:', err)
+            setError(err.message || 'Failed to load card')
+        } finally {
+            setLoading(false)
+        }
+    }, [slug])
+
+    useEffect(() => {
+        loadCardData()
+    }, [loadCardData])
+
+    const getInitials = (name) => {
+        if (!name) return 'JD'
+        return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+    }
+
+    const getBackgroundStyle = () => {
+        if (!cardData) return { background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)' }
+
+        if (cardData.use_gradient && cardData.gradient_colors) {
+            return {
+                background: `linear-gradient(135deg, ${cardData.gradient_colors.from || cardData.primary_color || '#3b82f6'} 0%, ${cardData.gradient_colors.to || cardData.button_color || '#8b5cf6'} 100%)`
+            }
+        }
+        return {
+            backgroundColor: cardData.primary_color || '#3b82f6'
+        }
+    }
+
+    const getSocialIcon = (key) => {
+        const icons = {
+            facebook: Facebook,
+            twitter: Twitter,
+            instagram: Instagram,
+            linkedin: Linkedin,
+            youtube: Youtube,
+            github: Github,
+            whatsapp: LinkIcon,
+            tiktok: LinkIcon,
+            snapchat: LinkIcon,
+            pinterest: LinkIcon,
+            telegram: LinkIcon,
+            discord: LinkIcon,
+            behance: LinkIcon,
+            dribbble: LinkIcon,
+            medium: LinkIcon,
+            reddit: LinkIcon
+        }
+        return icons[key] || LinkIcon
+    }
+
+    const getSocialColor = (key) => {
+        const colors = {
+            facebook: 'bg-blue-700 hover:bg-blue-800',
+            twitter: 'bg-blue-400 hover:bg-blue-500',
+            instagram: 'bg-gradient-to-br from-purple-600 to-pink-600 hover:opacity-90',
+            linkedin: 'bg-blue-600 hover:bg-blue-700',
+            youtube: 'bg-red-600 hover:bg-red-700',
+            github: 'bg-gray-800 hover:bg-gray-900',
+            whatsapp: 'bg-green-500 hover:bg-green-600',
+            tiktok: 'bg-black hover:bg-gray-900',
+            snapchat: 'bg-yellow-400 hover:bg-yellow-500',
+            pinterest: 'bg-red-700 hover:bg-red-800',
+            telegram: 'bg-blue-500 hover:bg-blue-600',
+            discord: 'bg-indigo-600 hover:bg-indigo-700',
+            behance: 'bg-blue-500 hover:bg-blue-600',
+            dribbble: 'bg-pink-500 hover:bg-pink-600',
+            medium: 'bg-gray-800 hover:bg-gray-900',
+            reddit: 'bg-orange-500 hover:bg-orange-600'
+        }
+        return colors[key] || 'bg-gray-600 hover:bg-gray-700'
+    }
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center">
+                <div className="text-center">
+                    <Loader2 className="w-12 h-12 mx-auto text-blue-600 animate-spin mb-4" />
+                    <p className="text-gray-600">Loading card...</p>
+                </div>
+            </div>
+        )
+    }
+
+    if (error || !cardData) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center py-12 px-4">
+                <div className="text-center max-w-md">
+                    <AlertCircle className="w-16 h-16 mx-auto text-red-400 mb-4" />
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Card Not Found</h3>
+                    <p className="text-gray-600 mb-6">{error || 'The card you are looking for does not exist or is not active.'}</p>
+                    <a
+                        href="/"
+                        className="btn-primary inline-flex items-center"
+                    >
+                        ← Back to Home
+                    </a>
+                </div>
+            </div>
+        )
     }
 
     const handleDownloadVCard = () => {
-        // Mock vCard download
+        if (!cardData) return
+
         const vcard = `BEGIN:VCARD
 VERSION:3.0
-FN:${cardData.name}
-ORG:${cardData.company}
-TITLE:${cardData.title}
-EMAIL:${cardData.email}
-TEL:${cardData.phone}
-URL:${cardData.website}
-ADR:;;${cardData.address};;;;
+FN:${cardData.name || ''}
+ORG:${cardData.company || ''}
+TITLE:${cardData.title || ''}
+EMAIL:${cardData.email || ''}
+TEL:${cardData.phone || ''}
+URL:${cardData.website || ''}
+ADR:;;${cardData.address || ''};;;;
+NOTE:${cardData.bio || ''}
 END:VCARD`
 
         const blob = new Blob([vcard], { type: 'text/vcard' })
         const url = URL.createObjectURL(blob)
         const link = document.createElement('a')
         link.href = url
-        link.download = `${cardData.name.replace(' ', '_')}.vcf`
+        link.download = `${(cardData.name || 'card').replace(/\s+/g, '_')}.vcf`
         link.click()
         URL.revokeObjectURL(url)
     }
 
     const handleShare = async () => {
+        if (!cardData) return
+
         if (navigator.share) {
             try {
                 await navigator.share({
-                    title: `${cardData.name} - ${cardData.title}`,
+                    title: `${cardData.name} - ${cardData.title || ''}`,
                     text: `Check out ${cardData.name}'s smart visiting card`,
                     url: window.location.href
                 })
@@ -100,7 +204,7 @@ END:VCARD`
                     className="glass-effect rounded-3xl shadow-2xl overflow-hidden"
                 >
                     {/* Header with gradient background */}
-                    <div className="relative bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-8 sm:p-12">
+                    <div className="relative p-8 sm:p-12" style={getBackgroundStyle()}>
                         <div className="absolute top-4 right-4">
                             <button
                                 onClick={handleShare}
@@ -117,22 +221,29 @@ END:VCARD`
                                 transition={{ delay: 0.2 }}
                                 className="mb-6"
                             >
-                                {cardData.profilePhoto ? (
-                                    <img
-                                        src={cardData.profilePhoto}
-                                        alt={cardData.name}
-                                        className="w-32 h-32 sm:w-40 sm:h-40 rounded-full mx-auto border-4 border-white shadow-2xl object-cover"
-                                    />
+                                {cardData.profile_photo ? (
+                                    <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full mx-auto border-4 border-white shadow-2xl overflow-hidden">
+                                        <Image
+                                            src={cardData.profile_photo}
+                                            alt={cardData.name}
+                                            width={160}
+                                            height={160}
+                                            className="w-full h-full object-cover"
+                                            unoptimized={cardData.profile_photo.startsWith('data:')}
+                                        />
+                                    </div>
                                 ) : (
                                     <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full mx-auto border-4 border-white shadow-2xl bg-white/20 flex items-center justify-center">
-                                        <span className="text-4xl font-bold text-white">JD</span>
+                                        <span className="text-4xl font-bold text-white">
+                                            {getInitials(cardData.name)}
+                                        </span>
                                     </div>
                                 )}
                             </motion.div>
 
-                            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">{cardData.name}</h1>
-                            <p className="text-xl text-white/90 mb-1">{cardData.title}</p>
-                            <p className="text-lg text-white/80">{cardData.company}</p>
+                            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">{cardData.name || 'Name'}</h1>
+                            {cardData.title && <p className="text-xl text-white/90 mb-1">{cardData.title}</p>}
+                            {cardData.company && <p className="text-lg text-white/80">{cardData.company}</p>}
                         </div>
                     </div>
 
@@ -188,71 +299,31 @@ END:VCARD`
                         )}
 
                         {/* Social Links */}
-                        <div className="mb-8">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-4">Connect</h3>
-                            <div className="flex flex-wrap gap-3">
-                                {cardData.socialLinks.linkedin && (
-                                    <a
-                                        href={cardData.socialLinks.linkedin}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition card-hover"
-                                    >
-                                        <Linkedin className="w-6 h-6" />
-                                    </a>
-                                )}
-                                {cardData.socialLinks.twitter && (
-                                    <a
-                                        href={cardData.socialLinks.twitter}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="w-12 h-12 rounded-full bg-blue-400 text-white flex items-center justify-center hover:bg-blue-500 transition card-hover"
-                                    >
-                                        <Twitter className="w-6 h-6" />
-                                    </a>
-                                )}
-                                {cardData.socialLinks.facebook && (
-                                    <a
-                                        href={cardData.socialLinks.facebook}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="w-12 h-12 rounded-full bg-blue-700 text-white flex items-center justify-center hover:bg-blue-800 transition card-hover"
-                                    >
-                                        <Facebook className="w-6 h-6" />
-                                    </a>
-                                )}
-                                {cardData.socialLinks.instagram && (
-                                    <a
-                                        href={cardData.socialLinks.instagram}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 text-white flex items-center justify-center hover:opacity-90 transition card-hover"
-                                    >
-                                        <Instagram className="w-6 h-6" />
-                                    </a>
-                                )}
-                                {cardData.socialLinks.youtube && (
-                                    <a
-                                        href={cardData.socialLinks.youtube}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center hover:bg-red-700 transition card-hover"
-                                    >
-                                        <Youtube className="w-6 h-6" />
-                                    </a>
-                                )}
-                                {cardData.socialLinks.github && (
-                                    <a
-                                        href={cardData.socialLinks.github}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="w-12 h-12 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-900 transition card-hover"
-                                    >
-                                        <Github className="w-6 h-6" />
-                                    </a>
-                                )}
+                        {cardData.social_links && Object.keys(cardData.social_links).length > 0 && (
+                            <div className="mb-8">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">Connect</h3>
+                                <div className="flex flex-wrap gap-3">
+                                    {Object.entries(cardData.social_links).map(([key, url]) => {
+                                        if (!url) return null
+                                        const Icon = getSocialIcon(key)
+                                        const colorClass = getSocialColor(key)
+
+                                        return (
+                                            <a
+                                                key={key}
+                                                href={url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className={`w-12 h-12 rounded-full ${colorClass} text-white flex items-center justify-center transition card-hover`}
+                                                title={key.charAt(0).toUpperCase() + key.slice(1)}
+                                            >
+                                                <Icon className="w-6 h-6" />
+                                            </a>
+                                        )
+                                    })}
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         {/* Action Buttons */}
                         <div className="grid sm:grid-cols-2 gap-4 mb-8">
@@ -263,24 +334,12 @@ END:VCARD`
                                 <Download className="w-5 h-5 mr-2" />
                                 Save Contact
                             </button>
-
-                            {cardData.appointmentEnabled && (
-                                <a
-                                    href={cardData.appointmentLink}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="btn-secondary flex items-center justify-center"
-                                >
-                                    <Calendar className="w-5 h-5 mr-2" />
-                                    Book Appointment
-                                </a>
-                            )}
                         </div>
 
                         {/* QR Code & NFC */}
                         <div className="border-t border-gray-200 pt-6">
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                                {cardData.qrCode && (
+                                {cardData.qr_code && (
                                     <div className="text-center">
                                         <button
                                             onClick={() => setShowQR(!showQR)}
@@ -294,23 +353,16 @@ END:VCARD`
                                                 animate={{ opacity: 1, scale: 1 }}
                                                 className="bg-white p-4 rounded-lg shadow-lg"
                                             >
-                                                <img
-                                                    src={cardData.qrCode}
+                                                <Image
+                                                    src={cardData.qr_code}
                                                     alt="QR Code"
+                                                    width={192}
+                                                    height={192}
                                                     className="w-48 h-48"
+                                                    unoptimized
                                                 />
                                             </motion.div>
                                         )}
-                                    </div>
-                                )}
-
-                                {cardData.nfcEnabled && (
-                                    <div className="text-center">
-                                        <div className="w-16 h-16 mx-auto mb-2 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center">
-                                            <Radio className="w-8 h-8 text-white" />
-                                        </div>
-                                        <p className="text-sm text-gray-600">NFC Enabled</p>
-                                        <p className="text-xs text-gray-500">Tap to share</p>
                                     </div>
                                 )}
                             </div>
