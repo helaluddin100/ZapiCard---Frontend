@@ -2,7 +2,9 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { notificationAPI } from '@/lib/api'
 import {
   LayoutDashboard,
   CreditCard,
@@ -13,7 +15,8 @@ import {
   User,
   ShoppingCart,
   Calendar,
-  List
+  List,
+  Bell
 } from 'lucide-react'
 import { useAuth } from '@/lib/auth'
 
@@ -22,6 +25,10 @@ export default function DashboardLayout({ children }) {
   const pathname = usePathname()
   const { user, loading, logout } = useAuth()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [notifications, setNotifications] = useState([])
+  const [unreadCount, setUnreadCount] = useState(0)
+  const [notificationOpen, setNotificationOpen] = useState(false)
+  const [loadingNotifications, setLoadingNotifications] = useState(false)
 
   useEffect(() => {
     // Redirect to login if not authenticated
@@ -29,6 +36,84 @@ export default function DashboardLayout({ children }) {
       router.push('/login')
     }
   }, [user, loading, router])
+
+  const loadNotifications = useCallback(async () => {
+    if (!user) return
+    
+    try {
+      setLoadingNotifications(true)
+      const [notificationsRes, countRes] = await Promise.all([
+        notificationAPI.getNotifications(),
+        notificationAPI.getUnreadCount()
+      ])
+      
+      if (notificationsRes.status === 'success') {
+        setNotifications(notificationsRes.data || [])
+      } else {
+        console.error('Notification response error:', notificationsRes)
+      }
+      
+      if (countRes.status === 'success') {
+        setUnreadCount(countRes.data?.count || 0)
+      } else {
+        console.error('Unread count response error:', countRes)
+      }
+    } catch (err) {
+      console.error('Error loading notifications:', err)
+      // Set empty arrays on error
+      setNotifications([])
+      setUnreadCount(0)
+    } finally {
+      setLoadingNotifications(false)
+    }
+  }, [user])
+
+  useEffect(() => {
+    if (user) {
+      loadNotifications()
+      // Poll for new notifications every 30 seconds
+      const interval = setInterval(loadNotifications, 30000)
+      return () => clearInterval(interval)
+    }
+  }, [user, loadNotifications])
+
+  const handleMarkAsRead = async (notificationId) => {
+    try {
+      await notificationAPI.markAsRead(notificationId)
+      setNotifications(prev => 
+        prev.map(n => n.id === notificationId ? { ...n, read_at: new Date().toISOString() } : n)
+      )
+      setUnreadCount(prev => Math.max(0, prev - 1))
+    } catch (err) {
+      console.error('Error marking notification as read:', err)
+    }
+  }
+
+  const handleMarkAllAsRead = async () => {
+    try {
+      await notificationAPI.markAllAsRead()
+      setNotifications(prev => prev.map(n => ({ ...n, read_at: new Date().toISOString() })))
+      setUnreadCount(0)
+    } catch (err) {
+      console.error('Error marking all as read:', err)
+    }
+  }
+
+  const formatNotificationTime = (dateString) => {
+    if (!dateString) return ''
+    const date = new Date(dateString)
+    const now = new Date()
+    const diffMs = now - date
+    const diffMins = Math.floor(diffMs / 60000)
+    const diffHours = Math.floor(diffMs / 3600000)
+    const diffDays = Math.floor(diffMs / 86400000)
+
+    if (diffMins < 1) return 'Just now'
+    if (diffMins < 60) return `${diffMins}m ago`
+    if (diffHours < 24) return `${diffHours}h ago`
+    if (diffDays < 7) return `${diffDays}d ago`
+    return date.toLocaleDateString()
+  }
 
   const menuItems = [
     { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -153,6 +238,121 @@ export default function DashboardLayout({ children }) {
               </div>
               {user && (
                 <div className="flex items-center gap-4">
+                  {/* Notification Bell */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setNotificationOpen(!notificationOpen)}
+                      className="relative p-2 rounded-lg hover:bg-gray-50 transition"
+                    >
+                      <Bell className="w-6 h-6 text-gray-600" />
+                      {unreadCount > 0 && (
+                        <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">
+                          {unreadCount > 9 ? '9+' : unreadCount}
+                        </span>
+                      )}
+                    </button>
+
+                    {/* Notification Dropdown */}
+                    <AnimatePresence>
+                      {notificationOpen && (
+                        <>
+                          <div
+                            className="fixed inset-0 z-40"
+                            onClick={() => setNotificationOpen(false)}
+                          />
+                          <motion.div
+                            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                            className="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50 max-h-[500px] overflow-hidden flex flex-col"
+                          >
+                            <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+                              <h3 className="font-semibold text-gray-900">Notifications</h3>
+                              {unreadCount > 0 && (
+                                <button
+                                  onClick={handleMarkAllAsRead}
+                                  className="text-sm text-blue-600 hover:text-blue-700"
+                                >
+                                  Mark all as read
+                                </button>
+                              )}
+                            </div>
+                            <div className="overflow-y-auto flex-1">
+                              {loadingNotifications ? (
+                                <div className="p-8 text-center text-gray-500">Loading...</div>
+                              ) : notifications.length === 0 ? (
+                                <div className="p-8 text-center text-gray-500">
+                                  <Bell className="w-12 h-12 mx-auto mb-2 text-gray-300" />
+                                  <p>No notifications</p>
+                                </div>
+                              ) : (
+                                <div className="divide-y divide-gray-200">
+                                  {notifications.map((notification) => {
+                                    const isUnread = !notification.read_at
+                                    const data = notification.data || {}
+                                    
+                                    return (
+                                      <div
+                                        key={notification.id}
+                                        className={`p-4 hover:bg-gray-50 transition cursor-pointer ${
+                                          isUnread ? 'bg-blue-50/50' : ''
+                                        }`}
+                                        onClick={() => {
+                                          if (isUnread) {
+                                            handleMarkAsRead(notification.id)
+                                          }
+                                          if (data.appointment_id) {
+                                            router.push('/dashboard/appointments/list')
+                                            setNotificationOpen(false)
+                                          }
+                                        }}
+                                      >
+                                        <div className="flex items-start gap-3">
+                                          <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
+                                            isUnread ? 'bg-blue-500' : 'bg-transparent'
+                                          }`} />
+                                          <div className="flex-1 min-w-0">
+                                            <p className="text-sm font-medium text-gray-900">
+                                              {notification.data?.message || 'New notification'}
+                                            </p>
+                                            {data.patient_name && (
+                                              <p className="text-xs text-gray-600 mt-1">
+                                                Patient: {data.patient_name}
+                                              </p>
+                                            )}
+                                            {data.appointment_date && (
+                                              <p className="text-xs text-gray-500 mt-1">
+                                                {new Date(data.appointment_date).toLocaleDateString()} at {data.appointment_time}
+                                              </p>
+                                            )}
+                                            <p className="text-xs text-gray-400 mt-1">
+                                              {formatNotificationTime(notification.created_at)}
+                                            </p>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    )
+                                  })}
+                                </div>
+                              )}
+                            </div>
+                            {notifications.length > 0 && (
+                              <div className="p-3 border-t border-gray-200">
+                                <Link
+                                  href="/dashboard/appointments/list"
+                                  onClick={() => setNotificationOpen(false)}
+                                  className="block text-center text-sm text-blue-600 hover:text-blue-700 font-medium"
+                                >
+                                  View All Appointments
+                                </Link>
+                              </div>
+                            )}
+                          </motion.div>
+                        </>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
                   <div className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-50 transition">
                     {user.image ? (
                       <img
