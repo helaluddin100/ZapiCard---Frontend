@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { cardAPI } from '@/lib/api'
+import AppointmentModal from './components/AppointmentModal'
 import {
     Mail,
     Phone,
@@ -33,6 +34,7 @@ export default function PublicCardPage() {
     const [cardData, setCardData] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [showAppointmentModal, setShowAppointmentModal] = useState(false)
 
     const loadCardData = useCallback(async () => {
         if (!slug) return
@@ -334,6 +336,13 @@ END:VCARD`
                                 <Download className="w-5 h-5 mr-2" />
                                 Save Contact
                             </button>
+                            <button
+                                onClick={() => setShowAppointmentModal(true)}
+                                className="btn-secondary flex items-center justify-center"
+                            >
+                                <Calendar className="w-5 h-5 mr-2" />
+                                Book Appointment
+                            </button>
                         </div>
 
                         {/* QR Code & NFC */}
@@ -380,6 +389,16 @@ END:VCARD`
                     </a>
                 </div>
             </div>
+
+            {/* Appointment Modal */}
+            {cardData && (
+                <AppointmentModal
+                    isOpen={showAppointmentModal}
+                    onClose={() => setShowAppointmentModal(false)}
+                    cardSlug={slug}
+                    cardId={cardData.id}
+                />
+            )}
         </div>
     )
 }
