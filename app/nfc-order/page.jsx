@@ -35,7 +35,7 @@ export default function NFCOrderPage() {
     const [selectedCard, setSelectedCard] = useState(null)
     const [selectedMaterial, setSelectedMaterial] = useState('plastic')
     const [selectedBgColor, setSelectedBgColor] = useState('#FFFFFF')
-    const [selectedTextColor, setSelectedTextColor] = useState('#000000')
+    const [selectedTextColor, setSelectedTextColor] = useState('#ffffff')
     const [useGradient, setUseGradient] = useState(false)
     const [gradientColors, setGradientColors] = useState({ from: '#3B82F6', to: '#8B5CF6' })
     const [quantity, setQuantity] = useState(1)
