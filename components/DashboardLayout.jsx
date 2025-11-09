@@ -16,7 +16,8 @@ import {
   ShoppingCart,
   Calendar,
   List,
-  Bell
+  Bell,
+  Store
 } from 'lucide-react'
 import { useAuth } from '@/lib/auth'
 
@@ -119,6 +120,7 @@ export default function DashboardLayout({ children }) {
     { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/dashboard/my-cards', label: 'My Cards', icon: CreditCard },
     { href: '/dashboard/create', label: 'Create New Card', icon: Plus },
+    { href: '/dashboard/products', label: 'Card Shop', icon: Store },
     { href: '/dashboard/appointments', label: 'Time Slots', icon: Calendar },
     { href: '/dashboard/appointments/list', label: 'Appointments List', icon: List },
     { href: '/nfc-order', label: 'Order NFC Card', icon: ShoppingCart },
