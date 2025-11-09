@@ -2,10 +2,11 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FileText, Package, Sparkles } from 'lucide-react'
+import { FileText, Package, Sparkles, Database } from 'lucide-react'
 import ProductDescription from './ProductDescription'
 import ProductDetails from './ProductDetails'
 import ProductFeatures from './ProductFeatures'
+import ProductFeaturesTable from './ProductFeaturesTable'
 
 const tabs = [
     {
@@ -26,6 +27,12 @@ const tabs = [
         icon: Sparkles,
         component: ProductFeatures,
     },
+    {
+        id: 'featuresTable',
+        label: 'Features Data',
+        icon: Database,
+        component: ProductFeaturesTable,
+    },
 ]
 
 export default function ProductTabs({ product }) {
@@ -41,6 +48,25 @@ export default function ProductTabs({ product }) {
             }
             if (tab.id === 'features') {
                 return product?.features && product.features.length > 0
+            }
+            if (tab.id === 'featuresTable') {
+                // Check if features column has JSON data (could be array or JSON string)
+                const featuresData = product?.features
+                if (!featuresData) return false
+                // If it's already an array or object, show it
+                if (Array.isArray(featuresData) || typeof featuresData === 'object') {
+                    return Object.keys(featuresData).length > 0
+                }
+                // If it's a string, try to parse it
+                if (typeof featuresData === 'string') {
+                    try {
+                        const parsed = JSON.parse(featuresData)
+                        return parsed && (Array.isArray(parsed) ? parsed.length > 0 : Object.keys(parsed).length > 0)
+                    } catch {
+                        return false
+                    }
+                }
+                return false
             }
             return false
         })
@@ -73,6 +99,11 @@ export default function ProductTabs({ product }) {
         }
         if (activeTab === 'features') {
             return { features: product?.features }
+        }
+        if (activeTab === 'featuresTable') {
+            // Get features data from product
+            const featuresData = product?.features
+            return { featuresData }
         }
         return {}
     }
