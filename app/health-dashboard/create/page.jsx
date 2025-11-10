@@ -5,10 +5,12 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import DashboardLayout from '@/components/DashboardLayout'
 import { ArrowLeft, Upload, User, Calendar, Droplet, Users, Phone, AlertTriangle } from 'lucide-react'
-import Script from 'next/script'
+import { useToast } from '@/lib/toast'
+import { healthCardAPI } from '@/lib/api'
 
 export default function CreateHealthCardPage() {
   const router = useRouter()
+  const { success, error: showError } = useToast()
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     person_name: '',
@@ -55,64 +57,62 @@ export default function CreateHealthCardPage() {
     setLoading(true)
 
     try {
-      const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
-      const token = localStorage.getItem('auth_token')
-
       // Clean up form data - convert empty strings to null for optional fields
       const cleanedData = {
-        person_name: formData.person_name,
+        person_name: formData.person_name.trim(),
         person_photo: formData.person_photo || null,
         date_of_birth: formData.date_of_birth || null,
         blood_group: formData.blood_group || null,
         gender: formData.gender || null,
         card_type: formData.card_type,
         expected_delivery_date: formData.expected_delivery_date || null,
-        emergency_contact: formData.emergency_contact || null,
-        allergies: formData.allergies || null,
+        emergency_contact: formData.emergency_contact?.trim() || null,
+        allergies: formData.allergies?.trim() || null,
       }
 
-      const response = await fetch(`${apiBase}/api/health-cards`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(cleanedData)
-      })
+      // Validate required fields
+      if (!cleanedData.person_name) {
+        throw new Error('Person name is required')
+      }
+      if (!cleanedData.card_type) {
+        throw new Error('Card type is required')
+      }
+      if (cleanedData.card_type === 'pregnant' && !cleanedData.expected_delivery_date) {
+        throw new Error('Expected delivery date is required for pregnant card type')
+      }
 
-      const data = await response.json()
+      console.log('Sending data to backend:', cleanedData)
 
-      if (response.ok && data.status === 'success') {
-        // Show success toast
-        if (window.showToast) {
-          window.showToast('Health card created successfully!', 'success')
-        }
-        router.push('/health-dashboard')
+      // Use the API helper function
+      const response = await healthCardAPI.createHealthCard(cleanedData)
+
+      if (response.status === 'success') {
+        success('Health card created successfully!')
+        // Redirect after a short delay to show the success message
+        setTimeout(() => {
+          router.push('/health-dashboard')
+        }, 500)
       } else {
         // Handle validation errors
-        let errorMessage = data.message || 'Failed to create health card'
-        if (data.errors) {
-          const errorMessages = Object.values(data.errors).flat()
+        let errorMessage = response.message || 'Failed to create health card'
+        if (response.errors) {
+          const errorMessages = Object.values(response.errors).flat()
           errorMessage = errorMessages.join(', ') || errorMessage
         }
+        console.error('Backend error:', response)
         throw new Error(errorMessage)
       }
     } catch (error) {
       console.error('Error creating health card:', error)
-      if (window.showToast) {
-        window.showToast(error.message || 'Failed to create health card', 'error')
-      }
+      const errorMessage = error.message || 'Failed to create health card. Please try again.'
+      showError(errorMessage)
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <>
-      <Script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer />
-      
-      <DashboardLayout>
+    <DashboardLayout>
         <div className="max-w-4xl mx-auto space-y-6">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -347,7 +347,6 @@ export default function CreateHealthCardPage() {
           </form>
         </div>
       </DashboardLayout>
-    </>
   )
 }
 
