@@ -2,14 +2,18 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import DashboardLayout from '@/components/DashboardLayout'
-import { Plus, Calendar, FileText, Activity, User, Clock, Stethoscope, Pill, TestTube } from 'lucide-react'
 import Script from 'next/script'
+import DashboardLayout from '@/components/DashboardLayout'
+import { Plus, Calendar, FileText, Activity, User, Clock, Stethoscope, Pill, TestTube, AlertCircle } from 'lucide-react'
+import { healthCardAPI } from '@/lib/api'
+import { useToast } from '@/lib/toast'
 
 export default function HealthDashboardPage() {
+  const { error: showError } = useToast()
   const [healthCards, setHealthCards] = useState([])
   const [selectedCard, setSelectedCard] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [stats, setStats] = useState({
     totalCards: 0,
     totalEntries: 0,
@@ -23,25 +27,23 @@ export default function HealthDashboardPage() {
   const loadHealthCards = async () => {
     try {
       setLoading(true)
-      const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
-      const token = localStorage.getItem('auth_token')
+      setError(null)
       
-      const response = await fetch(`${apiBase}/api/health-cards`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/json'
-        }
-      })
+      const response = await healthCardAPI.getHealthCards()
 
-      if (response.ok) {
-        const data = await response.json()
-        if (data.status === 'success') {
-          setHealthCards(data.data || [])
-          calculateStats(data.data || [])
-        }
+      if (response.status === 'success') {
+        const cards = response.data || []
+        setHealthCards(cards)
+        calculateStats(cards)
+        console.log('Health cards loaded:', cards)
+      } else {
+        throw new Error(response.message || 'Failed to load health cards')
       }
     } catch (error) {
       console.error('Error loading health cards:', error)
+      const errorMessage = error.message || 'Failed to load health cards. Please try again.'
+      setError(errorMessage)
+      showError(errorMessage)
     } finally {
       setLoading(false)
     }
@@ -119,11 +121,9 @@ export default function HealthDashboardPage() {
 
   return (
     <>
-      <Script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer />
-      <Script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" />
-      
+      <Script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" strategy="lazyOnload" />
       <DashboardLayout>
-        <div x-data="{ selectedCardId: null }" className="space-y-6">
+        <div className="space-y-6">
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <h1 className="text-3xl font-bold text-gray-900">My Health Cards</h1>
@@ -182,7 +182,7 @@ export default function HealthDashboardPage() {
                 Select Card to View
               </label>
               <select
-                x-model="selectedCardId"
+                value={selectedCard?.id || ''}
                 onChange={(e) => {
                   const cardId = e.target.value
                   const card = healthCards.find(c => c.id == cardId)
@@ -200,6 +200,25 @@ export default function HealthDashboardPage() {
             </div>
           )}
 
+          {/* Error State */}
+          {error && !loading && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+              <div className="flex items-start gap-4">
+                <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <h3 className="text-red-800 font-semibold mb-1">Error Loading Health Cards</h3>
+                  <p className="text-red-600 text-sm mb-4">{error}</p>
+                  <button
+                    onClick={loadHealthCards}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm font-semibold"
+                  >
+                    Retry
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Loading State */}
           {loading && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -214,7 +233,7 @@ export default function HealthDashboardPage() {
           )}
 
           {/* Health Cards Grid */}
-          {!loading && healthCards.length === 0 && (
+          {!loading && !error && healthCards.length === 0 && (
             <div className="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-200">
               <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-2">No Health Cards Yet</h3>
@@ -229,7 +248,7 @@ export default function HealthDashboardPage() {
             </div>
           )}
 
-          {!loading && healthCards.length > 0 && (
+          {!loading && !error && healthCards.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {healthCards.map(card => (
                 <div
@@ -375,8 +394,6 @@ export default function HealthDashboardPage() {
           )}
         </div>
       </DashboardLayout>
-
-      {/* Chart Script */}
       {selectedCard && selectedCard.entries && selectedCard.entries.length > 0 && (
         <script
           dangerouslySetInnerHTML={{
