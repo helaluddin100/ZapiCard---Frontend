@@ -4,6 +4,7 @@ import ConditionalLayout from '@/components/ConditionalLayout'
 import AuthProviderWrapper from '@/lib/auth-wrapper'
 import { ToastProvider } from '@/lib/toast'
 import Toast from '@/components/Toast'
+import ToastHelper from '@/components/ToastHelper'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const poppins = Poppins({
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
       <body className="font-sans antialiased">
         <AuthProviderWrapper>
           <ToastProvider>
+            <ToastHelper />
             <ConditionalLayout>
               {children}
             </ConditionalLayout>
