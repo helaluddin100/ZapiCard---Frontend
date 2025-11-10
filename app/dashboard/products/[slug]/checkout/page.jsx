@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import DashboardLayout from '@/components/DashboardLayout'
 import { useToast } from '@/lib/toast'
-import { productAPI } from '@/lib/api'
+import { productAPI, orderAPI, paymentAPI } from '@/lib/api'
 import {
     ArrowLeft,
     CreditCard,
@@ -84,19 +84,40 @@ export default function CheckoutPage() {
 
         try {
             setProcessing(true)
-            // TODO: Integrate with Stripe Checkout
-            // This would typically redirect to Stripe Checkout or create a payment session
-            showError('Stripe integration pending. Please use manual payment for now.')
-            // Example:
-            // const response = await fetch('/api/create-stripe-session', {
-            //     method: 'POST',
-            //     body: JSON.stringify({ productId: product.id, quantity: formData.quantity, ...formData })
-            // })
-            // const { url } = await response.json()
-            // window.location.href = url
+            
+            // First create the order
+            const orderData = {
+                product_id: product.id,
+                quantity: formData.quantity,
+                customer_name: formData.name,
+                customer_email: formData.email,
+                customer_phone: formData.phone,
+                shipping_address: formData.address,
+                shipping_city: formData.city,
+                shipping_postal_code: formData.postal_code,
+                payment_method: 'stripe',
+                order_notes: 'Order placed via Stripe',
+            }
+
+            const orderResponse = await orderAPI.createOrder(orderData)
+            
+            if (orderResponse.status === 'success') {
+                // TODO: Integrate with Stripe Checkout
+                // For now, show message
+                showError('Stripe integration pending. Please use manual payment for now.')
+                // Example:
+                // const response = await fetch('/api/create-stripe-session', {
+                //     method: 'POST',
+                //     body: JSON.stringify({ orderId: orderResponse.data.id, ...formData })
+                // })
+                // const { url } = await response.json()
+                // window.location.href = url
+            } else {
+                showError(orderResponse.message || 'Failed to create order')
+            }
         } catch (err) {
             console.error('Stripe checkout error:', err)
-            showError('Failed to process payment')
+            showError(err.message || 'Failed to process payment')
         } finally {
             setProcessing(false)
         }
@@ -107,30 +128,38 @@ export default function CheckoutPage() {
 
         try {
             setProcessing(true)
-            // TODO: Create order with manual payment status
-            // This would typically create an order in the database with status 'pending_payment'
-            // and show payment instructions
             
             const orderData = {
                 product_id: product.id,
                 quantity: formData.quantity,
+                customer_name: formData.name,
+                customer_email: formData.email,
+                customer_phone: formData.phone,
+                shipping_address: formData.address,
+                shipping_city: formData.city,
+                shipping_postal_code: formData.postal_code,
                 payment_method: selectedManualPayment,
-                payment_status: 'pending',
-                ...formData
+                order_notes: `Order placed via ${selectedManualPayment}`,
             }
 
-            // Example API call:
-            // const response = await fetch('/api/orders', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify(orderData)
-            // })
-
-            success('Order placed successfully! Please complete the payment using the instructions below.')
-            setShowManualPayment(true)
+            const response = await orderAPI.createOrder(orderData)
+            
+            if (response.status === 'success') {
+                success('Order placed successfully! Please complete the payment using the instructions below.')
+                setShowManualPayment(true)
+                // Store order ID for later reference
+                localStorage.setItem('last_order_id', response.data.id)
+                localStorage.setItem('last_order_number', response.data.order_number)
+                // Redirect to confirmation page after a delay
+                setTimeout(() => {
+                    router.push(`/dashboard/orders/${response.data.id}/confirmation`)
+                }, 3000)
+            } else {
+                showError(response.message || 'Failed to create order')
+            }
         } catch (err) {
             console.error('Order creation error:', err)
-            showError('Failed to create order')
+            showError(err.message || 'Failed to create order')
         } finally {
             setProcessing(false)
         }
@@ -502,9 +531,17 @@ export default function CheckoutPage() {
                                     <div className="bg-white rounded-lg p-4 mt-4">
                                         <p className="text-sm text-gray-600 mb-2">Amount to send:</p>
                                         <p className="text-2xl font-bold text-gray-900">{currencySymbol}{total.toFixed(2)}</p>
+                                        {localStorage.getItem('last_order_number') && (
+                                            <p className="text-sm text-gray-600 mt-2">
+                                                Order Number: <span className="font-bold">{localStorage.getItem('last_order_number')}</span>
+                                            </p>
+                                        )}
                                     </div>
                                     <p className="text-sm text-gray-600 mt-4">
                                         After sending the payment, please contact us with your transaction ID. We will verify and process your order.
+                                    </p>
+                                    <p className="text-sm text-blue-600 font-medium mt-2">
+                                        You will be redirected to order confirmation page shortly...
                                     </p>
                                 </div>
                             </motion.div>
