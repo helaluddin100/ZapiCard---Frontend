@@ -28,7 +28,7 @@ export default function HealthDashboardPage() {
     try {
       setLoading(true)
       setError(null)
-      
+
       const response = await healthCardAPI.getHealthCards()
 
       if (response.status === 'success') {
@@ -72,20 +72,20 @@ export default function HealthDashboardPage() {
     })
   }
 
-  const formatBanglaDate = (dateString) => {
+  const formatDate = (dateString) => {
     if (!dateString) return ''
     const date = new Date(dateString)
-    const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 
-                   'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর']
+    const months = ['January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December']
     return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
   }
 
   const getCardTypeLabel = (type) => {
     const types = {
-      'pregnant': 'গর্ভবতী',
-      'child': 'শিশু',
-      'adult': 'প্রাপ্তবয়স্ক',
-      'senior': 'বয়স্ক'
+      'pregnant': 'Pregnant',
+      'child': 'Child',
+      'adult': 'Adult',
+      'senior': 'Senior'
     }
     return types[type] || type
   }
@@ -101,7 +101,7 @@ export default function HealthDashboardPage() {
 
   const getCardStats = (card) => {
     if (!card.entries) return { doctors: 0, tests: 0, medicines: 0 }
-    
+
     const doctors = new Set()
     let tests = 0
     let medicines = 0
@@ -168,7 +168,7 @@ export default function HealthDashboardPage() {
                 <div>
                   <p className="text-sm text-gray-600">Last Updated</p>
                   <p className="text-lg font-semibold text-gray-900">
-                    {stats.lastUpdated ? formatBanglaDate(stats.lastUpdated) : 'N/A'}
+                    {stats.lastUpdated ? formatDate(stats.lastUpdated) : 'N/A'}
                   </p>
                 </div>
               </div>
@@ -287,7 +287,7 @@ export default function HealthDashboardPage() {
                       {getCardTypeLabel(card.card_type)}
                     </span>
                     <p className="text-sm text-gray-600">
-                      Created: {formatBanglaDate(card.created_at)}
+                      Created: {formatDate(card.created_at)}
                     </p>
                   </div>
                 </div>
@@ -405,8 +405,8 @@ export default function HealthDashboardPage() {
                     const entries = ${JSON.stringify(selectedCard.entries)};
                     const labels = entries.map(e => {
                       const date = new Date(e.created_at);
-                      const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 
-                                     'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+                      const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                                     'July', 'August', 'September', 'October', 'November', 'December'];
                       return date.getDate() + ' ' + months[date.getMonth()];
                     });
                     const data = entries.map((e, i) => i + 1);
