@@ -70,6 +70,32 @@ export default function PublicHealthCardPage() {
     return types[type] || type
   }
 
+  const calculateAge = (dateOfBirth) => {
+    if (!dateOfBirth) return null
+
+    const birthDate = new Date(dateOfBirth)
+    const today = new Date()
+
+    let years = today.getFullYear() - birthDate.getFullYear()
+    let months = today.getMonth() - birthDate.getMonth()
+    let days = today.getDate() - birthDate.getDate()
+
+    // Adjust for negative days
+    if (days < 0) {
+      months--
+      const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0)
+      days += lastMonth.getDate()
+    }
+
+    // Adjust for negative months
+    if (months < 0) {
+      years--
+      months += 12
+    }
+
+    return { years, months, days }
+  }
+
   const calculatePregnancyWeeks = (expectedDeliveryDate) => {
     if (!expectedDeliveryDate) return null
     const delivery = new Date(expectedDeliveryDate)
@@ -225,15 +251,23 @@ END:VCARD`
                       </div>
                     </div>
                   )}
-                  {cardData.date_of_birth && (
-                    <div className="flex items-center gap-2 p-3 bg-purple-50 rounded-lg border border-purple-100">
-                      <Calendar className="w-5 h-5 text-purple-600" />
-                      <div>
-                        <div className="text-xs text-gray-500">Date of Birth</div>
-                        <div className="font-semibold text-gray-900">{formatDate(cardData.date_of_birth)}</div>
+                  {cardData.date_of_birth && (() => {
+                    const age = calculateAge(cardData.date_of_birth)
+                    return (
+                      <div className="flex items-center gap-2 p-3 bg-purple-50 rounded-lg border border-purple-100">
+                        <Calendar className="w-5 h-5 text-purple-600" />
+                        <div>
+                          <div className="text-xs text-gray-500">Date of Birth</div>
+                          <div className="font-semibold text-gray-900">{formatDate(cardData.date_of_birth)}</div>
+                          {age && (
+                            <div className="text-xs text-purple-600 font-medium mt-1">
+                              Age: {age.years} {age.years === 1 ? 'year' : 'years'}, {age.months} {age.months === 1 ? 'month' : 'months'}, {age.days} {age.days === 1 ? 'day' : 'days'}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )
+                  })()}
                   {cardData.emergency_contact && (
                     <div className="flex items-center gap-2 p-3 bg-green-50 rounded-lg border border-green-100">
                       <Phone className="w-5 h-5 text-green-600" />
