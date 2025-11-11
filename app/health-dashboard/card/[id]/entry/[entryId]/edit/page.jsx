@@ -71,8 +71,12 @@ export default function EditEntryPage() {
           recommendations: entry.recommendations || '',
           medicines: entry.medicines && entry.medicines.length > 0 ? entry.medicines : [{ name: '', dosage: '', duration: '', timing: [] }],
           diet_routine: entry.diet_routine && entry.diet_routine.length > 0 ? entry.diet_routine : [{ time: '', food: '' }],
-          prescription_images: entry.prescription_image ? [entry.prescription_image] : [],
-          test_report_images: entry.test_report_image ? [entry.test_report_image] : (entry.test_report_images && Array.isArray(entry.test_report_images) ? entry.test_report_images : []),
+          prescription_images: entry.prescription_images && Array.isArray(entry.prescription_images) && entry.prescription_images.length > 0
+            ? entry.prescription_images
+            : (entry.prescription_image ? [entry.prescription_image] : []),
+          test_report_images: entry.test_report_images && Array.isArray(entry.test_report_images) && entry.test_report_images.length > 0
+            ? entry.test_report_images
+            : (entry.test_report_image ? [entry.test_report_image] : []),
           whatsapp_reminder: entry.whatsapp_reminder || false
         })
       } else {
@@ -320,13 +324,19 @@ export default function EditEntryPage() {
     try {
       const submitData = {
         ...formData,
-        prescription_image: formData.prescription_images.length > 0 ? formData.prescription_images[0] : null,
-        test_report_image: formData.test_report_images.length > 0 ? formData.test_report_images[0] : null,
+        prescription_image: formData.prescription_images.length > 0 ? formData.prescription_images[0] : null, // Keep for backward compatibility
+        prescription_images: formData.prescription_images.length > 0 ? formData.prescription_images : [],
+        test_report_image: formData.test_report_images.length > 0 ? formData.test_report_images[0] : null, // Keep for backward compatibility
         test_report_images: formData.test_report_images.length > 0 ? formData.test_report_images : []
       }
 
+      // Remove frontend-only fields
       delete submitData.prescription_images
       delete submitData.test_report_images
+
+      // Re-add as arrays for backend
+      submitData.prescription_images = formData.prescription_images.length > 0 ? formData.prescription_images : []
+      submitData.test_report_images = formData.test_report_images.length > 0 ? formData.test_report_images : []
 
       // Filter out empty items
       if (submitData.diet_routine) {
@@ -439,9 +449,8 @@ export default function EditEntryPage() {
                 value={formData.entry_date}
                 onChange={handleInputChange}
                 required
-                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                  validationErrors.entry_date ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${validationErrors.entry_date ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
+                  }`}
               />
               {validationErrors.entry_date && (
                 <p className="mt-1 text-sm text-red-600">{validationErrors.entry_date[0]}</p>
@@ -464,9 +473,8 @@ export default function EditEntryPage() {
                     name="doctor_name"
                     value={formData.doctor_name}
                     onChange={handleInputChange}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                      validationErrors.doctor_name ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
-                    }`}
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${validationErrors.doctor_name ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
+                      }`}
                     placeholder="Dr. Name"
                   />
                   {validationErrors.doctor_name && (
@@ -482,9 +490,8 @@ export default function EditEntryPage() {
                     name="doctor_specialty"
                     value={formData.doctor_specialty}
                     onChange={handleInputChange}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                      validationErrors.doctor_specialty ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
-                    }`}
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${validationErrors.doctor_specialty ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
+                      }`}
                     placeholder="Cardiology, Pediatrics, etc."
                   />
                   {validationErrors.doctor_specialty && (
@@ -500,9 +507,8 @@ export default function EditEntryPage() {
                     name="doctor_hospital"
                     value={formData.doctor_hospital}
                     onChange={handleInputChange}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                      validationErrors.doctor_hospital ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
-                    }`}
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${validationErrors.doctor_hospital ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
+                      }`}
                   />
                   {validationErrors.doctor_hospital && (
                     <p className="mt-1 text-sm text-red-600">{validationErrors.doctor_hospital[0]}</p>
@@ -527,9 +533,8 @@ export default function EditEntryPage() {
                       }
                     }}
                     maxLength={20}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                      validationErrors.doctor_phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
-                    }`}
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${validationErrors.doctor_phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
+                      }`}
                   />
                   {validationErrors.doctor_phone && (
                     <p className="mt-1 text-sm text-red-600">{validationErrors.doctor_phone[0]}</p>
@@ -598,9 +603,8 @@ export default function EditEntryPage() {
                 value={formData.recommendations}
                 onChange={handleInputChange}
                 rows="4"
-                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                  validationErrors.recommendations ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${validationErrors.recommendations ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
+                  }`}
                 placeholder="Doctor's recommendations and notes..."
               />
               {validationErrors.recommendations && (

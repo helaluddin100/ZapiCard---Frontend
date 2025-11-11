@@ -294,11 +294,23 @@ export default function AddEntryPage() {
     setValidationErrors({}) // Clear previous errors
 
     try {
-      // Convert prescription_images array to single prescription_image for backend compatibility
+      // Prepare submit data with arrays
       const submitData = {
         ...formData,
-        prescription_image: formData.prescription_images.length > 0 ? formData.prescription_images[0] : null
+        prescription_image: formData.prescription_images.length > 0 ? formData.prescription_images[0] : null, // Keep for backward compatibility
+        prescription_images: formData.prescription_images.length > 0 ? formData.prescription_images : [],
+        test_report_images: formData.test_report_images.length > 0 ? formData.test_report_images : []
       }
+
+      // Remove frontend-only fields temporarily
+      const prescriptionImages = submitData.prescription_images
+      const testReportImages = submitData.test_report_images
+      delete submitData.prescription_images
+      delete submitData.test_report_images
+
+      // Re-add as arrays for backend
+      submitData.prescription_images = prescriptionImages
+      submitData.test_report_images = testReportImages
 
       const response = await healthCardAPI.addEntry(cardId, submitData)
 

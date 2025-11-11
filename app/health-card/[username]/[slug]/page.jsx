@@ -385,27 +385,36 @@ END:VCARD`
                                 </div>
                               ))}
                             </div>
-                            {entry.test_report_image && (
+                            {/* Test Report Images Gallery */}
+                            {((entry.test_report_images && Array.isArray(entry.test_report_images) && entry.test_report_images.length > 0) || entry.test_report_image) && (
                               <div className="mt-4">
-                                <img
-                                  src={entry.test_report_image}
-                                  alt="Test report"
-                                  onClick={() => setLightboxImage(entry.test_report_image)}
-                                  className="max-w-full rounded-lg border-2 border-purple-200 cursor-pointer hover:opacity-80 transition shadow-sm"
-                                />
-                              </div>
-                            )}
-                            {entry.test_report_images && Array.isArray(entry.test_report_images) && entry.test_report_images.length > 0 && (
-                              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
-                                {entry.test_report_images.map((img, imgIndex) => (
-                                  <img
-                                    key={imgIndex}
-                                    src={img}
-                                    alt={`Test report ${imgIndex + 1}`}
-                                    onClick={() => setLightboxImage(img)}
-                                    className="w-full h-32 object-cover rounded-lg border-2 border-purple-200 cursor-pointer hover:opacity-80 transition shadow-sm"
-                                  />
-                                ))}
+                                <h5 className="font-semibold text-gray-700 mb-3">Test Report Images</h5>
+                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                                  {entry.test_report_images && Array.isArray(entry.test_report_images) && entry.test_report_images.length > 0 ? (
+                                    entry.test_report_images.map((img, imgIndex) => (
+                                      <div key={imgIndex} className="relative group">
+                                        <img
+                                          src={img}
+                                          alt={`Test report ${imgIndex + 1}`}
+                                          onClick={() => setLightboxImage(img)}
+                                          className="w-full h-32 object-cover rounded-lg border-2 border-purple-200 cursor-pointer hover:opacity-80 transition shadow-sm hover:shadow-md"
+                                        />
+                                        <div className="absolute top-2 left-2 bg-purple-600 text-white text-xs px-2 py-1 rounded font-semibold">
+                                          {imgIndex + 1}
+                                        </div>
+                                      </div>
+                                    ))
+                                  ) : entry.test_report_image ? (
+                                    <div className="relative group">
+                                      <img
+                                        src={entry.test_report_image}
+                                        alt="Test report"
+                                        onClick={() => setLightboxImage(entry.test_report_image)}
+                                        className="w-full h-32 object-cover rounded-lg border-2 border-purple-200 cursor-pointer hover:opacity-80 transition shadow-sm hover:shadow-md"
+                                      />
+                                    </div>
+                                  ) : null}
+                                </div>
                               </div>
                             )}
                           </div>
@@ -498,16 +507,36 @@ END:VCARD`
                           </div>
                         )}
 
-                        {/* Prescription */}
-                        {entry.prescription_image && (
+                        {/* Prescription Images Gallery */}
+                        {((entry.prescription_images && Array.isArray(entry.prescription_images) && entry.prescription_images.length > 0) || entry.prescription_image) && (
                           <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm">
-                            <h4 className="font-bold text-lg text-gray-900 mb-4">Prescription</h4>
-                            <img
-                              src={entry.prescription_image}
-                              alt="Prescription"
-                              onClick={() => setLightboxImage(entry.prescription_image)}
-                              className="max-w-full rounded-lg border-2 border-gray-200 cursor-pointer hover:opacity-80 transition shadow-sm"
-                            />
+                            <h4 className="font-bold text-lg text-gray-900 mb-4">Prescription Images</h4>
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                              {entry.prescription_images && Array.isArray(entry.prescription_images) && entry.prescription_images.length > 0 ? (
+                                entry.prescription_images.map((img, imgIndex) => (
+                                  <div key={imgIndex} className="relative group">
+                                    <img
+                                      src={img}
+                                      alt={`Prescription ${imgIndex + 1}`}
+                                      onClick={() => setLightboxImage(img)}
+                                      className="w-full h-40 object-cover rounded-lg border-2 border-blue-200 cursor-pointer hover:opacity-80 transition shadow-sm hover:shadow-md"
+                                    />
+                                    <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded font-semibold">
+                                      {imgIndex + 1}
+                                    </div>
+                                  </div>
+                                ))
+                              ) : entry.prescription_image ? (
+                                <div className="relative group">
+                                  <img
+                                    src={entry.prescription_image}
+                                    alt="Prescription"
+                                    onClick={() => setLightboxImage(entry.prescription_image)}
+                                    className="w-full h-40 object-cover rounded-lg border-2 border-blue-200 cursor-pointer hover:opacity-80 transition shadow-sm hover:shadow-md"
+                                  />
+                                </div>
+                              ) : null}
+                            </div>
                           </div>
                         )}
                       </div>
