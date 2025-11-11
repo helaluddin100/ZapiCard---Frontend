@@ -129,7 +129,7 @@ export default function HealthDashboardPage() {
             <h1 className="text-3xl font-bold text-gray-900">My Health Cards</h1>
             <Link
               href="/health-dashboard/create"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#10b981] text-white font-semibold rounded-lg hover:bg-[#059669] transition-colors shadow-lg"
+              className="inline-flex items-center gap-2 px-6 py-3 gradient-primary text-white font-semibold rounded-lg hover:shadow-lg transition-all shadow-lg"
             >
               <Plus className="w-5 h-5" />
               Create New Health Card
@@ -140,8 +140,8 @@ export default function HealthDashboardPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-green-100 rounded-lg">
-                  <FileText className="w-6 h-6 text-[#10b981]" />
+                <div className="p-3 gradient-primary rounded-lg">
+                  <FileText className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Total Cards</p>
@@ -188,7 +188,7 @@ export default function HealthDashboardPage() {
                   const card = healthCards.find(c => c.id == cardId)
                   setSelectedCard(card || null)
                 }}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="">-- Select a card --</option>
                 {healthCards.map(card => (
@@ -240,7 +240,7 @@ export default function HealthDashboardPage() {
               <p className="text-gray-600 mb-6">Create your first health card to get started</p>
               <Link
                 href="/health-dashboard/create"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[#10b981] text-white font-semibold rounded-lg hover:bg-[#059669] transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 gradient-primary text-white font-semibold rounded-lg hover:shadow-lg transition-all shadow-lg"
               >
                 <Plus className="w-5 h-5" />
                 Create New Health Card
@@ -259,7 +259,7 @@ export default function HealthDashboardPage() {
                   {/* Add Entry Button on Hover */}
                   <Link
                     href={`/health-dashboard/card/${card.id}/entry`}
-                    className="absolute top-4 right-4 p-2 bg-[#10b981] text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#059669] z-10"
+                    className="absolute top-4 right-4 p-2 gradient-primary text-white rounded-full opacity-0 group-hover:opacity-100 transition-all hover:shadow-lg z-10"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <Plus className="w-5 h-5" />
@@ -268,13 +268,15 @@ export default function HealthDashboardPage() {
                   {/* Person Photo */}
                   <div className="mb-4">
                     {card.person_photo ? (
-                      <img
-                        src={card.person_photo}
-                        alt={card.person_name}
-                        className="w-24 h-24 rounded-full object-cover mx-auto border-4 border-[#10b981]"
-                      />
+                      <div className="w-24 h-24 rounded-full mx-auto p-0.5 gradient-primary">
+                        <img
+                          src={card.person_photo}
+                          alt={card.person_name}
+                          className="w-full h-full rounded-full object-cover"
+                        />
+                      </div>
                     ) : (
-                      <div className="w-24 h-24 rounded-full bg-[#10b981] mx-auto flex items-center justify-center text-white text-2xl font-bold">
+                      <div className="w-24 h-24 rounded-full gradient-primary mx-auto flex items-center justify-center text-white text-2xl font-bold shadow-lg">
                         {card.person_name?.charAt(0) || 'H'}
                       </div>
                     )}
@@ -283,7 +285,7 @@ export default function HealthDashboardPage() {
                   {/* Card Info */}
                   <div className="text-center">
                     <h3 className="text-xl font-bold text-gray-900 mb-1">{card.person_name}</h3>
-                    <span className="inline-block px-3 py-1 bg-green-100 text-[#10b981] text-sm font-semibold rounded-full mb-2">
+                    <span className="inline-block px-3 py-1 bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 text-blue-700 border border-blue-200 text-sm font-semibold rounded-full mb-2">
                       {getCardTypeLabel(card.card_type)}
                     </span>
                     <p className="text-sm text-gray-600">
@@ -316,6 +318,13 @@ export default function HealthDashboardPage() {
                   <div className="flex items-center justify-center">
                     <div className="relative w-48 h-48">
                       <svg className="transform -rotate-90 w-48 h-48">
+                        <defs>
+                          <linearGradient id="pregnancyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#3b82f6" />
+                            <stop offset="50%" stopColor="#a855f7" />
+                            <stop offset="100%" stopColor="#ec4899" />
+                          </linearGradient>
+                        </defs>
                         <circle
                           cx="96"
                           cy="96"
@@ -328,7 +337,7 @@ export default function HealthDashboardPage() {
                           cx="96"
                           cy="96"
                           r="88"
-                          stroke="#10b981"
+                          stroke="url(#pregnancyGradient)"
                           strokeWidth="16"
                           fill="none"
                           strokeDasharray={`${(calculatePregnancyWeeks(selectedCard.expected_delivery_date) / 40) * 552} 552`}
@@ -336,7 +345,7 @@ export default function HealthDashboardPage() {
                       </svg>
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="text-center">
-                          <p className="text-4xl font-bold text-[#10b981]">
+                          <p className="text-4xl font-bold gradient-primary bg-clip-text text-transparent">
                             {calculatePregnancyWeeks(selectedCard.expected_delivery_date)}
                           </p>
                           <p className="text-sm text-gray-600">of 40 weeks</p>
@@ -380,7 +389,7 @@ export default function HealthDashboardPage() {
                     </div>
                     <div className="bg-green-50 rounded-lg p-4 border border-green-200">
                       <div className="flex items-center gap-3">
-                        <Pill className="w-8 h-8 text-[#10b981]" />
+                        <Pill className="w-8 h-8 text-purple-600" />
                         <div>
                           <p className="text-sm text-gray-600">Total Medicines</p>
                           <p className="text-2xl font-bold text-gray-900">{cardStats.medicines}</p>
@@ -418,8 +427,8 @@ export default function HealthDashboardPage() {
                         datasets: [{
                           label: 'Entries',
                           data: data,
-                          borderColor: '#10b981',
-                          backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                          borderColor: 'rgb(139, 92, 246)',
+                          backgroundColor: 'rgba(139, 92, 246, 0.1)',
                           tension: 0.4,
                           fill: true
                         }]

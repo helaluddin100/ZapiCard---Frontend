@@ -312,7 +312,7 @@ export default function AddEntryPage() {
       }
     } catch (error) {
       console.error('Error adding entry:', error)
-      
+
       // Handle validation errors from API response
       // Check if error has response data with errors object
       let errorData = null
@@ -321,15 +321,15 @@ export default function AddEntryPage() {
       } else if (error.data) {
         errorData = error
       }
-      
+
       if (errorData?.data?.errors) {
         const errors = errorData.data.errors
         setValidationErrors(errors)
-        
+
         // Show general error message
         const firstError = Object.values(errors)[0]?.[0] || 'Please fix the validation errors below'
         showError(firstError)
-        
+
         // Scroll to first error field
         const firstErrorField = Object.keys(errors)[0]
         // Handle nested field names like "diet_routine.0.time"
@@ -355,13 +355,13 @@ export default function AddEntryPage() {
         <div className="max-w-4xl mx-auto space-y-6">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-sm text-gray-600">
-            <Link href="/health-dashboard" className="hover:text-[#10b981]">
+            <Link href="/health-dashboard" className="hover:text-blue-600">
               Health Dashboard
             </Link>
             <span>/</span>
             {cardData && (
               <>
-                <Link href={`/health-dashboard`} className="hover:text-[#10b981]">
+                <Link href={`/health-dashboard`} className="hover:text-blue-600">
                   {cardData.person_name}
                 </Link>
                 <span>/</span>
@@ -394,14 +394,14 @@ export default function AddEntryPage() {
                 value={formData.entry_date}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
             {/* Doctor Information */}
             <div className="border-t border-gray-200 pt-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <Stethoscope className="w-5 h-5 text-[#10b981]" />
+                <Stethoscope className="w-5 h-5 text-blue-600" />
                 Doctor Information
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -414,7 +414,7 @@ export default function AddEntryPage() {
                     name="doctor_name"
                     value={formData.doctor_name}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Dr. Name"
                   />
                 </div>
@@ -427,7 +427,7 @@ export default function AddEntryPage() {
                     name="doctor_specialty"
                     value={formData.doctor_specialty}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Cardiology, Pediatrics, etc."
                   />
                 </div>
@@ -440,7 +440,7 @@ export default function AddEntryPage() {
                     name="doctor_hospital"
                     value={formData.doctor_hospital}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -463,9 +463,8 @@ export default function AddEntryPage() {
                       }
                     }}
                     maxLength={20}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent ${
-                      validationErrors.doctor_phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
-                    }`}
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent ${validationErrors.doctor_phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
+                      }`}
                   />
                   {validationErrors.doctor_phone && (
                     <p className="mt-1 text-sm text-red-600">{validationErrors.doctor_phone[0]}</p>
@@ -479,13 +478,13 @@ export default function AddEntryPage() {
             <div className="border-t border-gray-200 pt-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                  <TestTube className="w-5 h-5 text-[#10b981]" />
+                  <TestTube className="w-5 h-5 text-purple-600" />
                   Tests
                 </h3>
                 <button
                   type="button"
                   onClick={addTest}
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#10b981] to-[#059669] text-white rounded-lg hover:from-[#059669] hover:to-[#047857] transition shadow-md"
+                  className="flex items-center gap-2 px-4 py-2 gradient-primary text-white rounded-lg hover:shadow-lg transition shadow-md"
                 >
                   <Plus className="w-4 h-4" />
                   Add Test
@@ -534,7 +533,7 @@ export default function AddEntryPage() {
                 value={formData.recommendations}
                 onChange={handleInputChange}
                 rows="4"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Doctor's recommendations and notes..."
               />
             </div>
@@ -543,13 +542,13 @@ export default function AddEntryPage() {
             <div className="border-t border-gray-200 pt-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                  <Pill className="w-5 h-5 text-[#10b981]" />
+                  <Pill className="w-5 h-5 text-purple-600" />
                   Medicines
                 </h3>
                 <button
                   type="button"
                   onClick={addMedicine}
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#10b981] to-[#059669] text-white rounded-lg hover:from-[#059669] hover:to-[#047857] transition shadow-md"
+                  className="flex items-center gap-2 px-4 py-2 gradient-primary text-white rounded-lg hover:shadow-lg transition shadow-md"
                 >
                   <Plus className="w-4 h-4" />
                   Add Medicine
@@ -601,7 +600,7 @@ export default function AddEntryPage() {
                           <label
                             key={timing}
                             className={`flex items-center gap-2 px-4 py-2 border-2 rounded-lg cursor-pointer transition ${medicine.timing?.includes(timing)
-                              ? 'border-[#10b981] bg-green-50'
+                              ? 'border-blue-500 bg-blue-50'
                               : 'border-gray-200 hover:border-gray-300'
                               }`}
                           >
@@ -628,13 +627,13 @@ export default function AddEntryPage() {
             <div className="border-t border-gray-200 pt-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                  <Utensils className="w-5 h-5 text-[#10b981]" />
+                  <Utensils className="w-5 h-5 text-pink-600" />
                   Diet Routine
                 </h3>
                 <button
                   type="button"
                   onClick={addDiet}
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#10b981] to-[#059669] text-white rounded-lg hover:from-[#059669] hover:to-[#047857] transition shadow-md"
+                  className="flex items-center gap-2 px-4 py-2 gradient-primary text-white rounded-lg hover:shadow-lg transition shadow-md"
                 >
                   <Plus className="w-4 h-4" />
                   Add Diet
@@ -685,7 +684,7 @@ export default function AddEntryPage() {
                       type="button"
                       onClick={handleOCR}
                       disabled={ocrLoading}
-                      className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#10b981] to-[#059669] text-white rounded-lg hover:from-[#059669] hover:to-[#047857] transition disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+                      className="flex items-center gap-2 px-4 py-2 gradient-primary text-white rounded-lg hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
                     >
                       <Sparkles className="w-4 h-4" />
                       {ocrLoading ? 'Analyzing with AI...' : 'Read with AI (Gemini)'}
@@ -697,7 +696,7 @@ export default function AddEntryPage() {
                   accept="image/*"
                   multiple
                   onChange={handlePrescriptionUpload}
-                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#10b981] file:text-white hover:file:bg-[#059669]"
+                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:gradient-primary file:text-white hover:file:shadow-lg"
                 />
                 <p className="text-xs text-gray-500 mt-1">
                   You can upload multiple images for multi-page prescriptions (max 5 images at once to avoid API quota limits)
@@ -709,9 +708,9 @@ export default function AddEntryPage() {
                         <img
                           src={img}
                           alt={`Prescription page ${index + 1}`}
-                          className="w-full h-32 object-cover rounded-lg border-2 border-[#10b981]"
+                          className="w-full h-32 object-cover rounded-lg border-2 border-blue-500"
                         />
-                        <div className="absolute top-1 left-1 bg-[#10b981] text-white text-xs px-2 py-1 rounded font-semibold">
+                        <div className="absolute top-1 left-1 gradient-primary text-white text-xs px-2 py-1 rounded font-semibold">
                           Page {index + 1}
                         </div>
                         <button
@@ -737,7 +736,7 @@ export default function AddEntryPage() {
                   accept="image/*"
                   multiple
                   onChange={handleTestReportUpload}
-                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#10b981] file:text-white hover:file:bg-[#059669]"
+                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:gradient-primary file:text-white hover:file:shadow-lg"
                 />
                 {formData.test_report_images.length > 0 && (
                   <div className="grid grid-cols-4 gap-3 mt-3">
@@ -770,7 +769,7 @@ export default function AddEntryPage() {
                   name="whatsapp_reminder"
                   checked={formData.whatsapp_reminder}
                   onChange={handleInputChange}
-                  className="w-5 h-5 text-[#10b981] border-gray-300 rounded focus:ring-[#10b981]"
+                  className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                 />
                 <span className="text-sm font-medium text-gray-700">
                   Send WhatsApp reminder for medicines & diet
@@ -783,7 +782,7 @@ export default function AddEntryPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 px-6 py-3 bg-gradient-to-r from-[#10b981] to-[#059669] text-white font-semibold rounded-lg hover:from-[#059669] hover:to-[#047857] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+                className="flex-1 px-6 py-3 gradient-primary text-white font-semibold rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
               >
                 {loading ? 'Saving...' : 'Save Entry'}
               </button>
@@ -803,7 +802,7 @@ export default function AddEntryPage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
             {/* Header */}
-            <div className="bg-gradient-to-r from-[#10b981] to-[#059669] text-white p-6 flex items-center justify-between">
+            <div className="gradient-primary text-white p-6 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Sparkles className="w-6 h-6" />
                 <h2 className="text-2xl font-bold">AI Analysis Result - Review & Edit</h2>
@@ -821,7 +820,7 @@ export default function AddEntryPage() {
               {/* Doctor Information */}
               <div className="border border-gray-200 rounded-lg p-4">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <Stethoscope className="w-5 h-5 text-[#10b981]" />
+                  <Stethoscope className="w-5 h-5 text-white" />
                   Doctor Information
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -834,7 +833,7 @@ export default function AddEntryPage() {
                         ...prev,
                         doctor_info: { ...prev.doctor_info, doctor_name: e.target.value }
                       }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
                   <div>
@@ -846,7 +845,7 @@ export default function AddEntryPage() {
                         ...prev,
                         doctor_info: { ...prev.doctor_info, doctor_specialty: e.target.value }
                       }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
                   <div>
@@ -858,7 +857,7 @@ export default function AddEntryPage() {
                         ...prev,
                         doctor_info: { ...prev.doctor_info, doctor_hospital: e.target.value }
                       }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
                   <div>
@@ -870,7 +869,7 @@ export default function AddEntryPage() {
                         ...prev,
                         doctor_info: { ...prev.doctor_info, doctor_phone: e.target.value }
                       }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
                 </div>
@@ -880,7 +879,7 @@ export default function AddEntryPage() {
               <div className="border border-gray-200 rounded-lg p-4">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                    <Pill className="w-5 h-5 text-[#10b981]" />
+                    <Pill className="w-5 h-5 text-purple-600" />
                     Medicines ({editableAiOutput.medicines.length})
                   </h3>
                   <button
@@ -889,7 +888,7 @@ export default function AddEntryPage() {
                       ...prev,
                       medicines: [...prev.medicines, { name: '', dosage: '', duration: '', timing: [] }]
                     }))}
-                    className="flex items-center gap-2 px-3 py-1.5 bg-[#10b981] text-white rounded-lg hover:bg-[#059669] transition text-sm"
+                    className="flex items-center gap-2 px-3 py-1.5 gradient-primary text-white rounded-lg hover:shadow-lg transition text-sm"
                   >
                     <Plus className="w-4 h-4" />
                     Add
@@ -938,7 +937,7 @@ export default function AddEntryPage() {
                           <label
                             key={timing}
                             className={`flex items-center gap-1 px-3 py-1 border-2 rounded-lg cursor-pointer text-sm transition ${medicine.timing?.includes(timing)
-                              ? 'border-[#10b981] bg-green-50 text-[#10b981]'
+                              ? 'border-blue-500 bg-blue-50 text-blue-700'
                               : 'border-gray-200 hover:border-gray-300'
                               }`}
                           >
@@ -982,7 +981,7 @@ export default function AddEntryPage() {
               <div className="border border-gray-200 rounded-lg p-4">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                    <TestTube className="w-5 h-5 text-[#10b981]" />
+                    <TestTube className="w-5 h-5 text-purple-600" />
                     Tests ({editableAiOutput.tests.length})
                   </h3>
                   <button
@@ -991,7 +990,7 @@ export default function AddEntryPage() {
                       ...prev,
                       tests: [...prev.tests, { name: '', result: '' }]
                     }))}
-                    className="flex items-center gap-2 px-3 py-1.5 bg-[#10b981] text-white rounded-lg hover:bg-[#059669] transition text-sm"
+                    className="flex items-center gap-2 px-3 py-1.5 gradient-primary text-white rounded-lg hover:shadow-lg transition text-sm"
                   >
                     <Plus className="w-4 h-4" />
                     Add
@@ -1065,7 +1064,7 @@ export default function AddEntryPage() {
               </button>
               <button
                 onClick={applyAIDataToForm}
-                className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-[#10b981] to-[#059669] text-white rounded-lg hover:from-[#059669] hover:to-[#047857] transition shadow-md"
+                className="flex items-center gap-2 px-6 py-2 gradient-primary text-white rounded-lg hover:shadow-lg transition shadow-md"
               >
                 <Check className="w-5 h-5" />
                 Apply to Form
