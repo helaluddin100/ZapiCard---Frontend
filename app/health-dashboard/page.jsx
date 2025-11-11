@@ -4,18 +4,20 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Script from 'next/script'
 import DashboardLayout from '@/components/DashboardLayout'
-import { Plus, Calendar, FileText, Activity, User, Clock, Stethoscope, Pill, TestTube, AlertCircle, ChevronDown, ChevronUp, Edit2, Eye, ExternalLink } from 'lucide-react'
+import { Plus, Calendar, FileText, Activity, User, Clock, Stethoscope, Pill, TestTube, AlertCircle, ChevronDown, ChevronUp, Edit2, Eye, ExternalLink, Download, QrCode as QrCodeIcon } from 'lucide-react'
 import { healthCardAPI } from '@/lib/api'
 import { useToast } from '@/lib/toast'
+import QRCodeLib from 'qrcode'
 
 export default function HealthDashboardPage() {
-  const { error: showError } = useToast()
+  const { success, error: showError } = useToast()
   const [healthCards, setHealthCards] = useState([])
   const [selectedCard, setSelectedCard] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [expandedCardId, setExpandedCardId] = useState(null)
   const [cardEntries, setCardEntries] = useState({})
+  const [qrCodes, setQrCodes] = useState({})
   const [stats, setStats] = useState({
     totalCards: 0,
     totalEntries: 0,
@@ -25,6 +27,67 @@ export default function HealthDashboardPage() {
   useEffect(() => {
     loadHealthCards()
   }, [])
+
+  // Generate QR codes for all cards
+  useEffect(() => {
+    if (healthCards.length > 0) {
+      generateQRCodes()
+    }
+  }, [healthCards])
+
+  const generateQRCodes = async () => {
+    if (typeof window === 'undefined') return
+
+    const newQrCodes = {}
+    for (const card of healthCards) {
+      if (card.username && card.slug) {
+        try {
+          const viewUrl = `${window.location.origin}/health-card/${card.username}/${card.slug}`
+          const qrDataUrl = await QRCodeLib.toDataURL(viewUrl, {
+            width: 200,
+            margin: 2,
+            color: {
+              dark: '#10b981',
+              light: '#ffffff'
+            }
+          })
+          newQrCodes[card.id] = qrDataUrl
+        } catch (error) {
+          console.error(`Error generating QR code for card ${card.id}:`, error)
+        }
+      }
+    }
+    setQrCodes(newQrCodes)
+  }
+
+  const downloadQRCode = async (card) => {
+    if (!card.username || !card.slug || typeof window === 'undefined') return
+
+    try {
+      const viewUrl = `${window.location.origin}/health-card/${card.username}/${card.slug}`
+      // Generate high resolution QR code (1000x1000)
+      const qrDataUrl = await QRCodeLib.toDataURL(viewUrl, {
+        width: 1000,
+        margin: 3,
+        color: {
+          dark: '#10b981',
+          light: '#ffffff'
+        }
+      })
+
+      // Create download link
+      const link = document.createElement('a')
+      link.href = qrDataUrl
+      link.download = `${card.person_name || 'health-card'}-qr-code.png`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      success('QR code downloaded successfully!')
+    } catch (error) {
+      console.error('Error downloading QR code:', error)
+      showError('Failed to download QR code')
+    }
+  }
 
   // Initialize chart when selectedCard changes
   useEffect(() => {
@@ -540,20 +603,47 @@ export default function HealthDashboardPage() {
                     </Link>
                   </div>
 
-                  {/* Person Photo */}
-                  <div className="mb-4">
-                    {card.person_photo ? (
-                      <div className="w-24 h-24 rounded-full mx-auto p-0.5 gradient-primary">
+                  {/* QR Code with Background Image */}
+                  <div className="mb-4 relative">
+                    <div className="w-24 h-24  mx-auto relative overflow-hidden shadow-lg">
+                      {/* Background Image */}
+                      {/* {card.person_photo ? (
                         <img
                           src={card.person_photo}
                           alt={card.person_name}
-                          className="w-full h-full rounded-full object-cover"
+                          className="w-full h-full object-cover absolute inset-0 opacity-30"
                         />
-                      </div>
-                    ) : (
-                      <div className="w-24 h-24 rounded-full gradient-primary mx-auto flex items-center justify-center text-white text-2xl font-bold shadow-lg">
-                        {card.person_name?.charAt(0) || 'H'}
-                      </div>
+                      ) : (
+                        <div className="w-full h-full gradient-primary absolute inset-0 opacity-30"></div>
+                      )} */}
+                      {/* QR Code Overlay */}
+                      {qrCodes[card.id] ? (
+                        <div className="relative w-full h-full flex items-center justify-center bg-white">
+                          <img
+                            src={qrCodes[card.id]}
+                            alt="QR Code"
+                            className="w-full h-full object-contain p-1"
+                          />
+                        </div>
+                      ) : (
+                        <div className="relative w-full h-full flex items-center justify-center bg-white">
+                          <QrCodeIcon className="w-12 h-12 text-gray-400 animate-pulse" />
+                        </div>
+                      )}
+                    </div>
+                    {/* Download QR Code Button */}
+                    {qrCodes[card.id] && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          downloadQRCode(card)
+                        }}
+                        className="mt-2 mx-auto flex items-center gap-1.5 px-3 py-1.5 text-xs gradient-primary text-white rounded-lg hover:shadow-lg transition-all opacity-0 group-hover:opacity-100"
+                        title="Download QR Code (High Resolution)"
+                      >
+                        <Download className="w-3 h-3" />
+                        <span>Download QR</span>
+                      </button>
                     )}
                   </div>
 
