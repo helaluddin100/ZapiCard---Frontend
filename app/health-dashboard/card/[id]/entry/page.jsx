@@ -19,6 +19,7 @@ export default function AddEntryPage() {
   const [showAIPreview, setShowAIPreview] = useState(false)
   const [aiOutput, setAiOutput] = useState(null)
   const [editableAiOutput, setEditableAiOutput] = useState(null)
+  const [validationErrors, setValidationErrors] = useState({})
   const [formData, setFormData] = useState({
     entry_date: new Date().toISOString().split('T')[0],
     doctor_name: '',
@@ -290,6 +291,7 @@ export default function AddEntryPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
+    setValidationErrors({}) // Clear previous errors
 
     try {
       // Convert prescription_images array to single prescription_image for backend compatibility
@@ -310,7 +312,38 @@ export default function AddEntryPage() {
       }
     } catch (error) {
       console.error('Error adding entry:', error)
-      showError(error.message || 'Failed to add entry. Please try again.')
+      
+      // Handle validation errors from API response
+      // Check if error has response data with errors object
+      let errorData = null
+      if (error.response) {
+        errorData = error.response
+      } else if (error.data) {
+        errorData = error
+      }
+      
+      if (errorData?.data?.errors) {
+        const errors = errorData.data.errors
+        setValidationErrors(errors)
+        
+        // Show general error message
+        const firstError = Object.values(errors)[0]?.[0] || 'Please fix the validation errors below'
+        showError(firstError)
+        
+        // Scroll to first error field
+        const firstErrorField = Object.keys(errors)[0]
+        // Handle nested field names like "diet_routine.0.time"
+        const fieldName = firstErrorField.split('.')[0]
+        const errorElement = document.querySelector(`[name="${fieldName}"], [name="${firstErrorField}"]`)
+        if (errorElement) {
+          setTimeout(() => {
+            errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            errorElement.focus()
+          }, 100)
+        }
+      } else {
+        showError(error.message || errorData?.data?.message || 'Failed to add entry. Please try again.')
+      }
     } finally {
       setLoading(false)
     }
@@ -418,9 +451,26 @@ export default function AddEntryPage() {
                     type="tel"
                     name="doctor_phone"
                     value={formData.doctor_phone}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent"
+                    onChange={(e) => {
+                      handleInputChange(e)
+                      // Clear error when user types
+                      if (validationErrors.doctor_phone) {
+                        setValidationErrors(prev => {
+                          const newErrors = { ...prev }
+                          delete newErrors.doctor_phone
+                          return newErrors
+                        })
+                      }
+                    }}
+                    maxLength={20}
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent ${
+                      validationErrors.doctor_phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
+                    }`}
                   />
+                  {validationErrors.doctor_phone && (
+                    <p className="mt-1 text-sm text-red-600">{validationErrors.doctor_phone[0]}</p>
+                  )}
+                  <p className="mt-1 text-xs text-gray-500">Maximum 20 characters. If multiple numbers, use only the first one.</p>
                 </div>
               </div>
             </div>
