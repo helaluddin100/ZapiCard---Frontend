@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Script from 'next/script'
 import DashboardLayout from '@/components/DashboardLayout'
-import { Plus, Calendar, FileText, Activity, User, Clock, Stethoscope, Pill, TestTube, AlertCircle, ChevronDown, ChevronUp, Edit2, Eye } from 'lucide-react'
+import { Plus, Calendar, FileText, Activity, User, Clock, Stethoscope, Pill, TestTube, AlertCircle, ChevronDown, ChevronUp, Edit2, Eye, ExternalLink } from 'lucide-react'
 import { healthCardAPI } from '@/lib/api'
 import { useToast } from '@/lib/toast'
 
@@ -503,6 +503,15 @@ export default function HealthDashboardPage() {
                 >
                   {/* Action Buttons on Hover */}
                   <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all z-10">
+                    <Link
+                      href={`/health-card/${card.username}/${card.slug}`}
+                      target="_blank"
+                      className="p-2 gradient-primary text-white rounded-full hover:shadow-lg transition-all"
+                      onClick={(e) => e.stopPropagation()}
+                      title="View Public Page"
+                    >
+                      <ExternalLink className="w-5 h-5" />
+                    </Link>
                     <button
                       onClick={(e) => {
                         e.stopPropagation()
