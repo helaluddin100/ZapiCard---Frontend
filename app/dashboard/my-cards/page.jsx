@@ -18,8 +18,11 @@ import {
     Search,
     Filter,
     CreditCard,
-    Loader2
+    Loader2,
+    Download,
+    ExternalLink
 } from 'lucide-react'
+import QRCodeLib from 'qrcode'
 
 export default function MyCardsPage() {
     const { success, error: showError } = useToast()
@@ -28,10 +31,72 @@ export default function MyCardsPage() {
     const [cards, setCards] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [qrCodes, setQrCodes] = useState({})
 
     useEffect(() => {
         fetchCards()
     }, [])
+
+    // Generate QR codes for all cards
+    useEffect(() => {
+        if (cards.length > 0) {
+            generateQRCodes()
+        }
+    }, [cards])
+
+    const generateQRCodes = async () => {
+        if (typeof window === 'undefined') return
+
+        const newQrCodes = {}
+        for (const card of cards) {
+            if (card.slug) {
+                try {
+                    const viewUrl = `${window.location.origin}/card/${card.slug}`
+                    const qrDataUrl = await QRCodeLib.toDataURL(viewUrl, {
+                        width: 200,
+                        margin: 2,
+                        color: {
+                            dark: '#10b981',
+                            light: '#ffffff'
+                        }
+                    })
+                    newQrCodes[card.id] = qrDataUrl
+                } catch (error) {
+                    console.error(`Error generating QR code for card ${card.id}:`, error)
+                }
+            }
+        }
+        setQrCodes(newQrCodes)
+    }
+
+    const downloadQRCode = async (card) => {
+        if (!card.slug || typeof window === 'undefined') return
+
+        try {
+            const viewUrl = `${window.location.origin}/card/${card.slug}`
+            // Generate high resolution QR code (1000x1000)
+            const qrDataUrl = await QRCodeLib.toDataURL(viewUrl, {
+                width: 1000,
+                margin: 3,
+                color: {
+                    dark: '#10b981',
+                    light: '#ffffff'
+                }
+            })
+
+            // Create download link
+            const link = document.createElement('a')
+            link.href = qrDataUrl
+            link.download = `${card.name || 'visiting-card'}-qr-code.png`
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+            success('QR code downloaded successfully!')
+        } catch (error) {
+            console.error('Error downloading QR code:', error)
+            showError('Failed to download QR code')
+        }
+    }
 
     const fetchCards = async () => {
         try {
@@ -192,68 +257,143 @@ export default function MyCardsPage() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: idx * 0.1 }}
-                                className="bg-white rounded-xl shadow-lg overflow-hidden card-hover"
+                                className="group relative rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all transform hover:scale-[1.02]"
+                                style={{
+                                    aspectRatio: '3.5 / 2',
+                                    minHeight: '300px'
+                                }}
                             >
-                                <div className="relative h-48" style={getCardBackground(card)}>
+                                {/* Background Image with Gradient Overlay */}
+                                <div className="absolute inset-0">
                                     {card.profile_photo ? (
-                                        <img
-                                            src={card.profile_photo}
-                                            alt={card.name}
-                                            className="w-full h-full object-cover opacity-80"
-                                        />
+                                        <>
+                                            <img
+                                                src={card.profile_photo}
+                                                alt={card.name}
+                                                className="w-full h-full object-cover"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-br from-blue-600/80 via-purple-600/80 to-pink-600/80"></div>
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                        </>
                                     ) : (
-                                        <div className="w-full h-full flex items-center justify-center">
-                                            <div className="w-24 h-24 rounded-full bg-white/20 flex items-center justify-center">
-                                                <span className="text-4xl font-bold text-white">
+                                        <div className="w-full h-full" style={getCardBackground(card)}>
+                                            <div className="absolute inset-0 bg-gradient-to-br from-blue-600/80 via-purple-600/80 to-pink-600/80"></div>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Action Buttons on Hover */}
+                                <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-all z-20">
+                                    {card.slug && (
+                                        <Link
+                                            href={`/card/${card.slug}`}
+                                            target="_blank"
+                                            className="p-2 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full hover:bg-white hover:shadow-lg transition-all"
+                                            title="View Public Page"
+                                        >
+                                            <ExternalLink className="w-4 h-4" />
+                                        </Link>
+                                    )}
+                                    <Link
+                                        href={`/dashboard/edit/${card.id}`}
+                                        className="p-2 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full hover:bg-white hover:shadow-lg transition-all"
+                                        title="Edit Card"
+                                    >
+                                        <Edit className="w-4 h-4" />
+                                    </Link>
+                                    <button 
+                                        onClick={() => handleDelete(card.id)}
+                                        className="p-2 bg-white/90 backdrop-blur-sm text-red-600 rounded-full hover:bg-white hover:shadow-lg transition-all"
+                                        title="Delete Card"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
+                                </div>
+
+                                {/* Card Content */}
+                                <div className="relative h-full flex flex-col p-4 sm:p-5 md:p-6 text-white z-10">
+                                    {/* Top Section - Profile Photo & QR Code */}
+                                    <div className="flex items-start justify-between mb-3">
+                                        {/* Profile Photo */}
+                                        <div className="flex-shrink-0">
+                                            {card.profile_photo ? (
+                                                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 md:border-4 border-white/90 shadow-xl overflow-hidden">
+                                                    <img
+                                                        src={card.profile_photo}
+                                                        alt={card.name}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 md:border-4 border-white/90 shadow-xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-white text-xl md:text-2xl font-bold">
                                                     {getInitials(card.name)}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* QR Code */}
+                                        <div className="flex-shrink-0">
+                                            {qrCodes[card.id] ? (
+                                                <div className="w-16 h-16 md:w-20 md:h-20 rounded-lg bg-white p-1 md:p-1.5 shadow-xl">
+                                                    <img
+                                                        src={qrCodes[card.id]}
+                                                        alt="QR Code"
+                                                        className="w-full h-full object-contain"
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <div className="w-16 h-16 md:w-20 md:h-20 rounded-lg bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-xl">
+                                                    <QrCode className="w-8 h-8 md:w-10 md:h-10 text-gray-400 animate-pulse" />
+                                                </div>
+                                            )}
+                                            {/* Download QR Button */}
+                                            {qrCodes[card.id] && (
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        downloadQRCode(card)
+                                                    }}
+                                                    className="mt-1 w-full px-1.5 md:px-2 py-0.5 md:py-1 text-xs bg-white/90 backdrop-blur-sm text-gray-700 rounded-md hover:bg-white hover:shadow-md transition-all opacity-0 group-hover:opacity-100"
+                                                    title="Download QR Code"
+                                                >
+                                                    <Download className="w-2.5 h-2.5 md:w-3 md:h-3 mx-auto" />
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Middle Section - Name & Title */}
+                                    <div className="flex-1 flex flex-col justify-center min-h-0">
+                                        <h3 className="text-xl md:text-2xl font-bold mb-1.5 md:mb-2 drop-shadow-lg line-clamp-2 break-words">{card.name || 'Untitled Card'}</h3>
+                                        <div className="flex flex-col gap-1 mb-2">
+                                            {card.title && (
+                                                <span className="px-2 md:px-3 py-0.5 md:py-1 bg-white/20 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/30 inline-block w-fit">
+                                                    {card.title}
+                                                </span>
+                                            )}
+                                            {card.company && (
+                                                <span className="px-2 md:px-3 py-0.5 md:py-1 bg-white/20 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/30 inline-block w-fit">
+                                                    {card.company}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Bottom Section - Stats & Info */}
+                                    <div className="mt-auto pt-2 md:pt-3 border-t border-white/20">
+                                        <div className="flex items-center justify-between text-xs md:text-sm">
+                                            <div className="flex items-center gap-1.5 md:gap-2">
+                                                <Eye className="w-3.5 h-3.5 md:w-4 md:h-4 flex-shrink-0" />
+                                                <span className="font-medium truncate">
+                                                    {card.views || 0} views
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center gap-1.5 md:gap-2 text-white/80 flex-shrink-0">
+                                                <span className="text-xs truncate">
+                                                    {card.created_at ? new Date(card.created_at).toLocaleDateString() : ''}
                                                 </span>
                                             </div>
                                         </div>
-                                    )}
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                        {card.qr_code && (
-                                            <img
-                                                src={card.qr_code}
-                                                alt="QR Code"
-                                                className="w-32 h-32 bg-white p-2 rounded-lg shadow-lg"
-                                            />
-                                        )}
-                                    </div>
-                                </div>
-                                <div className="p-6">
-                                    <h3 className="text-xl font-bold text-gray-900 mb-1">{card.name || 'Untitled Card'}</h3>
-                                    {card.title && <p className="text-gray-600 text-sm mb-1">{card.title}</p>}
-                                    {card.company && <p className="text-gray-500 text-sm mb-4">{card.company}</p>}
-                                    <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                                        <span className="flex items-center">
-                                            <Eye className="w-4 h-4 mr-1" />
-                                            {card.views || 0} views
-                                        </span>
-                                        <span>{card.created_at ? new Date(card.created_at).toLocaleDateString() : ''}</span>
-                                    </div>
-                                    <div className="flex gap-2">
-                                        {card.slug && (
-                                            <Link
-                                                href={`/card/${card.slug}`}
-                                                className="flex-1 btn-outline text-center py-2 text-sm"
-                                            >
-                                                <Eye className="w-4 h-4 inline mr-1" />
-                                                View
-                                            </Link>
-                                        )}
-                                        <Link
-                                            href={`/dashboard/edit/${card.id}`}
-                                            className="flex-1 btn-outline text-center py-2 text-sm"
-                                        >
-                                            <Edit className="w-4 h-4 inline mr-1" />
-                                            Edit
-                                        </Link>
-                                        <button 
-                                            onClick={() => handleDelete(card.id)}
-                                            className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition"
-                                        >
-                                            <Trash2 className="w-4 h-4" />
-                                        </button>
                                     </div>
                                 </div>
                             </motion.div>
