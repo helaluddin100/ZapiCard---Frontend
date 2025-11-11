@@ -512,6 +512,14 @@ export default function HealthDashboardPage() {
                     >
                       <ExternalLink className="w-5 h-5" />
                     </Link>
+                    <Link
+                      href={`/health-dashboard/card/${card.id}/edit`}
+                      className="p-2 gradient-primary text-white rounded-full hover:shadow-lg transition-all"
+                      onClick={(e) => e.stopPropagation()}
+                      title="Edit Card"
+                    >
+                      <Edit2 className="w-5 h-5" />
+                    </Link>
                     <button
                       onClick={(e) => {
                         e.stopPropagation()
