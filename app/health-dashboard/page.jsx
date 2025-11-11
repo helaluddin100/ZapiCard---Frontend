@@ -559,113 +559,160 @@ export default function HealthDashboardPage() {
           {!loading && !error && healthCards.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {healthCards.map(card => (
-                <div
-                  key={card.id}
-                  className="group relative bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-lg transition-all cursor-pointer"
-                  onClick={() => setSelectedCard(card)}
-                >
-                  {/* Action Buttons on Hover */}
-                  <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all z-10">
-                    <Link
-                      href={`/health-card/${card.username}/${card.slug}`}
-                      target="_blank"
-                      className="p-2 gradient-primary text-white rounded-full hover:shadow-lg transition-all"
-                      onClick={(e) => e.stopPropagation()}
-                      title="View Public Page"
-                    >
-                      <ExternalLink className="w-5 h-5" />
-                    </Link>
-                    <Link
-                      href={`/health-dashboard/card/${card.id}/edit`}
-                      className="p-2 gradient-primary text-white rounded-full hover:shadow-lg transition-all"
-                      onClick={(e) => e.stopPropagation()}
-                      title="Edit Card"
-                    >
-                      <Edit2 className="w-5 h-5" />
-                    </Link>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        toggleCardEntries(card.id)
-                      }}
-                      className="p-2 gradient-primary text-white rounded-full hover:shadow-lg transition-all"
-                      title="View Entries"
-                    >
-                      <Eye className="w-5 h-5" />
-                    </button>
-                    <Link
-                      href={`/health-dashboard/card/${card.id}/entry`}
-                      className="p-2 gradient-primary text-white rounded-full hover:shadow-lg transition-all"
-                      onClick={(e) => e.stopPropagation()}
-                      title="Add New Entry"
-                    >
-                      <Plus className="w-5 h-5" />
-                    </Link>
-                  </div>
-
-                  {/* QR Code with Background Image */}
-                  <div className="mb-4 relative">
-                    <div className="w-24 h-24  mx-auto relative overflow-hidden shadow-lg">
-                      {/* Background Image */}
-                      {/* {card.person_photo ? (
-                        <img
-                          src={card.person_photo}
-                          alt={card.person_name}
-                          className="w-full h-full object-cover absolute inset-0 opacity-30"
-                        />
-                      ) : (
-                        <div className="w-full h-full gradient-primary absolute inset-0 opacity-30"></div>
-                      )} */}
-                      {/* QR Code Overlay */}
-                      {qrCodes[card.id] ? (
-                        <div className="relative w-full h-full flex items-center justify-center bg-white">
+                <div key={card.id} className="col-span-1">
+                  <div
+                    className="group relative rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all cursor-pointer transform hover:scale-[1.02]"
+                    onClick={() => setSelectedCard(card)}
+                    style={{
+                      aspectRatio: '3.5 / 2',
+                      minHeight: '280px'
+                    }}
+                  >
+                    {/* Background Image with Gradient Overlay */}
+                    <div className="absolute inset-0">
+                      {card.person_photo ? (
+                        <>
                           <img
-                            src={qrCodes[card.id]}
-                            alt="QR Code"
-                            className="w-full h-full object-contain p-1"
+                            src={card.person_photo}
+                            alt={card.person_name}
+                            className="w-full h-full object-cover"
                           />
-                        </div>
+                          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/80 via-purple-600/80 to-pink-600/80"></div>
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                        </>
                       ) : (
-                        <div className="relative w-full h-full flex items-center justify-center bg-white">
-                          <QrCodeIcon className="w-12 h-12 text-gray-400 animate-pulse" />
-                        </div>
+                        <div className="w-full h-full gradient-primary"></div>
                       )}
                     </div>
-                    {/* Download QR Code Button */}
-                    {qrCodes[card.id] && (
+
+                    {/* Action Buttons on Hover */}
+                    <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-all z-20">
+                      <Link
+                        href={`/health-card/${card.username}/${card.slug}`}
+                        target="_blank"
+                        className="p-2 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full hover:bg-white hover:shadow-lg transition-all"
+                        onClick={(e) => e.stopPropagation()}
+                        title="View Public Page"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                      </Link>
+                      <Link
+                        href={`/health-dashboard/card/${card.id}/edit`}
+                        className="p-2 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full hover:bg-white hover:shadow-lg transition-all"
+                        onClick={(e) => e.stopPropagation()}
+                        title="Edit Card"
+                      >
+                        <Edit2 className="w-4 h-4" />
+                      </Link>
                       <button
                         onClick={(e) => {
                           e.stopPropagation()
-                          downloadQRCode(card)
+                          toggleCardEntries(card.id)
                         }}
-                        className="mt-2 mx-auto flex items-center gap-1.5 px-3 py-1.5 text-xs gradient-primary text-white rounded-lg hover:shadow-lg transition-all opacity-0 group-hover:opacity-100"
-                        title="Download QR Code (High Resolution)"
+                        className="p-2 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full hover:bg-white hover:shadow-lg transition-all"
+                        title="View Entries"
                       >
-                        <Download className="w-3 h-3" />
-                        <span>Download QR</span>
+                        <Eye className="w-4 h-4" />
                       </button>
-                    )}
+                      <Link
+                        href={`/health-dashboard/card/${card.id}/entry`}
+                        className="p-2 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full hover:bg-white hover:shadow-lg transition-all"
+                        onClick={(e) => e.stopPropagation()}
+                        title="Add New Entry"
+                      >
+                        <Plus className="w-4 h-4" />
+                      </Link>
+                    </div>
+
+                    {/* Card Content */}
+                    <div className="relative h-full flex flex-col p-6 text-white z-10">
+                      {/* Top Section - Person Photo & QR Code */}
+                      <div className="flex items-start justify-between mb-4">
+                        {/* Person Photo */}
+                        <div className="flex-shrink-0">
+                          {card.person_photo ? (
+                            <div className="w-20 h-20 rounded-full border-4 border-white/90 shadow-xl overflow-hidden">
+                              <img
+                                src={card.person_photo}
+                                alt={card.person_name}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          ) : (
+                            <div className="w-20 h-20 rounded-full border-4 border-white/90 shadow-xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-white text-2xl font-bold">
+                              {card.person_name?.charAt(0) || 'H'}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* QR Code */}
+                        <div className="flex-shrink-0">
+                          {qrCodes[card.id] ? (
+                            <div className="w-20 h-20 rounded-lg bg-white p-1.5 shadow-xl">
+                              <img
+                                src={qrCodes[card.id]}
+                                alt="QR Code"
+                                className="w-full h-full object-contain"
+                              />
+                            </div>
+                          ) : (
+                            <div className="w-20 h-20 rounded-lg bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-xl">
+                              <QrCodeIcon className="w-10 h-10 text-gray-400 animate-pulse" />
+                            </div>
+                          )}
+                          {/* Download QR Button */}
+                          {qrCodes[card.id] && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                downloadQRCode(card)
+                              }}
+                              className="mt-1.5 w-full px-2 py-1 text-xs bg-white/90 backdrop-blur-sm text-gray-700 rounded-md hover:bg-white hover:shadow-md transition-all opacity-0 group-hover:opacity-100"
+                              title="Download QR Code"
+                            >
+                              <Download className="w-3 h-3 mx-auto" />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Middle Section - Person Name & Type */}
+                      <div className="flex-1 flex flex-col justify-center">
+                        <h3 className="text-2xl font-bold mb-2 drop-shadow-lg">{card.person_name}</h3>
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/30">
+                            {getCardTypeLabel(card.card_type)}
+                          </span>
+                          {card.blood_group && (
+                            <span className="px-3 py-1 bg-red-500/80 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/30">
+                              {card.blood_group}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Bottom Section - Stats & Info */}
+                      <div className="mt-auto pt-4 border-t border-white/20">
+                        <div className="flex items-center justify-between text-sm">
+                          <div className="flex items-center gap-2">
+                            <Activity className="w-4 h-4" />
+                            <span className="font-medium">
+                              {card.entries && card.entries.length > 0 ? card.entries.length : 0} {card.entries && card.entries.length === 1 ? 'Entry' : 'Entries'}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2 text-white/80">
+                            <Calendar className="w-4 h-4" />
+                            <span className="text-xs">{formatDate(card.created_at)}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
 
-                  {/* Card Info */}
-                  <div className="text-center">
-                    <h3 className="text-xl font-bold text-gray-900 mb-1">{card.person_name}</h3>
-                    <span className="inline-block px-3 py-1 bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 text-blue-700 border border-blue-200 text-sm font-semibold rounded-full mb-2">
-                      {getCardTypeLabel(card.card_type)}
-                    </span>
-                    <p className="text-sm text-gray-600">
-                      Created: {formatDate(card.created_at)}
-                    </p>
-                    {card.entries && card.entries.length > 0 && (
-                      <p className="text-sm text-gray-500 mt-1">
-                        {card.entries.length} {card.entries.length === 1 ? 'entry' : 'entries'}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Entries Accordion */}
+                  {/* Entries Accordion - Outside Card */}
                   {expandedCardId === card.id && (
-                    <div className="mt-4 pt-4 border-t border-gray-200">
+                    <div className="mt-4 bg-white rounded-xl p-4 shadow-md border border-gray-200">
                       <div className="flex items-center justify-between mb-3">
                         <h4 className="font-semibold text-gray-900">Health Entries</h4>
                         <button
@@ -868,7 +915,7 @@ export default function HealthDashboardPage() {
             </div>
           )}
         </div>
-      </DashboardLayout>
+      </DashboardLayout >
     </>
   )
 }
