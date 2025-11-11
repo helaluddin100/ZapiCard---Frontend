@@ -188,6 +188,17 @@ export default function AddEntryPage() {
       return
     }
 
+    // Prevent multiple simultaneous requests
+    if (ocrLoading) {
+      return
+    }
+
+    // Warn if too many images
+    if (formData.prescription_images.length > 5) {
+      showError('Too many images. Please upload maximum 5 images at once to avoid API quota limits.')
+      return
+    }
+
     try {
       setOcrLoading(true)
 
@@ -639,7 +650,7 @@ export default function AddEntryPage() {
                   className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#10b981] file:text-white hover:file:bg-[#059669]"
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  You can upload multiple images for multi-page prescriptions
+                  You can upload multiple images for multi-page prescriptions (max 5 images at once to avoid API quota limits)
                 </p>
                 {formData.prescription_images.length > 0 && (
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
