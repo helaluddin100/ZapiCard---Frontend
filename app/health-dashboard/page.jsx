@@ -24,6 +24,219 @@ export default function HealthDashboardPage() {
     loadHealthCards()
   }, [])
 
+  // Initialize chart when selectedCard changes
+  useEffect(() => {
+    if (!selectedCard || !selectedCard.entries || selectedCard.entries.length === 0) return
+
+    const initChart = () => {
+      if (typeof window === 'undefined' || typeof Chart === 'undefined') {
+        // Retry after a short delay if Chart.js is not loaded yet
+        setTimeout(initChart, 100)
+        return
+      }
+
+      const ctx = document.getElementById(`health-chart-${selectedCard.id}`)
+      if (!ctx) {
+        setTimeout(initChart, 100)
+        return
+      }
+
+      // Destroy existing chart if it exists
+      const chartKey = `healthChart_${selectedCard.id}`
+      if (window[chartKey]) {
+        window[chartKey].destroy()
+      }
+
+      const entries = selectedCard.entries
+
+      // Sort entries by date
+      const sortedEntries = [...entries].sort((a, b) => {
+        return new Date(a.entry_date || a.created_at) - new Date(b.entry_date || b.created_at)
+      })
+
+      // Prepare data
+      const labels = sortedEntries.map(e => {
+        const date = new Date(e.entry_date || e.created_at)
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        return date.getDate() + ' ' + months[date.getMonth()]
+      })
+
+      // Calculate severity score: medicines (weight: 3) + tests (weight: 2) + doctor visit (weight: 1)
+      const severityData = sortedEntries.map(e => {
+        const medicinesCount = (e.medicines && Array.isArray(e.medicines)) ? e.medicines.length : 0
+        const testsCount = (e.tests && Array.isArray(e.tests)) ? e.tests.length : 0
+        const hasDoctor = e.doctor_name ? 1 : 0
+        return (medicinesCount * 3) + (testsCount * 2) + hasDoctor
+      })
+
+      // Medicines count
+      const medicinesData = sortedEntries.map(e => {
+        return (e.medicines && Array.isArray(e.medicines)) ? e.medicines.length : 0
+      })
+
+      // Tests count
+      const testsData = sortedEntries.map(e => {
+        return (e.tests && Array.isArray(e.tests)) ? e.tests.length : 0
+      })
+
+      // Determine color based on severity
+      const backgroundColors = severityData.map(score => {
+        if (score >= 10) return 'rgba(239, 68, 68, 0.7)' // Red - High severity
+        if (score >= 5) return 'rgba(245, 158, 11, 0.7)' // Orange - Medium severity
+        if (score >= 1) return 'rgba(59, 130, 246, 0.7)' // Blue - Low severity
+        return 'rgba(156, 163, 175, 0.5)' // Gray - No data
+      })
+
+      const borderColors = severityData.map(score => {
+        if (score >= 10) return 'rgb(239, 68, 68)'
+        if (score >= 5) return 'rgb(245, 158, 11)'
+        if (score >= 1) return 'rgb(59, 130, 246)'
+        return 'rgb(156, 163, 175)'
+      })
+
+      window[chartKey] = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Severity Score',
+              data: severityData,
+              backgroundColor: backgroundColors,
+              borderColor: borderColors,
+              borderWidth: 2,
+              borderRadius: 6,
+              borderSkipped: false,
+            },
+            {
+              label: 'Medicines',
+              data: medicinesData,
+              type: 'line',
+              borderColor: 'rgb(139, 92, 246)',
+              backgroundColor: 'rgba(139, 92, 246, 0.1)',
+              tension: 0.4,
+              fill: false,
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              yAxisID: 'y1'
+            },
+            {
+              label: 'Tests',
+              data: testsData,
+              type: 'line',
+              borderColor: 'rgb(236, 72, 153)',
+              backgroundColor: 'rgba(236, 72, 153, 0.1)',
+              tension: 0.4,
+              fill: false,
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              yAxisID: 'y1'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              labels: {
+                usePointStyle: true,
+                padding: 15,
+                font: {
+                  size: 12
+                }
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  let label = context.dataset.label || ''
+                  if (label) {
+                    label += ': '
+                  }
+                  if (context.datasetIndex === 0) {
+                    const entry = sortedEntries[context.dataIndex]
+                    const medicinesCount = (entry.medicines && Array.isArray(entry.medicines)) ? entry.medicines.length : 0
+                    const testsCount = (entry.tests && Array.isArray(entry.tests)) ? entry.tests.length : 0
+                    label += context.parsed.y + ' (Medicines: ' + medicinesCount + ', Tests: ' + testsCount + ')'
+                  } else {
+                    label += context.parsed.y
+                  }
+                  return label
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Severity Score',
+                font: {
+                  size: 12,
+                  weight: 'bold'
+                }
+              },
+              ticks: {
+                stepSize: 1
+              }
+            },
+            y1: {
+              type: 'linear',
+              display: true,
+              position: 'right',
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Count (Medicines/Tests)',
+                font: {
+                  size: 12,
+                  weight: 'bold'
+                }
+              },
+              grid: {
+                drawOnChartArea: false,
+              },
+              ticks: {
+                stepSize: 1
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Date',
+                font: {
+                  size: 12,
+                  weight: 'bold'
+                }
+              }
+            }
+          }
+        }
+      })
+    }
+
+    // Start initialization
+    initChart()
+
+    // Cleanup function
+    return () => {
+      const chartKey = `healthChart_${selectedCard.id}`
+      if (window[chartKey]) {
+        window[chartKey].destroy()
+        delete window[chartKey]
+      }
+    }
+  }, [selectedCard])
+
   const loadHealthCards = async () => {
     try {
       setLoading(true)
@@ -121,7 +334,14 @@ export default function HealthDashboardPage() {
 
   return (
     <>
-      <Script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" strategy="lazyOnload" />
+      <Script
+        src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"
+        strategy="afterInteractive"
+        onLoad={() => {
+          // Chart.js loaded, charts will initialize via useEffect
+          console.log('Chart.js loaded')
+        }}
+      />
       <DashboardLayout>
         <div className="space-y-6">
           {/* Header */}
@@ -356,11 +576,12 @@ export default function HealthDashboardPage() {
                 </div>
               )}
 
-              {/* Line Chart */}
+              {/* Health Timeline Chart */}
               {selectedCard.entries && selectedCard.entries.length > 0 && (
                 <div className="bg-gray-50 rounded-xl p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Entries Over Time</h3>
-                  <canvas id={`chart-${selectedCard.id}`} height="100"></canvas>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Health Timeline & Sickness Indicator</h3>
+                  <p className="text-sm text-gray-600 mb-4">Shows health entries with severity based on medicines and tests</p>
+                  <canvas id={`health-chart-${selectedCard.id}`} height="120"></canvas>
                 </div>
               )}
 
@@ -403,61 +624,6 @@ export default function HealthDashboardPage() {
           )}
         </div>
       </DashboardLayout>
-      {selectedCard && selectedCard.entries && selectedCard.entries.length > 0 && (
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.addEventListener('load', function() {
-                if (typeof Chart !== 'undefined') {
-                  const ctx = document.getElementById('chart-${selectedCard.id}');
-                  if (ctx) {
-                    const entries = ${JSON.stringify(selectedCard.entries)};
-                    const labels = entries.map(e => {
-                      const date = new Date(e.created_at);
-                      const months = ['January', 'February', 'March', 'April', 'May', 'June', 
-                                     'July', 'August', 'September', 'October', 'November', 'December'];
-                      return date.getDate() + ' ' + months[date.getMonth()];
-                    });
-                    const data = entries.map((e, i) => i + 1);
-                    
-                    new Chart(ctx, {
-                      type: 'line',
-                      data: {
-                        labels: labels,
-                        datasets: [{
-                          label: 'Entries',
-                          data: data,
-                          borderColor: 'rgb(139, 92, 246)',
-                          backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                          tension: 0.4,
-                          fill: true
-                        }]
-                      },
-                      options: {
-                        responsive: true,
-                        maintainAspectRatio: true,
-                        plugins: {
-                          legend: {
-                            display: false
-                          }
-                        },
-                        scales: {
-                          y: {
-                            beginAtZero: true,
-                            ticks: {
-                              stepSize: 1
-                            }
-                          }
-                        }
-                      }
-                    });
-                  }
-                }
-              });
-            `
-          }}
-        />
-      )}
     </>
   )
 }
