@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Script from 'next/script'
 import DashboardLayout from '@/components/DashboardLayout'
-import { Plus, Calendar, FileText, Activity, User, Clock, Stethoscope, Pill, TestTube, AlertCircle } from 'lucide-react'
+import { Plus, Calendar, FileText, Activity, User, Clock, Stethoscope, Pill, TestTube, AlertCircle, ChevronDown, ChevronUp, Edit2, Eye } from 'lucide-react'
 import { healthCardAPI } from '@/lib/api'
 import { useToast } from '@/lib/toast'
 
@@ -14,6 +14,8 @@ export default function HealthDashboardPage() {
   const [selectedCard, setSelectedCard] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [expandedCardId, setExpandedCardId] = useState(null)
+  const [cardEntries, setCardEntries] = useState({})
   const [stats, setStats] = useState({
     totalCards: 0,
     totalEntries: 0,
@@ -332,6 +334,29 @@ export default function HealthDashboardPage() {
     }
   }
 
+  const toggleCardEntries = async (cardId) => {
+    if (expandedCardId === cardId) {
+      setExpandedCardId(null)
+    } else {
+      setExpandedCardId(cardId)
+      // Load entries if not already loaded
+      if (!cardEntries[cardId]) {
+        try {
+          const response = await healthCardAPI.getEntries(cardId)
+          if (response.status === 'success') {
+            setCardEntries(prev => ({
+              ...prev,
+              [cardId]: response.data || []
+            }))
+          }
+        } catch (error) {
+          console.error('Error loading entries:', error)
+          showError('Failed to load entries')
+        }
+      }
+    }
+  }
+
   return (
     <>
       <Script
@@ -476,14 +501,27 @@ export default function HealthDashboardPage() {
                   className="group relative bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-lg transition-all cursor-pointer"
                   onClick={() => setSelectedCard(card)}
                 >
-                  {/* Add Entry Button on Hover */}
-                  <Link
-                    href={`/health-dashboard/card/${card.id}/entry`}
-                    className="absolute top-4 right-4 p-2 gradient-primary text-white rounded-full opacity-0 group-hover:opacity-100 transition-all hover:shadow-lg z-10"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Plus className="w-5 h-5" />
-                  </Link>
+                  {/* Action Buttons on Hover */}
+                  <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all z-10">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        toggleCardEntries(card.id)
+                      }}
+                      className="p-2 gradient-primary text-white rounded-full hover:shadow-lg transition-all"
+                      title="View Entries"
+                    >
+                      <Eye className="w-5 h-5" />
+                    </button>
+                    <Link
+                      href={`/health-dashboard/card/${card.id}/entry`}
+                      className="p-2 gradient-primary text-white rounded-full hover:shadow-lg transition-all"
+                      onClick={(e) => e.stopPropagation()}
+                      title="Add New Entry"
+                    >
+                      <Plus className="w-5 h-5" />
+                    </Link>
+                  </div>
 
                   {/* Person Photo */}
                   <div className="mb-4">
@@ -511,7 +549,107 @@ export default function HealthDashboardPage() {
                     <p className="text-sm text-gray-600">
                       Created: {formatDate(card.created_at)}
                     </p>
+                    {card.entries && card.entries.length > 0 && (
+                      <p className="text-sm text-gray-500 mt-1">
+                        {card.entries.length} {card.entries.length === 1 ? 'entry' : 'entries'}
+                      </p>
+                    )}
                   </div>
+
+                  {/* Entries Accordion */}
+                  {expandedCardId === card.id && (
+                    <div className="mt-4 pt-4 border-t border-gray-200">
+                      <div className="flex items-center justify-between mb-3">
+                        <h4 className="font-semibold text-gray-900">Health Entries</h4>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            toggleCardEntries(card.id)
+                          }}
+                          className="text-gray-500 hover:text-gray-700"
+                        >
+                          {expandedCardId === card.id ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                        </button>
+                      </div>
+                      <div className="space-y-3 max-h-96 overflow-y-auto">
+                        {cardEntries[card.id] && cardEntries[card.id].length > 0 ? (
+                          cardEntries[card.id].map((entry, index) => (
+                            <div
+                              key={entry.id || index}
+                              className="border border-gray-200 rounded-lg p-4 bg-gray-50 hover:bg-gray-100 transition"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <div className="flex items-start justify-between mb-2">
+                                <div>
+                                  <p className="font-semibold text-gray-900">
+                                    Entry Date: {formatDate(entry.entry_date || entry.created_at)}
+                                  </p>
+                                  {entry.doctor_name && (
+                                    <p className="text-sm text-gray-600">
+                                      Dr. {entry.doctor_name}
+                                      {entry.doctor_specialty && ` - ${entry.doctor_specialty}`}
+                                    </p>
+                                  )}
+                                </div>
+                                <Link
+                                  href={`/health-dashboard/card/${card.id}/entry/${entry.id}/edit`}
+                                  className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <Edit2 className="w-4 h-4" />
+                                </Link>
+                              </div>
+
+                              {/* Medicines */}
+                              {entry.medicines && entry.medicines.length > 0 && (
+                                <div className="mt-2">
+                                  <p className="text-xs font-semibold text-gray-700 mb-1">Medicines ({entry.medicines.length}):</p>
+                                  <div className="flex flex-wrap gap-1">
+                                    {entry.medicines.slice(0, 3).map((med, idx) => (
+                                      <span key={idx} className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded">
+                                        {med.name}
+                                      </span>
+                                    ))}
+                                    {entry.medicines.length > 3 && (
+                                      <span className="text-xs text-gray-500">+{entry.medicines.length - 3} more</span>
+                                    )}
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Tests */}
+                              {entry.tests && entry.tests.length > 0 && (
+                                <div className="mt-2">
+                                  <p className="text-xs font-semibold text-gray-700 mb-1">Tests ({entry.tests.length}):</p>
+                                  <div className="flex flex-wrap gap-1">
+                                    {entry.tests.slice(0, 3).map((test, idx) => (
+                                      <span key={idx} className="text-xs bg-pink-100 text-pink-700 px-2 py-0.5 rounded">
+                                        {test.name}
+                                      </span>
+                                    ))}
+                                    {entry.tests.length > 3 && (
+                                      <span className="text-xs text-gray-500">+{entry.tests.length - 3} more</span>
+                                    )}
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Prescription Images */}
+                              {entry.prescription_image && (
+                                <div className="mt-2">
+                                  <p className="text-xs font-semibold text-gray-700">Prescription Available</p>
+                                </div>
+                              )}
+                            </div>
+                          ))
+                        ) : (
+                          <div className="text-center py-4 text-gray-500 text-sm">
+                            No entries found. Click + to add an entry.
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
