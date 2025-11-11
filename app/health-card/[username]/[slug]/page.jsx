@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Script from 'next/script'
-import { Download, Share2, ChevronDown, ChevronUp, Calendar, Stethoscope, TestTube, Pill, Utensils, Sun, Moon, Clock, Phone, Droplet, AlertTriangle } from 'lucide-react'
+import { Download, Share2, ChevronDown, ChevronUp, Calendar, Stethoscope, TestTube, Pill, Utensils, Sun, Moon, Clock, Phone, Droplet, AlertTriangle, User, MapPin, Building2 } from 'lucide-react'
 
 export default function PublicHealthCardPage() {
   const params = useParams()
@@ -21,8 +21,8 @@ export default function PublicHealthCardPage() {
     try {
       setLoading(true)
       const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
-      
-      const response = await fetch(`${apiBase}/api/health-cards/public/${username}/${slug}`, {
+
+      const response = await fetch(`${apiBase}/health-cards/public/${username}/${slug}`, {
         headers: {
           'Accept': 'application/json'
         }
@@ -52,12 +52,22 @@ export default function PublicHealthCardPage() {
     }))
   }
 
-  const formatBanglaDate = (dateString) => {
+  const formatDate = (dateString) => {
     if (!dateString) return ''
     const date = new Date(dateString)
-    const months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 
-                   'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর']
+    const months = ['January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December']
     return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
+  }
+
+  const getCardTypeLabel = (type) => {
+    const types = {
+      'pregnant': 'Pregnant',
+      'child': 'Child',
+      'adult': 'Adult',
+      'senior': 'Senior'
+    }
+    return types[type] || type
   }
 
   const calculatePregnancyWeeks = (expectedDeliveryDate) => {
@@ -116,10 +126,10 @@ END:VCARD`
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#10b981] mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading health card...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 font-medium">Loading health card...</p>
         </div>
       </div>
     )
@@ -130,7 +140,7 @@ END:VCARD`
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Health Card Not Found</h1>
-          <p className="text-gray-600">The health card you're looking for doesn't exist.</p>
+          <p className="text-gray-600">The health card you&apos;re looking for doesn&apos;t exist.</p>
         </div>
       </div>
     )
@@ -144,23 +154,24 @@ END:VCARD`
     <>
       <Script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer />
       <Script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js" onLoad={generateQRCode} />
-      
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
-        <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
+
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+        <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
           {/* Header Actions */}
-          <div className="flex items-center justify-between">
-            <button
-              onClick={downloadVCard}
-              className="flex items-center gap-2 px-4 py-2 bg-[#10b981] text-white rounded-lg hover:bg-[#059669] transition shadow-lg"
-            >
-              <Download className="w-4 h-4" />
-              Save Contact
-            </button>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <h1 className="text-2xl font-bold gradient-primary bg-clip-text text-transparent">Health Card</h1>
             <div className="flex items-center gap-3">
               <div id="qr-code-container" className="hidden print:block"></div>
               <button
+                onClick={downloadVCard}
+                className="flex items-center gap-2 px-4 py-2 gradient-primary text-white rounded-lg hover:shadow-lg transition shadow-md"
+              >
+                <Download className="w-4 h-4" />
+                Save Contact
+              </button>
+              <button
                 onClick={shareWhatsApp}
-                className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition shadow-lg"
+                className="flex items-center gap-2 px-4 py-2 gradient-primary text-white rounded-lg hover:shadow-lg transition shadow-md"
               >
                 <Share2 className="w-4 h-4" />
                 Share
@@ -169,54 +180,79 @@ END:VCARD`
           </div>
 
           {/* Main Card */}
-          <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-8 space-y-6">
+          <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8 space-y-8">
             {/* Person Info */}
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
               <div className="flex-shrink-0">
                 {cardData.person_photo ? (
-                  <img
-                    src={cardData.person_photo}
-                    alt={cardData.person_name}
-                    className="w-32 h-32 rounded-full object-cover border-4 border-[#10b981] shadow-lg"
-                  />
+                  <div className="w-40 h-40 rounded-full mx-auto p-1 gradient-primary">
+                    <img
+                      src={cardData.person_photo}
+                      alt={cardData.person_name}
+                      className="w-full h-full rounded-full object-cover"
+                    />
+                  </div>
                 ) : (
-                  <div className="w-32 h-32 rounded-full bg-[#10b981] flex items-center justify-center text-white text-4xl font-bold shadow-lg">
+                  <div className="w-40 h-40 rounded-full gradient-primary mx-auto flex items-center justify-center text-white text-5xl font-bold shadow-xl">
                     {cardData.person_name?.charAt(0) || 'H'}
                   </div>
                 )}
               </div>
-              <div className="flex-1 text-center md:text-left">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">{cardData.person_name}</h1>
-                <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-sm text-gray-600">
+              <div className="flex-1 text-center md:text-left space-y-4">
+                <div>
+                  <h1 className="text-4xl font-bold text-gray-900 mb-2">{cardData.person_name}</h1>
+                  <span className="inline-block px-4 py-1.5 bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 text-blue-700 border border-blue-200 text-sm font-semibold rounded-full">
+                    {getCardTypeLabel(cardData.card_type)}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
                   {cardData.blood_group && (
-                    <div className="flex items-center gap-1">
-                      <Droplet className="w-4 h-4 text-red-500" />
-                      <span>Blood Group: {cardData.blood_group}</span>
+                    <div className="flex items-center gap-2 p-3 bg-red-50 rounded-lg border border-red-100">
+                      <Droplet className="w-5 h-5 text-red-600" />
+                      <div>
+                        <div className="text-xs text-gray-500">Blood Group</div>
+                        <div className="font-semibold text-gray-900">{cardData.blood_group}</div>
+                      </div>
                     </div>
                   )}
                   {cardData.gender && (
-                    <div className="flex items-center gap-1">
-                      <span className="capitalize">{cardData.gender}</span>
+                    <div className="flex items-center gap-2 p-3 bg-blue-50 rounded-lg border border-blue-100">
+                      <User className="w-5 h-5 text-blue-600" />
+                      <div>
+                        <div className="text-xs text-gray-500">Gender</div>
+                        <div className="font-semibold text-gray-900 capitalize">{cardData.gender}</div>
+                      </div>
                     </div>
                   )}
                   {cardData.date_of_birth && (
-                    <div className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      <span>DOB: {formatBanglaDate(cardData.date_of_birth)}</span>
+                    <div className="flex items-center gap-2 p-3 bg-purple-50 rounded-lg border border-purple-100">
+                      <Calendar className="w-5 h-5 text-purple-600" />
+                      <div>
+                        <div className="text-xs text-gray-500">Date of Birth</div>
+                        <div className="font-semibold text-gray-900">{formatDate(cardData.date_of_birth)}</div>
+                      </div>
+                    </div>
+                  )}
+                  {cardData.emergency_contact && (
+                    <div className="flex items-center gap-2 p-3 bg-green-50 rounded-lg border border-green-100">
+                      <Phone className="w-5 h-5 text-green-600" />
+                      <div>
+                        <div className="text-xs text-gray-500">Emergency Contact</div>
+                        <div className="font-semibold text-gray-900">{cardData.emergency_contact}</div>
+                      </div>
                     </div>
                   )}
                 </div>
-                {cardData.emergency_contact && (
-                  <div className="mt-3 flex items-center justify-center md:justify-start gap-2 text-gray-700">
-                    <Phone className="w-4 h-4" />
-                    <span>{cardData.emergency_contact}</span>
-                  </div>
-                )}
+
                 {cardData.allergies && (
-                  <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg">
-                    <div className="flex items-center gap-2 text-red-700 font-medium">
-                      <AlertTriangle className="w-4 h-4" />
-                      <span>Allergies: {cardData.allergies}</span>
+                  <div className="mt-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-lg">
+                    <div className="flex items-start gap-3">
+                      <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <div className="text-sm font-semibold text-red-900 mb-1">Allergies</div>
+                        <div className="text-red-700">{cardData.allergies}</div>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -225,32 +261,45 @@ END:VCARD`
 
             {/* Pregnancy Progress */}
             {pregnancyWeeks !== null && (
-              <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-xl p-6 border border-pink-200">
+              <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-xl p-8 border border-pink-200">
+                <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">Pregnancy Progress</h3>
                 <div className="flex items-center justify-center">
-                  <div className="relative w-48 h-48">
-                    <svg className="transform -rotate-90 w-48 h-48">
+                  <div className="relative w-56 h-56">
+                    <svg className="transform -rotate-90 w-56 h-56">
+                      <defs>
+                        <linearGradient id="pregnancyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#3b82f6" />
+                          <stop offset="50%" stopColor="#a855f7" />
+                          <stop offset="100%" stopColor="#ec4899" />
+                        </linearGradient>
+                      </defs>
                       <circle
-                        cx="96"
-                        cy="96"
-                        r="88"
+                        cx="112"
+                        cy="112"
+                        r="100"
                         stroke="#e5e7eb"
-                        strokeWidth="16"
+                        strokeWidth="18"
                         fill="none"
                       />
                       <circle
-                        cx="96"
-                        cy="96"
-                        r="88"
-                        stroke="#10b981"
-                        strokeWidth="16"
+                        cx="112"
+                        cy="112"
+                        r="100"
+                        stroke="url(#pregnancyGradient)"
+                        strokeWidth="18"
                         fill="none"
-                        strokeDasharray={`${(pregnancyWeeks / 40) * 552} 552`}
+                        strokeDasharray={`${(pregnancyWeeks / 40) * 628} 628`}
                       />
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-center">
-                        <p className="text-4xl font-bold text-[#10b981]">Week {pregnancyWeeks}</p>
-                        <p className="text-sm text-gray-600">of 40 weeks</p>
+                        <p className="text-5xl font-bold gradient-primary bg-clip-text text-transparent">{pregnancyWeeks}</p>
+                        <p className="text-sm text-gray-600 mt-1">of 40 weeks</p>
+                        {cardData.expected_delivery_date && (
+                          <p className="text-xs text-gray-500 mt-2">
+                            EDD: {formatDate(cardData.expected_delivery_date)}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -260,69 +309,101 @@ END:VCARD`
 
             {/* Timeline */}
             {cardData.entries && cardData.entries.length > 0 && (
-              <div className="space-y-4">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Health Timeline</h2>
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-3xl font-bold text-gray-900">Health Timeline</h2>
+                  <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">
+                    {cardData.entries.length} {cardData.entries.length === 1 ? 'Entry' : 'Entries'}
+                  </span>
+                </div>
                 {cardData.entries.map((entry, index) => (
                   <div
                     key={entry.id}
-                    className="border border-gray-200 rounded-xl overflow-hidden bg-white"
+                    className="border-2 border-gray-200 rounded-xl overflow-hidden bg-white hover:border-blue-300 transition-all shadow-sm hover:shadow-md"
                   >
                     <button
                       onClick={() => toggleEntry(entry.id)}
-                      className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition"
+                      className="w-full px-6 py-5 flex items-center justify-between hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="flex-shrink-0 w-12 h-12 bg-[#10b981] rounded-full flex items-center justify-center text-white font-bold">
+                        <div className="flex-shrink-0 w-14 h-14 gradient-primary rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
                           {index + 1}
                         </div>
                         <div className="text-left">
-                          <div className="font-semibold text-gray-900">
-                            {formatBanglaDate(entry.entry_date)}
+                          <div className="font-bold text-lg text-gray-900 mb-1">
+                            {formatDate(entry.entry_date || entry.created_at)}
                           </div>
                           {entry.doctor_name && (
-                            <div className="text-sm text-gray-600 flex items-center gap-1">
-                              <Stethoscope className="w-3 h-3" />
-                              {entry.doctor_name}
-                              {entry.doctor_specialty && ` - ${entry.doctor_specialty}`}
+                            <div className="text-sm text-gray-600 flex items-center gap-2">
+                              <Stethoscope className="w-4 h-4 text-blue-600" />
+                              <span className="font-medium">{entry.doctor_name}</span>
+                              {entry.doctor_specialty && (
+                                <span className="text-gray-500">- {entry.doctor_specialty}</span>
+                              )}
+                            </div>
+                          )}
+                          {entry.doctor_hospital && (
+                            <div className="text-xs text-gray-500 flex items-center gap-1 mt-1">
+                              <Building2 className="w-3 h-3" />
+                              {entry.doctor_hospital}
+                            </div>
+                          )}
+                          {entry.doctor_phone && (
+                            <div className="text-xs text-gray-500 flex items-center gap-1 mt-1">
+                              <Phone className="w-3 h-3" />
+                              {entry.doctor_phone}
                             </div>
                           )}
                         </div>
                       </div>
                       {expandedEntries[entry.id] ? (
-                        <ChevronUp className="w-5 h-5 text-gray-400" />
+                        <ChevronUp className="w-6 h-6 text-gray-400" />
                       ) : (
-                        <ChevronDown className="w-5 h-5 text-gray-400" />
+                        <ChevronDown className="w-6 h-6 text-gray-400" />
                       )}
                     </button>
 
                     {expandedEntries[entry.id] && (
-                      <div className="px-6 py-4 border-t border-gray-200 space-y-4 bg-gray-50">
+                      <div className="px-6 py-6 border-t border-gray-200 space-y-6 bg-gradient-to-br from-gray-50 to-blue-50">
                         {/* Tests */}
                         {entry.tests && entry.tests.length > 0 && (
-                          <div>
-                            <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                              <TestTube className="w-4 h-4 text-[#10b981]" />
-                              Tests
+                          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm">
+                            <h4 className="font-bold text-lg text-gray-900 mb-4 flex items-center gap-2">
+                              <TestTube className="w-5 h-5 text-purple-600" />
+                              Tests ({entry.tests.length})
                             </h4>
-                            <div className="space-y-2">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                               {entry.tests.map((test, testIndex) => (
-                                <div key={testIndex} className="bg-white p-3 rounded-lg border border-gray-200">
-                                  <div className="font-medium text-gray-900">{test.name}</div>
+                                <div key={testIndex} className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                                  <div className="font-semibold text-gray-900 mb-1">{test.name}</div>
                                   {test.result && (
-                                    <div className="text-sm text-gray-600 mt-1">Result: {test.result}</div>
+                                    <div className="text-sm text-gray-700 mt-2 p-2 bg-white rounded border border-purple-100">
+                                      <span className="font-medium">Result: </span>
+                                      {test.result}
+                                    </div>
                                   )}
                                 </div>
                               ))}
                             </div>
-                            {entry.test_report_images && entry.test_report_images.length > 0 && (
-                              <div className="grid grid-cols-4 gap-2 mt-3">
+                            {entry.test_report_image && (
+                              <div className="mt-4">
+                                <img
+                                  src={entry.test_report_image}
+                                  alt="Test report"
+                                  onClick={() => setLightboxImage(entry.test_report_image)}
+                                  className="max-w-full rounded-lg border-2 border-purple-200 cursor-pointer hover:opacity-80 transition shadow-sm"
+                                />
+                              </div>
+                            )}
+                            {entry.test_report_images && Array.isArray(entry.test_report_images) && entry.test_report_images.length > 0 && (
+                              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
                                 {entry.test_report_images.map((img, imgIndex) => (
                                   <img
                                     key={imgIndex}
                                     src={img}
                                     alt={`Test report ${imgIndex + 1}`}
                                     onClick={() => setLightboxImage(img)}
-                                    className="w-full h-20 object-cover rounded-lg border border-gray-200 cursor-pointer hover:opacity-80 transition"
+                                    className="w-full h-32 object-cover rounded-lg border-2 border-purple-200 cursor-pointer hover:opacity-80 transition shadow-sm"
                                   />
                                 ))}
                               </div>
@@ -332,35 +413,45 @@ END:VCARD`
 
                         {/* Medicines */}
                         {entry.medicines && entry.medicines.length > 0 && (
-                          <div>
-                            <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                              <Pill className="w-4 h-4 text-[#10b981]" />
-                              Medicines
+                          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm">
+                            <h4 className="font-bold text-lg text-gray-900 mb-4 flex items-center gap-2">
+                              <Pill className="w-5 h-5 text-pink-600" />
+                              Medicines ({entry.medicines.length})
                             </h4>
-                            <div className="space-y-2">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               {entry.medicines.map((medicine, medIndex) => (
-                                <div key={medIndex} className="bg-white p-3 rounded-lg border border-gray-200">
-                                  <div className="font-medium text-gray-900">{medicine.name}</div>
-                                  <div className="text-sm text-gray-600 mt-1">
-                                    {medicine.dosage && <span>Dosage: {medicine.dosage}</span>}
-                                    {medicine.duration && <span className="ml-3">Duration: {medicine.duration}</span>}
+                                <div key={medIndex} className="bg-pink-50 p-4 rounded-lg border border-pink-200">
+                                  <div className="font-bold text-gray-900 mb-2">{medicine.name}</div>
+                                  <div className="space-y-1 text-sm">
+                                    {medicine.dosage && (
+                                      <div className="text-gray-700">
+                                        <span className="font-medium">Dosage: </span>
+                                        {medicine.dosage}
+                                      </div>
+                                    )}
+                                    {medicine.duration && (
+                                      <div className="text-gray-700">
+                                        <span className="font-medium">Duration: </span>
+                                        {medicine.duration}
+                                      </div>
+                                    )}
                                   </div>
                                   {medicine.timing && medicine.timing.length > 0 && (
-                                    <div className="flex gap-2 mt-2">
+                                    <div className="flex flex-wrap gap-2 mt-3">
                                       {medicine.timing.includes('morning') && (
-                                        <span className="flex items-center gap-1 px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs">
+                                        <span className="flex items-center gap-1 px-3 py-1.5 bg-yellow-100 text-yellow-800 rounded-lg text-xs font-semibold shadow-sm">
                                           <Sun className="w-3 h-3" />
                                           Morning
                                         </span>
                                       )}
                                       {medicine.timing.includes('noon') && (
-                                        <span className="flex items-center gap-1 px-2 py-1 bg-orange-100 text-orange-800 rounded text-xs">
+                                        <span className="flex items-center gap-1 px-3 py-1.5 bg-orange-100 text-orange-800 rounded-lg text-xs font-semibold shadow-sm">
                                           <Clock className="w-3 h-3" />
                                           Noon
                                         </span>
                                       )}
                                       {medicine.timing.includes('night') && (
-                                        <span className="flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
+                                        <span className="flex items-center gap-1 px-3 py-1.5 bg-blue-100 text-blue-800 rounded-lg text-xs font-semibold shadow-sm">
                                           <Moon className="w-3 h-3" />
                                           Night
                                         </span>
@@ -375,18 +466,19 @@ END:VCARD`
 
                         {/* Diet Schedule */}
                         {entry.diet_routine && entry.diet_routine.length > 0 && (
-                          <div>
-                            <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                              <Utensils className="w-4 h-4 text-[#10b981]" />
-                              Diet Schedule
+                          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm">
+                            <h4 className="font-bold text-lg text-gray-900 mb-4 flex items-center gap-2">
+                              <Utensils className="w-5 h-5 text-orange-600" />
+                              Diet Schedule ({entry.diet_routine.length})
                             </h4>
-                            <div className="space-y-2">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                               {entry.diet_routine.map((diet, dietIndex) => (
-                                <div key={dietIndex} className="bg-white p-3 rounded-lg border border-gray-200 flex items-center gap-3">
-                                  <Clock className="w-4 h-4 text-gray-400" />
-                                  <span className="font-medium text-gray-700">{diet.time}</span>
-                                  <span className="text-gray-600">-</span>
-                                  <span className="text-gray-900">{diet.food}</span>
+                                <div key={dietIndex} className="bg-orange-50 p-4 rounded-lg border border-orange-200 flex items-start gap-3">
+                                  <Clock className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+                                  <div className="flex-1">
+                                    <div className="font-semibold text-gray-900 mb-1">{diet.time}</div>
+                                    <div className="text-gray-700">{diet.food}</div>
+                                  </div>
                                 </div>
                               ))}
                             </div>
@@ -395,9 +487,12 @@ END:VCARD`
 
                         {/* Recommendations */}
                         {entry.recommendations && (
-                          <div>
-                            <h4 className="font-semibold text-gray-900 mb-2">Notes</h4>
-                            <div className="bg-white p-3 rounded-lg border border-gray-200 text-gray-700">
+                          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm">
+                            <h4 className="font-bold text-lg text-gray-900 mb-3 flex items-center gap-2">
+                              <Stethoscope className="w-5 h-5 text-blue-600" />
+                              Doctor&apos;s Notes & Recommendations
+                            </h4>
+                            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 text-gray-700 whitespace-pre-wrap">
                               {entry.recommendations}
                             </div>
                           </div>
@@ -405,13 +500,13 @@ END:VCARD`
 
                         {/* Prescription */}
                         {entry.prescription_image && (
-                          <div>
-                            <h4 className="font-semibold text-gray-900 mb-2">Prescription</h4>
+                          <div className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm">
+                            <h4 className="font-bold text-lg text-gray-900 mb-4">Prescription</h4>
                             <img
                               src={entry.prescription_image}
                               alt="Prescription"
                               onClick={() => setLightboxImage(entry.prescription_image)}
-                              className="max-w-full rounded-lg border border-gray-200 cursor-pointer hover:opacity-80 transition"
+                              className="max-w-full rounded-lg border-2 border-gray-200 cursor-pointer hover:opacity-80 transition shadow-sm"
                             />
                           </div>
                         )}
@@ -427,7 +522,7 @@ END:VCARD`
         {/* Floating WhatsApp Button */}
         <button
           onClick={shareWhatsApp}
-          className="fixed bottom-6 right-6 w-14 h-14 bg-green-500 text-white rounded-full shadow-lg hover:bg-green-600 transition flex items-center justify-center z-50 print:hidden"
+          className="fixed bottom-6 right-6 w-14 h-14 gradient-primary text-white rounded-full shadow-xl hover:shadow-2xl transition flex items-center justify-center z-50 print:hidden"
         >
           <Share2 className="w-6 h-6" />
         </button>
