@@ -73,7 +73,7 @@ export default function Header() {
                             </Link>
                         ))}
 
-                        {/* Theme Toggle */}
+                        {/* Theme Toggle - Single instance */}
                         <ThemeToggle />
 
                         {!loading && (
@@ -146,7 +146,6 @@ export default function Header() {
                                                 initial={false}
                                             />
                                         </Link>
-                                        <ThemeToggle />
                                     </>
                                 )}
                             </>
