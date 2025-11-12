@@ -409,21 +409,21 @@ export default function AppointmentsPage() {
         const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
         return (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                 {/* Calendar Header */}
                 <div className="flex items-center justify-between mb-6">
                     <button
                         onClick={() => navigateMonth('prev')}
-                        className="p-2 rounded-lg hover:bg-gray-100 transition"
+                        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-300"
                     >
                         <ChevronLeft className="w-5 h-5" />
                     </button>
-                    <h2 className="text-2xl font-bold text-gray-900">
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                         {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
                     </h2>
                     <button
                         onClick={() => navigateMonth('next')}
-                        className="p-2 rounded-lg hover:bg-gray-100 transition"
+                        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-300"
                     >
                         <ChevronRight className="w-5 h-5" />
                     </button>
@@ -432,7 +432,7 @@ export default function AppointmentsPage() {
                 {/* Calendar Grid */}
                 <div className="grid grid-cols-7 gap-2 mb-4">
                     {weekDays.map(day => (
-                        <div key={day} className="text-center font-semibold text-gray-700 py-2">
+                        <div key={day} className="text-center font-semibold text-gray-700 dark:text-gray-300 py-2">
                             {day}
                         </div>
                     ))}
@@ -451,9 +451,9 @@ export default function AppointmentsPage() {
                                 key={index}
                                 className={`
                                     min-h-[100px] border rounded-lg p-2
-                                    ${date ? 'bg-white hover:bg-gray-50 cursor-pointer' : 'bg-gray-50'}
-                                    ${isToday ? 'border-blue-500 border-2' : 'border-gray-200'}
-                                    ${isSelected ? 'ring-2 ring-blue-300' : ''}
+                                    ${date ? 'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer' : 'bg-gray-50 dark:bg-gray-700/50'}
+                                    ${isToday ? 'border-blue-500 dark:border-blue-400 border-2' : 'border-gray-200 dark:border-gray-600'}
+                                    ${isSelected ? 'ring-2 ring-blue-300 dark:ring-blue-600' : ''}
                                     transition
                                 `}
                                 onClick={() => date && setSelectedDate(date)}
@@ -462,7 +462,7 @@ export default function AppointmentsPage() {
                                     <>
                                         <div className={`
                                             text-sm font-medium mb-1
-                                            ${isToday ? 'text-blue-600' : 'text-gray-900'}
+                                            ${isToday ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-gray-100'}
                                         `}>
                                             {date.getDate()}
                                         </div>
@@ -470,17 +470,17 @@ export default function AppointmentsPage() {
                                             {timeSlots.slice(0, 3).map((slot, slotIndex) => (
                                                 <div
                                                     key={slotIndex}
-                                                    className="text-xs bg-blue-50 text-blue-700 px-1 py-0.5 rounded truncate"
+                                                    className="text-xs bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-1 py-0.5 rounded truncate"
                                                     title={`${slot.locationName}: ${slot.start || slot.start_time} - ${slot.end || slot.end_time}`}
                                                 >
                                                     <div className="font-medium truncate">{slot.locationName}</div>
-                                                    <div className="text-blue-600">
+                                                    <div className="text-blue-600 dark:text-blue-400">
                                                         {slot.start || slot.start_time} - {slot.end || slot.end_time}
                                                     </div>
                                                 </div>
                                             ))}
                                             {timeSlots.length > 3 && (
-                                                <div className="text-xs text-gray-500 font-medium">
+                                                <div className="text-xs text-gray-500 dark:text-gray-400 font-medium">
                                                     +{timeSlots.length - 3} more
                                                 </div>
                                             )}
@@ -494,8 +494,8 @@ export default function AppointmentsPage() {
 
                 {/* Selected Date Details */}
                 {selectedDate && (
-                    <div className="mt-6 pt-6 border-t border-gray-200">
-                        <h3 className="text-lg font-bold text-gray-900 mb-4">
+                    <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">
                             {getDayName(selectedDate)}, {selectedDate.toLocaleDateString('en-US', {
                                 month: 'long',
                                 day: 'numeric',
@@ -504,7 +504,7 @@ export default function AppointmentsPage() {
                         </h3>
 
                         {getTimeSlotsForDate(selectedDate).length === 0 ? (
-                            <div className="text-center py-8 text-gray-500">
+                            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                                 <Clock className="w-12 h-12 mx-auto mb-2 opacity-50" />
                                 <p>No appointments scheduled for this day</p>
                             </div>
@@ -513,7 +513,7 @@ export default function AppointmentsPage() {
                                 {getTimeSlotsForDate(selectedDate).map((slot, index) => (
                                     <div
                                         key={index}
-                                        className="p-4 bg-gray-50 rounded-lg border border-gray-200"
+                                        className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600"
                                     >
                                         <div className="flex items-start justify-between">
                                             <div className="flex-1">
@@ -522,13 +522,13 @@ export default function AppointmentsPage() {
                                                         <MapPin className="w-4 h-4 text-white" />
                                                     </div>
                                                     <div>
-                                                        <h4 className="font-semibold text-gray-900">{slot.locationName}</h4>
-                                                        <p className="text-sm text-gray-600">
+                                                        <h4 className="font-semibold text-gray-900 dark:text-gray-100">{slot.locationName}</h4>
+                                                        <p className="text-sm text-gray-600 dark:text-gray-400">
                                                             {locations.find(l => l.id === slot.locationId)?.address || ''}
                                                         </p>
                                                     </div>
                                                 </div>
-                                                <div className="flex items-center gap-2 text-sm text-gray-700">
+                                                <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
                                                     <Clock className="w-4 h-4" />
                                                     <span className="font-medium">
                                                         {slot.start || slot.start_time} - {slot.end || slot.end_time}
@@ -544,15 +544,15 @@ export default function AppointmentsPage() {
                 )}
 
                 {/* Legend */}
-                <div className="mt-6 pt-6 border-t border-gray-200">
+                <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
                     <div className="flex items-center gap-4 text-sm">
                         <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 border-2 border-blue-500 rounded"></div>
-                            <span className="text-gray-600">Today</span>
+                            <div className="w-4 h-4 border-2 border-blue-500 dark:border-blue-400 rounded"></div>
+                            <span className="text-gray-600 dark:text-gray-400">Today</span>
                         </div>
                         <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 bg-blue-50 border border-blue-200 rounded"></div>
-                            <span className="text-gray-600">Has Appointments</span>
+                            <div className="w-4 h-4 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded"></div>
+                            <span className="text-gray-600 dark:text-gray-400">Has Appointments</span>
                         </div>
                     </div>
                 </div>
@@ -565,13 +565,13 @@ export default function AppointmentsPage() {
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">Appointment Management</h1>
-                    <p className="text-gray-600">Manage your availability and time slots across different locations</p>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Appointment Management</h1>
+                    <p className="text-gray-600 dark:text-gray-400">Manage your availability and time slots across different locations</p>
                 </div>
 
                 {/* Error Message */}
                 {error && (
-                    <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-red-700">
+                    <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-center gap-2 text-red-700 dark:text-red-300">
                         <AlertCircle className="w-5 h-5" />
                         <span>{error}</span>
                     </div>
@@ -580,8 +580,8 @@ export default function AppointmentsPage() {
                 {/* Loading State */}
                 {loading && (
                     <div className="flex items-center justify-center py-12">
-                        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-                        <span className="ml-3 text-gray-600">Loading locations...</span>
+                        <Loader2 className="w-8 h-8 animate-spin text-blue-600 dark:text-blue-400" />
+                        <span className="ml-3 text-gray-600 dark:text-gray-400">Loading locations...</span>
                     </div>
                 )}
 
@@ -589,9 +589,9 @@ export default function AppointmentsPage() {
                 <div className="mb-6 flex gap-4">
                     <button
                         onClick={() => setViewMode('locations')}
-                        className={`px-6 py-2 rounded-lg font-medium transition ${viewMode === 'locations'
-                            ? 'gradient-primary text-white'
-                            : 'bg-white text-gray-700 hover:bg-gray-50'
+                        className={`px-6 py-2 rounded-lg font-medium transition border ${viewMode === 'locations'
+                            ? 'gradient-primary text-white border-transparent'
+                            : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border-gray-200 dark:border-gray-600'
                             }`}
                     >
                         <Building2 className="w-4 h-4 inline mr-2" />
@@ -599,9 +599,9 @@ export default function AppointmentsPage() {
                     </button>
                     <button
                         onClick={() => setViewMode('calendar')}
-                        className={`px-6 py-2 rounded-lg font-medium transition ${viewMode === 'calendar'
-                            ? 'gradient-primary text-white'
-                            : 'bg-white text-gray-700 hover:bg-gray-50'
+                        className={`px-6 py-2 rounded-lg font-medium transition border ${viewMode === 'calendar'
+                            ? 'gradient-primary text-white border-transparent'
+                            : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border-gray-200 dark:border-gray-600'
                             }`}
                     >
                         <CalendarDays className="w-4 h-4 inline mr-2" />
@@ -616,7 +616,7 @@ export default function AppointmentsPage() {
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                             onClick={handleAddLocation}
-                            className="w-full p-4 border-2 border-dashed border-gray-300 rounded-xl hover:border-blue-500 transition flex items-center justify-center gap-2 text-gray-600 hover:text-blue-600"
+                            className="w-full p-4 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl hover:border-blue-500 dark:hover:border-blue-400 transition flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 bg-white dark:bg-gray-800"
                         >
                             <Plus className="w-5 h-5" />
                             <span className="font-medium">Add New Location</span>
@@ -629,7 +629,7 @@ export default function AppointmentsPage() {
                                     key={location.id}
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
+                                    className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden"
                                 >
                                     <div className="p-6">
                                         <div className="flex items-start justify-between mb-4">
@@ -639,8 +639,8 @@ export default function AppointmentsPage() {
                                                         <MapPin className="w-6 h-6 text-white" />
                                                     </div>
                                                     <div>
-                                                        <h3 className="text-xl font-bold text-gray-900">{location.name}</h3>
-                                                        <p className="text-sm text-gray-600 flex items-center gap-1 mt-1">
+                                                        <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">{location.name}</h3>
+                                                        <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1 mt-1">
                                                             <MapPin className="w-4 h-4" />
                                                             {location.address}
                                                         </p>
@@ -650,29 +650,29 @@ export default function AppointmentsPage() {
                                             <div className="flex gap-2">
                                                 <button
                                                     onClick={() => handleEditLocation(location)}
-                                                    className="p-2 rounded-lg hover:bg-gray-100 transition"
+                                                    className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
                                                 >
-                                                    <Edit2 className="w-5 h-5 text-blue-600" />
+                                                    <Edit2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                                                 </button>
                                                 <button
                                                     onClick={() => handleDeleteLocation(location.id)}
-                                                    className="p-2 rounded-lg hover:bg-red-50 transition"
+                                                    className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition"
                                                 >
-                                                    <Trash2 className="w-5 h-5 text-red-600" />
+                                                    <Trash2 className="w-5 h-5 text-red-600 dark:text-red-400" />
                                                 </button>
                                             </div>
                                         </div>
 
                                         {/* Time Slots */}
-                                        <div className="border-t border-gray-200 pt-4">
+                                        <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
                                             <div className="flex items-center justify-between mb-4">
-                                                <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-                                                    <Clock className="w-5 h-5" />
+                                                <h4 className="font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                                                    <Clock className="w-5 h-5 text-gray-700 dark:text-gray-300" />
                                                     Time Slots
                                                 </h4>
                                                 <button
                                                     onClick={() => handleAddTimeSlot(location)}
-                                                    className="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition flex items-center gap-2 text-sm font-medium"
+                                                    className="px-4 py-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/50 transition flex items-center gap-2 text-sm font-medium"
                                                 >
                                                     <Plus className="w-4 h-4" />
                                                     Add Time Slot
@@ -680,7 +680,7 @@ export default function AppointmentsPage() {
                                             </div>
 
                                             {location.timeSlots.length === 0 ? (
-                                                <div className="text-center py-8 text-gray-500">
+                                                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                                                     <Clock className="w-12 h-12 mx-auto mb-2 opacity-50" />
                                                     <p>No time slots added yet</p>
                                                 </div>
@@ -689,12 +689,12 @@ export default function AppointmentsPage() {
                                                     {location.timeSlots.map((timeSlot) => (
                                                         <div
                                                             key={timeSlot.id}
-                                                            className="p-4 bg-gray-50 rounded-lg flex items-center justify-between"
+                                                            className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg flex items-center justify-between"
                                                         >
                                                             <div className="flex items-center gap-4">
                                                                 <div className="flex items-center gap-2">
-                                                                    <Clock className="w-4 h-4 text-gray-500" />
-                                                                    <span className="font-medium text-gray-900">
+                                                                    <Clock className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                                                                    <span className="font-medium text-gray-900 dark:text-gray-100">
                                                                         {timeSlot.start || timeSlot.start_time} - {timeSlot.end || timeSlot.end_time}
                                                                     </span>
                                                                 </div>
@@ -704,33 +704,33 @@ export default function AppointmentsPage() {
                                                                             {timeSlot.days.map((day, i) => (
                                                                                 <span
                                                                                     key={i}
-                                                                                    className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium"
+                                                                                    className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs font-medium"
                                                                                 >
                                                                                     {daysOfWeek.find(d => d.value === day)?.label}
                                                                                 </span>
                                                                             ))}
                                                                         </div>
                                                                     ) : timeSlot.specificDate || timeSlot.specific_date ? (
-                                                                        <span className="text-sm text-gray-500">
+                                                                        <span className="text-sm text-gray-500 dark:text-gray-400">
                                                                             {new Date(timeSlot.specificDate || timeSlot.specific_date).toLocaleDateString()}
                                                                         </span>
                                                                     ) : (
-                                                                        <span className="text-sm text-gray-500">Monthly</span>
+                                                                        <span className="text-sm text-gray-500 dark:text-gray-400">Monthly</span>
                                                                     )}
                                                                 </div>
                                                             </div>
                                                             <div className="flex gap-2">
                                                                 <button
                                                                     onClick={() => handleEditTimeSlot(location, timeSlot)}
-                                                                    className="p-2 rounded-lg hover:bg-white transition"
+                                                                    className="p-2 rounded-lg hover:bg-white dark:hover:bg-gray-600 transition"
                                                                 >
-                                                                    <Edit2 className="w-4 h-4 text-blue-600" />
+                                                                    <Edit2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                                                                 </button>
                                                                 <button
                                                                     onClick={() => handleDeleteTimeSlot(location, timeSlot)}
-                                                                    className="p-2 rounded-lg hover:bg-white transition"
+                                                                    className="p-2 rounded-lg hover:bg-white dark:hover:bg-gray-600 transition"
                                                                 >
-                                                                    <Trash2 className="w-4 h-4 text-red-600" />
+                                                                    <Trash2 className="w-4 h-4 text-red-600 dark:text-red-400" />
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -754,19 +754,19 @@ export default function AppointmentsPage() {
 
                 {/* Location Modal */}
                 {showLocationModal && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50 p-4">
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            className="bg-white rounded-xl shadow-xl max-w-md w-full p-6"
+                            className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full p-6 border border-gray-200 dark:border-gray-700"
                         >
                             <div className="flex items-center justify-between mb-4">
-                                <h3 className="text-xl font-bold text-gray-900">
+                                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                                     {editingLocation ? 'Edit Location' : 'Add New Location'}
                                 </h3>
                                 <button
                                     onClick={() => setShowLocationModal(false)}
-                                    className="p-2 rounded-lg hover:bg-gray-100"
+                                    className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-300"
                                 >
                                     <X className="w-5 h-5" />
                                 </button>
@@ -774,53 +774,53 @@ export default function AppointmentsPage() {
 
                             <div className="space-y-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Location Name
                                     </label>
                                     <input
                                         type="text"
                                         value={locationForm.name}
                                         onChange={(e) => setLocationForm({ ...locationForm, name: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                                         placeholder="e.g., Hospital A"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Address
                                     </label>
                                     <textarea
                                         value={locationForm.address}
                                         onChange={(e) => setLocationForm({ ...locationForm, address: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                                         placeholder="Enter full address"
                                         rows={3}
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Phone (Optional)
                                     </label>
                                     <input
                                         type="text"
                                         value={locationForm.phone}
                                         onChange={(e) => setLocationForm({ ...locationForm, phone: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                                         placeholder="e.g., +1234567890"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Email (Optional)
                                     </label>
                                     <input
                                         type="email"
                                         value={locationForm.email}
                                         onChange={(e) => setLocationForm({ ...locationForm, email: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                                         placeholder="location@example.com"
                                     />
                                 </div>
@@ -829,7 +829,7 @@ export default function AppointmentsPage() {
                             <div className="flex gap-3 mt-6">
                                 <button
                                     onClick={() => setShowLocationModal(false)}
-                                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+                                    className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800"
                                 >
                                     Cancel
                                 </button>
@@ -857,19 +857,19 @@ export default function AppointmentsPage() {
 
                 {/* Time Slot Modal */}
                 {showTimeSlotModal && selectedLocation && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50 p-4">
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            className="bg-white rounded-xl shadow-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto"
+                            className="bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-gray-700"
                         >
                             <div className="flex items-center justify-between mb-4">
-                                <h3 className="text-xl font-bold text-gray-900">
+                                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                                     {editingTimeSlot ? 'Edit Time Slot' : 'Add Time Slot'} - {selectedLocation.name}
                                 </h3>
                                 <button
                                     onClick={() => setShowTimeSlotModal(false)}
-                                    className="p-2 rounded-lg hover:bg-gray-100"
+                                    className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-300"
                                 >
                                     <X className="w-5 h-5" />
                                 </button>
@@ -879,25 +879,25 @@ export default function AppointmentsPage() {
                                 {/* Time Range */}
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                             Start Time
                                         </label>
                                         <input
                                             type="time"
                                             value={timeSlotForm.start}
                                             onChange={(e) => setTimeSlotForm({ ...timeSlotForm, start: e.target.value })}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                             End Time
                                         </label>
                                         <input
                                             type="time"
                                             value={timeSlotForm.end}
                                             onChange={(e) => setTimeSlotForm({ ...timeSlotForm, end: e.target.value })}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                                         />
                                     </div>
                                 </div>
@@ -915,14 +915,14 @@ export default function AppointmentsPage() {
                                                     days: e.target.checked ? daysOfWeek.map(d => d.value) : []
                                                 })
                                             }}
-                                            className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
+                                            className="w-5 h-5 text-blue-600 dark:text-blue-400 rounded focus:ring-blue-500"
                                         />
-                                        <span className="font-medium text-gray-700">Apply to all days of the week</span>
+                                        <span className="font-medium text-gray-700 dark:text-gray-300">Apply to all days of the week</span>
                                     </label>
 
                                     {!timeSlotForm.applyToAllDays && (
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-3">
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                                                 Select Days
                                             </label>
                                             <div className="flex flex-wrap gap-2">
@@ -931,9 +931,9 @@ export default function AppointmentsPage() {
                                                         key={day.value}
                                                         type="button"
                                                         onClick={() => toggleDay(day.value)}
-                                                        className={`px-4 py-2 rounded-lg font-medium transition ${timeSlotForm.days.includes(day.value)
-                                                            ? 'gradient-primary text-white'
-                                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                                        className={`px-4 py-2 rounded-lg font-medium transition border ${timeSlotForm.days.includes(day.value)
+                                                            ? 'gradient-primary text-white border-transparent'
+                                                            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 border-gray-200 dark:border-gray-600'
                                                             }`}
                                                     >
                                                         {day.label}
@@ -952,23 +952,23 @@ export default function AppointmentsPage() {
                                                 applyToMonth: e.target.checked,
                                                 specificDate: e.target.checked ? null : timeSlotForm.specificDate
                                             })}
-                                            className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
+                                            className="w-5 h-5 text-blue-600 dark:text-blue-400 rounded focus:ring-blue-500"
                                         />
-                                        <span className="font-medium text-gray-700">Apply to entire month</span>
+                                        <span className="font-medium text-gray-700 dark:text-gray-300">Apply to entire month</span>
                                     </label>
 
                                     {!timeSlotForm.applyToMonth && (
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                                 Specific Date (Optional)
                                             </label>
                                             <input
                                                 type="date"
                                                 value={timeSlotForm.specificDate || ''}
                                                 onChange={(e) => setTimeSlotForm({ ...timeSlotForm, specificDate: e.target.value || null })}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                                             />
-                                            <p className="text-xs text-gray-500 mt-1">
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                                                 Leave empty to apply to selected days weekly
                                             </p>
                                         </div>
@@ -979,7 +979,7 @@ export default function AppointmentsPage() {
                             <div className="flex gap-3 mt-6">
                                 <button
                                     onClick={() => setShowTimeSlotModal(false)}
-                                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+                                    className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800"
                                 >
                                     Cancel
                                 </button>

@@ -79,34 +79,34 @@ export default function OrderConfirmationPage() {
 
     const getStatusColor = (status) => {
         const colors = {
-            'pending': 'bg-yellow-100 text-yellow-800',
-            'confirmed': 'bg-blue-100 text-blue-800',
-            'processing': 'bg-purple-100 text-purple-800',
-            'shipped': 'bg-indigo-100 text-indigo-800',
-            'delivered': 'bg-green-100 text-green-800',
-            'cancelled': 'bg-red-100 text-red-800',
-            'refunded': 'bg-gray-100 text-gray-800'
+            'pending': 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300',
+            'confirmed': 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300',
+            'processing': 'bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300',
+            'shipped': 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300',
+            'delivered': 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300',
+            'cancelled': 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300',
+            'refunded': 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
         }
-        return colors[status] || 'bg-gray-100 text-gray-800'
+        return colors[status] || 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
     }
 
     const getPaymentStatusColor = (status) => {
         const colors = {
-            'pending': 'bg-yellow-100 text-yellow-800',
-            'processing': 'bg-blue-100 text-blue-800',
-            'completed': 'bg-green-100 text-green-800',
-            'failed': 'bg-red-100 text-red-800',
-            'refunded': 'bg-gray-100 text-gray-800',
-            'cancelled': 'bg-red-100 text-red-800'
+            'pending': 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300',
+            'processing': 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300',
+            'completed': 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300',
+            'failed': 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300',
+            'refunded': 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300',
+            'cancelled': 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300'
         }
-        return colors[status] || 'bg-gray-100 text-gray-800'
+        return colors[status] || 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
     }
 
     if (loading) {
         return (
             <DashboardLayout>
                 <div className="flex items-center justify-center min-h-screen">
-                    <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+                    <Loader2 className="w-8 h-8 animate-spin text-blue-500 dark:text-blue-400" />
                 </div>
             </DashboardLayout>
         )
@@ -129,14 +129,14 @@ export default function OrderConfirmationPage() {
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.2, type: 'spring' }}
-                        className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-4"
+                        className="inline-flex items-center justify-center w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full mb-4"
                     >
-                        <CheckCircle className="w-12 h-12 text-green-600" />
+                        <CheckCircle className="w-12 h-12 text-green-600 dark:text-green-400" />
                     </motion.div>
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
                         Order Placed Successfully!
                     </h1>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 dark:text-gray-400">
                         Thank you for your order. We've received your order and will begin processing it right away.
                     </p>
                 </motion.div>
@@ -146,23 +146,23 @@ export default function OrderConfirmationPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="bg-white rounded-xl shadow-lg p-6 mb-6"
+                    className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 border border-gray-200 dark:border-gray-700"
                 >
                     <div className="flex items-center justify-between mb-6">
                         <div>
-                            <h2 className="text-xl font-bold text-gray-900 mb-2">Order Details</h2>
+                            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Order Details</h2>
                             <div className="flex items-center gap-2">
-                                <span className="text-gray-600">Order Number:</span>
-                                <span className="font-bold text-gray-900">{order.order_number}</span>
+                                <span className="text-gray-600 dark:text-gray-400">Order Number:</span>
+                                <span className="font-bold text-gray-900 dark:text-gray-100">{order.order_number}</span>
                                 <button
                                     onClick={copyOrderNumber}
-                                    className="ml-2 p-1 hover:bg-gray-100 rounded transition"
+                                    className="ml-2 p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition"
                                     title="Copy order number"
                                 >
                                     {copied ? (
-                                        <Check className="w-4 h-4 text-green-600" />
+                                        <Check className="w-4 h-4 text-green-600 dark:text-green-400" />
                                     ) : (
-                                        <Copy className="w-4 h-4 text-gray-600" />
+                                        <Copy className="w-4 h-4 text-gray-600 dark:text-gray-400" />
                                     )}
                                 </button>
                             </div>
@@ -182,8 +182,8 @@ export default function OrderConfirmationPage() {
                     </div>
 
                     {/* Product Info */}
-                    <div className="border-t pt-6 mb-6">
-                        <h3 className="font-semibold text-gray-900 mb-4">Product Information</h3>
+                    <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mb-6">
+                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">Product Information</h3>
                         <div className="flex gap-4">
                             {order.product?.images?.[0] && (
                                 <img
@@ -193,15 +193,15 @@ export default function OrderConfirmationPage() {
                                 />
                             )}
                             <div className="flex-1">
-                                <h4 className="font-semibold text-gray-900 mb-1">{order.product_name}</h4>
+                                <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">{order.product_name}</h4>
                                 {order.product_sku && (
-                                    <p className="text-sm text-gray-600 mb-2">SKU: {order.product_sku}</p>
+                                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">SKU: {order.product_sku}</p>
                                 )}
-                                <p className="text-sm text-gray-600">Quantity: {order.quantity}</p>
+                                <p className="text-sm text-gray-600 dark:text-gray-400">Quantity: {order.quantity}</p>
                             </div>
                             <div className="text-right">
-                                <p className="text-sm text-gray-600">Unit Price</p>
-                                <p className="font-bold text-gray-900">
+                                <p className="text-sm text-gray-600 dark:text-gray-400">Unit Price</p>
+                                <p className="font-bold text-gray-900 dark:text-gray-100">
                                     {order.currency_symbol}{parseFloat(order.unit_price).toFixed(2)}
                                 </p>
                             </div>
@@ -209,14 +209,14 @@ export default function OrderConfirmationPage() {
                     </div>
 
                     {/* Price Breakdown */}
-                    <div className="border-t pt-6 mb-6">
-                        <h3 className="font-semibold text-gray-900 mb-4">Price Breakdown</h3>
+                    <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mb-6">
+                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">Price Breakdown</h3>
                         <div className="space-y-2">
-                            <div className="flex justify-between text-gray-600">
+                            <div className="flex justify-between text-gray-600 dark:text-gray-400">
                                 <span>Subtotal</span>
                                 <span>{order.currency_symbol}{parseFloat(order.subtotal).toFixed(2)}</span>
                             </div>
-                            <div className="flex justify-between text-gray-600">
+                            <div className="flex justify-between text-gray-600 dark:text-gray-400">
                                 <span>Shipping</span>
                                 <span>
                                     {parseFloat(order.shipping_cost) > 0
@@ -225,40 +225,40 @@ export default function OrderConfirmationPage() {
                                 </span>
                             </div>
                             {parseFloat(order.discount) > 0 && (
-                                <div className="flex justify-between text-green-600">
+                                <div className="flex justify-between text-green-600 dark:text-green-400">
                                     <span>Discount</span>
                                     <span>-{order.currency_symbol}{parseFloat(order.discount).toFixed(2)}</span>
                                 </div>
                             )}
-                            <div className="flex justify-between text-xl font-bold pt-2 border-t">
-                                <span>Total</span>
-                                <span>{order.currency_symbol}{parseFloat(order.total_amount).toFixed(2)}</span>
+                            <div className="flex justify-between text-xl font-bold pt-2 border-t border-gray-200 dark:border-gray-700">
+                                <span className="text-gray-900 dark:text-gray-100">Total</span>
+                                <span className="text-gray-900 dark:text-gray-100">{order.currency_symbol}{parseFloat(order.total_amount).toFixed(2)}</span>
                             </div>
                         </div>
                     </div>
 
                     {/* Customer & Shipping Info */}
-                    <div className="grid md:grid-cols-2 gap-6 border-t pt-6">
+                    <div className="grid md:grid-cols-2 gap-6 border-t border-gray-200 dark:border-gray-700 pt-6">
                         <div>
-                            <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
-                                <Mail className="w-5 h-5 mr-2" />
+                            <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
+                                <Mail className="w-5 h-5 mr-2 text-gray-700 dark:text-gray-300" />
                                 Customer Information
                             </h3>
                             <div className="space-y-2 text-sm">
-                                <p className="text-gray-900 font-medium">{order.customer_name}</p>
-                                <p className="text-gray-600">{order.customer_email}</p>
-                                <p className="text-gray-600 flex items-center">
+                                <p className="text-gray-900 dark:text-gray-100 font-medium">{order.customer_name}</p>
+                                <p className="text-gray-600 dark:text-gray-400">{order.customer_email}</p>
+                                <p className="text-gray-600 dark:text-gray-400 flex items-center">
                                     <Phone className="w-4 h-4 mr-1" />
                                     {order.customer_phone}
                                 </p>
                             </div>
                         </div>
                         <div>
-                            <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
-                                <MapPin className="w-5 h-5 mr-2" />
+                            <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
+                                <MapPin className="w-5 h-5 mr-2 text-gray-700 dark:text-gray-300" />
                                 Shipping Address
                             </h3>
-                            <div className="space-y-1 text-sm text-gray-600">
+                            <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
                                 <p>{order.shipping_address}</p>
                                 {order.shipping_city && <p>{order.shipping_city}</p>}
                                 {order.shipping_postal_code && <p>Postal Code: {order.shipping_postal_code}</p>}
@@ -268,26 +268,26 @@ export default function OrderConfirmationPage() {
                     </div>
 
                     {/* Payment Information */}
-                    <div className="border-t pt-6 mt-6">
-                        <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
-                            <CreditCard className="w-5 h-5 mr-2" />
+                    <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mt-6">
+                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
+                            <CreditCard className="w-5 h-5 mr-2 text-gray-700 dark:text-gray-300" />
                             Payment Information
                         </h3>
                         <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
-                                <span className="text-gray-600">Payment Method:</span>
-                                <span className="font-medium text-gray-900">{getPaymentMethodName(order.payment_method)}</span>
+                                <span className="text-gray-600 dark:text-gray-400">Payment Method:</span>
+                                <span className="font-medium text-gray-900 dark:text-gray-100">{getPaymentMethodName(order.payment_method)}</span>
                             </div>
                             {order.payment_transaction_id && (
                                 <div className="flex justify-between">
-                                    <span className="text-gray-600">Transaction ID:</span>
-                                    <span className="font-medium text-gray-900">{order.payment_transaction_id}</span>
+                                    <span className="text-gray-600 dark:text-gray-400">Transaction ID:</span>
+                                    <span className="font-medium text-gray-900 dark:text-gray-100">{order.payment_transaction_id}</span>
                                 </div>
                             )}
                             {order.payment_date && (
                                 <div className="flex justify-between">
-                                    <span className="text-gray-600">Payment Date:</span>
-                                    <span className="font-medium text-gray-900">
+                                    <span className="text-gray-600 dark:text-gray-400">Payment Date:</span>
+                                    <span className="font-medium text-gray-900 dark:text-gray-100">
                                         {new Date(order.payment_date).toLocaleDateString()}
                                     </span>
                                 </div>
@@ -296,7 +296,7 @@ export default function OrderConfirmationPage() {
                     </div>
 
                     {/* Order Date */}
-                    <div className="border-t pt-6 mt-6 flex items-center text-sm text-gray-600">
+                    <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mt-6 flex items-center text-sm text-gray-600 dark:text-gray-400">
                         <Calendar className="w-4 h-4 mr-2" />
                         <span>Order placed on {new Date(order.created_at).toLocaleString()}</span>
                     </div>
@@ -311,21 +311,21 @@ export default function OrderConfirmationPage() {
                 >
                     <Link
                         href="/dashboard/products"
-                        className="inline-flex items-center px-6 py-3 bg-gray-100 text-gray-900 rounded-lg hover:bg-gray-200 transition font-medium"
+                        className="inline-flex items-center px-6 py-3 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition font-medium"
                     >
                         <ArrowLeft className="w-5 h-5 mr-2" />
                         Continue Shopping
                     </Link>
                     <button
                         onClick={() => window.print()}
-                        className="inline-flex items-center px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition font-medium"
+                        className="inline-flex items-center px-6 py-3 bg-blue-500 dark:bg-blue-600 text-white rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700 transition font-medium"
                     >
                         <Printer className="w-5 h-5 mr-2" />
                         Print Order
                     </button>
                     <Link
                         href={`/dashboard/orders`}
-                        className="inline-flex items-center px-6 py-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition font-medium"
+                        className="inline-flex items-center px-6 py-3 bg-purple-500 dark:bg-purple-600 text-white rounded-lg hover:bg-purple-600 dark:hover:bg-purple-700 transition font-medium"
                     >
                         <Package className="w-5 h-5 mr-2" />
                         View All Orders
@@ -338,14 +338,14 @@ export default function OrderConfirmationPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5 }}
-                        className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-6 mt-6"
+                        className="bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-200 dark:border-yellow-800 rounded-xl p-6 mt-6"
                     >
-                        <h3 className="font-bold text-gray-900 mb-2">Next Steps</h3>
-                        <p className="text-gray-700 mb-4">
+                        <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-2">Next Steps</h3>
+                        <p className="text-gray-700 dark:text-gray-300 mb-4">
                             Your order is pending payment. Please complete the payment to proceed with your order.
                         </p>
                         {order.payment_method === 'manual' && (
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
                                 Please send payment using the method you selected during checkout. After payment, contact us with your transaction ID.
                             </p>
                         )}
