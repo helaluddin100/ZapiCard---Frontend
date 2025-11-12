@@ -70,14 +70,14 @@ export default function AboutPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900">
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
-          <div className="absolute top-40 right-10 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
-          <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
+          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200 dark:bg-blue-900/30 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
+          <div className="absolute top-40 right-10 w-72 h-72 bg-purple-200 dark:bg-purple-900/30 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
+          <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-pink-200 dark:bg-pink-900/30 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
@@ -92,14 +92,14 @@ export default function AboutPage() {
               transition={{ delay: 0.2, type: 'spring' }}
               className="inline-block mb-6"
             >
-              <span className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 text-sm font-semibold border border-blue-200">
+              <span className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-700 dark:text-blue-300 text-sm font-semibold border border-blue-200 dark:border-blue-800">
                 ✨ Our Story
               </span>
             </motion.div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 gradient-primary bg-clip-text text-transparent">
               About Zapi Card
             </h1>
-            <p className="text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
               We&apos;re on a mission to transform how professionals network and share their contact information in the digital age.
             </p>
             <motion.div
@@ -108,17 +108,17 @@ export default function AboutPage() {
               transition={{ delay: 0.4 }}
               className="mt-8 flex flex-wrap justify-center gap-4"
             >
-              <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-lg">
+              <div className="flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg">
                 <Zap className="w-5 h-5 text-yellow-500" />
-                <span className="text-gray-700 font-medium">Innovation First</span>
+                <span className="text-gray-700 dark:text-gray-300 font-medium">Innovation First</span>
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-lg">
-                <Globe className="w-5 h-5 text-blue-500" />
-                <span className="text-gray-700 font-medium">Global Reach</span>
+              <div className="flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg">
+                <Globe className="w-5 h-5 text-blue-500 dark:text-blue-400" />
+                <span className="text-gray-700 dark:text-gray-300 font-medium">Global Reach</span>
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-lg">
-                <Heart className="w-5 h-5 text-pink-500" />
-                <span className="text-gray-700 font-medium">User Centric</span>
+              <div className="flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg">
+                <Heart className="w-5 h-5 text-pink-500 dark:text-pink-400" />
+                <span className="text-gray-700 dark:text-gray-300 font-medium">User Centric</span>
               </div>
             </motion.div>
           </motion.div>
@@ -126,7 +126,7 @@ export default function AboutPage() {
       </section>
 
       {/* Story Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white relative">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 relative">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -144,8 +144,8 @@ export default function AboutPage() {
                   </div>
                 </div>
                 {/* Decorative circles */}
-                <div className="absolute -top-4 -right-4 w-24 h-24 bg-yellow-400 rounded-full opacity-20 blur-2xl"></div>
-                <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-pink-400 rounded-full opacity-20 blur-2xl"></div>
+                <div className="absolute -top-4 -right-4 w-24 h-24 bg-yellow-400 dark:bg-yellow-500 rounded-full opacity-20 blur-2xl"></div>
+                <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-pink-400 dark:bg-pink-500 rounded-full opacity-20 blur-2xl"></div>
               </div>
             </motion.div>
 
@@ -155,12 +155,12 @@ export default function AboutPage() {
               viewport={{ once: true }}
             >
               <div className="inline-block mb-4">
-                <span className="px-4 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold">
+                <span className="px-4 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-semibold">
                   Our Journey
                 </span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Our Story</h2>
-              <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6">Our Story</h2>
+              <div className="space-y-6 text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
                 <p>
                   Zapi Card was born from a simple observation: traditional business cards are outdated, wasteful, and often get lost.
                   In today&apos;s fast-paced digital world, professionals need a smarter way to network.
@@ -182,8 +182,8 @@ export default function AboutPage() {
                 ].map((item, idx) => {
                   const Icon = item.icon
                   return (
-                    <div key={idx} className="flex items-center gap-2 text-gray-700">
-                      <Icon className="w-5 h-5 text-green-500" />
+                    <div key={idx} className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                      <Icon className="w-5 h-5 text-green-500 dark:text-green-400" />
                       <span className="font-medium">{item.text}</span>
                     </div>
                   )
@@ -195,10 +195,10 @@ export default function AboutPage() {
       </section>
 
       {/* Values Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-blue-400 rounded-full filter blur-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-400 rounded-full filter blur-3xl"></div>
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10 dark:opacity-20">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-blue-400 dark:bg-blue-900 rounded-full filter blur-3xl"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-400 dark:bg-purple-900 rounded-full filter blur-3xl"></div>
         </div>
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
@@ -208,12 +208,12 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <div className="inline-block mb-4">
-              <span className="px-4 py-1 rounded-full bg-white/80 backdrop-blur-sm text-blue-700 text-sm font-semibold">
+              <span className="px-4 py-1 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm text-blue-700 dark:text-blue-300 text-sm font-semibold">
                 Core Values
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Our Values</h2>
-            <p className="text-xl text-gray-600">What drives us every day</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4">Our Values</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400">What drives us every day</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -228,12 +228,12 @@ export default function AboutPage() {
                 className="relative group"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></div>
-                <div className="relative glass-effect p-8 rounded-2xl card-hover text-center bg-white">
+                <div className="relative glass-effect p-8 rounded-2xl card-hover text-center bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                   <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white transform group-hover:rotate-6 transition-transform">
                     {value.icon}
                   </div>
-                  <h3 className="text-xl font-bold mb-3 text-gray-900">{value.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{value.description}</p>
+                  <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-gray-100">{value.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{value.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -242,8 +242,8 @@ export default function AboutPage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-50/50 to-transparent"></div>
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-50/50 dark:via-blue-900/20 to-transparent"></div>
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -252,12 +252,12 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <div className="inline-block mb-4">
-              <span className="px-4 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold">
+              <span className="px-4 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-semibold">
                 Impact
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">By The Numbers</h2>
-            <p className="text-xl text-gray-600">Our impact in numbers</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4">By The Numbers</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400">Our impact in numbers</p>
           </motion.div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -274,7 +274,7 @@ export default function AboutPage() {
                   className="relative group"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity blur-xl"></div>
-                  <div className="relative text-center p-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 rounded-2xl border-2 border-transparent group-hover:border-blue-200 transition-all shadow-lg">
+                  <div className="relative text-center p-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-blue-900/20 dark:via-purple-900/20 dark:to-pink-900/20 rounded-2xl border-2 border-transparent group-hover:border-blue-200 dark:group-hover:border-blue-700 transition-all shadow-lg">
                     <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white shadow-lg transform group-hover:rotate-6 transition-transform">
                       <Icon className="w-8 h-8" />
                     </div>
@@ -283,11 +283,11 @@ export default function AboutPage() {
                       whileInView={{ opacity: 1 }}
                       viewport={{ once: true }}
                       transition={{ delay: idx * 0.15 + 0.2 }}
-                      className="text-4xl md:text-5xl font-bold text-gray-900 mb-2 gradient-primary bg-clip-text text-transparent"
+                      className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-2 gradient-primary bg-clip-text text-transparent"
                     >
                       {stat.number}
                     </motion.div>
-                    <div className="text-gray-600 font-medium">{stat.label}</div>
+                    <div className="text-gray-600 dark:text-gray-400 font-medium">{stat.label}</div>
                   </div>
                 </motion.div>
               )
@@ -297,10 +297,10 @@ export default function AboutPage() {
       </section>
 
       {/* Team Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 right-20 w-64 h-64 bg-purple-300 rounded-full filter blur-3xl"></div>
-          <div className="absolute bottom-20 left-20 w-64 h-64 bg-pink-300 rounded-full filter blur-3xl"></div>
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10 dark:opacity-20">
+          <div className="absolute top-20 right-20 w-64 h-64 bg-purple-300 dark:bg-purple-900 rounded-full filter blur-3xl"></div>
+          <div className="absolute bottom-20 left-20 w-64 h-64 bg-pink-300 dark:bg-pink-900 rounded-full filter blur-3xl"></div>
         </div>
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
@@ -310,12 +310,12 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <div className="inline-block mb-4">
-              <span className="px-4 py-1 rounded-full bg-white/80 backdrop-blur-sm text-purple-700 text-sm font-semibold">
+              <span className="px-4 py-1 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm text-purple-700 dark:text-purple-300 text-sm font-semibold">
                 Our People
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Meet Our Team</h2>
-            <p className="text-xl text-gray-600">The passionate people behind Zapi Card</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4">Meet Our Team</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400">The passionate people behind Zapi Card</p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -330,11 +330,11 @@ export default function AboutPage() {
                 className="relative group"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity blur-xl"></div>
-                <div className="relative glass-effect p-8 rounded-2xl card-hover text-center bg-white">
+                <div className="relative glass-effect p-8 rounded-2xl card-hover text-center bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                   <div className="relative mb-6">
                     <motion.div
                       whileHover={{ scale: 1.1, rotate: 5 }}
-                      className="w-32 h-32 rounded-full mx-auto overflow-hidden border-4 border-white shadow-2xl relative"
+                      className="w-32 h-32 rounded-full mx-auto overflow-hidden border-4 border-white dark:border-gray-700 shadow-2xl relative"
                     >
                       <img
                         src={member.image}
@@ -345,12 +345,12 @@ export default function AboutPage() {
                     </motion.div>
                     <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{member.name}</h3>
-                  <p className="text-blue-600 font-semibold mb-3">{member.role}</p>
-                  <p className="text-gray-600 text-sm leading-relaxed">{member.bio}</p>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">{member.name}</h3>
+                  <p className="text-blue-600 dark:text-blue-400 font-semibold mb-3">{member.role}</p>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{member.bio}</p>
                   <div className="mt-4 flex justify-center gap-2">
                     {[1, 2, 3].map((i) => (
-                      <div key={i} className="w-2 h-2 rounded-full bg-blue-200"></div>
+                      <div key={i} className="w-2 h-2 rounded-full bg-blue-200 dark:bg-blue-700"></div>
                     ))}
                   </div>
                 </div>
@@ -361,10 +361,10 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white relative overflow-hidden">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 relative overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-200 rounded-full filter blur-3xl opacity-30"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-200 rounded-full filter blur-3xl opacity-30"></div>
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-200 dark:bg-blue-900/30 rounded-full filter blur-3xl opacity-30"></div>
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-200 dark:bg-purple-900/30 rounded-full filter blur-3xl opacity-30"></div>
         </div>
         <div className="max-w-5xl mx-auto relative z-10">
           <motion.div

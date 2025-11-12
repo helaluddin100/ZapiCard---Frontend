@@ -250,14 +250,14 @@ export default function TestimonialsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900">
       {/* Hero Section */}
       <section className="relative pt-32 pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-          <div className="absolute top-40 right-10 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
-          <div className="absolute -bottom-8 left-1/2 w-96 h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+          <div className="absolute top-20 left-10 w-96 h-96 bg-blue-200 dark:bg-blue-900/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+          <div className="absolute top-40 right-10 w-96 h-96 bg-purple-200 dark:bg-purple-900/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+          <div className="absolute -bottom-8 left-1/2 w-96 h-96 bg-pink-200 dark:bg-pink-900/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
@@ -272,7 +272,7 @@ export default function TestimonialsPage() {
               transition={{ delay: 0.2, type: 'spring' }}
               className="inline-block mb-6"
             >
-              <span className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 text-sm font-semibold border border-blue-200 flex items-center gap-2">
+              <span className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-700 dark:text-blue-300 text-sm font-semibold border border-blue-200 dark:border-blue-800 flex items-center gap-2">
                 <Sparkles className="w-4 h-4" />
                 Testimonials
               </span>
@@ -280,7 +280,7 @@ export default function TestimonialsPage() {
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 gradient-primary bg-clip-text text-transparent">
               What Our Users Say
             </h1>
-            <p className="text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8">
+            <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
               Join thousands of professionals who are networking smarter with Zapi Card
             </p>
             <motion.div
@@ -289,18 +289,18 @@ export default function TestimonialsPage() {
               transition={{ delay: 0.4 }}
               className="flex items-center justify-center gap-3 flex-wrap"
             >
-              <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-lg">
+              <div className="flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg">
                 <div className="flex">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
-                <span className="text-lg font-bold text-gray-900 ml-2">
+                <span className="text-lg font-bold text-gray-900 dark:text-gray-100 ml-2">
                   4.9/5
                 </span>
               </div>
-              <div className="px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-lg">
-                <span className="text-gray-700 font-semibold">
+              <div className="px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg">
+                <span className="text-gray-700 dark:text-gray-300 font-semibold">
                   {allTestimonials.length}+ Reviews
                 </span>
               </div>
@@ -311,9 +311,9 @@ export default function TestimonialsPage() {
 
       {/* Filters and Search */}
       <section className="px-4 sm:px-6 lg:px-8 mb-12 relative">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-blue-400 rounded-full filter blur-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-400 rounded-full filter blur-3xl"></div>
+        <div className="absolute inset-0 opacity-5 dark:opacity-10">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-blue-400 dark:bg-blue-900 rounded-full filter blur-3xl"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-400 dark:bg-purple-900 rounded-full filter blur-3xl"></div>
         </div>
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
@@ -323,11 +323,11 @@ export default function TestimonialsPage() {
             className="relative group"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-500 rounded-3xl opacity-0 group-hover:opacity-10 transition-opacity blur-xl"></div>
-            <div className="relative glass-effect rounded-3xl p-6 md:p-8 shadow-2xl bg-white">
+            <div className="relative glass-effect rounded-3xl p-6 md:p-8 shadow-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
               <div className="flex flex-col md:flex-row gap-4">
                 {/* Search */}
                 <div className="relative flex-1">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
                   <input
                     type="text"
                     placeholder="Search testimonials..."
@@ -336,7 +336,7 @@ export default function TestimonialsPage() {
                       setSearchQuery(e.target.value)
                       setCurrentPage(1)
                     }}
-                    className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 focus:bg-white"
+                    className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 outline-none transition-all bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                   />
                 </div>
 
@@ -351,7 +351,7 @@ export default function TestimonialsPage() {
                       setRatingFilter(e.target.value)
                       setCurrentPage(1)
                     }}
-                    className="px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 focus:bg-white font-medium"
+                    className="px-4 py-3.5 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 outline-none transition-all bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-700 font-medium text-gray-900 dark:text-gray-100"
                   >
                     <option value="all">All Ratings</option>
                     <option value="5">5 Stars</option>
@@ -368,7 +368,7 @@ export default function TestimonialsPage() {
                     whileTap={{ scale: 0.95 }}
                     className={`p-3 rounded-xl transition-all ${viewMode === 'grid'
                       ? 'bg-gradient-to-br from-blue-500 to-purple-500 text-white shadow-lg'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                   >
                     <Grid3x3 className="w-5 h-5" />
@@ -379,7 +379,7 @@ export default function TestimonialsPage() {
                     whileTap={{ scale: 0.95 }}
                     className={`p-3 rounded-xl transition-all ${viewMode === 'list'
                       ? 'bg-gradient-to-br from-blue-500 to-purple-500 text-white shadow-lg'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                   >
                     <List className="w-5 h-5" />
@@ -391,16 +391,16 @@ export default function TestimonialsPage() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="mt-6 pt-6 border-t border-gray-200 flex items-center justify-between"
+                className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between"
               >
-                <div className="text-sm font-medium text-gray-600">
-                  Showing <span className="font-bold text-gray-900">{paginatedTestimonials.length}</span> of{' '}
-                  <span className="font-bold text-gray-900">{filteredTestimonials.length}</span> testimonials
+                <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  Showing <span className="font-bold text-gray-900 dark:text-gray-100">{paginatedTestimonials.length}</span> of{' '}
+                  <span className="font-bold text-gray-900 dark:text-gray-100">{filteredTestimonials.length}</span> testimonials
                 </div>
                 {filteredTestimonials.length > 0 && (
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-green-500" />
-                    <span className="text-sm text-gray-600">All verified reviews</span>
+                    <CheckCircle2 className="w-4 h-4 text-green-500 dark:text-green-400" />
+                    <span className="text-sm text-gray-600 dark:text-gray-400">All verified reviews</span>
                   </div>
                 )}
               </motion.div>
@@ -411,18 +411,18 @@ export default function TestimonialsPage() {
 
       {/* Testimonials Grid/List */}
       <section className="px-4 sm:px-6 lg:px-8 pb-12 relative">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-purple-400 rounded-full filter blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-pink-400 rounded-full filter blur-3xl"></div>
+        <div className="absolute inset-0 opacity-5 dark:opacity-10">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-purple-400 dark:bg-purple-900 rounded-full filter blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-pink-400 dark:bg-pink-900 rounded-full filter blur-3xl"></div>
         </div>
         <div className="max-w-7xl mx-auto relative z-10">
           {paginatedTestimonials.length === 0 ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="text-center py-20 glass-effect rounded-2xl shadow-xl"
+              className="text-center py-20 glass-effect rounded-2xl shadow-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
             >
-              <p className="text-xl text-gray-600 font-medium">No testimonials found matching your criteria.</p>
+              <p className="text-xl text-gray-600 dark:text-gray-400 font-medium">No testimonials found matching your criteria.</p>
             </motion.div>
           ) : viewMode === 'grid' ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -439,10 +439,10 @@ export default function TestimonialsPage() {
                   {/* Decorative gradient background on hover */}
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity blur-xl"></div>
 
-                  <div className="relative glass-effect rounded-2xl p-6 md:p-8 card-hover bg-white border border-gray-200/50 shadow-lg hover:shadow-2xl transition-all">
+                  <div className="relative glass-effect rounded-2xl p-6 md:p-8 card-hover bg-white dark:bg-gray-800 border border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-2xl transition-all">
                     {/* Quote Icon */}
-                    <div className="absolute top-4 right-4 opacity-10">
-                      <Quote className="w-16 h-16 text-blue-500" />
+                    <div className="absolute top-4 right-4 opacity-10 dark:opacity-20">
+                      <Quote className="w-16 h-16 text-blue-500 dark:text-blue-400" />
                     </div>
 
                     <div className="flex items-start mb-4 relative z-10">
@@ -476,7 +476,7 @@ export default function TestimonialsPage() {
                             initial={{ opacity: 0 }}
                             whileInView={{ opacity: 1 }}
                             viewport={{ once: true }}
-                            className="inline-flex items-center gap-1 text-xs text-green-600 font-semibold bg-green-50 px-2 py-1 rounded-full"
+                            className="inline-flex items-center gap-1 text-xs text-green-600 dark:text-green-400 font-semibold bg-green-50 dark:bg-green-900/30 px-2 py-1 rounded-full"
                           >
                             <CheckCircle2 className="w-3 h-3" />
                             Verified
@@ -490,12 +490,12 @@ export default function TestimonialsPage() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: idx * 0.1 + 0.3 }}
-                      className="text-gray-700 mb-6 italic text-base leading-relaxed line-clamp-4 relative z-10"
+                      className="text-gray-700 dark:text-gray-300 mb-6 italic text-base leading-relaxed line-clamp-4 relative z-10"
                     >
                       &ldquo;{testimonial.text}&rdquo;
                     </motion.p>
 
-                    <div className="flex items-center gap-4 pt-4 border-t border-gray-200">
+                    <div className="flex items-center gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                       <motion.div
                         whileHover={{ scale: 1.1, rotate: 5 }}
                         className="relative"
@@ -504,7 +504,7 @@ export default function TestimonialsPage() {
                         <img
                           src={testimonial.image}
                           alt={testimonial.name}
-                          className="relative w-14 h-14 rounded-full object-cover border-2 border-white shadow-lg"
+                          className="relative w-14 h-14 rounded-full object-cover border-2 border-white dark:border-gray-700 shadow-lg"
                         />
                       </motion.div>
                       <div className="flex-1">
@@ -513,7 +513,7 @@ export default function TestimonialsPage() {
                           whileInView={{ opacity: 1, x: 0 }}
                           viewport={{ once: true }}
                           transition={{ delay: idx * 0.1 + 0.4 }}
-                          className="font-bold text-gray-900"
+                          className="font-bold text-gray-900 dark:text-gray-100"
                         >
                           {testimonial.name}
                         </motion.div>
@@ -522,7 +522,7 @@ export default function TestimonialsPage() {
                           whileInView={{ opacity: 1, x: 0 }}
                           viewport={{ once: true }}
                           transition={{ delay: idx * 0.1 + 0.5 }}
-                          className="text-sm text-gray-600 font-medium"
+                          className="text-sm text-gray-600 dark:text-gray-400 font-medium"
                         >
                           {testimonial.role}
                         </motion.div>
@@ -531,7 +531,7 @@ export default function TestimonialsPage() {
                           whileInView={{ opacity: 1, x: 0 }}
                           viewport={{ once: true }}
                           transition={{ delay: idx * 0.1 + 0.6 }}
-                          className="text-xs text-gray-500"
+                          className="text-xs text-gray-500 dark:text-gray-500"
                         >
                           {testimonial.company}
                         </motion.div>
@@ -543,7 +543,7 @@ export default function TestimonialsPage() {
                       whileInView={{ opacity: 1 }}
                       viewport={{ once: true }}
                       transition={{ delay: idx * 0.1 + 0.7 }}
-                      className="mt-4 text-xs text-gray-500"
+                      className="mt-4 text-xs text-gray-500 dark:text-gray-500"
                     >
                       {new Date(testimonial.date).toLocaleDateString('en-US', {
                         year: 'numeric',
@@ -571,7 +571,7 @@ export default function TestimonialsPage() {
                   className="relative group"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity blur-xl"></div>
-                  <div className="relative glass-effect rounded-2xl p-6 md:p-8 card-hover bg-white border border-gray-200/50 shadow-lg hover:shadow-2xl transition-all">
+                  <div className="relative glass-effect rounded-2xl p-6 md:p-8 card-hover bg-white dark:bg-gray-800 border border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-2xl transition-all">
                     <div className="flex flex-col md:flex-row gap-6">
                       <motion.div
                         whileHover={{ scale: 1.1, rotate: 5 }}
@@ -581,22 +581,22 @@ export default function TestimonialsPage() {
                         <img
                           src={testimonial.image}
                           alt={testimonial.name}
-                          className="relative w-20 h-20 rounded-full object-cover border-2 border-white shadow-lg"
+                          className="relative w-20 h-20 rounded-full object-cover border-2 border-white dark:border-gray-700 shadow-lg"
                         />
                       </motion.div>
                       <div className="flex-1">
                         <div className="flex items-start justify-between mb-4">
                           <div>
                             <div className="flex items-center gap-2 mb-2">
-                              <h3 className="font-bold text-gray-900 text-lg">{testimonial.name}</h3>
+                              <h3 className="font-bold text-gray-900 dark:text-gray-100 text-lg">{testimonial.name}</h3>
                               {testimonial.verified && (
-                                <span className="inline-flex items-center gap-1 text-xs text-green-600 font-semibold bg-green-50 px-2 py-1 rounded-full">
+                                <span className="inline-flex items-center gap-1 text-xs text-green-600 dark:text-green-400 font-semibold bg-green-50 dark:bg-green-900/30 px-2 py-1 rounded-full">
                                   <CheckCircle2 className="w-3 h-3" />
                                   Verified
                                 </span>
                               )}
                             </div>
-                            <p className="text-sm text-gray-600 font-medium">{testimonial.role} at {testimonial.company}</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">{testimonial.role} at {testimonial.company}</p>
                           </div>
                           <div className="flex items-center gap-1">
                             {[...Array(5)].map((_, i) => (
@@ -604,19 +604,19 @@ export default function TestimonialsPage() {
                                 key={i}
                                 className={`w-5 h-5 ${i < testimonial.rating
                                   ? 'fill-yellow-400 text-yellow-400'
-                                  : 'fill-gray-200 text-gray-200'
+                                  : 'fill-gray-200 dark:fill-gray-700 text-gray-200 dark:text-gray-700'
                                   }`}
                               />
                             ))}
                           </div>
                         </div>
                         <div className="relative mb-4">
-                          <Quote className="absolute -top-2 -left-2 w-8 h-8 text-blue-200 opacity-50" />
-                          <p className="text-gray-700 italic text-base leading-relaxed pl-6">
+                          <Quote className="absolute -top-2 -left-2 w-8 h-8 text-blue-200 dark:text-blue-800 opacity-50" />
+                          <p className="text-gray-700 dark:text-gray-300 italic text-base leading-relaxed pl-6">
                             &ldquo;{testimonial.text}&rdquo;
                           </p>
                         </div>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-gray-500 dark:text-gray-500">
                           {new Date(testimonial.date).toLocaleDateString('en-US', {
                             year: 'numeric',
                             month: 'long',
@@ -644,7 +644,7 @@ export default function TestimonialsPage() {
                 disabled={currentPage === 1}
                 whileHover={{ scale: currentPage === 1 ? 1 : 1.05 }}
                 whileTap={{ scale: currentPage === 1 ? 1 : 0.95 }}
-                className="p-3 rounded-xl border-2 border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 hover:border-blue-500 transition-all"
+                className="p-3 rounded-xl border-2 border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-blue-500 dark:hover:border-blue-400 transition-all bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
               >
                 <ChevronLeft className="w-5 h-5" />
               </motion.button>
@@ -664,14 +664,14 @@ export default function TestimonialsPage() {
                       whileTap={{ scale: 0.9 }}
                       className={`px-5 py-2.5 rounded-xl font-semibold transition-all ${currentPage === page
                         ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
-                        : 'bg-white text-gray-700 border-2 border-gray-300 hover:border-blue-500 hover:bg-gray-50'
+                        : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700'
                         }`}
                     >
                       {page}
                     </motion.button>
                   )
                 } else if (page === currentPage - 2 || page === currentPage + 2) {
-                  return <span key={page} className="px-2 text-gray-500">...</span>
+                  return <span key={page} className="px-2 text-gray-500 dark:text-gray-400">...</span>
                 }
                 return null
               })}
@@ -681,7 +681,7 @@ export default function TestimonialsPage() {
                 disabled={currentPage === totalPages}
                 whileHover={{ scale: currentPage === totalPages ? 1 : 1.05 }}
                 whileTap={{ scale: currentPage === totalPages ? 1 : 0.95 }}
-                className="p-3 rounded-xl border-2 border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 hover:border-blue-500 transition-all"
+                className="p-3 rounded-xl border-2 border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-blue-500 dark:hover:border-blue-400 transition-all bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
               >
                 <ChevronRight className="w-5 h-5" />
               </motion.button>

@@ -65,14 +65,14 @@ export default function ContactPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900">
       {/* Hero Section */}
       <section className="relative pt-32 pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-          <div className="absolute top-40 right-10 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
-          <div className="absolute -bottom-8 left-1/2 w-96 h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+          <div className="absolute top-20 left-10 w-96 h-96 bg-blue-200 dark:bg-blue-900/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+          <div className="absolute top-40 right-10 w-96 h-96 bg-purple-200 dark:bg-purple-900/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+          <div className="absolute -bottom-8 left-1/2 w-96 h-96 bg-pink-200 dark:bg-pink-900/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
@@ -87,7 +87,7 @@ export default function ContactPage() {
               transition={{ delay: 0.2, type: 'spring' }}
               className="inline-block mb-6"
             >
-              <span className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 text-sm font-semibold border border-blue-200 flex items-center gap-2">
+              <span className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-700 dark:text-blue-300 text-sm font-semibold border border-blue-200 dark:border-blue-800 flex items-center gap-2">
                 <Sparkles className="w-4 h-4" />
                 Contact Us
               </span>
@@ -95,7 +95,7 @@ export default function ContactPage() {
             <h1 className="text-5xl md:text-7xl font-bold mb-6 gradient-primary bg-clip-text text-transparent">
               Get In Touch
             </h1>
-            <p className="text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
               Have a question? We&apos;d love to hear from you. Send us a message and we&apos;ll respond as soon as possible.
             </p>
             <motion.div
@@ -104,17 +104,17 @@ export default function ContactPage() {
               transition={{ delay: 0.4 }}
               className="mt-8 flex flex-wrap justify-center gap-4"
             >
-              <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-lg">
-                <Headphones className="w-5 h-5 text-blue-500" />
-                <span className="text-gray-700 font-medium">24/7 Support</span>
+              <div className="flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg">
+                <Headphones className="w-5 h-5 text-blue-500 dark:text-blue-400" />
+                <span className="text-gray-700 dark:text-gray-300 font-medium">24/7 Support</span>
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-lg">
+              <div className="flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg">
                 <Zap className="w-5 h-5 text-yellow-500" />
-                <span className="text-gray-700 font-medium">Fast Response</span>
+                <span className="text-gray-700 dark:text-gray-300 font-medium">Fast Response</span>
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-lg">
-                <Globe className="w-5 h-5 text-green-500" />
-                <span className="text-gray-700 font-medium">Global Reach</span>
+              <div className="flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg">
+                <Globe className="w-5 h-5 text-green-500 dark:text-green-400" />
+                <span className="text-gray-700 dark:text-gray-300 font-medium">Global Reach</span>
               </div>
             </motion.div>
           </motion.div>
@@ -123,9 +123,9 @@ export default function ContactPage() {
 
       {/* Contact Section */}
       <section className="py-12 px-4 sm:px-6 lg:px-8 relative">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-blue-400 rounded-full filter blur-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-400 rounded-full filter blur-3xl"></div>
+        <div className="absolute inset-0 opacity-5 dark:opacity-10">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-blue-400 dark:bg-blue-900 rounded-full filter blur-3xl"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-400 dark:bg-purple-900 rounded-full filter blur-3xl"></div>
         </div>
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="grid lg:grid-cols-2 gap-12">
@@ -138,14 +138,14 @@ export default function ContactPage() {
               className="relative group"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-500 rounded-3xl opacity-0 group-hover:opacity-10 transition-opacity blur-xl"></div>
-              <div className="relative glass-effect rounded-3xl p-8 md:p-10 shadow-2xl bg-white">
+              <div className="relative glass-effect rounded-3xl p-8 md:p-10 shadow-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                 <div className="flex items-center gap-3 mb-8">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white shadow-lg">
                     <MessageSquare className="w-6 h-6" />
                   </div>
                   <div>
-                    <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Send us a Message</h2>
-                    <p className="text-sm text-gray-600">We&apos;ll get back to you soon</p>
+                    <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">Send us a Message</h2>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">We&apos;ll get back to you soon</p>
                   </div>
                 </div>
 
@@ -164,8 +164,8 @@ export default function ContactPage() {
                     >
                       <CheckCircle2 className="w-10 h-10 text-white" />
                     </motion.div>
-                    <h3 className="text-3xl font-bold text-gray-900 mb-3">Message Sent!</h3>
-                    <p className="text-gray-600 text-lg">
+                    <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3">Message Sent!</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-lg">
                       Thank you for contacting us. We&apos;ll get back to you within 24 hours.
                     </p>
                     <motion.div
@@ -187,7 +187,7 @@ export default function ContactPage() {
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                         Your Name *
                       </label>
                       <input
@@ -195,13 +195,13 @@ export default function ContactPage() {
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 focus:bg-white"
+                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 outline-none transition-all bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                         placeholder="John Doe"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                         Email Address *
                       </label>
                       <input
@@ -209,13 +209,13 @@ export default function ContactPage() {
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 focus:bg-white"
+                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 outline-none transition-all bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                         placeholder="you@example.com"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                         Subject *
                       </label>
                       <input
@@ -223,13 +223,13 @@ export default function ContactPage() {
                         required
                         value={formData.subject}
                         onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 focus:bg-white"
+                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 outline-none transition-all bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                         placeholder="How can we help?"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                         Message *
                       </label>
                       <textarea
@@ -237,7 +237,7 @@ export default function ContactPage() {
                         rows={6}
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-none bg-gray-50 focus:bg-white"
+                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 outline-none transition-all resize-none bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                         placeholder="Tell us more about your inquiry..."
                       />
                     </div>
@@ -266,14 +266,14 @@ export default function ContactPage() {
                 className="relative group"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl opacity-0 group-hover:opacity-10 transition-opacity blur-xl"></div>
-                <div className="relative glass-effect rounded-3xl p-8 md:p-10 shadow-2xl bg-white">
+                <div className="relative glass-effect rounded-3xl p-8 md:p-10 shadow-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-3 mb-8">
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white shadow-lg">
                       <Headphones className="w-6 h-6" />
                     </div>
                     <div>
-                      <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Contact Information</h2>
-                      <p className="text-sm text-gray-600">Get in touch with us</p>
+                      <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">Contact Information</h2>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Get in touch with us</p>
                     </div>
                   </div>
                   <div className="space-y-4">
@@ -286,7 +286,7 @@ export default function ContactPage() {
                         viewport={{ once: true }}
                         transition={{ delay: idx * 0.1, type: 'spring' }}
                         whileHover={{ x: 5, scale: 1.02 }}
-                        className="flex items-start gap-4 p-5 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all group border-2 border-transparent hover:border-blue-200"
+                        className="flex items-start gap-4 p-5 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/20 dark:hover:to-purple-900/20 transition-all group border-2 border-transparent hover:border-blue-200 dark:hover:border-blue-700"
                       >
                         <motion.div
                           whileHover={{ rotate: 6, scale: 1.1 }}
@@ -295,8 +295,8 @@ export default function ContactPage() {
                           {info.icon}
                         </motion.div>
                         <div className="flex-1">
-                          <h3 className="font-bold text-gray-900 mb-1 text-lg">{info.title}</h3>
-                          <p className="text-gray-600 font-medium">{info.content}</p>
+                          <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-1 text-lg">{info.title}</h3>
+                          <p className="text-gray-600 dark:text-gray-400 font-medium">{info.content}</p>
                         </div>
                       </motion.a>
                     ))}
@@ -313,12 +313,12 @@ export default function ContactPage() {
                 className="relative group"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-3xl opacity-0 group-hover:opacity-10 transition-opacity blur-xl"></div>
-                <div className="relative glass-effect rounded-3xl p-8 shadow-2xl bg-white">
+                <div className="relative glass-effect rounded-3xl p-8 shadow-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white">
                       <Zap className="w-5 h-5" />
                     </div>
-                    <h2 className="text-2xl font-bold text-gray-900">Quick Links</h2>
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Quick Links</h2>
                   </div>
                   <ul className="space-y-3">
                     {[
@@ -337,9 +337,9 @@ export default function ContactPage() {
                       >
                         <a
                           href={link.href}
-                          className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition font-medium group/link"
+                          className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition font-medium group/link"
                         >
-                          <span className="w-1.5 h-1.5 rounded-full bg-blue-600 group-hover/link:scale-150 transition-transform"></span>
+                          <span className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400 group-hover/link:scale-150 transition-transform"></span>
                           {link.label}
                         </a>
                       </motion.li>

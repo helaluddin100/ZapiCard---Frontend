@@ -308,9 +308,9 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12">How It Works</h2>
+          <h2 className="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">How It Works</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {[
               { step: "1", title: "Sign Up", desc: "Create your free account in seconds" },
@@ -323,13 +323,13 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.2 }}
-                className="text-center p-8 rounded-2xl bg-gradient-to-br from-blue-50 to-purple-50 card-hover"
+                className="text-center p-8 rounded-2xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 card-hover"
               >
                 <div className="w-16 h-16 mx-auto mb-4 rounded-full gradient-primary flex items-center justify-center text-white text-2xl font-bold">
                   {item.step}
                 </div>
-                <h3 className="text-2xl font-semibold mb-2">{item.title}</h3>
-                <p className="text-gray-600">{item.desc}</p>
+                <h3 className="text-2xl font-semibold mb-2 text-gray-900 dark:text-gray-100">{item.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -337,9 +337,9 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 to-pink-50">
+      <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-900">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12">Powerful Features</h2>
+          <h2 className="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">Powerful Features</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, idx) => (
               <motion.div
@@ -348,11 +348,11 @@ export default function Home() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="glass-effect p-6 rounded-xl card-hover"
+                className="glass-effect p-6 rounded-xl card-hover bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
               >
-                <div className="text-blue-600 mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
+                <div className="text-blue-600 dark:text-blue-400 mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">{feature.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400">{feature.description}</p>
               </motion.div>
             ))}
           </div>
@@ -360,10 +360,10 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-4">Simple, Transparent Pricing</h2>
-          <p className="text-center text-gray-600 mb-12">Choose the plan that&rsquo;s right for you</p>
+          <h2 className="text-4xl font-bold text-center mb-4 text-gray-900 dark:text-gray-100">Simple, Transparent Pricing</h2>
+          <p className="text-center text-gray-600 dark:text-gray-400 mb-12">Choose the plan that&rsquo;s right for you</p>
           <div className="grid md:grid-cols-3 gap-8">
             {pricingPlans.map((plan, idx) => (
               <motion.div
@@ -374,11 +374,11 @@ export default function Home() {
                 transition={{ delay: idx * 0.1 }}
                 className={`relative p-8 rounded-2xl ${plan.popular
                   ? 'gradient-primary text-white scale-105'
-                  : 'bg-white border-2 border-gray-200'
+                  : 'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700'
                   } card-hover`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1 bg-yellow-400 text-gray-900 rounded-full text-sm font-bold">
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1 bg-yellow-400 dark:bg-yellow-500 text-gray-900 dark:text-gray-900 rounded-full text-sm font-bold">
                     Most Popular
                   </div>
                 )}
@@ -390,8 +390,8 @@ export default function Home() {
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((feature, fIdx) => (
                     <li key={fIdx} className="flex items-start">
-                      <CheckCircle2 className={`w-5 h-5 mr-2 flex-shrink-0 ${plan.popular ? 'text-white' : 'text-green-500'}`} />
-                      <span>{feature}</span>
+                      <CheckCircle2 className={`w-5 h-5 mr-2 flex-shrink-0 ${plan.popular ? 'text-white' : 'text-green-500 dark:text-green-400'}`} />
+                      <span className={plan.popular ? '' : 'text-gray-700 dark:text-gray-300'}>{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -411,12 +411,12 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section id="testimonials" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 relative overflow-hidden">
+      <section id="testimonials" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-          <div className="absolute top-40 right-10 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
-          <div className="absolute -bottom-8 left-1/2 w-96 h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+          <div className="absolute top-20 left-10 w-96 h-96 bg-blue-200 dark:bg-blue-900/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+          <div className="absolute top-40 right-10 w-96 h-96 bg-purple-200 dark:bg-purple-900/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+          <div className="absolute -bottom-8 left-1/2 w-96 h-96 bg-pink-200 dark:bg-pink-900/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
@@ -433,17 +433,17 @@ export default function Home() {
               transition={{ delay: 0.2, type: 'spring' }}
               className="inline-block mb-6"
             >
-              <span className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 text-sm font-semibold border border-blue-200">
+              <span className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-700 dark:text-blue-300 text-sm font-semibold border border-blue-200 dark:border-blue-800">
                 ✨ Testimonials
               </span>
             </motion.div>
             <h2 className="text-4xl md:text-5xl font-bold mb-4 gradient-primary bg-clip-text text-transparent">
               What Our Users Say
             </h2>
-            <p className="text-gray-600 text-lg mb-6">Join thousands of satisfied professionals</p>
+            <p className="text-gray-600 dark:text-gray-400 text-lg mb-6">Join thousands of satisfied professionals</p>
             <Link
               href="/testimonials"
-              className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold group"
+              className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold group"
             >
               View All Testimonials
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -464,10 +464,10 @@ export default function Home() {
                 {/* Decorative gradient background on hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity blur-xl"></div>
 
-                <div className="relative glass-effect p-6 md:p-8 rounded-2xl card-hover bg-white border border-gray-200/50 shadow-lg hover:shadow-2xl transition-all">
+                <div className="relative glass-effect p-6 md:p-8 rounded-2xl card-hover bg-white dark:bg-gray-800 border border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-2xl transition-all">
                   {/* Quote Icon */}
-                  <div className="absolute top-4 right-4 opacity-10">
-                    <Quote className="w-16 h-16 text-blue-500" />
+                  <div className="absolute top-4 right-4 opacity-10 dark:opacity-20">
+                    <Quote className="w-16 h-16 text-blue-500 dark:text-blue-400" />
                   </div>
 
                   {/* Rating Stars */}
@@ -497,13 +497,13 @@ export default function Home() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: idx * 0.15 + 0.3 }}
-                    className="text-gray-700 mb-6 italic text-base md:text-lg leading-relaxed relative z-10"
+                    className="text-gray-700 dark:text-gray-300 mb-6 italic text-base md:text-lg leading-relaxed relative z-10"
                   >
                     &ldquo;{testimonial.text}&rdquo;
                   </motion.p>
 
                   {/* Author Info */}
-                  <div className="flex items-center gap-4 pt-4 border-t border-gray-200">
+                  <div className="flex items-center gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                     <motion.div
                       whileHover={{ scale: 1.1, rotate: 5 }}
                       className="relative"
@@ -512,7 +512,7 @@ export default function Home() {
                       <img
                         src={testimonial.image}
                         alt={testimonial.name}
-                        className="relative w-14 h-14 rounded-full object-cover border-2 border-white shadow-lg"
+                        className="relative w-14 h-14 rounded-full object-cover border-2 border-white dark:border-gray-700 shadow-lg"
                       />
                     </motion.div>
                     <div className="flex-1">
@@ -521,7 +521,7 @@ export default function Home() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: idx * 0.15 + 0.4 }}
-                        className="font-bold text-gray-900 text-lg"
+                        className="font-bold text-gray-900 dark:text-gray-100 text-lg"
                       >
                         {testimonial.name}
                       </motion.div>
@@ -530,7 +530,7 @@ export default function Home() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: idx * 0.15 + 0.5 }}
-                        className="text-sm text-gray-600 font-medium"
+                        className="text-sm text-gray-600 dark:text-gray-400 font-medium"
                       >
                         {testimonial.role}
                       </motion.div>
@@ -539,7 +539,7 @@ export default function Home() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: idx * 0.15 + 0.6 }}
-                        className="text-xs text-gray-500"
+                        className="text-xs text-gray-500 dark:text-gray-500"
                       >
                         {testimonial.company}
                       </motion.div>
@@ -556,11 +556,11 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 relative overflow-hidden">
+      <section id="faq" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
         {/* Background decorative elements */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-20 left-10 w-96 h-96 bg-blue-400 rounded-full filter blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-400 rounded-full filter blur-3xl"></div>
+        <div className="absolute inset-0 opacity-5 dark:opacity-10">
+          <div className="absolute top-20 left-10 w-96 h-96 bg-blue-400 dark:bg-blue-900 rounded-full filter blur-3xl"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-400 dark:bg-purple-900 rounded-full filter blur-3xl"></div>
         </div>
 
         <div className="max-w-4xl mx-auto relative z-10">
@@ -571,14 +571,14 @@ export default function Home() {
             className="text-center mb-16"
           >
             <div className="inline-block mb-4">
-              <span className="px-4 py-1 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 text-sm font-semibold border border-blue-200">
+              <span className="px-4 py-1 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-700 dark:text-blue-300 text-sm font-semibold border border-blue-200 dark:border-blue-800">
                 FAQ
               </span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-4 gradient-primary bg-clip-text text-transparent">
               Frequently Asked Questions
             </h2>
-            <p className="text-gray-600 text-lg">Everything you need to know about Zapi Card</p>
+            <p className="text-gray-600 dark:text-gray-400 text-lg">Everything you need to know about Zapi Card</p>
           </motion.div>
 
           <div className="space-y-4">
@@ -592,14 +592,14 @@ export default function Home() {
                 className="relative group"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity blur-xl"></div>
-                <div className="relative glass-effect rounded-2xl overflow-hidden border border-gray-200/50 shadow-lg hover:shadow-xl transition-all">
+                <div className="relative glass-effect rounded-2xl overflow-hidden border border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-xl transition-all bg-white dark:bg-gray-800">
                   <motion.button
                     onClick={() => setOpenFaq(openFaq === faq.id ? null : faq.id)}
                     className="w-full px-6 md:px-8 py-5 md:py-6 flex justify-between items-center text-left group/button"
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
                   >
-                    <span className="font-bold text-lg md:text-xl text-gray-900 pr-4 group-hover/button:text-blue-600 transition-colors">
+                    <span className="font-bold text-lg md:text-xl text-gray-900 dark:text-gray-100 pr-4 group-hover/button:text-blue-600 dark:group-hover/button:text-blue-400 transition-colors">
                       {faq.question}
                     </span>
                     <motion.div
@@ -631,7 +631,7 @@ export default function Home() {
                           y: openFaq === faq.id ? 0 : -10
                         }}
                         transition={{ delay: 0.1 }}
-                        className="text-gray-700 leading-relaxed text-base md:text-lg bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 border-l-4 border-blue-500"
+                        className="text-gray-700 dark:text-gray-300 leading-relaxed text-base md:text-lg bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg p-4 border-l-4 border-blue-500 dark:border-blue-400"
                       >
                         {faq.answer}
                       </motion.div>
@@ -649,7 +649,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="mt-12 text-center"
           >
-            <p className="text-gray-600 mb-4">Still have questions?</p>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">Still have questions?</p>
             <Link
               href="/contact"
               className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-semibold hover:shadow-lg transition-all transform hover:scale-105"
