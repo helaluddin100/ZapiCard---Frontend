@@ -366,38 +366,38 @@ export default function AddEntryPage() {
       <DashboardLayout>
         <div className="max-w-4xl mx-auto space-y-6">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <Link href="/health-dashboard" className="hover:text-blue-600">
+          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <Link href="/health-dashboard" className="hover:text-blue-600 dark:hover:text-blue-400 transition">
               Health Dashboard
             </Link>
             <span>/</span>
             {cardData && (
               <>
-                <Link href={`/health-dashboard`} className="hover:text-blue-600">
+                <Link href={`/health-dashboard`} className="hover:text-blue-600 dark:hover:text-blue-400 transition">
                   {cardData.person_name}
                 </Link>
                 <span>/</span>
               </>
             )}
-            <span className="text-gray-900 font-medium">Add Entry</span>
+            <span className="text-gray-900 dark:text-gray-100 font-medium">Add Entry</span>
           </div>
 
           {/* Header */}
           <div className="flex items-center gap-4">
             <Link
               href="/health-dashboard"
-              className="p-2 hover:bg-gray-100 rounded-lg transition"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition"
             >
-              <ArrowLeft className="w-5 h-5 text-gray-600" />
+              <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
             </Link>
-            <h1 className="text-3xl font-bold text-gray-900">Add New Entry</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Add New Entry</h1>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-6">
+          <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 space-y-6">
             {/* Entry Date */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Entry Date *
               </label>
               <input
@@ -406,19 +406,19 @@ export default function AddEntryPage() {
                 value={formData.entry_date}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               />
             </div>
 
             {/* Doctor Information */}
-            <div className="border-t border-gray-200 pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <Stethoscope className="w-5 h-5 text-blue-600" />
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+                <Stethoscope className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 Doctor Information
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Doctor Name
                   </label>
                   <input
@@ -426,12 +426,12 @@ export default function AddEntryPage() {
                     name="doctor_name"
                     value={formData.doctor_name}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                     placeholder="Dr. Name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Specialty
                   </label>
                   <input
@@ -439,12 +439,12 @@ export default function AddEntryPage() {
                     name="doctor_specialty"
                     value={formData.doctor_specialty}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                     placeholder="Cardiology, Pediatrics, etc."
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Hospital/Clinic
                   </label>
                   <input
@@ -452,11 +452,11 @@ export default function AddEntryPage() {
                     name="doctor_hospital"
                     value={formData.doctor_hospital}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Phone
                   </label>
                   <input
@@ -475,22 +475,22 @@ export default function AddEntryPage() {
                       }
                     }}
                     maxLength={20}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent ${validationErrors.doctor_phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300'
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 ${validationErrors.doctor_phone ? 'border-red-500 dark:border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600'
                       }`}
                   />
                   {validationErrors.doctor_phone && (
-                    <p className="mt-1 text-sm text-red-600">{validationErrors.doctor_phone[0]}</p>
+                    <p className="mt-1 text-sm text-red-600 dark:text-red-400">{validationErrors.doctor_phone[0]}</p>
                   )}
-                  <p className="mt-1 text-xs text-gray-500">Maximum 20 characters. If multiple numbers, use only the first one.</p>
+                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Maximum 20 characters. If multiple numbers, use only the first one.</p>
                 </div>
               </div>
             </div>
 
             {/* Tests */}
-            <div className="border-t border-gray-200 pt-6">
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                  <TestTube className="w-5 h-5 text-purple-600" />
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                  <TestTube className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                   Tests
                 </h3>
                 <button
@@ -510,14 +510,14 @@ export default function AddEntryPage() {
                         type="text"
                         value={test.name}
                         onChange={(e) => handleTestChange(index, 'name', e.target.value)}
-                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent"
+                        className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                         placeholder="Test name"
                       />
                       <input
                         type="text"
                         value={test.result}
                         onChange={(e) => handleTestChange(index, 'result', e.target.value)}
-                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent"
+                        className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                         placeholder="Result"
                       />
                     </div>
@@ -525,7 +525,7 @@ export default function AddEntryPage() {
                       <button
                         type="button"
                         onClick={() => removeTest(index)}
-                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition"
+                        className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition"
                       >
                         <X className="w-5 h-5" />
                       </button>
@@ -537,7 +537,7 @@ export default function AddEntryPage() {
 
             {/* Recommendations */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Recommendations
               </label>
               <textarea
@@ -545,16 +545,16 @@ export default function AddEntryPage() {
                 value={formData.recommendations}
                 onChange={handleInputChange}
                 rows="4"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                 placeholder="Doctor's recommendations and notes..."
               />
             </div>
 
             {/* Medicines */}
-            <div className="border-t border-gray-200 pt-6">
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                  <Pill className="w-5 h-5 text-purple-600" />
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                  <Pill className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                   Medicines
                 </h3>
                 <button
@@ -568,28 +568,28 @@ export default function AddEntryPage() {
               </div>
               <div className="space-y-4">
                 {formData.medicines.map((medicine, index) => (
-                  <div key={index} className="border border-gray-200 rounded-lg p-4 space-y-3">
+                  <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-3 bg-gray-50 dark:bg-gray-700/30">
                     <div className="flex items-start justify-between">
                       <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-3">
                         <input
                           type="text"
                           value={medicine.name}
                           onChange={(e) => handleMedicineChange(index, 'name', e.target.value)}
-                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent"
+                          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                           placeholder="Medicine name"
                         />
                         <input
                           type="text"
                           value={medicine.dosage}
                           onChange={(e) => handleMedicineChange(index, 'dosage', e.target.value)}
-                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent"
+                          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                           placeholder="Dosage (e.g., 500mg)"
                         />
                         <input
                           type="text"
                           value={medicine.duration}
                           onChange={(e) => handleMedicineChange(index, 'duration', e.target.value)}
-                          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent"
+                          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                           placeholder="Duration (e.g., 7 days)"
                         />
                       </div>
@@ -597,14 +597,14 @@ export default function AddEntryPage() {
                         <button
                           type="button"
                           onClick={() => removeMedicine(index)}
-                          className="ml-3 p-2 text-red-600 hover:bg-red-50 rounded-lg transition"
+                          className="ml-3 p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition"
                         >
                           <X className="w-5 h-5" />
                         </button>
                       )}
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Timing
                       </label>
                       <div className="flex gap-3">
@@ -612,8 +612,8 @@ export default function AddEntryPage() {
                           <label
                             key={timing}
                             className={`flex items-center gap-2 px-4 py-2 border-2 rounded-lg cursor-pointer transition ${medicine.timing?.includes(timing)
-                              ? 'border-blue-500 bg-blue-50'
-                              : 'border-gray-200 hover:border-gray-300'
+                              ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
+                              : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'
                               }`}
                           >
                             <input
@@ -636,10 +636,10 @@ export default function AddEntryPage() {
             </div>
 
             {/* Diet Routine */}
-            <div className="border-t border-gray-200 pt-6">
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                  <Utensils className="w-5 h-5 text-pink-600" />
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                  <Utensils className="w-5 h-5 text-pink-600 dark:text-pink-400" />
                   Diet Routine
                 </h3>
                 <button
@@ -659,13 +659,13 @@ export default function AddEntryPage() {
                         type="time"
                         value={diet.time}
                         onChange={(e) => handleDietChange(index, 'time', e.target.value)}
-                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent"
+                        className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                       />
                       <input
                         type="text"
                         value={diet.food}
                         onChange={(e) => handleDietChange(index, 'food', e.target.value)}
-                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent"
+                        className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                         placeholder="Food items"
                       />
                     </div>
@@ -673,7 +673,7 @@ export default function AddEntryPage() {
                       <button
                         type="button"
                         onClick={() => removeDiet(index)}
-                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition"
+                        className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition"
                       >
                         <X className="w-5 h-5" />
                       </button>
@@ -684,11 +684,11 @@ export default function AddEntryPage() {
             </div>
 
             {/* Uploads */}
-            <div className="border-t border-gray-200 pt-6 space-y-4">
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-6 space-y-4">
               {/* Prescription */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Prescription Images (Multiple pages supported)
                   </label>
                   {formData.prescription_images.length > 0 && (
@@ -708,9 +708,9 @@ export default function AddEntryPage() {
                   accept="image/*"
                   multiple
                   onChange={handlePrescriptionUpload}
-                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:gradient-primary file:text-white hover:file:shadow-lg"
+                  className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:gradient-primary file:text-white hover:file:shadow-lg"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   You can upload multiple images for multi-page prescriptions (max 5 images at once to avoid API quota limits)
                 </p>
                 {formData.prescription_images.length > 0 && (
@@ -720,7 +720,7 @@ export default function AddEntryPage() {
                         <img
                           src={img}
                           alt={`Prescription page ${index + 1}`}
-                          className="w-full h-32 object-cover rounded-lg border-2 border-blue-500"
+                          className="w-full h-32 object-cover rounded-lg border-2 border-blue-500 dark:border-blue-400"
                         />
                         <div className="absolute top-1 left-1 gradient-primary text-white text-xs px-2 py-1 rounded font-semibold">
                           Page {index + 1}
@@ -728,7 +728,7 @@ export default function AddEntryPage() {
                         <button
                           type="button"
                           onClick={() => removePrescriptionImage(index)}
-                          className="absolute top-1 right-1 p-1 bg-red-600 text-white rounded-full hover:bg-red-700 opacity-0 group-hover:opacity-100 transition"
+                          className="absolute top-1 right-1 p-1 bg-red-600 dark:bg-red-500 text-white rounded-full hover:bg-red-700 dark:hover:bg-red-600 opacity-0 group-hover:opacity-100 transition"
                         >
                           <X className="w-3 h-3" />
                         </button>
@@ -740,7 +740,7 @@ export default function AddEntryPage() {
 
               {/* Test Reports */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Test Report Images
                 </label>
                 <input
@@ -748,7 +748,7 @@ export default function AddEntryPage() {
                   accept="image/*"
                   multiple
                   onChange={handleTestReportUpload}
-                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:gradient-primary file:text-white hover:file:shadow-lg"
+                  className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:gradient-primary file:text-white hover:file:shadow-lg"
                 />
                 {formData.test_report_images.length > 0 && (
                   <div className="grid grid-cols-4 gap-3 mt-3">
@@ -757,12 +757,12 @@ export default function AddEntryPage() {
                         <img
                           src={img}
                           alt={`Test report ${index + 1}`}
-                          className="w-full h-24 object-cover rounded-lg border border-gray-200"
+                          className="w-full h-24 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
                         />
                         <button
                           type="button"
                           onClick={() => removeTestReport(index)}
-                          className="absolute top-1 right-1 p-1 bg-red-600 text-white rounded-full hover:bg-red-700"
+                          className="absolute top-1 right-1 p-1 bg-red-600 dark:bg-red-500 text-white rounded-full hover:bg-red-700 dark:hover:bg-red-600"
                         >
                           <X className="w-3 h-3" />
                         </button>
@@ -774,33 +774,33 @@ export default function AddEntryPage() {
             </div>
 
             {/* WhatsApp Reminder */}
-            <div className="border-t border-gray-200 pt-6">
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
               <label className="flex items-center gap-3 cursor-pointer">
                 <input
                   type="checkbox"
                   name="whatsapp_reminder"
                   checked={formData.whatsapp_reminder}
                   onChange={handleInputChange}
-                  className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  className="w-5 h-5 text-blue-600 dark:text-blue-400 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700"
                 />
-                <span className="text-sm font-medium text-gray-700">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Send WhatsApp reminder for medicines & diet
                 </span>
               </label>
             </div>
 
             {/* Submit Buttons */}
-            <div className="flex items-center gap-4 pt-4 border-t border-gray-200">
+            <div className="flex items-center gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 px-6 py-3 gradient-primary text-white font-semibold rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+                className="btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Saving...' : 'Save Entry'}
               </button>
               <Link
                 href="/health-dashboard"
-                className="px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors"
+                className="btn-outline"
               >
                 Cancel
               </Link>
@@ -811,8 +811,8 @@ export default function AddEntryPage() {
 
       {/* AI Output Preview Modal */}
       {showAIPreview && editableAiOutput && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col border border-gray-200 dark:border-gray-700">
             {/* Header */}
             <div className="gradient-primary text-white p-6 flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -830,14 +830,14 @@ export default function AddEntryPage() {
             {/* Content */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
               {/* Doctor Information */}
-              <div className="border border-gray-200 rounded-lg p-4">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <Stethoscope className="w-5 h-5 text-white" />
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-700/30">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+                  <Stethoscope className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   Doctor Information
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Doctor Name</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Doctor Name</label>
                     <input
                       type="text"
                       value={editableAiOutput.doctor_info.doctor_name}
@@ -845,11 +845,11 @@ export default function AddEntryPage() {
                         ...prev,
                         doctor_info: { ...prev.doctor_info, doctor_name: e.target.value }
                       }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Specialty</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Specialty</label>
                     <input
                       type="text"
                       value={editableAiOutput.doctor_info.doctor_specialty}
@@ -857,11 +857,11 @@ export default function AddEntryPage() {
                         ...prev,
                         doctor_info: { ...prev.doctor_info, doctor_specialty: e.target.value }
                       }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Hospital/Clinic</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Hospital/Clinic</label>
                     <input
                       type="text"
                       value={editableAiOutput.doctor_info.doctor_hospital}
@@ -869,11 +869,11 @@ export default function AddEntryPage() {
                         ...prev,
                         doctor_info: { ...prev.doctor_info, doctor_hospital: e.target.value }
                       }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone</label>
                     <input
                       type="text"
                       value={editableAiOutput.doctor_info.doctor_phone}
@@ -881,17 +881,17 @@ export default function AddEntryPage() {
                         ...prev,
                         doctor_info: { ...prev.doctor_info, doctor_phone: e.target.value }
                       }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Medicines */}
-              <div className="border border-gray-200 rounded-lg p-4">
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-700/30">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                    <Pill className="w-5 h-5 text-purple-600" />
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                    <Pill className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                     Medicines ({editableAiOutput.medicines.length})
                   </h3>
                   <button
@@ -908,7 +908,7 @@ export default function AddEntryPage() {
                 </div>
                 <div className="space-y-3">
                   {editableAiOutput.medicines.map((medicine, index) => (
-                    <div key={index} className="border border-gray-200 rounded-lg p-3 space-y-2">
+                    <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 space-y-2 bg-white dark:bg-gray-800">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                         <input
                           type="text"
@@ -919,7 +919,7 @@ export default function AddEntryPage() {
                             setEditableAiOutput(prev => ({ ...prev, medicines: newMedicines }))
                           }}
                           placeholder="Medicine name"
-                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent text-sm"
+                          className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 text-sm"
                         />
                         <input
                           type="text"
@@ -930,7 +930,7 @@ export default function AddEntryPage() {
                             setEditableAiOutput(prev => ({ ...prev, medicines: newMedicines }))
                           }}
                           placeholder="Dosage"
-                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent text-sm"
+                          className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 text-sm"
                         />
                         <input
                           type="text"
@@ -941,7 +941,7 @@ export default function AddEntryPage() {
                             setEditableAiOutput(prev => ({ ...prev, medicines: newMedicines }))
                           }}
                           placeholder="Duration"
-                          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent text-sm"
+                          className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 text-sm"
                         />
                       </div>
                       <div className="flex gap-2">
@@ -949,8 +949,8 @@ export default function AddEntryPage() {
                           <label
                             key={timing}
                             className={`flex items-center gap-1 px-3 py-1 border-2 rounded-lg cursor-pointer text-sm transition ${medicine.timing?.includes(timing)
-                              ? 'border-blue-500 bg-blue-50 text-blue-700'
-                              : 'border-gray-200 hover:border-gray-300'
+                              ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
+                              : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'
                               }`}
                           >
                             <input
@@ -978,7 +978,7 @@ export default function AddEntryPage() {
                               const newMedicines = editableAiOutput.medicines.filter((_, i) => i !== index)
                               setEditableAiOutput(prev => ({ ...prev, medicines: newMedicines }))
                             }}
-                            className="ml-auto px-2 py-1 text-red-600 hover:bg-red-50 rounded text-sm"
+                            className="ml-auto px-2 py-1 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded text-sm"
                           >
                             <X className="w-4 h-4" />
                           </button>
@@ -990,10 +990,10 @@ export default function AddEntryPage() {
               </div>
 
               {/* Tests */}
-              <div className="border border-gray-200 rounded-lg p-4">
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-700/30">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                    <TestTube className="w-5 h-5 text-purple-600" />
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                    <TestTube className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                     Tests ({editableAiOutput.tests.length})
                   </h3>
                   <button
@@ -1020,7 +1020,7 @@ export default function AddEntryPage() {
                           setEditableAiOutput(prev => ({ ...prev, tests: newTests }))
                         }}
                         placeholder="Test name"
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent text-sm"
+                        className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 text-sm"
                       />
                       <input
                         type="text"
@@ -1031,7 +1031,7 @@ export default function AddEntryPage() {
                           setEditableAiOutput(prev => ({ ...prev, tests: newTests }))
                         }}
                         placeholder="Result"
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent text-sm"
+                        className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 text-sm"
                       />
                       {editableAiOutput.tests.length > 1 && (
                         <button
@@ -1040,7 +1040,7 @@ export default function AddEntryPage() {
                             const newTests = editableAiOutput.tests.filter((_, i) => i !== index)
                             setEditableAiOutput(prev => ({ ...prev, tests: newTests }))
                           }}
-                          className="p-2 text-red-600 hover:bg-red-50 rounded"
+                          className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded"
                         >
                           <X className="w-4 h-4" />
                         </button>
@@ -1051,8 +1051,8 @@ export default function AddEntryPage() {
               </div>
 
               {/* Recommendations */}
-              <div className="border border-gray-200 rounded-lg p-4">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Recommendations</h3>
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-700/30">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Recommendations</h3>
                 <textarea
                   value={editableAiOutput.recommendations}
                   onChange={(e) => setEditableAiOutput(prev => ({
@@ -1060,23 +1060,23 @@ export default function AddEntryPage() {
                     recommendations: e.target.value
                   }))}
                   rows="4"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10b981] focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                   placeholder="Doctor recommendations and notes..."
                 />
               </div>
             </div>
 
             {/* Footer */}
-            <div className="border-t border-gray-200 p-6 flex items-center justify-end gap-3">
+            <div className="border-t border-gray-200 dark:border-gray-700 p-6 flex items-center justify-end gap-3">
               <button
                 onClick={() => setShowAIPreview(false)}
-                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
+                className="btn-outline"
               >
                 Cancel
               </button>
               <button
                 onClick={applyAIDataToForm}
-                className="flex items-center gap-2 px-6 py-2 gradient-primary text-white rounded-lg hover:shadow-lg transition shadow-md"
+                className="btn-primary flex items-center gap-2"
               >
                 <Check className="w-5 h-5" />
                 Apply to Form

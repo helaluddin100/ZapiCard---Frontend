@@ -434,7 +434,7 @@ export default function HealthDashboardPage() {
         <div className="space-y-6">
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <h1 className="text-3xl font-bold text-gray-900">My Health Cards</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">My Health Cards</h1>
             <Link
               href="/health-dashboard/create"
               className="inline-flex items-center gap-2 px-6 py-3 gradient-primary text-white font-semibold rounded-lg hover:shadow-lg transition-all shadow-lg"
@@ -446,36 +446,36 @@ export default function HealthDashboardPage() {
 
           {/* Stats Row */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="flex items-center gap-3">
                 <div className="p-3 gradient-primary rounded-lg">
                   <FileText className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Total Cards</p>
-                  <p className="text-2xl font-bold text-gray-900">{stats.totalCards}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Total Cards</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{stats.totalCards}</p>
                 </div>
               </div>
             </div>
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-blue-100 rounded-lg">
-                  <Activity className="w-6 h-6 text-blue-600" />
+                <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                  <Activity className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Total Entries</p>
-                  <p className="text-2xl font-bold text-gray-900">{stats.totalEntries}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Total Entries</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{stats.totalEntries}</p>
                 </div>
               </div>
             </div>
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-purple-100 rounded-lg">
-                  <Clock className="w-6 h-6 text-purple-600" />
+                <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                  <Clock className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Last Updated</p>
-                  <p className="text-lg font-semibold text-gray-900">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Last Updated</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                     {stats.lastUpdated ? formatDate(stats.lastUpdated) : 'N/A'}
                   </p>
                 </div>
@@ -485,8 +485,8 @@ export default function HealthDashboardPage() {
 
           {/* Card Selector Dropdown */}
           {healthCards.length > 0 && (
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Select Card to View
               </label>
               <select
@@ -496,7 +496,7 @@ export default function HealthDashboardPage() {
                   const card = healthCards.find(c => c.id == cardId)
                   setSelectedCard(card || null)
                 }}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               >
                 <option value="">-- Select a card --</option>
                 {healthCards.map(card => (
@@ -510,12 +510,12 @@ export default function HealthDashboardPage() {
 
           {/* Error State */}
           {error && !loading && (
-            <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6">
               <div className="flex items-start gap-4">
-                <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+                <AlertCircle className="w-6 h-6 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <h3 className="text-red-800 font-semibold mb-1">Error Loading Health Cards</h3>
-                  <p className="text-red-600 text-sm mb-4">{error}</p>
+                  <h3 className="text-red-800 dark:text-red-300 font-semibold mb-1">Error Loading Health Cards</h3>
+                  <p className="text-red-600 dark:text-red-400 text-sm mb-4">{error}</p>
                   <button
                     onClick={loadHealthCards}
                     className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm font-semibold"
@@ -531,10 +531,10 @@ export default function HealthDashboardPage() {
           {loading && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3].map(i => (
-                <div key={i} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 animate-pulse">
-                  <div className="h-32 bg-gray-200 rounded-lg mb-4"></div>
-                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                <div key={i} className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 animate-pulse">
+                  <div className="h-32 bg-gray-200 dark:bg-gray-700 rounded-lg mb-4"></div>
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
                 </div>
               ))}
             </div>
@@ -542,10 +542,10 @@ export default function HealthDashboardPage() {
 
           {/* Health Cards Grid */}
           {!loading && !error && healthCards.length === 0 && (
-            <div className="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-200">
-              <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No Health Cards Yet</h3>
-              <p className="text-gray-600 mb-6">Create your first health card to get started</p>
+            <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+              <FileText className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">No Health Cards Yet</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">Create your first health card to get started</p>
               <Link
                 href="/health-dashboard/create"
                 className="inline-flex items-center gap-2 px-6 py-3 gradient-primary text-white font-semibold rounded-lg hover:shadow-lg transition-all shadow-lg"
@@ -590,7 +590,7 @@ export default function HealthDashboardPage() {
                       <Link
                         href={`/health-card/${card.username}/${card.slug}`}
                         target="_blank"
-                        className="p-2 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full hover:bg-white hover:shadow-lg transition-all"
+                        className="p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-full hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg transition-all"
                         onClick={(e) => e.stopPropagation()}
                         title="View Public Page"
                       >
@@ -598,7 +598,7 @@ export default function HealthDashboardPage() {
                       </Link>
                       <Link
                         href={`/health-dashboard/card/${card.id}/edit`}
-                        className="p-2 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full hover:bg-white hover:shadow-lg transition-all"
+                        className="p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-full hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg transition-all"
                         onClick={(e) => e.stopPropagation()}
                         title="Edit Card"
                       >
@@ -609,14 +609,14 @@ export default function HealthDashboardPage() {
                           e.stopPropagation()
                           toggleCardEntries(card.id)
                         }}
-                        className="p-2 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full hover:bg-white hover:shadow-lg transition-all"
+                        className="p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-full hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg transition-all"
                         title="View Entries"
                       >
                         <Eye className="w-4 h-4" />
                       </button>
                       <Link
                         href={`/health-dashboard/card/${card.id}/entry`}
-                        className="p-2 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full hover:bg-white hover:shadow-lg transition-all"
+                        className="p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-full hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg transition-all"
                         onClick={(e) => e.stopPropagation()}
                         title="Add New Entry"
                       >
@@ -656,8 +656,8 @@ export default function HealthDashboardPage() {
                               />
                             </div>
                           ) : (
-                            <div className="w-20 h-20 rounded-lg bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-xl">
-                              <QrCodeIcon className="w-10 h-10 text-gray-400 animate-pulse" />
+                            <div className="w-20 h-20 rounded-lg bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm flex items-center justify-center shadow-xl">
+                              <QrCodeIcon className="w-10 h-10 text-gray-400 dark:text-gray-500 animate-pulse" />
                             </div>
                           )}
                           {/* Download QR Button */}
@@ -667,7 +667,7 @@ export default function HealthDashboardPage() {
                                 e.stopPropagation()
                                 downloadQRCode(card)
                               }}
-                              className="mt-1.5 w-full px-2 py-1 text-xs bg-white/90 backdrop-blur-sm text-gray-700 rounded-md hover:bg-white hover:shadow-md transition-all opacity-0 group-hover:opacity-100"
+                              className="mt-1.5 w-full px-2 py-1 text-xs bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-white dark:hover:bg-gray-700 hover:shadow-md transition-all opacity-0 group-hover:opacity-100"
                               title="Download QR Code"
                             >
                               <Download className="w-3 h-3 mx-auto" />
@@ -712,15 +712,15 @@ export default function HealthDashboardPage() {
 
                   {/* Entries Accordion - Outside Card */}
                   {expandedCardId === card.id && (
-                    <div className="mt-4 bg-white rounded-xl p-4 shadow-md border border-gray-200">
+                    <div className="mt-4 bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md border border-gray-200 dark:border-gray-700">
                       <div className="flex items-center justify-between mb-3">
-                        <h4 className="font-semibold text-gray-900">Health Entries</h4>
+                        <h4 className="font-semibold text-gray-900 dark:text-gray-100">Health Entries</h4>
                         <button
                           onClick={(e) => {
                             e.stopPropagation()
                             toggleCardEntries(card.id)
                           }}
-                          className="text-gray-500 hover:text-gray-700"
+                          className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
                         >
                           {expandedCardId === card.id ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
                         </button>
@@ -730,16 +730,16 @@ export default function HealthDashboardPage() {
                           cardEntries[card.id].map((entry, index) => (
                             <div
                               key={entry.id || index}
-                              className="border border-gray-200 rounded-lg p-4 bg-gray-50 hover:bg-gray-100 transition"
+                              className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
                               onClick={(e) => e.stopPropagation()}
                             >
                               <div className="flex items-start justify-between mb-2">
                                 <div>
-                                  <p className="font-semibold text-gray-900">
+                                  <p className="font-semibold text-gray-900 dark:text-gray-100">
                                     Entry Date: {formatDate(entry.entry_date || entry.created_at)}
                                   </p>
                                   {entry.doctor_name && (
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-sm text-gray-600 dark:text-gray-400">
                                       Dr. {entry.doctor_name}
                                       {entry.doctor_specialty && ` - ${entry.doctor_specialty}`}
                                     </p>
@@ -747,7 +747,7 @@ export default function HealthDashboardPage() {
                                 </div>
                                 <Link
                                   href={`/health-dashboard/card/${card.id}/entry/${entry.id}/edit`}
-                                  className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition"
+                                  className="p-1.5 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition"
                                   onClick={(e) => e.stopPropagation()}
                                 >
                                   <Edit2 className="w-4 h-4" />
@@ -757,15 +757,15 @@ export default function HealthDashboardPage() {
                               {/* Medicines */}
                               {entry.medicines && entry.medicines.length > 0 && (
                                 <div className="mt-2">
-                                  <p className="text-xs font-semibold text-gray-700 mb-1">Medicines ({entry.medicines.length}):</p>
+                                  <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Medicines ({entry.medicines.length}):</p>
                                   <div className="flex flex-wrap gap-1">
                                     {entry.medicines.slice(0, 3).map((med, idx) => (
-                                      <span key={idx} className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded">
+                                      <span key={idx} className="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded">
                                         {med.name}
                                       </span>
                                     ))}
                                     {entry.medicines.length > 3 && (
-                                      <span className="text-xs text-gray-500">+{entry.medicines.length - 3} more</span>
+                                      <span className="text-xs text-gray-500 dark:text-gray-400">+{entry.medicines.length - 3} more</span>
                                     )}
                                   </div>
                                 </div>
@@ -774,15 +774,15 @@ export default function HealthDashboardPage() {
                               {/* Tests */}
                               {entry.tests && entry.tests.length > 0 && (
                                 <div className="mt-2">
-                                  <p className="text-xs font-semibold text-gray-700 mb-1">Tests ({entry.tests.length}):</p>
+                                  <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Tests ({entry.tests.length}):</p>
                                   <div className="flex flex-wrap gap-1">
                                     {entry.tests.slice(0, 3).map((test, idx) => (
-                                      <span key={idx} className="text-xs bg-pink-100 text-pink-700 px-2 py-0.5 rounded">
+                                      <span key={idx} className="text-xs bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 px-2 py-0.5 rounded">
                                         {test.name}
                                       </span>
                                     ))}
                                     {entry.tests.length > 3 && (
-                                      <span className="text-xs text-gray-500">+{entry.tests.length - 3} more</span>
+                                      <span className="text-xs text-gray-500 dark:text-gray-400">+{entry.tests.length - 3} more</span>
                                     )}
                                   </div>
                                 </div>
@@ -791,13 +791,13 @@ export default function HealthDashboardPage() {
                               {/* Prescription Images */}
                               {entry.prescription_image && (
                                 <div className="mt-2">
-                                  <p className="text-xs font-semibold text-gray-700">Prescription Available</p>
+                                  <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">Prescription Available</p>
                                 </div>
                               )}
                             </div>
                           ))
                         ) : (
-                          <div className="text-center py-4 text-gray-500 text-sm">
+                          <div className="text-center py-4 text-gray-500 dark:text-gray-400 text-sm">
                             No entries found. Click + to add an entry.
                           </div>
                         )}
@@ -811,14 +811,14 @@ export default function HealthDashboardPage() {
 
           {/* Analysis Section */}
           {selectedCard && (
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700 space-y-6">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                   Analysis: {selectedCard.person_name}
                 </h2>
                 <button
                   onClick={() => setSelectedCard(null)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
                 >
                   ✕
                 </button>
@@ -826,7 +826,7 @@ export default function HealthDashboardPage() {
 
               {/* Pregnancy Progress */}
               {selectedCard.card_type === 'pregnant' && selectedCard.expected_delivery_date && (
-                <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-xl p-6 border border-pink-200">
+                <div className="bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 rounded-xl p-6 border border-pink-200 dark:border-pink-800">
                   <div className="flex items-center justify-center">
                     <div className="relative w-48 h-48">
                       <svg className="transform -rotate-90 w-48 h-48">
@@ -844,6 +844,7 @@ export default function HealthDashboardPage() {
                           stroke="#e5e7eb"
                           strokeWidth="16"
                           fill="none"
+                          className="dark:stroke-gray-700"
                         />
                         <circle
                           cx="96"
@@ -860,7 +861,7 @@ export default function HealthDashboardPage() {
                           <p className="text-4xl font-bold gradient-primary bg-clip-text text-transparent">
                             {calculatePregnancyWeeks(selectedCard.expected_delivery_date)}
                           </p>
-                          <p className="text-sm text-gray-600">of 40 weeks</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">of 40 weeks</p>
                         </div>
                       </div>
                     </div>
@@ -870,9 +871,9 @@ export default function HealthDashboardPage() {
 
               {/* Health Timeline Chart */}
               {selectedCard.entries && selectedCard.entries.length > 0 && (
-                <div className="bg-gray-50 rounded-xl p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Health Timeline & Sickness Indicator</h3>
-                  <p className="text-sm text-gray-600 mb-4">Shows health entries with severity based on medicines and tests</p>
+                <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Health Timeline & Sickness Indicator</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Shows health entries with severity based on medicines and tests</p>
                   <canvas id={`health-chart-${selectedCard.id}`} height="120"></canvas>
                 </div>
               )}
@@ -882,30 +883,30 @@ export default function HealthDashboardPage() {
                 const cardStats = getCardStats(selectedCard)
                 return (
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                    <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
                       <div className="flex items-center gap-3">
-                        <Stethoscope className="w-8 h-8 text-blue-600" />
+                        <Stethoscope className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                         <div>
-                          <p className="text-sm text-gray-600">Total Doctors</p>
-                          <p className="text-2xl font-bold text-gray-900">{cardStats.doctors}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">Total Doctors</p>
+                          <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{cardStats.doctors}</p>
                         </div>
                       </div>
                     </div>
-                    <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
+                    <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800">
                       <div className="flex items-center gap-3">
-                        <TestTube className="w-8 h-8 text-purple-600" />
+                        <TestTube className="w-8 h-8 text-purple-600 dark:text-purple-400" />
                         <div>
-                          <p className="text-sm text-gray-600">Total Tests</p>
-                          <p className="text-2xl font-bold text-gray-900">{cardStats.tests}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">Total Tests</p>
+                          <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{cardStats.tests}</p>
                         </div>
                       </div>
                     </div>
-                    <div className="bg-green-50 rounded-lg p-4 border border-green-200">
+                    <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 border border-green-200 dark:border-green-800">
                       <div className="flex items-center gap-3">
-                        <Pill className="w-8 h-8 text-purple-600" />
+                        <Pill className="w-8 h-8 text-purple-600 dark:text-purple-400" />
                         <div>
-                          <p className="text-sm text-gray-600">Total Medicines</p>
-                          <p className="text-2xl font-bold text-gray-900">{cardStats.medicines}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">Total Medicines</p>
+                          <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{cardStats.medicines}</p>
                         </div>
                       </div>
                     </div>
