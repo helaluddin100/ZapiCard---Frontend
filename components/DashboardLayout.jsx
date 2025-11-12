@@ -21,6 +21,7 @@ import {
   Heart
 } from 'lucide-react'
 import { useAuth } from '@/lib/auth'
+import ThemeToggle from '@/components/ThemeToggle'
 
 export default function DashboardLayout({ children }) {
   const router = useRouter()
@@ -129,15 +130,15 @@ export default function DashboardLayout({ children }) {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Mobile Header */}
-      <div className="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+      <div className="lg:hidden bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between">
         <Link href="/" className="text-xl font-bold gradient-primary bg-clip-text text-transparent">
           Zapi Card
         </Link>
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="p-2 rounded-lg hover:bg-gray-100"
+          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
         >
           {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
@@ -147,7 +148,7 @@ export default function DashboardLayout({ children }) {
         {/* Sidebar - Fixed on all screens */}
         <aside className={`
           fixed inset-y-0 left-0 z-40
-          w-64 bg-white border-r border-gray-200
+          w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700
           h-screen overflow-y-auto
           transform transition-transform duration-300 ease-in-out
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
@@ -175,7 +176,7 @@ export default function DashboardLayout({ children }) {
                       flex items-center space-x-3 px-4 py-3 rounded-lg transition
                       ${isActive
                         ? 'gradient-primary text-white'
-                        : 'text-gray-700 hover:bg-gray-100'
+                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                       }
                     `}
                   >
@@ -186,7 +187,7 @@ export default function DashboardLayout({ children }) {
               })}
             </nav>
 
-            <div className="p-4 border-t border-gray-200 flex-shrink-0">
+            <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex-shrink-0">
               {user && (
                 <>
                   <div className="flex items-center space-x-3 px-4 py-3 mb-2">
@@ -194,7 +195,7 @@ export default function DashboardLayout({ children }) {
                       <img
                         src={user.image}
                         alt={user.name}
-                        className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
+                        className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 dark:border-gray-700"
                       />
                     ) : (
                       <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-white font-semibold">
@@ -202,15 +203,18 @@ export default function DashboardLayout({ children }) {
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
-                      <div className="font-semibold text-sm truncate">{user.name || 'User'}</div>
-                      <div className="text-xs text-gray-500 truncate">{user.email || ''}</div>
+                      <div className="font-semibold text-sm truncate text-gray-900 dark:text-gray-100">{user.name || 'User'}</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email || ''}</div>
                     </div>
+                  </div>
+                  <div className="mb-2 px-4">
+                    <ThemeToggle />
                   </div>
                   <button
                     onClick={async () => {
                       await logout()
                     }}
-                    className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
+                    className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition"
                   >
                     <LogOut className="w-5 h-5" />
                     <span className="font-medium">Logout</span>
@@ -232,23 +236,26 @@ export default function DashboardLayout({ children }) {
         {/* Main Content */}
         <main className="flex-1 w-full lg:ml-64">
           {/* Desktop Header */}
-          <div className="hidden lg:block bg-white border-b border-gray-200 px-8 py-4 sticky top-0 z-30">
+          <div className="hidden lg:block bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-8 py-4 sticky top-0 z-30">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-xl font-semibold text-gray-900">Dashboard</h2>
-                <p className="text-sm text-gray-600">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Dashboard</h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Welcome back, {user?.name || 'User'}
                 </p>
               </div>
               {user && (
                 <div className="flex items-center gap-4">
+                  {/* Theme Toggle */}
+                  <ThemeToggle />
+                  
                   {/* Notification Bell */}
                   <div className="relative">
                     <button
                       onClick={() => setNotificationOpen(!notificationOpen)}
-                      className="relative p-2 rounded-lg hover:bg-gray-50 transition"
+                      className="relative p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition"
                     >
-                      <Bell className="w-6 h-6 text-gray-600" />
+                      <Bell className="w-6 h-6 text-gray-600 dark:text-gray-400" />
                       {unreadCount > 0 && (
                         <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">
                           {unreadCount > 9 ? '9+' : unreadCount}
@@ -268,14 +275,14 @@ export default function DashboardLayout({ children }) {
                             initial={{ opacity: 0, y: -10, scale: 0.95 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                            className="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50 max-h-[500px] overflow-hidden flex flex-col"
+                            className="absolute right-0 mt-2 w-96 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-50 max-h-[500px] overflow-hidden flex flex-col"
                           >
-                            <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-                              <h3 className="font-semibold text-gray-900">Notifications</h3>
+                            <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                              <h3 className="font-semibold text-gray-900 dark:text-gray-100">Notifications</h3>
                               {unreadCount > 0 && (
                                 <button
                                   onClick={handleMarkAllAsRead}
-                                  className="text-sm text-blue-600 hover:text-blue-700"
+                                  className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
                                 >
                                   Mark all as read
                                 </button>
@@ -283,14 +290,14 @@ export default function DashboardLayout({ children }) {
                             </div>
                             <div className="overflow-y-auto flex-1">
                               {loadingNotifications ? (
-                                <div className="p-8 text-center text-gray-500">Loading...</div>
+                                <div className="p-8 text-center text-gray-500 dark:text-gray-400">Loading...</div>
                               ) : notifications.length === 0 ? (
-                                <div className="p-8 text-center text-gray-500">
-                                  <Bell className="w-12 h-12 mx-auto mb-2 text-gray-300" />
+                                <div className="p-8 text-center text-gray-500 dark:text-gray-400">
+                                  <Bell className="w-12 h-12 mx-auto mb-2 text-gray-300 dark:text-gray-600" />
                                   <p>No notifications</p>
                                 </div>
                               ) : (
-                                <div className="divide-y divide-gray-200">
+                                <div className="divide-y divide-gray-200 dark:divide-gray-700">
                                   {notifications.map((notification) => {
                                     const isUnread = !notification.read_at
                                     const data = notification.data || {}
@@ -298,7 +305,7 @@ export default function DashboardLayout({ children }) {
                                     return (
                                       <div
                                         key={notification.id}
-                                        className={`p-4 hover:bg-gray-50 transition cursor-pointer ${isUnread ? 'bg-blue-50/50' : ''
+                                        className={`p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition cursor-pointer ${isUnread ? 'bg-blue-50/50 dark:bg-blue-900/20' : ''
                                           }`}
                                         onClick={() => {
                                           if (isUnread) {
@@ -314,20 +321,20 @@ export default function DashboardLayout({ children }) {
                                           <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${isUnread ? 'bg-blue-500' : 'bg-transparent'
                                             }`} />
                                           <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-medium text-gray-900">
+                                            <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
                                               {notification.data?.message || 'New notification'}
                                             </p>
                                             {data.patient_name && (
-                                              <p className="text-xs text-gray-600 mt-1">
+                                              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
                                                 Name: {data.patient_name}
                                               </p>
                                             )}
                                             {data.appointment_date && (
-                                              <p className="text-xs text-gray-500 mt-1">
+                                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                                                 {new Date(data.appointment_date).toLocaleDateString()} at {data.appointment_time}
                                               </p>
                                             )}
-                                            <p className="text-xs text-gray-400 mt-1">
+                                            <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
                                               {formatNotificationTime(notification.created_at)}
                                             </p>
                                           </div>
@@ -339,11 +346,11 @@ export default function DashboardLayout({ children }) {
                               )}
                             </div>
                             {notifications.length > 0 && (
-                              <div className="p-3 border-t border-gray-200">
+                              <div className="p-3 border-t border-gray-200 dark:border-gray-700">
                                 <Link
                                   href="/dashboard/appointments/list"
                                   onClick={() => setNotificationOpen(false)}
-                                  className="block text-center text-sm text-blue-600 hover:text-blue-700 font-medium"
+                                  className="block text-center text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
                                 >
                                   View All Appointments
                                 </Link>
@@ -357,7 +364,7 @@ export default function DashboardLayout({ children }) {
 
                   <Link
                     href="/dashboard/profile"
-                    className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-50 transition cursor-pointer"
+                    className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition cursor-pointer"
                   >
                     {user.image ? (
                       <img
@@ -371,8 +378,8 @@ export default function DashboardLayout({ children }) {
                       </div>
                     )}
                     <div>
-                      <div className="font-semibold text-sm">{user.name || 'User'}</div>
-                      <div className="text-xs text-gray-500">{user.email || ''}</div>
+                      <div className="font-semibold text-sm text-gray-900 dark:text-gray-100">{user.name || 'User'}</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">{user.email || ''}</div>
                     </div>
                   </Link>
                 </div>

@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Zap, LayoutDashboard, User, LogOut } from 'lucide-react'
 import { useAuth } from '@/lib/auth'
 import authAPI from '@/lib/api'
+import ThemeToggle from '@/components/ThemeToggle'
 
 export default function Header() {
     const router = useRouter()
@@ -36,8 +37,8 @@ export default function Header() {
             initial={{ y: -100 }}
             animate={{ y: 0 }}
             className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
-                ? 'bg-white/95 backdrop-blur-xl shadow-lg border-b border-gray-200/50'
-                : 'bg-white/80 backdrop-blur-lg'
+                ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl shadow-lg border-b border-gray-200/50 dark:border-gray-700/50'
+                : 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg'
                 }`}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -65,12 +66,15 @@ export default function Header() {
                             <Link
                                 key={idx}
                                 href={link.href}
-                                className="text-gray-700 hover:text-blue-600 transition-colors duration-300 font-medium relative group"
+                                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 font-medium relative group"
                             >
                                 {link.label}
-                                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></span>
+                                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 dark:bg-blue-400 group-hover:w-full transition-all duration-300"></span>
                             </Link>
                         ))}
+
+                        {/* Theme Toggle */}
+                        <ThemeToggle />
 
                         {!loading && (
                             <>
@@ -128,7 +132,7 @@ export default function Header() {
                                     <>
                                         <Link
                                             href="/login"
-                                            className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+                                            className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
                                         >
                                             Login
                                         </Link>
@@ -142,6 +146,7 @@ export default function Header() {
                                                 initial={false}
                                             />
                                         </Link>
+                                        <ThemeToggle />
                                     </>
                                 )}
                             </>
@@ -186,7 +191,7 @@ export default function Header() {
                                     <Link
                                         href={link.href}
                                         onClick={() => setMobileMenuOpen(false)}
-                                        className="block px-4 py-3 text-gray-700 hover:text-blue-600 transition-colors font-medium"
+                                        className="block px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
                                     >
                                         {link.label}
                                     </Link>
@@ -236,7 +241,7 @@ export default function Header() {
                                                 <Link
                                                     href="/login"
                                                     onClick={() => setMobileMenuOpen(false)}
-                                                    className="block px-4 py-3 text-center text-gray-700 hover:text-blue-600 transition-colors font-medium"
+                                                    className="block px-4 py-3 text-center text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
                                                 >
                                                     Login
                                                 </Link>
@@ -247,6 +252,9 @@ export default function Header() {
                                                 >
                                                     Sign Up
                                                 </Link>
+                                                <div className="px-4 py-3 flex justify-center">
+                                                    <ThemeToggle />
+                                                </div>
                                             </>
                                         )}
                                     </>

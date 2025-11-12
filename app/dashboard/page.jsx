@@ -80,8 +80,8 @@ export default function DashboardPage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-center min-h-[400px]">
             <div className="text-center">
-              <Loader2 className="w-12 h-12 animate-spin text-blue-500 mx-auto mb-4" />
-              <p className="text-gray-600">Loading dashboard...</p>
+              <Loader2 className="w-12 h-12 animate-spin text-blue-500 dark:text-blue-400 mx-auto mb-4" />
+              <p className="text-gray-600 dark:text-gray-400">Loading dashboard...</p>
             </div>
           </div>
         </div>
@@ -93,14 +93,14 @@ export default function DashboardPage() {
     return (
       <DashboardLayout>
         <div className="max-w-7xl mx-auto">
-          <div className="bg-red-50 border border-red-200 rounded-lg p-6 flex items-start gap-4">
-            <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 flex items-start gap-4">
+            <AlertCircle className="w-6 h-6 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
             <div>
-              <h3 className="text-red-800 font-semibold mb-1">Error Loading Dashboard</h3>
-              <p className="text-red-600 text-sm">{error}</p>
+              <h3 className="text-red-800 dark:text-red-300 font-semibold mb-1">Error Loading Dashboard</h3>
+              <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
               <button
                 onClick={loadDashboardData}
-                className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+                className="mt-4 px-4 py-2 bg-red-600 dark:bg-red-700 text-white rounded-lg hover:bg-red-700 dark:hover:bg-red-600 transition"
               >
                 Retry
               </button>
@@ -118,8 +118,8 @@ export default function DashboardPage() {
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Dashboard</h1>
-              <p className="text-gray-600">Welcome back! Here&apos;s what&apos;s happening with your cards</p>
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">Dashboard</h1>
+              <p className="text-gray-600 dark:text-gray-400">Welcome back! Here&apos;s what&apos;s happening with your cards</p>
             </div>
             <Link href="/dashboard/create" className="btn-primary flex items-center">
               <Plus className="w-5 h-5 mr-2" />
@@ -135,23 +135,23 @@ export default function DashboardPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
                 <Eye className="w-6 h-6 text-white" />
               </div>
               {analytics.viewsChange !== 0 && (
-                <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-sm font-semibold ${analytics.viewsChange > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-sm font-semibold ${analytics.viewsChange > 0 ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'}`}>
                   {analytics.viewsChange > 0 ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />}
                   {Math.abs(analytics.viewsChange).toFixed(1)}%
                 </div>
               )}
             </div>
             <div>
-              <p className="text-gray-600 text-sm mb-1">Total Views</p>
-              <p className="text-2xl font-bold text-gray-900">{analytics.totalViews.toLocaleString()}</p>
-              <p className="text-xs text-gray-500 mt-1">{analytics.todayViews} today</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">Total Views</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{analytics.totalViews.toLocaleString()}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{analytics.todayViews} today</p>
             </div>
           </motion.div>
 
@@ -160,23 +160,23 @@ export default function DashboardPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
                 <Calendar className="w-6 h-6 text-white" />
               </div>
               {analytics.appointmentsChange !== 0 && (
-                <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-sm font-semibold ${analytics.appointmentsChange > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-sm font-semibold ${analytics.appointmentsChange > 0 ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'}`}>
                   {analytics.appointmentsChange > 0 ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />}
                   {Math.abs(analytics.appointmentsChange).toFixed(1)}%
                 </div>
               )}
             </div>
             <div>
-              <p className="text-gray-600 text-sm mb-1">Appointments</p>
-              <p className="text-2xl font-bold text-gray-900">{analytics.totalAppointments}</p>
-              <p className="text-xs text-gray-500 mt-1">{analytics.todayAppointments} today</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">Appointments</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{analytics.totalAppointments}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{analytics.todayAppointments} today</p>
             </div>
           </motion.div>
 
@@ -185,7 +185,7 @@ export default function DashboardPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
@@ -193,9 +193,9 @@ export default function DashboardPage() {
               </div>
             </div>
             <div>
-              <p className="text-gray-600 text-sm mb-1">Total Cards</p>
-              <p className="text-2xl font-bold text-gray-900">{analytics.totalCards}</p>
-              <p className="text-xs text-gray-500 mt-1">{analytics.activeCards} active</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">Total Cards</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{analytics.totalCards}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{analytics.activeCards} active</p>
             </div>
           </motion.div>
 
@@ -204,7 +204,7 @@ export default function DashboardPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-all"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center">
@@ -212,9 +212,9 @@ export default function DashboardPage() {
               </div>
             </div>
             <div>
-              <p className="text-gray-600 text-sm mb-1">Total Views</p>
-              <p className="text-2xl font-bold text-gray-900">{analytics.totalViews.toLocaleString()}</p>
-              <p className="text-xs text-gray-500 mt-1">All time</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm mb-1">Total Views</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{analytics.totalViews.toLocaleString()}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">All time</p>
             </div>
           </motion.div>
         </div>
@@ -226,14 +226,14 @@ export default function DashboardPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="bg-white rounded-xl shadow-lg p-6 border border-gray-200"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700"
           >
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="text-lg font-bold text-gray-900">Daily Visitors</h3>
-                <p className="text-sm text-gray-600">Last 7 days</p>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Daily Visitors</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Last 7 days</p>
               </div>
-              <TrendingUp className="w-5 h-5 text-blue-500" />
+              <TrendingUp className="w-5 h-5 text-blue-500 dark:text-blue-400" />
             </div>
             {dailyVisitors.length > 0 ? (
               <div className="flex items-end justify-between gap-1 sm:gap-2 h-48 pb-4">
@@ -252,12 +252,12 @@ export default function DashboardPage() {
                             maxHeight: '100%'
                           }}
                         />
-                        <span className="text-xs text-gray-700 font-semibold mb-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="text-xs text-gray-700 dark:text-gray-300 font-semibold mb-1 opacity-0 group-hover:opacity-100 transition-opacity">
                           {day.visitors}
                         </span>
                       </div>
-                      <span className="text-xs text-gray-600 font-medium mt-2">{day.day}</span>
-                      <span className="text-xs text-gray-500 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="text-xs text-gray-600 dark:text-gray-400 font-medium mt-2">{day.day}</span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
                         {day.visitors}
                       </span>
                     </div>
@@ -265,9 +265,9 @@ export default function DashboardPage() {
                 })}
               </div>
             ) : (
-              <div className="h-48 flex items-center justify-center text-gray-400">
+              <div className="h-48 flex items-center justify-center text-gray-400 dark:text-gray-500">
                 <div className="text-center">
-                  <Eye className="w-12 h-12 mx-auto mb-2 opacity-30" />
+                  <Eye className="w-12 h-12 mx-auto mb-2 opacity-30 dark:opacity-20" />
                   <p>No visitor data available</p>
                 </div>
               </div>
@@ -279,14 +279,14 @@ export default function DashboardPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="bg-white rounded-xl shadow-lg p-6 border border-gray-200"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700"
           >
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="text-lg font-bold text-gray-900">Daily Appointments</h3>
-                <p className="text-sm text-gray-600">Last 7 days</p>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Daily Appointments</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Last 7 days</p>
               </div>
-              <Calendar className="w-5 h-5 text-purple-500" />
+              <Calendar className="w-5 h-5 text-purple-500 dark:text-purple-400" />
             </div>
             {dailyAppointments.length > 0 ? (
               <div className="flex items-end justify-between gap-1 sm:gap-2 h-48 pb-4">
@@ -305,12 +305,12 @@ export default function DashboardPage() {
                             maxHeight: '100%'
                           }}
                         />
-                        <span className="text-xs text-gray-700 font-semibold mb-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="text-xs text-gray-700 dark:text-gray-300 font-semibold mb-1 opacity-0 group-hover:opacity-100 transition-opacity">
                           {day.appointments}
                         </span>
                       </div>
-                      <span className="text-xs text-gray-600 font-medium mt-2">{day.day}</span>
-                      <span className="text-xs text-gray-500 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="text-xs text-gray-600 dark:text-gray-400 font-medium mt-2">{day.day}</span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
                         {day.appointments}
                       </span>
                     </div>
@@ -318,9 +318,9 @@ export default function DashboardPage() {
                 })}
               </div>
             ) : (
-              <div className="h-48 flex items-center justify-center text-gray-400">
+              <div className="h-48 flex items-center justify-center text-gray-400 dark:text-gray-500">
                 <div className="text-center">
-                  <Calendar className="w-12 h-12 mx-auto mb-2 opacity-30" />
+                  <Calendar className="w-12 h-12 mx-auto mb-2 opacity-30 dark:opacity-20" />
                   <p>No appointment data available</p>
                 </div>
               </div>
@@ -333,14 +333,14 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 mb-8"
+          className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 mb-8"
         >
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="text-lg font-bold text-gray-900">Recent Appointments</h3>
-              <p className="text-sm text-gray-600">Last 3 days</p>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Recent Appointments</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Last 3 days</p>
             </div>
-            <Link href="/dashboard/appointments/list" className="text-blue-600 hover:text-blue-700 text-sm font-semibold">
+            <Link href="/dashboard/appointments/list" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-semibold">
               View All
             </Link>
           </div>
@@ -352,21 +352,21 @@ export default function DashboardPage() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.8 + idx * 0.1 }}
-                  className="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition"
+                  className="flex items-center gap-4 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition"
                 >
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold">
                     {appointment.name.charAt(0).toUpperCase()}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <h4 className="font-semibold text-gray-900">{appointment.name}</h4>
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100">{appointment.name}</h4>
                       {appointment.card_name && (
-                        <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+                        <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded-full">
                           {appointment.card_name}
                         </span>
                       )}
                     </div>
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
                       {appointment.email && (
                         <span className="flex items-center gap-1">
                           <Mail className="w-4 h-4" />
@@ -382,10 +382,10 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-sm font-semibold text-gray-900">
+                    <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                       {new Date(appointment.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                     </div>
-                    <div className="text-xs text-gray-500 flex items-center gap-1">
+                    <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
                       <Clock className="w-3 h-3" />
                       {appointment.time}
                     </div>
@@ -394,8 +394,8 @@ export default function DashboardPage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-8 text-gray-400">
-              <Calendar className="w-12 h-12 mx-auto mb-2 opacity-50" />
+            <div className="text-center py-8 text-gray-400 dark:text-gray-500">
+              <Calendar className="w-12 h-12 mx-auto mb-2 opacity-50 dark:opacity-30" />
               <p>No recent appointments</p>
             </div>
           )}

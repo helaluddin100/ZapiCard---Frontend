@@ -2,6 +2,7 @@ import './globals.css'
 import { Inter, Poppins } from 'next/font/google'
 import ConditionalLayout from '@/components/ConditionalLayout'
 import AuthProviderWrapper from '@/lib/auth-wrapper'
+import { ThemeProvider } from '@/lib/theme'
 import { ToastProvider } from '@/lib/toast'
 import Toast from '@/components/Toast'
 import ToastHelper from '@/components/ToastHelper'
@@ -21,17 +22,19 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
-      <body className="font-sans antialiased">
-        <AuthProviderWrapper>
-          <ToastProvider>
-            <ToastHelper />
-            <ConditionalLayout>
-              {children}
-            </ConditionalLayout>
-            <Toast />
-          </ToastProvider>
-        </AuthProviderWrapper>
+    <html lang="en" className={`${inter.variable} ${poppins.variable}`} suppressHydrationWarning>
+      <body className="font-sans antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+        <ThemeProvider>
+          <AuthProviderWrapper>
+            <ToastProvider>
+              <ToastHelper />
+              <ConditionalLayout>
+                {children}
+              </ConditionalLayout>
+              <Toast />
+            </ToastProvider>
+          </AuthProviderWrapper>
+        </ThemeProvider>
       </body>
     </html>
   )
