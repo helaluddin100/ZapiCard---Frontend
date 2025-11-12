@@ -137,7 +137,7 @@ export default function OrderConfirmationPage() {
                         Order Placed Successfully!
                     </h1>
                     <p className="text-gray-600 dark:text-gray-400">
-                        Thank you for your order. We've received your order and will begin processing it right away.
+                        Thank you for your order. We&apos;ve received your order and will begin processing it right away.
                     </p>
                 </motion.div>
 

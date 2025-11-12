@@ -23,6 +23,7 @@ import {
 } from 'lucide-react'
 import { useToast } from '@/lib/toast'
 import { cardAPI } from '@/lib/api'
+import DashboardLayout from '@/components/DashboardLayout'
 import CardSelector from './components/CardSelector'
 import ColorCustomizer from './components/ColorCustomizer'
 import ImageUploader from './components/ImageUploader'
@@ -106,24 +107,17 @@ export default function NFCOrderPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 relative overflow-hidden">
-            {/* Background decorative elements */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-20 left-10 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-                <div className="absolute top-40 right-10 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
-                <div className="absolute -bottom-8 left-1/2 w-96 h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
-            </div>
-
-            <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+        <DashboardLayout>
+            <div className="max-w-7xl mx-auto py-8">
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mb-12"
+                    className="mb-8"
                 >
-                    <Link href="/" className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6 group">
+                    <Link href="/dashboard" className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 mb-6 group">
                         <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
-                        Back to Home
+                        Back to Dashboard
                     </Link>
                     <div className="flex items-center gap-3 mb-4">
                         <motion.div
@@ -135,8 +129,8 @@ export default function NFCOrderPage() {
                             <Radio className="w-6 h-6 text-white" />
                         </motion.div>
                         <div>
-                            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">Order NFC Card</h1>
-                            <p className="text-gray-600 text-lg">Customize and order your physical NFC-enabled smart visiting card</p>
+                            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-2">Order NFC Card</h1>
+                            <p className="text-gray-600 dark:text-gray-400 text-lg">Customize and order your physical NFC-enabled smart visiting card</p>
                         </div>
                     </div>
                 </motion.div>
@@ -161,11 +155,11 @@ export default function NFCOrderPage() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.1 }}
-                                className="glass-effect rounded-2xl shadow-xl p-6 md:p-8 border border-gray-200/50 bg-white"
+                                className="glass-effect rounded-2xl shadow-xl p-6 md:p-8 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
                             >
                                 <div className="flex items-center gap-2 mb-6">
-                                    <Upload className="w-5 h-5 text-blue-500" />
-                                    <h2 className="text-2xl font-bold text-gray-900">Profile Image</h2>
+                                    <Upload className="w-5 h-5 text-blue-500 dark:text-blue-400" />
+                                    <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Profile Image</h2>
                                 </div>
                                 <ImageUploader
                                     label="Change Profile Image (Optional)"
@@ -201,11 +195,11 @@ export default function NFCOrderPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3 }}
-                            className="glass-effect rounded-2xl shadow-xl p-6 md:p-8 border border-gray-200/50 bg-white"
+                            className="glass-effect rounded-2xl shadow-xl p-6 md:p-8 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
                         >
                             <div className="flex items-center gap-2 mb-6">
-                                <CreditCard className="w-5 h-5 text-blue-500" />
-                                <h2 className="text-2xl font-bold text-gray-900">Choose Material</h2>
+                                <CreditCard className="w-5 h-5 text-blue-500 dark:text-blue-400" />
+                                <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Choose Material</h2>
                             </div>
                             <div className="grid md:grid-cols-3 gap-4">
                                 {materials.map((material) => (
@@ -215,29 +209,29 @@ export default function NFCOrderPage() {
                                         whileHover={{ scale: 1.02, y: -2 }}
                                         whileTap={{ scale: 0.98 }}
                                         className={`relative p-5 border-2 rounded-xl text-left transition-all ${selectedMaterial === material.id
-                                            ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-purple-50 shadow-lg'
-                                            : 'border-gray-200 hover:border-blue-300 hover:shadow-md'
+                                            ? 'border-blue-500 dark:border-blue-400 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 shadow-lg'
+                                            : 'border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-md bg-white dark:bg-gray-700'
                                             }`}
                                     >
                                         {selectedMaterial === material.id && (
                                             <motion.div
                                                 initial={{ scale: 0 }}
                                                 animate={{ scale: 1 }}
-                                                className="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center shadow-lg"
+                                                className="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 dark:bg-blue-400 rounded-full flex items-center justify-center shadow-lg"
                                             >
                                                 <Zap className="w-4 h-4 text-white" />
                                             </motion.div>
                                         )}
                                         <div className="flex items-center justify-between mb-3">
-                                            <span className="font-bold text-gray-900 text-lg">{material.name}</span>
+                                            <span className="font-bold text-gray-900 dark:text-gray-100 text-lg">{material.name}</span>
                                         </div>
-                                        <p className="text-sm text-gray-600 mb-3">{material.description}</p>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{material.description}</p>
                                         <div className="flex items-center justify-between">
                                             <p className="text-xl font-bold gradient-primary bg-clip-text text-transparent">
                                                 ${material.price}
                                             </p>
                                             {material.id === 'metal' && (
-                                                <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full font-semibold">
+                                                <span className="text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 px-2 py-1 rounded-full font-semibold">
                                                     Premium
                                                 </span>
                                             )}
@@ -252,15 +246,15 @@ export default function NFCOrderPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4 }}
-                            className="glass-effect rounded-2xl shadow-xl p-6 md:p-8 border border-gray-200/50 bg-white"
+                            className="glass-effect rounded-2xl shadow-xl p-6 md:p-8 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
                         >
-                            <h2 className="text-2xl font-bold text-gray-900 mb-4">Quantity</h2>
+                            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Quantity</h2>
                             <div className="flex items-center gap-4">
                                 <motion.button
                                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                                     whileHover={{ scale: 1.1 }}
                                     whileTap={{ scale: 0.9 }}
-                                    className="w-12 h-12 rounded-lg border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition flex items-center justify-center font-bold text-lg"
+                                    className="w-12 h-12 rounded-lg border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition flex items-center justify-center font-bold text-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700"
                                 >
                                     -
                                 </motion.button>
@@ -269,20 +263,20 @@ export default function NFCOrderPage() {
                                     min="1"
                                     value={quantity}
                                     onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                                    className="w-20 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                                    className="w-20 text-center text-2xl font-bold border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                                 />
                                 <motion.button
                                     onClick={() => setQuantity(quantity + 1)}
                                     whileHover={{ scale: 1.1 }}
                                     whileTap={{ scale: 0.9 }}
-                                    className="w-12 h-12 rounded-lg border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition flex items-center justify-center font-bold text-lg"
+                                    className="w-12 h-12 rounded-lg border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition flex items-center justify-center font-bold text-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700"
                                 >
                                     +
                                 </motion.button>
                                 <div className="ml-auto">
-                                    <p className="text-sm text-gray-600 font-medium">
+                                    <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">
                                         {quantity >= 3 ? (
-                                            <span className="text-green-600 font-semibold">✓ Free shipping!</span>
+                                            <span className="text-green-600 dark:text-green-400 font-semibold">✓ Free shipping!</span>
                                         ) : (
                                             `Free shipping on orders of 3+`
                                         )}
@@ -295,8 +289,8 @@ export default function NFCOrderPage() {
                     {/* Order Summary Sidebar */}
                     <div className="lg:col-span-1">
                         {loadingCard ? (
-                            <div className="bg-white rounded-2xl shadow-2xl p-8 flex items-center justify-center min-h-[400px]">
-                                <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+                            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 flex items-center justify-center min-h-[400px] border border-gray-200 dark:border-gray-700">
+                                <Loader2 className="w-8 h-8 animate-spin text-blue-500 dark:text-blue-400" />
                             </div>
                         ) : (
                             <OrderSummary
@@ -315,6 +309,6 @@ export default function NFCOrderPage() {
                     </div>
                 </div>
             </div>
-        </div>
+        </DashboardLayout>
     )
 }

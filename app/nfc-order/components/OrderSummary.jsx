@@ -26,16 +26,16 @@ export default function OrderSummary({
         <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-white rounded-2xl shadow-2xl p-6 md:p-8 sticky top-8 border border-gray-200/50"
+            className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 md:p-8 sticky top-8 border border-gray-200 dark:border-gray-700"
         >
             <div className="flex items-center gap-2 mb-6">
-                <Sparkles className="w-5 h-5 text-blue-500" />
-                <h2 className="text-2xl font-bold text-gray-900">Order Summary</h2>
+                <Sparkles className="w-5 h-5 text-blue-500 dark:text-blue-400" />
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Order Summary</h2>
             </div>
 
             {/* 3D Card Preview */}
             <div className="mb-8">
-                <h3 className="text-sm font-semibold text-gray-700 mb-4">Card Preview</h3>
+                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">Card Preview</h3>
                 <div className="w-full max-w-full mx-auto overflow-hidden">
                     <CardPreview3D
                         card={card}
@@ -51,15 +51,15 @@ export default function OrderSummary({
 
             {/* Price Breakdown */}
             <div className="space-y-3 mb-6">
-                <div className="flex justify-between text-gray-700">
+                <div className="flex justify-between text-gray-700 dark:text-gray-300">
                     <span>{selectedMaterialData?.name} × {quantity}</span>
                     <span>${subtotal.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between text-gray-700">
+                <div className="flex justify-between text-gray-700 dark:text-gray-300">
                     <span>Shipping</span>
                     <span>{shipping > 0 ? `$${shipping.toFixed(2)}` : 'Free'}</span>
                 </div>
-                <div className="border-t border-gray-200 pt-3 flex justify-between text-lg font-bold text-gray-900">
+                <div className="border-t border-gray-200 dark:border-gray-700 pt-3 flex justify-between text-lg font-bold text-gray-900 dark:text-gray-100">
                     <span>Total</span>
                     <span>${total.toFixed(2)}</span>
                 </div>
@@ -72,7 +72,7 @@ export default function OrderSummary({
                 Proceed to Checkout
             </Link>
 
-            <div className="flex items-center gap-2 text-sm text-gray-600">
+            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <Shield className="w-4 h-4" />
                 <span>Secure checkout with 256-bit SSL</span>
             </div>

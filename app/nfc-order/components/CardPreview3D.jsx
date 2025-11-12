@@ -38,7 +38,7 @@ export default function CardPreview3D({
             <div className="flex justify-center mb-4">
                 <button
                     onClick={() => setShowBack(!showBack)}
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors text-sm font-medium text-gray-700"
+                    className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
                     <RotateCw className="w-4 h-4" />
                     {showBack ? 'Show Front' : 'Show Back'}
@@ -50,7 +50,7 @@ export default function CardPreview3D({
                 {/* Front Side */}
                 {!showBack ? (
                     <div
-                        className="relative rounded-2xl p-6 shadow-lg border border-gray-200 overflow-hidden w-full h-full"
+                        className="relative rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden w-full h-full"
                         style={getBackgroundStyle()}
                     >
                         {/* Material-specific overlay */}
@@ -135,7 +135,7 @@ export default function CardPreview3D({
                 ) : (
                     /* Back Side */
                     <div
-                        className="relative rounded-2xl p-6 shadow-lg border border-gray-200 overflow-hidden w-full h-full"
+                        className="relative rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden w-full h-full"
                         style={getBackgroundStyle()}
                     >
                         {/* Material-specific overlay */}

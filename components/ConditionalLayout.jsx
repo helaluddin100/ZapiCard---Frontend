@@ -8,7 +8,7 @@ export default function ConditionalLayout({ children }) {
     const pathname = usePathname()
 
     // Pages where we don't want Header/Footer (dashboard has its own layout, card pages are standalone)
-    const excludePaths = ['/dashboard', '/admin', '/card', '/health-dashboard', '/health-card']
+    const excludePaths = ['/dashboard', '/admin', '/card', '/health-dashboard', '/health-card', '/nfc-order']
     const shouldShowLayout = !excludePaths.some(path => pathname.startsWith(path))
 
     return (

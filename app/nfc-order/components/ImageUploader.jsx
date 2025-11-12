@@ -29,13 +29,13 @@ export default function ImageUploader({
 
     return (
         <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 {label}
             </label>
             {description && (
-                <p className="text-sm text-gray-600 mb-3">{description}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{description}</p>
             )}
-            <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-blue-400 transition-colors">
+            <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-blue-400 dark:hover:border-blue-500 transition-colors bg-gray-50 dark:bg-gray-700/50">
                 <input
                     type="file"
                     id={`image-upload-${label}`}
@@ -67,16 +67,16 @@ export default function ImageUploader({
                                     e.stopPropagation()
                                     onImageChange(null)
                                 }}
-                                className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 shadow-lg"
+                                className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 dark:bg-red-600 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 dark:hover:bg-red-700 shadow-lg"
                             >
                                 <X className="w-4 h-4" />
                             </button>
                         </motion.div>
                     ) : (
                         <>
-                            <Upload className="w-12 h-12 text-gray-400 mb-3 mx-auto" />
-                            <p className="text-gray-700 font-semibold mb-1">Upload Image</p>
-                            <p className="text-sm text-gray-500">PNG, JPG (Max {maxSize}MB)</p>
+                            <Upload className="w-12 h-12 text-gray-400 dark:text-gray-500 mb-3 mx-auto" />
+                            <p className="text-gray-700 dark:text-gray-300 font-semibold mb-1">Upload Image</p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">PNG, JPG (Max {maxSize}MB)</p>
                         </>
                     )}
                 </label>
