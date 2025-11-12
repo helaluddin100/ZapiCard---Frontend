@@ -82,7 +82,7 @@ export default function Header() {
                                     <div className="relative">
                                         <button
                                             onClick={() => setUserMenuOpen(!userMenuOpen)}
-                                            className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition"
+                                            className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
                                         >
                                             {user.image ? (
                                                 <img
@@ -95,7 +95,7 @@ export default function Header() {
                                                     {user.name?.charAt(0).toUpperCase() || 'U'}
                                                 </div>
                                             )}
-                                            <span className="font-medium text-gray-700">{user.name || 'User'}</span>
+                                            <span className="font-medium text-gray-700 dark:text-gray-300">{user.name || 'User'}</span>
                                         </button>
 
                                         <AnimatePresence>
@@ -104,12 +104,12 @@ export default function Header() {
                                                     initial={{ opacity: 0, y: -10 }}
                                                     animate={{ opacity: 1, y: 0 }}
                                                     exit={{ opacity: 0, y: -10 }}
-                                                    className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50"
+                                                    className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 py-2 z-50"
                                                 >
                                                     <Link
                                                         href="/dashboard"
                                                         onClick={() => setUserMenuOpen(false)}
-                                                        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition"
+                                                        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-300"
                                                     >
                                                         <LayoutDashboard className="w-4 h-4" />
                                                         <span>Dashboard</span>
@@ -119,7 +119,7 @@ export default function Header() {
                                                             setUserMenuOpen(false)
                                                             await logout()
                                                         }}
-                                                        className="w-full flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition text-red-600"
+                                                        className="w-full flex items-center gap-2 px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition text-red-600 dark:text-red-400"
                                                     >
                                                         <LogOut className="w-4 h-4" />
                                                         <span>Logout</span>
@@ -156,7 +156,7 @@ export default function Header() {
                     {/* Mobile Menu Button */}
                     <button
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition"
+                        className="md:hidden p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
                     >
                         {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                     </button>
@@ -178,7 +178,7 @@ export default function Header() {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden bg-white border-t border-gray-200"
+                        className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700"
                     >
                         <div className="px-4 py-4 space-y-2">
                             {navLinks.map((link, idx) => (
@@ -197,12 +197,12 @@ export default function Header() {
                                     </Link>
                                 </motion.div>
                             ))}
-                            <div className="pt-4 border-t border-gray-200 space-y-2">
+                            <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
                                 {!loading && (
                                     <>
                                         {user ? (
                                             <>
-                                                <div className="px-4 py-3 flex items-center gap-3 border-b border-gray-200 mb-2">
+                                                <div className="px-4 py-3 flex items-center gap-3 border-b border-gray-200 dark:border-gray-700 mb-2">
                                                     {user.image ? (
                                                         <img
                                                             src={user.image}
@@ -215,14 +215,14 @@ export default function Header() {
                                                         </div>
                                                     )}
                                                     <div>
-                                                        <div className="font-semibold text-sm">{user.name || 'User'}</div>
-                                                        <div className="text-xs text-gray-500">{user.email}</div>
+                                                        <div className="font-semibold text-sm text-gray-900 dark:text-gray-100">{user.name || 'User'}</div>
+                                                        <div className="text-xs text-gray-500 dark:text-gray-400">{user.email}</div>
                                                     </div>
                                                 </div>
                                                 <Link
                                                     href="/dashboard"
                                                     onClick={() => setMobileMenuOpen(false)}
-                                                    className="block px-4 py-3 text-center text-gray-700 hover:text-blue-600 transition-colors font-medium"
+                                                    className="block px-4 py-3 text-center text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
                                                 >
                                                     Dashboard
                                                 </Link>
@@ -231,7 +231,7 @@ export default function Header() {
                                                         setMobileMenuOpen(false)
                                                         await logout()
                                                     }}
-                                                    className="w-full px-4 py-3 text-center text-red-600 hover:bg-red-50 transition-colors font-medium rounded-lg"
+                                                    className="w-full px-4 py-3 text-center text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors font-medium rounded-lg"
                                                 >
                                                     Logout
                                                 </button>
