@@ -14,7 +14,7 @@ export default function ProductHeader({ product }) {
                     <motion.h1
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-4xl font-bold text-gray-900 mb-3 leading-tight"
+                        className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-3 leading-tight"
                     >
                         {product.name}
                     </motion.h1>

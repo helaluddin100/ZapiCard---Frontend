@@ -67,10 +67,10 @@ export default function ProductDetailPage() {
     if (loading) {
         return (
             <DashboardLayout>
-                <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+                <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
                     <div className="text-center">
-                        <Loader2 className="w-12 h-12 animate-spin text-blue-500 mx-auto mb-4" />
-                        <p className="text-gray-600 font-medium">Loading product details...</p>
+                        <Loader2 className="w-12 h-12 animate-spin text-blue-500 dark:text-blue-400 mx-auto mb-4" />
+                        <p className="text-gray-600 dark:text-gray-400 font-medium">Loading product details...</p>
                     </div>
                 </div>
             </DashboardLayout>
@@ -88,7 +88,7 @@ export default function ProductDetailPage() {
 
     return (
         <DashboardLayout>
-            <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30">
+            <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
                 <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     {/* Back Button */}
                     <motion.div
@@ -97,7 +97,7 @@ export default function ProductDetailPage() {
                     >
                         <Link
                             href="/dashboard/products"
-                            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 group transition-colors"
+                            className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 mb-8 group transition-colors"
                         >
                             <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
                             <span className="font-medium">Back to Products</span>
@@ -125,7 +125,7 @@ export default function ProductDetailPage() {
                             className="space-y-6"
                         >
                             {/* Product Header */}
-                            <div className="bg-white rounded-2xl p-6 lg:p-8 shadow-lg border-2 border-gray-100">
+                            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 lg:p-8 shadow-lg border-2 border-gray-100 dark:border-gray-700">
                                 <ProductHeader product={product} />
                             </div>
 

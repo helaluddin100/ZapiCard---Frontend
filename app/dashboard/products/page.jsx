@@ -94,7 +94,7 @@ export default function ProductsPage() {
         if (product.images && product.images.length > 0) {
             const primaryImage = product.images.find(img => img.is_primary) || product.images[0]
             let imageUrl = primaryImage.image_url || primaryImage.thumbnail_url
-            
+
             // If URL is relative, convert to absolute
             if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('//')) {
                 if (imageUrl.startsWith('/storage/')) {
@@ -106,7 +106,7 @@ export default function ProductsPage() {
                     imageUrl = '/' + imageUrl
                 }
             }
-            
+
             return imageUrl || '/placeholder-card.png'
         }
         return '/placeholder-card.png'
@@ -152,38 +152,37 @@ export default function ProductsPage() {
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">Card Shop</h1>
-                    <p className="text-gray-600">Browse and order different types of visiting cards</p>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Card Shop</h1>
+                    <p className="text-gray-600 dark:text-gray-400">Browse and order different types of visiting cards</p>
                 </div>
 
                 {/* Search and Filter */}
-                <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 border border-gray-200 dark:border-gray-700">
                     <div className="flex flex-col md:flex-row gap-4">
                         {/* Search */}
                         <form onSubmit={handleSearch} className="flex-1">
                             <div className="relative">
-                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
                                 <input
                                     type="text"
                                     placeholder="Search cards..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                                 />
                             </div>
                         </form>
 
                         {/* Category Filter */}
                         <div className="flex items-center gap-2 flex-wrap">
-                            <Filter className="w-5 h-5 text-gray-500" />
-                            <span className="text-sm font-medium text-gray-700">Categories:</span>
+                            <Filter className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Categories:</span>
                             <button
                                 onClick={() => handleCategoryFilter(null)}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
-                                    !selectedCategory
-                                        ? 'bg-blue-500 text-white'
-                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                }`}
+                                className={`px-4 py-2 rounded-lg text-sm font-medium transition ${!selectedCategory
+                                    ? 'bg-blue-500 dark:bg-blue-600 text-white'
+                                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                                    }`}
                             >
                                 All
                             </button>
@@ -191,11 +190,10 @@ export default function ProductsPage() {
                                 <button
                                     key={category.id}
                                     onClick={() => handleCategoryFilter(category.id)}
-                                    className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
-                                        selectedCategory === category.id
-                                            ? 'bg-blue-500 text-white'
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                    }`}
+                                    className={`px-4 py-2 rounded-lg text-sm font-medium transition ${selectedCategory === category.id
+                                        ? 'bg-blue-500 dark:bg-blue-600 text-white'
+                                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                                        }`}
                                 >
                                     {category.name}
                                 </button>
@@ -207,13 +205,13 @@ export default function ProductsPage() {
                 {/* Products Grid */}
                 {loading ? (
                     <div className="flex items-center justify-center py-20">
-                        <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+                        <Loader2 className="w-8 h-8 animate-spin text-blue-500 dark:text-blue-400" />
                     </div>
                 ) : products.length === 0 ? (
-                    <div className="text-center py-20 bg-white rounded-xl shadow-lg">
-                        <ShoppingBag className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">No products found</h3>
-                        <p className="text-gray-600">Try adjusting your search or filter criteria</p>
+                    <div className="text-center py-20 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+                        <ShoppingBag className="w-16 h-16 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">No products found</h3>
+                        <p className="text-gray-600 dark:text-gray-400">Try adjusting your search or filter criteria</p>
                     </div>
                 ) : (
                     <>
@@ -229,7 +227,7 @@ export default function ProductsPage() {
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         whileHover={{ y: -5 }}
-                                        className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+                                        className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow border border-gray-200 dark:border-gray-700"
                                     >
                                         <Link href={`/dashboard/products/${product.slug}`}>
                                             <div className="relative">
@@ -253,11 +251,11 @@ export default function ProductsPage() {
                                                 )}
                                             </div>
                                             <div className="p-4">
-                                                <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
+                                                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2">
                                                     {product.name}
                                                 </h3>
                                                 {product.short_description && (
-                                                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                                                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
                                                         {product.short_description}
                                                     </p>
                                                 )}
@@ -265,25 +263,25 @@ export default function ProductsPage() {
                                                     <div>
                                                         {originalPrice ? (
                                                             <div>
-                                                                <span className="text-lg font-bold text-gray-900">
+                                                                <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
                                                                     {currencySymbol}{price}
                                                                 </span>
-                                                                <span className="text-sm text-gray-500 line-through ml-2">
+                                                                <span className="text-sm text-gray-500 dark:text-gray-400 line-through ml-2">
                                                                     {currencySymbol}{originalPrice}
                                                                 </span>
                                                             </div>
                                                         ) : (
-                                                            <span className="text-lg font-bold text-gray-900">
+                                                            <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
                                                                 {currencySymbol}{price}
                                                             </span>
                                                         )}
                                                     </div>
                                                     {product.in_stock ? (
-                                                        <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                                                        <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-1 rounded-full">
                                                             In Stock
                                                         </span>
                                                     ) : (
-                                                        <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full">
+                                                        <span className="text-xs bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-2 py-1 rounded-full">
                                                             Out of Stock
                                                         </span>
                                                     )}
@@ -301,17 +299,17 @@ export default function ProductsPage() {
                                 <button
                                     onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                                     disabled={currentPage === 1}
-                                    className="px-4 py-2 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 transition"
                                 >
                                     Previous
                                 </button>
-                                <span className="px-4 py-2 text-gray-700">
+                                <span className="px-4 py-2 text-gray-700 dark:text-gray-300">
                                     Page {pagination.current_page} of {pagination.last_page}
                                 </span>
                                 <button
                                     onClick={() => setCurrentPage(p => Math.min(pagination.last_page, p + 1))}
                                     disabled={currentPage === pagination.last_page}
-                                    className="px-4 py-2 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 transition"
                                 >
                                     Next
                                 </button>

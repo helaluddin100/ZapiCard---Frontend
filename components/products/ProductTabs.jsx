@@ -112,28 +112,27 @@ export default function ProductTabs({ product }) {
         <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-2xl border-2 border-gray-100 shadow-sm overflow-hidden"
+            className="bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden"
         >
             {/* Tab Headers */}
-            <div className="flex border-b-2 border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100">
+            <div className="flex border-b-2 border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800">
                 {availableTabs.map((tab) => {
                     const Icon = tab.icon
                     const isActive = activeTab === tab.id
-                    
+
                     return (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`flex-1 flex items-center justify-center gap-2 px-4 py-4 font-semibold text-sm transition-all relative ${
-                                isActive
-                                    ? 'text-blue-600'
-                                    : 'text-gray-600 hover:text-gray-900'
-                            }`}
+                            className={`flex-1 flex items-center justify-center gap-2 px-4 py-4 font-semibold text-sm transition-all relative ${isActive
+                                ? 'text-blue-600 dark:text-blue-400'
+                                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                                }`}
                         >
-                            <Icon className={`w-5 h-5 ${isActive ? 'text-blue-600' : 'text-gray-500'}`} />
+                            <Icon className={`w-5 h-5 ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`} />
                             <span className="hidden sm:inline">{tab.label}</span>
                             <span className="sm:hidden">{tab.label.split(' ')[0]}</span>
-                            
+
                             {/* Active Indicator */}
                             {isActive && (
                                 <motion.div
@@ -149,7 +148,7 @@ export default function ProductTabs({ product }) {
             </div>
 
             {/* Tab Content */}
-            <div className="p-6">
+            <div className="p-6 bg-white dark:bg-gray-800">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={activeTab}

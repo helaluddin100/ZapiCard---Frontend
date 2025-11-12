@@ -9,8 +9,8 @@ export default function ProductStockStatus({ inStock }) {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className={`inline-flex items-center gap-2 px-4 py-3 rounded-xl font-semibold ${inStock
-                ? 'bg-green-50 text-green-700 border-2 border-green-200'
-                : 'bg-red-50 text-red-700 border-2 border-red-200'
+                ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-2 border-green-200 dark:border-green-800'
+                : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 border-2 border-red-200 dark:border-red-800'
                 }`}
         >
             {inStock ? (

@@ -27,7 +27,7 @@ export default function ProductActions({ inStock, onOrder }) {
             ) : (
                 <button
                     disabled
-                    className="w-full bg-gray-200 text-gray-500 py-5 rounded-2xl font-bold text-lg cursor-not-allowed flex items-center justify-center gap-2"
+                    className="w-full bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 py-5 rounded-2xl font-bold text-lg cursor-not-allowed flex items-center justify-center gap-2"
                 >
                     <X className="w-6 h-6" />
                     Out of Stock
