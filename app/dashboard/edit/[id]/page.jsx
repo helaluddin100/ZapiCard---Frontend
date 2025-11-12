@@ -197,8 +197,8 @@ END:VCARD`
             <DashboardLayout>
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center py-20">
-                        <Loader2 className="w-12 h-12 mx-auto text-blue-600 animate-spin mb-4" />
-                        <p className="text-gray-600">Loading card data...</p>
+                        <Loader2 className="w-12 h-12 mx-auto text-blue-600 dark:text-blue-400 animate-spin mb-4" />
+                        <p className="text-gray-600 dark:text-gray-400">Loading card data...</p>
                     </div>
                 </div>
             </DashboardLayout>
@@ -210,9 +210,9 @@ END:VCARD`
             <DashboardLayout>
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center py-20">
-                        <AlertCircle className="w-16 h-16 mx-auto text-red-400 mb-4" />
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">Error loading card</h3>
-                        <p className="text-gray-600 mb-6">{error}</p>
+                        <AlertCircle className="w-16 h-16 mx-auto text-red-400 dark:text-red-500 mb-4" />
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Error loading card</h3>
+                        <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
                         <div className="flex gap-4 justify-center">
                             <button onClick={loadCardData} className="btn-primary inline-flex items-center">
                                 Try Again
@@ -233,19 +233,19 @@ END:VCARD`
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">
-                    <Link href="/dashboard/my-cards" className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4">
+                    <Link href="/dashboard/my-cards" className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 mb-4">
                         <ArrowLeft className="w-4 h-4 mr-2" />
                         Back to My Cards
                     </Link>
-                    <h1 className="text-3xl font-bold text-gray-900">Edit Card</h1>
-                    <p className="text-gray-600 mt-1">Update your smart visiting card</p>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Edit Card</h1>
+                    <p className="text-gray-600 dark:text-gray-400 mt-1">Update your smart visiting card</p>
                 </div>
 
                 <div className="grid lg:grid-cols-3 gap-8">
                     {/* Main Form */}
                     <div className="lg:col-span-2">
                         {/* Progress Steps */}
-                        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+                        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 border border-gray-200 dark:border-gray-700">
                             <div className="flex items-center justify-between">
                                 {steps.map((s, idx) => {
                                     const Icon = s.icon
@@ -257,7 +257,7 @@ END:VCARD`
                                                 <div className={`
                           w-12 h-12 rounded-full flex items-center justify-center mb-2 transition
                           ${isActive ? 'gradient-primary text-white scale-110' : ''}
-                          ${isCompleted ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-500'}
+                          ${isCompleted ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'}
                         `}>
                                                     {isCompleted ? (
                                                         <CheckCircle2 className="w-6 h-6" />
@@ -265,12 +265,12 @@ END:VCARD`
                                                         <Icon className="w-6 h-6" />
                                                     )}
                                                 </div>
-                                                <span className={`text-xs font-medium ${isActive ? 'text-blue-600' : 'text-gray-500'}`}>
+                                                <span className={`text-xs font-medium ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`}>
                                                     {s.title}
                                                 </span>
                                             </div>
                                             {idx < steps.length - 1 && (
-                                                <div className={`h-1 flex-1 mx-2 ${step > s.number ? 'bg-green-500' : 'bg-gray-200'}`} />
+                                                <div className={`h-1 flex-1 mx-2 ${step > s.number ? 'bg-green-500' : 'bg-gray-200 dark:bg-gray-700'}`} />
                                             )}
                                         </div>
                                     )
@@ -280,9 +280,9 @@ END:VCARD`
 
                         {/* Error Message */}
                         {error && (
-                            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
-                                <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                                <p className="text-sm text-red-800">{error}</p>
+                            <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-start gap-3">
+                                <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                                <p className="text-sm text-red-800 dark:text-red-300">{error}</p>
                             </div>
                         )}
 

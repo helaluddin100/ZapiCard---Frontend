@@ -68,10 +68,10 @@ export default function SocialLinks({ formData, setFormData, onNext, onBack }) {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
-            className="bg-white rounded-xl shadow-lg p-6 space-y-6"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6 border border-gray-200 dark:border-gray-700"
         >
-            <h2 className="text-2xl font-bold text-gray-900">Social Links</h2>
-            <p className="text-gray-600">Click on any social media icon to add your profile link</p>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Social Links</h2>
+            <p className="text-gray-600 dark:text-gray-400">Click on any social media icon to add your profile link</p>
 
             {/* Social Media Grid */}
             <div className="grid grid-cols-4 sm:grid-cols-6 gap-4">
@@ -90,7 +90,7 @@ export default function SocialLinks({ formData, setFormData, onNext, onBack }) {
                                     transition-all duration-200
                                     ${hasValue
                                         ? `${social.color} text-white shadow-lg scale-105`
-                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                                     }
                                     ${isActive ? 'ring-4 ring-blue-400 ring-offset-2' : ''}
                                 `}
@@ -123,8 +123,8 @@ export default function SocialLinks({ formData, setFormData, onNext, onBack }) {
                         exit={{ opacity: 0, height: 0 }}
                         className="overflow-hidden"
                     >
-                        <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 {socialMediaOptions.find(s => s.key === activeInput)?.label} URL
                             </label>
                             <div className="flex gap-2">
@@ -132,14 +132,14 @@ export default function SocialLinks({ formData, setFormData, onNext, onBack }) {
                                     type="url"
                                     value={formData.socialLinks?.[activeInput] || ''}
                                     onChange={(e) => handleInputChange(activeInput, e.target.value)}
-                                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                                    className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                                     placeholder={`https://${activeInput}.com/username`}
                                     autoFocus
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setActiveInput(null)}
-                                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition"
+                                    className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition"
                                 >
                                     Done
                                 </button>
@@ -150,7 +150,7 @@ export default function SocialLinks({ formData, setFormData, onNext, onBack }) {
             </AnimatePresence>
 
             {/* Navigation */}
-            <div className="flex justify-between pt-4 border-t border-gray-200">
+            <div className="flex justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
                 <button type="button" onClick={onBack} className="btn-outline flex items-center">
                     <ArrowLeft className="w-5 h-5 mr-2" />
                     Back

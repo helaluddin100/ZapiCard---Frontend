@@ -34,8 +34,8 @@ export default function Preview({ formData }) {
 
     return (
         <div className="sticky top-8">
-            <div className="bg-white rounded-xl shadow-lg p-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">Live Preview</h3>
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Live Preview</h3>
 
                 {/* Glassmorphic Card matching view page */}
                 <motion.div
@@ -80,33 +80,33 @@ export default function Preview({ formData }) {
                     </div>
 
                     {/* Content */}
-                    <div className="p-6 sm:p-8 bg-white">
+                    <div className="p-6 sm:p-8 bg-white dark:bg-gray-800">
                         {/* Contact Information */}
                         <div className="space-y-4 mb-8">
                             {formData.email && (
-                                <div className="flex items-center text-gray-700">
-                                    <Mail className="w-5 h-5 mr-3 text-gray-400" />
+                                <div className="flex items-center text-gray-700 dark:text-gray-300">
+                                    <Mail className="w-5 h-5 mr-3 text-gray-400 dark:text-gray-500" />
                                     <span>{formData.email}</span>
                                 </div>
                             )}
 
                             {formData.phone && (
-                                <div className="flex items-center text-gray-700">
-                                    <Phone className="w-5 h-5 mr-3 text-gray-400" />
+                                <div className="flex items-center text-gray-700 dark:text-gray-300">
+                                    <Phone className="w-5 h-5 mr-3 text-gray-400 dark:text-gray-500" />
                                     <span>{formData.phone}</span>
                                 </div>
                             )}
 
                             {formData.website && (
-                                <div className="flex items-center text-gray-700">
-                                    <Globe className="w-5 h-5 mr-3 text-gray-400" />
+                                <div className="flex items-center text-gray-700 dark:text-gray-300">
+                                    <Globe className="w-5 h-5 mr-3 text-gray-400 dark:text-gray-500" />
                                     <span>{formData.website}</span>
                                 </div>
                             )}
 
                             {formData.address && (
-                                <div className="flex items-start text-gray-700">
-                                    <MapPin className="w-5 h-5 mr-3 text-gray-400 mt-0.5" />
+                                <div className="flex items-start text-gray-700 dark:text-gray-300">
+                                    <MapPin className="w-5 h-5 mr-3 text-gray-400 dark:text-gray-500 mt-0.5" />
                                     <span>{formData.address}</span>
                                 </div>
                             )}
@@ -114,9 +114,9 @@ export default function Preview({ formData }) {
 
                         {/* Bio */}
                         {formData.bio && (
-                            <div className="mb-8 p-4 bg-gray-50 rounded-lg">
+                            <div className="mb-8 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                                 <div
-                                    className="text-gray-700 leading-relaxed text-sm prose prose-sm max-w-none"
+                                    className="bio-preview text-gray-700 dark:text-gray-300 leading-relaxed text-sm prose prose-sm max-w-none dark:prose-invert"
                                     dangerouslySetInnerHTML={{ __html: formData.bio }}
                                 />
                             </div>
@@ -124,7 +124,7 @@ export default function Preview({ formData }) {
 
                         {/* Social Links */}
                         <div className="mb-8">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-4">Connect</h3>
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Connect</h3>
                             <div className="flex flex-wrap gap-3">
                                 {formData.socialLinks?.linkedin && (
                                     <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center">
@@ -160,11 +160,11 @@ export default function Preview({ formData }) {
                         </div>
 
                         {/* QR Code Preview */}
-                        <div className="border-t border-gray-200 pt-6">
+                        <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
                             <div className="flex flex-col items-center">
-                                <p className="text-sm text-gray-500 mb-3">QR Code will be generated automatically</p>
-                                <div className="w-32 h-32 bg-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
-                                    <QrCode className="w-16 h-16 text-gray-400" />
+                                <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">QR Code will be generated automatically</p>
+                                <div className="w-32 h-32 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600">
+                                    <QrCode className="w-16 h-16 text-gray-400 dark:text-gray-500" />
                                 </div>
                             </div>
                         </div>

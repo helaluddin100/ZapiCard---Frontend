@@ -145,19 +145,19 @@ END:VCARD`
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">
-                    <Link href="/dashboard/my-cards" className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4">
+                    <Link href="/dashboard/my-cards" className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 mb-4">
                         <ArrowLeft className="w-4 h-4 mr-2" />
                         Back to My Cards
                     </Link>
-                    <h1 className="text-3xl font-bold text-gray-900">Create New Card</h1>
-                    <p className="text-gray-600 mt-1">Build your smart visiting card step by step</p>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Create New Card</h1>
+                    <p className="text-gray-600 dark:text-gray-400 mt-1">Build your smart visiting card step by step</p>
                 </div>
 
                 <div className="grid lg:grid-cols-3 gap-8">
                     {/* Main Form */}
                     <div className="lg:col-span-2">
                         {/* Progress Steps */}
-                        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+                        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 border border-gray-200 dark:border-gray-700">
                             <div className="flex items-center justify-between">
                                 {steps.map((s, idx) => {
                                     const Icon = s.icon
@@ -169,7 +169,7 @@ END:VCARD`
                                                 <div className={`
                           w-12 h-12 rounded-full flex items-center justify-center mb-2 transition
                           ${isActive ? 'gradient-primary text-white scale-110' : ''}
-                          ${isCompleted ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-500'}
+                          ${isCompleted ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'}
                         `}>
                                                     {isCompleted ? (
                                                         <CheckCircle2 className="w-6 h-6" />
@@ -177,12 +177,12 @@ END:VCARD`
                                                         <Icon className="w-6 h-6" />
                                                     )}
                                                 </div>
-                                                <span className={`text-xs font-medium ${isActive ? 'text-blue-600' : 'text-gray-500'}`}>
+                                                <span className={`text-xs font-medium ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`}>
                                                     {s.title}
                                                 </span>
                                             </div>
                                             {idx < steps.length - 1 && (
-                                                <div className={`h-1 flex-1 mx-2 ${step > s.number ? 'bg-green-500' : 'bg-gray-200'}`} />
+                                                <div className={`h-1 flex-1 mx-2 ${step > s.number ? 'bg-green-500' : 'bg-gray-200 dark:bg-gray-700'}`} />
                                             )}
                                         </div>
                                     )

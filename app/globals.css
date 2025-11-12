@@ -26,6 +26,59 @@
     border-radius: 0.5rem 0.5rem 0 0;
 }
 
+.dark .quill-editor-wrapper .ql-toolbar {
+    border-bottom-color: #374151;
+    background-color: #374151;
+}
+
+.dark .quill-editor-wrapper .ql-container {
+    background-color: #1f2937;
+    color: #f3f4f6;
+}
+
+.dark .quill-editor-wrapper .ql-editor {
+    color: #f3f4f6 !important;
+}
+
+.dark .quill-editor-wrapper .ql-editor p,
+.dark .quill-editor-wrapper .ql-editor div,
+.dark .quill-editor-wrapper .ql-editor span,
+.dark .quill-editor-wrapper .ql-editor h1,
+.dark .quill-editor-wrapper .ql-editor h2,
+.dark .quill-editor-wrapper .ql-editor h3,
+.dark .quill-editor-wrapper .ql-editor h4,
+.dark .quill-editor-wrapper .ql-editor h5,
+.dark .quill-editor-wrapper .ql-editor h6,
+.dark .quill-editor-wrapper .ql-editor ul,
+.dark .quill-editor-wrapper .ql-editor ol,
+.dark .quill-editor-wrapper .ql-editor li,
+.dark .quill-editor-wrapper .ql-editor strong,
+.dark .quill-editor-wrapper .ql-editor em {
+    color: #f3f4f6 !important;
+}
+
+.dark .quill-editor-wrapper .ql-editor.ql-blank::before {
+    color: #6b7280;
+}
+
+.dark .quill-editor-wrapper .ql-stroke {
+    stroke: #9ca3af;
+}
+
+.dark .quill-editor-wrapper .ql-fill {
+    fill: #9ca3af;
+}
+
+.dark .quill-editor-wrapper .ql-picker-label {
+    color: #9ca3af;
+}
+
+.dark .quill-editor-wrapper .ql-picker-options {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #f3f4f6;
+}
+
 .quill-editor-wrapper .ql-container {
     border-bottom: none;
     border-left: none;
@@ -34,9 +87,95 @@
     border-radius: 0 0 0.5rem 0.5rem;
 }
 
+/* Ensure text color in light mode */
+.quill-editor-wrapper .ql-editor {
+    color: #111827;
+}
+
+.quill-editor-wrapper .ql-editor p,
+.quill-editor-wrapper .ql-editor div,
+.quill-editor-wrapper .ql-editor span,
+.quill-editor-wrapper .ql-editor h1,
+.quill-editor-wrapper .ql-editor h2,
+.quill-editor-wrapper .ql-editor h3,
+.quill-editor-wrapper .ql-editor h4,
+.quill-editor-wrapper .ql-editor h5,
+.quill-editor-wrapper .ql-editor h6,
+.quill-editor-wrapper .ql-editor ul,
+.quill-editor-wrapper .ql-editor ol,
+.quill-editor-wrapper .ql-editor li {
+    color: #111827;
+}
+
 .quill-editor-wrapper .ql-editor.ql-blank::before {
     color: #9ca3af;
     font-style: normal;
+}
+
+/* Preview Bio Text Color Fix */
+.dark .prose p,
+.dark .prose div,
+.dark .prose span,
+.dark .prose h1,
+.dark .prose h2,
+.dark .prose h3,
+.dark .prose h4,
+.dark .prose h5,
+.dark .prose h6,
+.dark .prose ul,
+.dark .prose ol,
+.dark .prose li,
+.dark .prose strong,
+.dark .prose em,
+.dark .prose a,
+.dark .prose blockquote {
+    color: #d1d5db !important;
+}
+
+/* Ensure all nested elements in bio preview respect dark mode */
+.dark [class*="text-gray-700"] p,
+.dark [class*="text-gray-700"] div,
+.dark [class*="text-gray-700"] span,
+.dark [class*="text-gray-700"] h1,
+.dark [class*="text-gray-700"] h2,
+.dark [class*="text-gray-700"] h3,
+.dark [class*="text-gray-700"] h4,
+.dark [class*="text-gray-700"] h5,
+.dark [class*="text-gray-700"] h6,
+.dark [class*="text-gray-700"] ul,
+.dark [class*="text-gray-700"] ol,
+.dark [class*="text-gray-700"] li,
+.dark [class*="text-gray-700"] strong,
+.dark [class*="text-gray-700"] em,
+.dark [class*="text-gray-700"] a {
+    color: #d1d5db !important;
+}
+
+/* Bio Preview Specific Styles */
+.dark .bio-preview,
+.dark .bio-preview *,
+.dark .bio-preview p,
+.dark .bio-preview div,
+.dark .bio-preview span,
+.dark .bio-preview h1,
+.dark .bio-preview h2,
+.dark .bio-preview h3,
+.dark .bio-preview h4,
+.dark .bio-preview h5,
+.dark .bio-preview h6,
+.dark .bio-preview ul,
+.dark .bio-preview ol,
+.dark .bio-preview li,
+.dark .bio-preview strong,
+.dark .bio-preview em,
+.dark .bio-preview a,
+.dark .bio-preview blockquote {
+    color: #d1d5db !important;
+}
+
+/* Override any inline styles that might be set by ReactQuill */
+.dark .bio-preview [style*="color"] {
+    color: #d1d5db !important;
 }
 
 @layer base {

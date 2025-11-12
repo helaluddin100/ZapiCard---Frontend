@@ -56,19 +56,19 @@ export default function DesignCustomize({ formData, setFormData, onNext, onBack,
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
-            className="bg-white rounded-xl shadow-lg overflow-hidden"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700"
         >
             {/* Header */}
             <div
-                className="bg-gray-50 px-6 py-4 flex items-center justify-between cursor-pointer hover:bg-gray-100 transition"
+                className="bg-gray-50 dark:bg-gray-700/50 px-6 py-4 flex items-center justify-between cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition"
                 onClick={() => setIsExpanded(!isExpanded)}
             >
                 <div className="flex items-center gap-3">
-                    <Palette className="w-5 h-5 text-gray-600" />
-                    <Ruler className="w-5 h-5 text-gray-600" />
-                    <h2 className="text-lg font-semibold text-gray-900">Design & Customize your vCard</h2>
+                    <Palette className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                    <Ruler className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Design & Customize your vCard</h2>
                 </div>
-                <ChevronUp className={`w-5 h-5 text-gray-600 transition-transform ${isExpanded ? '' : 'rotate-180'}`} />
+                <ChevronUp className={`w-5 h-5 text-gray-600 dark:text-gray-400 transition-transform ${isExpanded ? '' : 'rotate-180'}`} />
             </div>
 
             {isExpanded && (
@@ -78,15 +78,15 @@ export default function DesignCustomize({ formData, setFormData, onNext, onBack,
                     exit={{ opacity: 0, height: 0 }}
                     className="p-6 space-y-6"
                 >
-                    <p className="text-gray-600">Personalize your vCard by selecting colors and uploading an image.</p>
+                    <p className="text-gray-600 dark:text-gray-400">Personalize your vCard by selecting colors and uploading an image.</p>
 
                     {/* Color Presets */}
                     <div>
                         <div className="flex items-center gap-2 mb-3">
-                            <label className="block text-sm font-medium text-gray-700">
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                 Colors:
                             </label>
-                            <HelpCircle className="w-4 h-4 text-gray-400" />
+                            <HelpCircle className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                         </div>
                         <div className="grid grid-cols-5 gap-3">
                             {colorPresets.map((preset, index) => {
@@ -100,8 +100,8 @@ export default function DesignCustomize({ formData, setFormData, onNext, onBack,
                                         type="button"
                                         onClick={() => handlePresetSelect(preset)}
                                         className={`
-                                            relative p-2 bg-white border-2 rounded-lg transition
-                                            ${isSelected ? 'border-green-500 ring-2 ring-green-200' : 'border-gray-200 hover:border-gray-300'}
+                                            relative p-2 bg-white dark:bg-gray-700 border-2 rounded-lg transition
+                                            ${isSelected ? 'border-green-500 dark:border-green-400 ring-2 ring-green-200 dark:ring-green-800' : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'}
                                         `}
                                     >
                                         <div className="space-y-1">
@@ -128,7 +128,7 @@ export default function DesignCustomize({ formData, setFormData, onNext, onBack,
                     {/* Primary and Button Colors */}
                     <div className="grid md:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Primary
                             </label>
                             <div className="flex items-center gap-3">
@@ -148,7 +148,7 @@ export default function DesignCustomize({ formData, setFormData, onNext, onBack,
                                             setFormData({ ...formData, primaryColor: e.target.value })
                                         }
                                     }}
-                                    className="w-16 h-12 rounded-lg border border-gray-300 cursor-pointer"
+                                    className="w-16 h-12 rounded-lg border border-gray-300 dark:border-gray-600 cursor-pointer"
                                 />
                                 <input
                                     type="text"
@@ -167,14 +167,14 @@ export default function DesignCustomize({ formData, setFormData, onNext, onBack,
                                             setFormData({ ...formData, primaryColor: value })
                                         }
                                     }}
-                                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                                    className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                                     placeholder="#3b82f6"
                                 />
                             </div>
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Button
                             </label>
                             <div className="flex items-center gap-3">
@@ -194,7 +194,7 @@ export default function DesignCustomize({ formData, setFormData, onNext, onBack,
                                             setFormData({ ...formData, buttonColor: e.target.value })
                                         }
                                     }}
-                                    className="w-16 h-12 rounded-lg border border-gray-300 cursor-pointer"
+                                    className="w-16 h-12 rounded-lg border border-gray-300 dark:border-gray-600 cursor-pointer"
                                 />
                                 <input
                                     type="text"
@@ -213,7 +213,7 @@ export default function DesignCustomize({ formData, setFormData, onNext, onBack,
                                             setFormData({ ...formData, buttonColor: value })
                                         }
                                     }}
-                                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                                    className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                                     placeholder="#8b5cf6"
                                 />
                             </div>
@@ -229,9 +229,9 @@ export default function DesignCustomize({ formData, setFormData, onNext, onBack,
                             onChange={(e) => handleGradientToggle(e.target.checked)}
                             className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
                         />
-                        <label htmlFor="use-gradient" className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                        <label htmlFor="use-gradient" className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
                             Use color gradient?
-                            <HelpCircle className="w-4 h-4 text-gray-400" />
+                            <HelpCircle className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                         </label>
                     </div>
 
@@ -239,19 +239,19 @@ export default function DesignCustomize({ formData, setFormData, onNext, onBack,
                         <motion.div
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
-                            className="p-4 bg-gray-50 rounded-lg"
+                            className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg"
                         >
                             <div className="h-12 rounded-lg mb-2" style={{
                                 background: `linear-gradient(135deg, ${formData.gradientColors?.from || '#3b82f6'} 0%, ${formData.gradientColors?.to || '#8b5cf6'} 100%)`
                             }} />
-                            <p className="text-xs text-gray-500">Gradient preview</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">Gradient preview</p>
                         </motion.div>
                     )}
                 </motion.div>
             )}
 
             {/* Navigation */}
-            <div className="flex justify-between p-6 border-t border-gray-200">
+            <div className="flex justify-between p-6 border-t border-gray-200 dark:border-gray-700">
                 <button type="button" onClick={onBack} className="btn-outline flex items-center">
                     <ArrowLeft className="w-5 h-5 mr-2" />
                     Back

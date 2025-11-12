@@ -162,8 +162,8 @@ export default function MyCardsPage() {
                 <div className="mb-8">
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                         <div>
-                            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">My Cards</h1>
-                            <p className="text-gray-600">Manage and organize your visiting cards</p>
+                            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">My Cards</h1>
+                            <p className="text-gray-600 dark:text-gray-400">Manage and organize your visiting cards</p>
                         </div>
                         <Link href="/dashboard/create" className="btn-primary flex items-center">
                             <Plus className="w-5 h-5 mr-2" />
@@ -174,13 +174,13 @@ export default function MyCardsPage() {
                     {/* Search and Filters */}
                     <div className="flex flex-col sm:flex-row gap-4">
                         <div className="relative flex-1">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
                             <input
                                 type="text"
                                 placeholder="Search cards..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                                className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                             />
                         </div>
                         <button className="btn-outline flex items-center">
@@ -190,13 +190,13 @@ export default function MyCardsPage() {
                         <div className="flex gap-2">
                             <button
                                 onClick={() => setViewMode('grid')}
-                                className={`p-2 rounded-lg transition ${viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                                className={`p-2 rounded-lg transition ${viewMode === 'grid' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}`}
                             >
                                 <Grid3x3 className="w-5 h-5" />
                             </button>
                             <button
                                 onClick={() => setViewMode('list')}
-                                className={`p-2 rounded-lg transition ${viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                                className={`p-2 rounded-lg transition ${viewMode === 'list' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}`}
                             >
                                 <List className="w-5 h-5" />
                             </button>
@@ -207,19 +207,19 @@ export default function MyCardsPage() {
                 {/* Loading State */}
                 {loading && (
                     <div className="text-center py-20">
-                        <Loader2 className="w-12 h-12 mx-auto text-blue-600 animate-spin mb-4" />
-                        <p className="text-gray-600">Loading your cards...</p>
+                        <Loader2 className="w-12 h-12 mx-auto text-blue-600 dark:text-blue-400 animate-spin mb-4" />
+                        <p className="text-gray-600 dark:text-gray-400">Loading your cards...</p>
                     </div>
                 )}
 
                 {/* Error State */}
                 {error && !loading && (
                     <div className="text-center py-20">
-                        <div className="text-red-400 mb-4">
+                        <div className="text-red-400 dark:text-red-500 mb-4">
                             <CreditCard className="w-16 h-16 mx-auto" />
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">Error loading cards</h3>
-                        <p className="text-gray-600 mb-6">{error}</p>
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Error loading cards</h3>
+                        <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
                         <button onClick={fetchCards} className="btn-primary inline-flex items-center">
                             Try Again
                         </button>
@@ -229,13 +229,13 @@ export default function MyCardsPage() {
                 {/* Cards Grid/List */}
                 {!loading && !error && filteredCards.length === 0 && (
                     <div className="text-center py-20">
-                        <div className="text-gray-400 mb-4">
+                        <div className="text-gray-400 dark:text-gray-500 mb-4">
                             <CreditCard className="w-16 h-16 mx-auto" />
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
                             {cards.length === 0 ? 'No cards found' : 'No cards match your search'}
                         </h3>
-                        <p className="text-gray-600 mb-6">
+                        <p className="text-gray-600 dark:text-gray-400 mb-6">
                             {cards.length === 0 
                                 ? 'Create your first smart visiting card to get started'
                                 : 'Try adjusting your search query'}
@@ -288,7 +288,7 @@ export default function MyCardsPage() {
                                         <Link
                                             href={`/card/${card.slug}`}
                                             target="_blank"
-                                            className="p-2 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full hover:bg-white hover:shadow-lg transition-all"
+                                            className="p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-full hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg transition-all"
                                             title="View Public Page"
                                         >
                                             <ExternalLink className="w-4 h-4" />
@@ -303,7 +303,7 @@ export default function MyCardsPage() {
                                     </Link>
                                     <button 
                                         onClick={() => handleDelete(card.id)}
-                                        className="p-2 bg-white/90 backdrop-blur-sm text-red-600 rounded-full hover:bg-white hover:shadow-lg transition-all"
+                                        className="p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-red-600 dark:text-red-400 rounded-full hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg transition-all"
                                         title="Delete Card"
                                     >
                                         <Trash2 className="w-4 h-4" />
@@ -342,8 +342,8 @@ export default function MyCardsPage() {
                                                     />
                                                 </div>
                                             ) : (
-                                                <div className="w-16 h-16 md:w-20 md:h-20 rounded-lg bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-xl">
-                                                    <QrCode className="w-8 h-8 md:w-10 md:h-10 text-gray-400 animate-pulse" />
+                                                <div className="w-16 h-16 md:w-20 md:h-20 rounded-lg bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm flex items-center justify-center shadow-xl">
+                                                    <QrCode className="w-8 h-8 md:w-10 md:h-10 text-gray-400 dark:text-gray-500 animate-pulse" />
                                                 </div>
                                             )}
                                             {/* Download QR Button */}
@@ -353,7 +353,7 @@ export default function MyCardsPage() {
                                                         e.stopPropagation()
                                                         downloadQRCode(card)
                                                     }}
-                                                    className="mt-1 w-full px-1.5 md:px-2 py-0.5 md:py-1 text-xs bg-white/90 backdrop-blur-sm text-gray-700 rounded-md hover:bg-white hover:shadow-md transition-all opacity-0 group-hover:opacity-100"
+                                                    className="mt-1 w-full px-1.5 md:px-2 py-0.5 md:py-1 text-xs bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-white dark:hover:bg-gray-700 hover:shadow-md transition-all opacity-0 group-hover:opacity-100"
                                                     title="Download QR Code"
                                                 >
                                                     <Download className="w-2.5 h-2.5 md:w-3 md:h-3 mx-auto" />
@@ -400,14 +400,14 @@ export default function MyCardsPage() {
                         ))}
                     </div>
                 ) : (
-                    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
                         {filteredCards.map((card, idx) => (
                             <motion.div
                                 key={card.id}
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: idx * 0.1 }}
-                                className="border-b border-gray-200 last:border-0 p-6 hover:bg-gray-50 transition"
+                                className="border-b border-gray-200 dark:border-gray-700 last:border-0 p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition"
                             >
                                 <div className="flex items-center gap-6">
                                     {card.profile_photo ? (
@@ -426,14 +426,14 @@ export default function MyCardsPage() {
                                     )}
                                     <div className="flex-1">
                                         <div className="flex items-center gap-3 mb-1">
-                                            <h3 className="text-lg font-semibold text-gray-900">{card.name || 'Untitled Card'}</h3>
+                                            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{card.name || 'Untitled Card'}</h3>
                                         </div>
-                                        <p className="text-gray-600 text-sm">
+                                        <p className="text-gray-600 dark:text-gray-400 text-sm">
                                             {card.title && card.company 
                                                 ? `${card.title} at ${card.company}`
                                                 : card.title || card.company || 'No details'}
                                         </p>
-                                        <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
+                                        <div className="flex items-center gap-4 mt-2 text-sm text-gray-500 dark:text-gray-400">
                                             <span className="flex items-center">
                                                 <Eye className="w-4 h-4 mr-1" />
                                                 {card.views || 0} views
@@ -462,7 +462,7 @@ export default function MyCardsPage() {
                                         </Link>
                                         <button 
                                             onClick={() => handleDelete(card.id)}
-                                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition"
+                                            className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition"
                                         >
                                             <Trash2 className="w-5 h-5" />
                                         </button>

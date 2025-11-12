@@ -9,17 +9,17 @@ export default function PhotoLogo({ formData, setFormData, onNext, onBack, handl
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
-            className="bg-white rounded-xl shadow-lg p-6 space-y-6"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6 border border-gray-200 dark:border-gray-700"
         >
-            <h2 className="text-2xl font-bold text-gray-900">Photo & Logo</h2>
-            <p className="text-gray-600">Upload your profile photo and company logo</p>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Photo & Logo</h2>
+            <p className="text-gray-600 dark:text-gray-400">Upload your profile photo and company logo</p>
 
             <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Profile Photo
                     </label>
-                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-500 transition">
+                    <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center hover:border-blue-500 dark:hover:border-blue-400 transition bg-gray-50 dark:bg-gray-700/50">
                         {formData.profilePhoto ? (
                             <div className="space-y-4">
                                 <img
@@ -38,9 +38,9 @@ export default function PhotoLogo({ formData, setFormData, onNext, onBack, handl
                             </div>
                         ) : (
                             <div>
-                                <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                                <p className="text-gray-600 mb-2">Click to upload or drag and drop</p>
-                                <p className="text-sm text-gray-500">PNG, JPG up to 5MB</p>
+                                <Upload className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+                                <p className="text-gray-600 dark:text-gray-400 mb-2">Click to upload or drag and drop</p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">PNG, JPG up to 5MB</p>
                                 <input
                                     type="file"
                                     accept="image/*"
@@ -60,10 +60,10 @@ export default function PhotoLogo({ formData, setFormData, onNext, onBack, handl
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Company Logo
                     </label>
-                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-500 transition">
+                    <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center hover:border-blue-500 dark:hover:border-blue-400 transition bg-gray-50 dark:bg-gray-700/50">
                         {formData.logo ? (
                             <div className="space-y-4">
                                 <img
@@ -82,9 +82,9 @@ export default function PhotoLogo({ formData, setFormData, onNext, onBack, handl
                             </div>
                         ) : (
                             <div>
-                                <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                                <p className="text-gray-600 mb-2">Click to upload or drag and drop</p>
-                                <p className="text-sm text-gray-500">PNG, SVG up to 2MB</p>
+                                <Upload className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+                                <p className="text-gray-600 dark:text-gray-400 mb-2">Click to upload or drag and drop</p>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">PNG, SVG up to 2MB</p>
                                 <input
                                     type="file"
                                     accept="image/*"
@@ -104,7 +104,7 @@ export default function PhotoLogo({ formData, setFormData, onNext, onBack, handl
                 </div>
             </div>
 
-            <div className="flex justify-between pt-4 border-t border-gray-200">
+            <div className="flex justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
                 <button type="button" onClick={onBack} className="btn-outline flex items-center">
                     <ArrowLeft className="w-5 h-5 mr-2" />
                     Back
