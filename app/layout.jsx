@@ -23,6 +23,33 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${poppins.variable}`} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const savedTheme = localStorage.getItem('theme');
+                  const theme = savedTheme || 'system';
+                  
+                  if (theme === 'system') {
+                    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    if (systemPrefersDark) {
+                      document.documentElement.classList.add('dark');
+                    } else {
+                      document.documentElement.classList.remove('dark');
+                    }
+                  } else if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className="font-sans antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
         <ThemeProvider>
           <AuthProviderWrapper>

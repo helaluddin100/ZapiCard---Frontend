@@ -71,26 +71,26 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center px-4 py-12 pt-24">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center px-4 py-12 pt-24">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md"
       >
-        <div className="glass-effect rounded-2xl p-8 shadow-2xl">
+        <div className="glass-effect rounded-2xl p-8 shadow-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <div className="text-center mb-8">
             <Link href="/" className="text-3xl font-bold gradient-primary bg-clip-text text-transparent inline-block mb-2">
               Zapi Card
             </Link>
-            <h2 className="text-2xl font-bold text-gray-900">Welcome Back</h2>
-            <p className="text-gray-600 mt-2">Sign in to your account</p>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Welcome Back</h2>
+            <p className="text-gray-600 dark:text-gray-400 mt-2">Sign in to your account</p>
           </div>
 
           {error && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center gap-2"
+              className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg flex items-center gap-2"
             >
               <AlertCircle className="w-5 h-5" />
               <span className="text-sm">{error}</span>
@@ -99,36 +99,36 @@ function LoginForm() {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Email Address
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
                 <input
                   type="email"
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   disabled={loading}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                   placeholder="you@example.com"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
                 <input
                   type="password"
                   required
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   disabled={loading}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                   placeholder="••••••••"
                 />
               </div>
@@ -136,10 +136,10 @@ function LoginForm() {
 
             <div className="flex items-center justify-between">
               <label className="flex items-center">
-                <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                <span className="ml-2 text-sm text-gray-600">Remember me</span>
+                <input type="checkbox" className="rounded border-gray-300 dark:border-gray-600 text-blue-600 dark:text-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700" />
+                <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
               </label>
-              <Link href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-700">
+              <Link href="/forgot-password" className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
                 Forgot password?
               </Link>
             </div>
@@ -157,10 +157,10 @@ function LoginForm() {
           {/* Divider */}
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
+              <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">Or continue with</span>
+              <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">Or continue with</span>
             </div>
           </div>
 
@@ -170,7 +170,7 @@ function LoginForm() {
               type="button"
               onClick={() => handleSocialLogin('google')}
               disabled={loading}
-              className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-700"
             >
               <Chrome className="w-5 h-5 text-red-500" />
               Continue with Google
@@ -179,17 +179,17 @@ function LoginForm() {
               type="button"
               onClick={() => handleSocialLogin('facebook')}
               disabled={loading}
-              className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-700"
             >
-              <Facebook className="w-5 h-5 text-blue-600" />
+              <Facebook className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               Continue with Facebook
             </button>
           </div>
 
           <div className="mt-6 text-center">
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-400">
               Don&apos;t have an account?{' '}
-              <Link href="/signup" className="text-blue-600 font-semibold hover:text-blue-700">
+              <Link href="/signup" className="text-blue-600 dark:text-blue-400 font-semibold hover:text-blue-700 dark:hover:text-blue-300">
                 Sign up
               </Link>
             </p>
@@ -203,10 +203,10 @@ function LoginForm() {
 export default function LoginPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400 mx-auto"></div>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">Loading...</p>
         </div>
       </div>
     }>
