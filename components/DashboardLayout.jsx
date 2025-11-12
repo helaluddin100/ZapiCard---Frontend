@@ -41,20 +41,20 @@ export default function DashboardLayout({ children }) {
 
   const loadNotifications = useCallback(async () => {
     if (!user) return
-    
+
     try {
       setLoadingNotifications(true)
       const [notificationsRes, countRes] = await Promise.all([
         notificationAPI.getNotifications(),
         notificationAPI.getUnreadCount()
       ])
-      
+
       if (notificationsRes.status === 'success') {
         setNotifications(notificationsRes.data || [])
       } else {
         console.error('Notification response error:', notificationsRes)
       }
-      
+
       if (countRes.status === 'success') {
         setUnreadCount(countRes.data?.count || 0)
       } else {
@@ -82,7 +82,7 @@ export default function DashboardLayout({ children }) {
   const handleMarkAsRead = async (notificationId) => {
     try {
       await notificationAPI.markAsRead(notificationId)
-      setNotifications(prev => 
+      setNotifications(prev =>
         prev.map(n => n.id === notificationId ? { ...n, read_at: new Date().toISOString() } : n)
       )
       setUnreadCount(prev => Math.max(0, prev - 1))
@@ -294,13 +294,12 @@ export default function DashboardLayout({ children }) {
                                   {notifications.map((notification) => {
                                     const isUnread = !notification.read_at
                                     const data = notification.data || {}
-                                    
+
                                     return (
                                       <div
                                         key={notification.id}
-                                        className={`p-4 hover:bg-gray-50 transition cursor-pointer ${
-                                          isUnread ? 'bg-blue-50/50' : ''
-                                        }`}
+                                        className={`p-4 hover:bg-gray-50 transition cursor-pointer ${isUnread ? 'bg-blue-50/50' : ''
+                                          }`}
                                         onClick={() => {
                                           if (isUnread) {
                                             handleMarkAsRead(notification.id)
@@ -312,9 +311,8 @@ export default function DashboardLayout({ children }) {
                                         }}
                                       >
                                         <div className="flex items-start gap-3">
-                                          <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
-                                            isUnread ? 'bg-blue-500' : 'bg-transparent'
-                                          }`} />
+                                          <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${isUnread ? 'bg-blue-500' : 'bg-transparent'
+                                            }`} />
                                           <div className="flex-1 min-w-0">
                                             <p className="text-sm font-medium text-gray-900">
                                               {notification.data?.message || 'New notification'}
@@ -357,7 +355,10 @@ export default function DashboardLayout({ children }) {
                     </AnimatePresence>
                   </div>
 
-                  <div className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-50 transition">
+                  <Link
+                    href="/dashboard/profile"
+                    className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-50 transition cursor-pointer"
+                  >
                     {user.image ? (
                       <img
                         src={user.image}
@@ -373,16 +374,7 @@ export default function DashboardLayout({ children }) {
                       <div className="font-semibold text-sm">{user.name || 'User'}</div>
                       <div className="text-xs text-gray-500">{user.email || ''}</div>
                     </div>
-                  </div>
-                  <button
-                    onClick={async () => {
-                      await logout()
-                    }}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 transition"
-                  >
-                    <LogOut className="w-5 h-5" />
-                    <span className="font-medium">Logout</span>
-                  </button>
+                  </Link>
                 </div>
               )}
             </div>
