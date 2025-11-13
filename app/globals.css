@@ -261,10 +261,40 @@
 
 .perspective-1000 {
   perspective: 1000px;
+  perspective-origin: center center;
 }
 
 .transform-gpu {
   transform: translateZ(0);
   will-change: transform;
+}
+
+/* 3D Card Effects */
+
+@media (max-width: 768px) {
+  .perspective-1000 {
+    perspective: 800px;
+  }
+}
+
+/* Smooth 3D transitions */
+.card-3d {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Mobile touch optimizations */
+@media (max-width: 768px) {
+  /* Larger touch targets */
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better spacing for mobile */
+  .mobile-spacing {
+    padding: 1rem;
+  }
 }
 
