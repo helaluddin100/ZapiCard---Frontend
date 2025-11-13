@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { cardAPI, visitorTrackingAPI } from '@/lib/api'
 import { useToast } from '@/lib/toast'
+import { getVisitorDataForAPI } from '@/lib/visitorData'
 import AppointmentModal from './components/AppointmentModal'
 import {
     Mail,
@@ -46,7 +47,30 @@ export default function PublicCardPage() {
         try {
             setLoading(true)
             setError(null)
-            const response = await cardAPI.getCardBySlug(slug)
+
+            // Collect visitor data
+            const visitorData = await getVisitorDataForAPI()
+
+            // Log collected data for debugging
+            console.log('Collected visitor data:', visitorData)
+
+            // Send visitor data as query params or in request body
+            // For GET request, we'll use query params
+            const queryParams = new URLSearchParams()
+            Object.keys(visitorData).forEach(key => {
+                if (visitorData[key] !== null && visitorData[key] !== undefined) {
+                    if (typeof visitorData[key] === 'object') {
+                        queryParams.append(key, JSON.stringify(visitorData[key]))
+                    } else {
+                        queryParams.append(key, String(visitorData[key]))
+                    }
+                }
+            })
+
+            const queryString = queryParams.toString()
+            console.log('Sending query params:', queryString.substring(0, 200) + '...')
+
+            const response = await cardAPI.getCardBySlug(slug, queryString)
 
             if (response.status === 'success' && response.data) {
                 setCardData(response.data)
