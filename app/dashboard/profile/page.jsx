@@ -117,7 +117,7 @@ export default function ProfilePage() {
       <DashboardLayout>
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-center min-h-[400px]">
-            <Loader2 className="w-12 h-12 animate-spin text-blue-500" />
+            <Loader2 className="w-12 h-12 animate-spin text-blue-500 dark:text-blue-400" />
           </div>
         </div>
       </DashboardLayout>
@@ -129,22 +129,22 @@ export default function ProfilePage() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Edit Profile</h1>
-          <p className="text-gray-600">Update your personal information and profile settings</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Edit Profile</h1>
+          <p className="text-gray-600 dark:text-gray-400">Update your personal information and profile settings</p>
         </div>
 
         {/* Profile Form */}
-        <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 md:p-8">
+        <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 md:p-8">
           {/* Profile Image Section */}
           <div className="mb-8">
-            <label className="block text-sm font-medium text-gray-700 mb-4">Profile Picture</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">Profile Picture</label>
             <div className="flex items-center gap-6">
               <div className="relative">
                 {previewImage ? (
                   <img
                     src={previewImage}
                     alt="Profile preview"
-                    className="w-32 h-32 rounded-full object-cover border-4 border-gray-200"
+                    className="w-32 h-32 rounded-full object-cover border-4 border-gray-200 dark:border-gray-600"
                   />
                 ) : (
                   <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-4xl font-bold">
@@ -153,7 +153,7 @@ export default function ProfilePage() {
                 )}
                 <label
                   htmlFor="image-upload"
-                  className="absolute bottom-0 right-0 w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center cursor-pointer hover:bg-blue-700 transition shadow-lg"
+                  className="absolute bottom-0 right-0 w-10 h-10 bg-blue-600 dark:bg-blue-500 rounded-full flex items-center justify-center cursor-pointer hover:bg-blue-700 dark:hover:bg-blue-600 transition shadow-lg"
                 >
                   <Camera className="w-5 h-5 text-white" />
                   <input
@@ -166,7 +166,7 @@ export default function ProfilePage() {
                 </label>
               </div>
               <div className="flex-1">
-                <p className="text-sm text-gray-600 mb-2">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                   Upload a profile picture (JPG, PNG, GIF - Max 2MB)
                 </p>
                 <button
@@ -175,7 +175,7 @@ export default function ProfilePage() {
                     setFormData(prev => ({ ...prev, image: null }))
                     setPreviewImage(user?.image || null)
                   }}
-                  className="text-sm text-red-600 hover:text-red-700"
+                  className="text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
                 >
                   Remove image
                 </button>
@@ -187,7 +187,7 @@ export default function ProfilePage() {
           <div className="space-y-6">
             {/* Name */}
             <div>
-              <label htmlFor="name" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="name" className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 <User className="w-4 h-4" />
                 Full Name
               </label>
@@ -198,14 +198,14 @@ export default function ProfilePage() {
                 value={formData.name}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                 placeholder="Enter your full name"
               />
             </div>
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 <Mail className="w-4 h-4" />
                 Email Address
               </label>
@@ -216,14 +216,14 @@ export default function ProfilePage() {
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                 placeholder="Enter your email address"
               />
             </div>
 
             {/* Phone */}
             <div>
-              <label htmlFor="phone" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="phone" className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 <Phone className="w-4 h-4" />
                 Phone Number
               </label>
@@ -234,14 +234,14 @@ export default function ProfilePage() {
                 value={formData.phone}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                 placeholder="Enter your phone number"
               />
             </div>
 
             {/* Address */}
             <div>
-              <label htmlFor="address" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="address" className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 <MapPin className="w-4 h-4" />
                 Address
               </label>
@@ -252,7 +252,7 @@ export default function ProfilePage() {
                 onChange={handleInputChange}
                 required
                 rows={3}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                 placeholder="Enter your address"
               />
             </div>
@@ -260,7 +260,7 @@ export default function ProfilePage() {
             {/* City, Region, Country Row */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="city" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   City
                 </label>
                 <input
@@ -269,12 +269,12 @@ export default function ProfilePage() {
                   name="city"
                   value={formData.city}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                   placeholder="City"
                 />
               </div>
               <div>
-                <label htmlFor="Region" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="Region" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Region/State
                 </label>
                 <input
@@ -283,12 +283,12 @@ export default function ProfilePage() {
                   name="Region"
                   value={formData.Region}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                   placeholder="Region/State"
                 />
               </div>
               <div>
-                <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="country" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Country
                 </label>
                 <input
@@ -297,7 +297,7 @@ export default function ProfilePage() {
                   name="country"
                   value={formData.country}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                   placeholder="Country"
                 />
               </div>
@@ -305,7 +305,7 @@ export default function ProfilePage() {
 
             {/* About */}
             <div>
-              <label htmlFor="about" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="about" className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 <FileText className="w-4 h-4" />
                 About Me
               </label>
@@ -315,18 +315,18 @@ export default function ProfilePage() {
                 value={formData.about}
                 onChange={handleInputChange}
                 rows={4}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                 placeholder="Tell us about yourself..."
               />
             </div>
           </div>
 
           {/* Form Actions */}
-          <div className="flex items-center justify-end gap-4 mt-8 pt-6 border-t border-gray-200">
+          <div className="flex items-center justify-end gap-4 mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
             <button
               type="button"
               onClick={() => router.back()}
-              className="flex items-center gap-2 px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
+              className="flex items-center gap-2 px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
             >
               <X className="w-5 h-5" />
               Cancel
@@ -334,7 +334,7 @@ export default function ProfilePage() {
             <button
               type="submit"
               disabled={saving}
-              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-500 dark:to-purple-500 text-white rounded-lg hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {saving ? (
                 <>
