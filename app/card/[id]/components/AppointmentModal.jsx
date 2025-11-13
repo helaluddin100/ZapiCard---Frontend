@@ -6,7 +6,7 @@ import { X, Calendar, Clock, MapPin, Video, User, Phone, Mail, FileText, Loader2
 import { publicAppointmentAPI } from '@/lib/api'
 import { useToast } from '@/lib/toast'
 
-export default function AppointmentModal({ isOpen, onClose, cardSlug, cardId }) {
+export default function AppointmentModal({ isOpen, onClose, cardSlug, cardId, trackingId }) {
     const { success: showSuccess, error: showError } = useToast()
     const [step, setStep] = useState(1)
     const [loading, setLoading] = useState(false)
@@ -289,6 +289,7 @@ export default function AppointmentModal({ isOpen, onClose, cardSlug, cardId }) 
                 notes: notesWithDuration,
                 meeting_type: formData.meeting_type,
                 preferred_location: formData.preferred_location || null,
+                tracking_id: trackingId, // Include tracking ID for visitor tracking
             }
 
             const response = await publicAppointmentAPI.createAppointment(appointmentPayload)

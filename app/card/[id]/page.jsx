@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { cardAPI } from '@/lib/api'
+import { cardAPI, visitorTrackingAPI } from '@/lib/api'
 import { useToast } from '@/lib/toast'
 import AppointmentModal from './components/AppointmentModal'
 import {
@@ -37,6 +37,8 @@ export default function PublicCardPage() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [showAppointmentModal, setShowAppointmentModal] = useState(false)
+    const [trackingId, setTrackingId] = useState(null)
+    const [visitStartTime, setVisitStartTime] = useState(null)
 
     const loadCardData = useCallback(async () => {
         if (!slug) return
@@ -48,6 +50,12 @@ export default function PublicCardPage() {
 
             if (response.status === 'success' && response.data) {
                 setCardData(response.data)
+                // Store tracking ID if available
+                if (response.data.tracking_id) {
+                    setTrackingId(response.data.tracking_id)
+                }
+                // Record visit start time
+                setVisitStartTime(Date.now())
             } else {
                 setError('Card not found')
             }
@@ -62,6 +70,17 @@ export default function PublicCardPage() {
     useEffect(() => {
         loadCardData()
     }, [loadCardData])
+
+    // Track visit duration when component unmounts or page is closed
+    useEffect(() => {
+        return () => {
+            if (trackingId && visitStartTime) {
+                const duration = Math.floor((Date.now() - visitStartTime) / 1000) // in seconds
+                // Send duration update (optional, can be done via API if needed)
+                // For now, we'll track it when contact is saved or appointment is created
+            }
+        }
+    }, [trackingId, visitStartTime])
 
     const getInitials = (name) => {
         if (!name) return 'JD'
@@ -154,7 +173,7 @@ export default function PublicCardPage() {
         )
     }
 
-    const handleDownloadVCard = () => {
+    const handleDownloadVCard = async () => {
         if (!cardData) return
 
         const vcard = `BEGIN:VCARD
@@ -176,6 +195,15 @@ END:VCARD`
         link.download = `${(cardData.name || 'card').replace(/\s+/g, '_')}.vcf`
         link.click()
         URL.revokeObjectURL(url)
+
+        // Track contact saved
+        if (trackingId) {
+            try {
+                await visitorTrackingAPI.markContactSaved(trackingId)
+            } catch (error) {
+                console.error('Failed to track contact save:', error)
+            }
+        }
     }
 
     const handleShare = async () => {
@@ -402,6 +430,7 @@ END:VCARD`
                     onClose={() => setShowAppointmentModal(false)}
                     cardSlug={slug}
                     cardId={cardData.id}
+                    trackingId={trackingId}
                 />
             )}
         </div>
