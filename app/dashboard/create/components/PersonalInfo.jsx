@@ -6,7 +6,33 @@ import { ArrowRight, User, Mail, Phone, Building, MapPin, MessageCircle } from '
 import dynamic from 'next/dynamic'
 
 // Dynamically import ReactQuill to avoid SSR issues
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
+// Use a more robust import with error handling
+const ReactQuill = dynamic(
+    async () => {
+        try {
+            const module = await import('react-quill')
+            return module.default || module
+        } catch (err) {
+            console.error('Failed to load react-quill:', err)
+            // Return a fallback component
+            return () => (
+                <div className="h-[200px] border border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-center">
+                    <p className="text-red-500">Editor failed to load. Please refresh the page.</p>
+                </div>
+            )
+        }
+    },
+    { 
+        ssr: false,
+        loading: () => (
+            <div className="h-[200px] border border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-center">
+                <p className="text-gray-500">Loading editor...</p>
+            </div>
+        )
+    }
+)
+
+// Import CSS - Next.js will handle this properly
 import 'react-quill/dist/quill.snow.css'
 
 export default function PersonalInfo({ formData, setFormData, onNext }) {
