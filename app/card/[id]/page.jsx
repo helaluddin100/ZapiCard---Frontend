@@ -48,7 +48,8 @@ export default function PublicCardPage() {
             setLoading(true)
             setError(null)
 
-            // Collect visitor data
+            // Collect visitor data (this will wait for geolocation up to 5 seconds)
+            console.log('🔄 Starting visitor data collection...')
             const visitorData = await getVisitorDataForAPI()
 
             // Log collected data for debugging
