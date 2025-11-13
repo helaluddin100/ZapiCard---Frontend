@@ -52,25 +52,34 @@ export default function PublicCardPage() {
             const visitorData = await getVisitorDataForAPI()
 
             // Log collected data for debugging
-            console.log('Collected visitor data:', visitorData)
+            console.log('✅ Collected visitor data:', visitorData)
 
-            // Send visitor data as query params or in request body
-            // For GET request, we'll use query params
+            // Send visitor data as query params
+            // Filter out null/undefined values and convert to strings
             const queryParams = new URLSearchParams()
             Object.keys(visitorData).forEach(key => {
-                if (visitorData[key] !== null && visitorData[key] !== undefined) {
-                    if (typeof visitorData[key] === 'object') {
-                        queryParams.append(key, JSON.stringify(visitorData[key]))
+                const value = visitorData[key]
+                if (value !== null && value !== undefined && value !== '') {
+                    if (typeof value === 'object') {
+                        try {
+                            queryParams.append(key, JSON.stringify(value))
+                        } catch (e) {
+                            console.warn(`Failed to stringify ${key}:`, e)
+                        }
+                    } else if (typeof value === 'boolean') {
+                        queryParams.append(key, value ? '1' : '0')
                     } else {
-                        queryParams.append(key, String(visitorData[key]))
+                        queryParams.append(key, String(value))
                     }
                 }
             })
 
             const queryString = queryParams.toString()
-            console.log('Sending query params:', queryString.substring(0, 200) + '...')
+            console.log('📤 Sending query params (length:', queryString.length, '):', queryString.substring(0, 300) + (queryString.length > 300 ? '...' : ''))
 
             const response = await cardAPI.getCardBySlug(slug, queryString)
+            
+            console.log('📥 Response received:', response)
 
             if (response.status === 'success' && response.data) {
                 setCardData(response.data)
