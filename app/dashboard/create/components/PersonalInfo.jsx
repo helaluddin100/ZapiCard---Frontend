@@ -10,16 +10,18 @@ import dynamic from 'next/dynamic'
 const ReactQuill = dynamic(
     async () => {
         try {
-            const module = await import('react-quill')
-            return module.default || module
+            const quillModule = await import('react-quill')
+            return quillModule.default || quillModule
         } catch (err) {
             console.error('Failed to load react-quill:', err)
             // Return a fallback component
-            return () => (
+            const FallbackEditor = () => (
                 <div className="h-[200px] border border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-center">
                     <p className="text-red-500">Editor failed to load. Please refresh the page.</p>
                 </div>
             )
+            FallbackEditor.displayName = 'FallbackEditor'
+            return FallbackEditor
         }
     },
     { 
