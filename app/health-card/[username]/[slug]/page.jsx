@@ -13,6 +13,34 @@ export default function PublicHealthCardPage() {
   const [expandedEntries, setExpandedEntries] = useState({})
   const [lightboxImage, setLightboxImage] = useState(null)
 
+  const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+
+  // Get base URL for images (remove /api if present, as images are served from public directory)
+  const getImageBaseUrl = () => {
+    let base = apiBase
+    // Remove /api from the end if present
+    if (base.endsWith('/api')) {
+      base = base.slice(0, -4)
+    } else if (base.endsWith('/api/')) {
+      base = base.slice(0, -5)
+    }
+    return base
+  }
+
+  // Helper function to convert relative image paths to full URLs
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return null
+    // If it's already a full URL, return as is
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      return imagePath
+    }
+    // If it's a relative path, prepend image base URL (without /api)
+    // Remove leading slash if present
+    const cleanPath = imagePath.startsWith('/') ? imagePath.slice(1) : imagePath
+    const imageBase = getImageBaseUrl()
+    return `${imageBase}/${cleanPath}`
+  }
+
   useEffect(() => {
     loadPublicCard()
   }, [username, slug])
@@ -20,7 +48,6 @@ export default function PublicHealthCardPage() {
   const loadPublicCard = async () => {
     try {
       setLoading(true)
-      const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
       const response = await fetch(`${apiBase}/health-cards/public/${username}/${slug}`, {
         headers: {
@@ -214,9 +241,10 @@ END:VCARD`
                 {cardData.person_photo ? (
                   <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full mx-auto p-1 gradient-primary">
                     <img
-                      src={cardData.person_photo}
+                      src={getImageUrl(cardData.person_photo)}
                       alt={cardData.person_name}
                       className="w-full h-full rounded-full object-cover"
+                      onError={(e) => { e.target.style.display = 'none' }}
                     />
                   </div>
                 ) : (
@@ -428,28 +456,38 @@ END:VCARD`
                                 <h5 className="font-semibold text-sm sm:text-base text-gray-700 mb-2 sm:mb-3">Test Report Images</h5>
                                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3">
                                   {entry.test_report_images && Array.isArray(entry.test_report_images) && entry.test_report_images.length > 0 ? (
-                                    entry.test_report_images.map((img, imgIndex) => (
-                                      <div key={imgIndex} className="relative group">
-                                        <img
-                                          src={img}
-                                          alt={`Test report ${imgIndex + 1}`}
-                                          onClick={() => setLightboxImage(img)}
-                                          className="w-full h-24 sm:h-28 md:h-32 object-cover rounded-lg border-2 border-purple-200 cursor-pointer hover:opacity-80 transition shadow-sm hover:shadow-md"
-                                        />
-                                        <div className="absolute top-1 left-1 sm:top-2 sm:left-2 bg-purple-600 text-white text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded font-semibold">
-                                          {imgIndex + 1}
+                                    entry.test_report_images.map((img, imgIndex) => {
+                                      const imageUrl = getImageUrl(img)
+                                      return imageUrl ? (
+                                        <div key={imgIndex} className="relative group">
+                                          <img
+                                            src={imageUrl}
+                                            alt={`Test report ${imgIndex + 1}`}
+                                            onClick={() => setLightboxImage(imageUrl)}
+                                            className="w-full h-24 sm:h-28 md:h-32 object-cover rounded-lg border-2 border-purple-200 cursor-pointer hover:opacity-80 transition shadow-sm hover:shadow-md"
+                                            onError={(e) => { e.target.style.display = 'none' }}
+                                          />
+                                          <div className="absolute top-1 left-1 sm:top-2 sm:left-2 bg-purple-600 text-white text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded font-semibold">
+                                            {imgIndex + 1}
+                                          </div>
                                         </div>
-                                      </div>
-                                    ))
+                                      ) : null
+                                    })
                                   ) : entry.test_report_image ? (
-                                    <div className="relative group">
-                                      <img
-                                        src={entry.test_report_image}
-                                        alt="Test report"
-                                        onClick={() => setLightboxImage(entry.test_report_image)}
-                                        className="w-full h-24 sm:h-28 md:h-32 object-cover rounded-lg border-2 border-purple-200 cursor-pointer hover:opacity-80 transition shadow-sm hover:shadow-md"
-                                      />
-                                    </div>
+                                    (() => {
+                                      const imageUrl = getImageUrl(entry.test_report_image)
+                                      return imageUrl ? (
+                                        <div className="relative group">
+                                          <img
+                                            src={imageUrl}
+                                            alt="Test report"
+                                            onClick={() => setLightboxImage(imageUrl)}
+                                            className="w-full h-24 sm:h-28 md:h-32 object-cover rounded-lg border-2 border-purple-200 cursor-pointer hover:opacity-80 transition shadow-sm hover:shadow-md"
+                                            onError={(e) => { e.target.style.display = 'none' }}
+                                          />
+                                        </div>
+                                      ) : null
+                                    })()
                                   ) : null}
                                 </div>
                               </div>
@@ -550,28 +588,38 @@ END:VCARD`
                             <h4 className="font-bold text-base sm:text-lg text-gray-900 mb-3 sm:mb-4">Prescription Images</h4>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
                               {entry.prescription_images && Array.isArray(entry.prescription_images) && entry.prescription_images.length > 0 ? (
-                                entry.prescription_images.map((img, imgIndex) => (
-                                  <div key={imgIndex} className="relative group">
-                                    <img
-                                      src={img}
-                                      alt={`Prescription ${imgIndex + 1}`}
-                                      onClick={() => setLightboxImage(img)}
-                                      className="w-full h-24 sm:h-28 md:h-40 object-cover rounded-lg border-2 border-blue-200 cursor-pointer hover:opacity-80 transition shadow-sm hover:shadow-md"
-                                    />
-                                    <div className="absolute top-1 left-1 sm:top-2 sm:left-2 bg-blue-600 text-white text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded font-semibold">
-                                      {imgIndex + 1}
+                                entry.prescription_images.map((img, imgIndex) => {
+                                  const imageUrl = getImageUrl(img)
+                                  return imageUrl ? (
+                                    <div key={imgIndex} className="relative group">
+                                      <img
+                                        src={imageUrl}
+                                        alt={`Prescription ${imgIndex + 1}`}
+                                        onClick={() => setLightboxImage(imageUrl)}
+                                        className="w-full h-24 sm:h-28 md:h-40 object-cover rounded-lg border-2 border-blue-200 cursor-pointer hover:opacity-80 transition shadow-sm hover:shadow-md"
+                                        onError={(e) => { e.target.style.display = 'none' }}
+                                      />
+                                      <div className="absolute top-1 left-1 sm:top-2 sm:left-2 bg-blue-600 text-white text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded font-semibold">
+                                        {imgIndex + 1}
+                                      </div>
                                     </div>
-                                  </div>
-                                ))
+                                  ) : null
+                                })
                               ) : entry.prescription_image ? (
-                                <div className="relative group">
-                                  <img
-                                    src={entry.prescription_image}
-                                    alt="Prescription"
-                                    onClick={() => setLightboxImage(entry.prescription_image)}
-                                    className="w-full h-24 sm:h-28 md:h-40 object-cover rounded-lg border-2 border-blue-200 cursor-pointer hover:opacity-80 transition shadow-sm hover:shadow-md"
-                                  />
-                                </div>
+                                (() => {
+                                  const imageUrl = getImageUrl(entry.prescription_image)
+                                  return imageUrl ? (
+                                    <div className="relative group">
+                                      <img
+                                        src={imageUrl}
+                                        alt="Prescription"
+                                        onClick={() => setLightboxImage(imageUrl)}
+                                        className="w-full h-24 sm:h-28 md:h-40 object-cover rounded-lg border-2 border-blue-200 cursor-pointer hover:opacity-80 transition shadow-sm hover:shadow-md"
+                                        onError={(e) => { e.target.style.display = 'none' }}
+                                      />
+                                    </div>
+                                  ) : null
+                                })()
                               ) : null}
                             </div>
                           </div>
@@ -601,10 +649,14 @@ END:VCARD`
             onClick={() => setLightboxImage(null)}
           >
             <img
-              src={lightboxImage}
+              src={getImageUrl(lightboxImage) || lightboxImage}
               alt="Full size"
               className="max-w-full max-h-full rounded-lg"
               onClick={(e) => e.stopPropagation()}
+              onError={(e) => {
+                console.error('Failed to load image:', lightboxImage)
+                e.target.style.display = 'none'
+              }}
             />
             <button
               onClick={() => setLightboxImage(null)}
