@@ -37,14 +37,14 @@ export default function MyCardsPage() {
     const getImageBaseUrl = () => {
         // Get API base URL from environment or default
         let apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
-        
+
         // Remove /api from the end if present
         if (apiBase.endsWith('/api')) {
             return apiBase.slice(0, -4)
         } else if (apiBase.endsWith('/api/')) {
             return apiBase.slice(0, -5)
         }
-        
+
         // If no /api, assume it's already the base URL
         return apiBase
     }
@@ -52,21 +52,21 @@ export default function MyCardsPage() {
     // Helper function to convert relative image paths to full URLs
     const getImageUrl = (imagePath) => {
         if (!imagePath) return null
-        
+
         // If it's already a full URL, return as is
         if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
             return imagePath
         }
-        
+
         // If it's a base64 data URL, return as is
         if (imagePath.startsWith('data:image/')) {
             return imagePath
         }
-        
+
         // If it's a relative path, prepend image base URL (without /api)
         // Remove leading slash if present
         let cleanPath = imagePath.startsWith('/') ? imagePath.slice(1) : imagePath
-        
+
         const imageBase = getImageBaseUrl()
         // Ensure no double slashes
         const fullUrl = `${imageBase.replace(/\/$/, '')}/${cleanPath}`
@@ -206,7 +206,7 @@ export default function MyCardsPage() {
 
     return (
         <DashboardLayout>
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-8xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
@@ -285,7 +285,7 @@ export default function MyCardsPage() {
                             {cards.length === 0 ? 'No cards found' : 'No cards match your search'}
                         </h3>
                         <p className="text-gray-600 dark:text-gray-400 mb-6">
-                            {cards.length === 0 
+                            {cards.length === 0
                                 ? 'Create your first smart visiting card to get started'
                                 : 'Try adjusting your search query'}
                         </p>
@@ -363,7 +363,7 @@ export default function MyCardsPage() {
                                     >
                                         <Edit className="w-4 h-4" />
                                     </Link>
-                                    <button 
+                                    <button
                                         onClick={() => handleDelete(card.id)}
                                         className="p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-red-600 dark:text-red-400 rounded-full hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg transition-all"
                                         title="Delete Card"
@@ -495,7 +495,7 @@ export default function MyCardsPage() {
                                             }}
                                         />
                                     ) : (
-                                        <div 
+                                        <div
                                             className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-lg"
                                             style={getCardBackground(card)}
                                         >
@@ -507,7 +507,7 @@ export default function MyCardsPage() {
                                             <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{card.name || 'Untitled Card'}</h3>
                                         </div>
                                         <p className="text-gray-600 dark:text-gray-400 text-sm">
-                                            {card.title && card.company 
+                                            {card.title && card.company
                                                 ? `${card.title} at ${card.company}`
                                                 : card.title || card.company || 'No details'}
                                         </p>
@@ -538,7 +538,7 @@ export default function MyCardsPage() {
                                             <Edit className="w-4 h-4 inline mr-1" />
                                             Edit
                                         </Link>
-                                        <button 
+                                        <button
                                             onClick={() => handleDelete(card.id)}
                                             className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition"
                                         >
