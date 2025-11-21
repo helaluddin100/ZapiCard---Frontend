@@ -90,23 +90,60 @@ export default function Home() {
   const features = [
     {
       icon: <QrCode className="w-8 h-8" />,
-      title: "Digital Card",
-      description: "Create beautiful digital business cards that work on any device"
-    },
-    {
-      icon: <QrCode className="w-8 h-8" />,
-      title: "QR Code",
-      description: "Generate customizable QR codes for instant contact sharing"
-    },
-    {
-      icon: <Radio className="w-8 h-8" />,
-      title: "NFC Tap",
-      description: "Tap to share - NFC technology for seamless networking"
+      title: "Smart Visiting Card",
+      description: "Create professional digital business cards with QR and NFC technology",
+      highlight: false
     },
     {
       icon: <Calendar className="w-8 h-8" />,
-      title: "Appointments",
-      description: "Let clients book appointments directly from your card"
+      title: "Appointment Booking",
+      description: "Let visitors book appointments directly - schedule management made easy",
+      highlight: false
+    },
+    {
+      icon: <Radio className="w-8 h-8" />,
+      title: "Smart Health Card",
+      description: "Revolutionary health cards for patients, pregnant women with AI prescription scanning",
+      highlight: true
+    },
+    {
+      icon: <CheckCircle2 className="w-8 h-8" />,
+      title: "NFC & QR Technology",
+      description: "Instant access - tap NFC or scan QR to view complete health/contact information",
+      highlight: false
+    }
+  ]
+
+  const healthCardFeatures = [
+    {
+      title: "AI Prescription Reading",
+      description: "Upload prescription images - AI automatically reads and inputs data",
+      icon: "🤖"
+    },
+    {
+      title: "Manual Data Entry",
+      description: "Complete control - add health records, medications, and allergies manually",
+      icon: "✍️"
+    },
+    {
+      title: "Emergency Access",
+      description: "Critical health info available instantly via NFC tap or QR scan",
+      icon: "🚨"
+    },
+    {
+      title: "Pregnancy Tracking",
+      description: "Specialized cards for expectant mothers with prenatal records",
+      icon: "🤰"
+    },
+    {
+      title: "Medical History",
+      description: "Complete health timeline - past treatments, surgeries, and conditions",
+      icon: "📋"
+    },
+    {
+      title: "Secure & Private",
+      description: "Your health data encrypted and accessible only by authorized personnel",
+      icon: "🔒"
     }
   ]
 
@@ -115,8 +152,10 @@ export default function Home() {
       name: "Free",
       price: "$0",
       period: "/month",
+      type: "Basic",
       features: [
-        "1 Digital Card",
+        "1 Visiting Card",
+        "1 Health Card",
         "Basic QR Code",
         "Standard Templates",
         "Email Support"
@@ -128,10 +167,13 @@ export default function Home() {
       name: "Pro",
       price: "$9.99",
       period: "/month",
+      type: "Most Popular",
       features: [
-        "Unlimited Cards",
-        "Custom QR Codes",
+        "Unlimited Visiting Cards",
+        "Unlimited Health Cards",
         "NFC Card Included",
+        "AI Prescription Reading",
+        "Appointment Booking",
         "Premium Templates",
         "Analytics Dashboard",
         "Priority Support"
@@ -140,20 +182,23 @@ export default function Home() {
       popular: true
     },
     {
-      name: "Business",
-      price: "$29.99",
+      name: "Healthcare+",
+      price: "$19.99",
       period: "/month",
+      type: "For Medical Professionals",
       features: [
         "Everything in Pro",
-        "Team Management",
-        "Custom Branding",
-        "API Access",
-        "Appointment Booking",
-        "Advanced Analytics",
-        "Dedicated Support"
+        "Advanced Health Features",
+        "Patient Management",
+        "Prescription History",
+        "Emergency Contacts",
+        "Family Health Cards",
+        "Medical Records Storage",
+        "24/7 Support"
       ],
-      cta: "Contact Sales",
-      popular: false
+      cta: "Get Healthcare+",
+      popular: false,
+      highlight: true
     }
   ]
 
@@ -246,12 +291,12 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 text-white drop-shadow-2xl"
+              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white drop-shadow-2xl"
             >
-              Your Smart Visiting Card
+              Smart Cards for
               <br />
               <span className="bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 bg-clip-text text-transparent animate-gradient">
-                In Your Pocket
+                Business & Health
               </span>
             </motion.h1>
 
@@ -259,11 +304,13 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              className="text-xl md:text-2xl lg:text-3xl text-white/90 mb-8 max-w-3xl mx-auto font-medium drop-shadow-lg"
+              className="text-xl md:text-2xl lg:text-3xl text-white/90 mb-8 max-w-4xl mx-auto font-medium drop-shadow-lg"
             >
-              Create, share, and manage your digital business card with QR codes and NFC technology.
+              Revolutionary digital cards with <span className="font-bold text-yellow-300">NFC & QR technology</span>
               <br />
-              <span className="text-white/80 text-lg md:text-xl">Network smarter, not harder.</span>
+              <span className="text-white/90 text-lg md:text-xl">
+                📇 Smart Visiting Cards for Professionals | 🏥 Smart Health Cards for Patients
+              </span>
             </motion.p>
 
             <motion.div
@@ -273,11 +320,11 @@ export default function Home() {
               className="flex flex-col sm:flex-row gap-4 justify-center items-center"
             >
               <Link
-                href="/signup"
-                className="group relative px-8 py-4 bg-white text-blue-600 rounded-xl font-bold text-lg shadow-2xl hover:shadow-white/50 transition-all duration-300 transform hover:scale-105 overflow-hidden"
+                href="/health-dashboard/create"
+                className="group relative px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-bold text-lg shadow-2xl hover:shadow-green-500/50 transition-all duration-300 transform hover:scale-105"
               >
                 <span className="relative z-10 flex items-center gap-2">
-                  Create Your Card
+                  🏥 Create Health Card
                   <motion.span
                     animate={{ x: [0, 5, 0] }}
                     transition={{ duration: 1.5, repeat: Infinity }}
@@ -285,10 +332,14 @@ export default function Home() {
                     →
                   </motion.span>
                 </span>
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  initial={false}
-                />
+              </Link>
+              <Link
+                href="/dashboard/create"
+                className="group relative px-8 py-4 bg-white text-blue-600 rounded-xl font-bold text-lg shadow-2xl hover:shadow-white/50 transition-all duration-300 transform hover:scale-105 overflow-hidden"
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  📇 Create Visiting Card
+                </span>
               </Link>
               <Link
                 href="/nfc-order"
@@ -304,20 +355,22 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.1 }}
-              className="mt-12 grid grid-cols-3 gap-8 max-w-2xl mx-auto"
+              className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 max-w-4xl mx-auto"
             >
               {[
-                { number: '10K+', label: 'Active Users' },
-                { number: '50K+', label: 'Cards Created' },
-                { number: '4.9★', label: 'User Rating' }
+                { number: '15K+', label: 'Active Users', icon: '👥' },
+                { number: '80K+', label: 'Cards Created', icon: '📇' },
+                { number: '5K+', label: 'Health Cards', icon: '🏥' },
+                { number: '4.9★', label: 'User Rating', icon: '⭐' }
               ].map((stat, idx) => (
                 <motion.div
                   key={idx}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, delay: 1.2 + idx * 0.1 }}
-                  className="text-center"
+                  className="text-center bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20"
                 >
+                  <div className="text-2xl mb-2">{stat.icon}</div>
                   <div className="text-3xl md:text-4xl font-bold text-white mb-1">{stat.number}</div>
                   <div className="text-white/80 text-sm md:text-base">{stat.label}</div>
                 </motion.div>
@@ -327,15 +380,79 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Smart Health Card Showcase - Main Feature */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-20 left-10 text-9xl">🏥</div>
+          <div className="absolute bottom-20 right-10 text-9xl">💊</div>
+          <div className="absolute top-40 right-20 text-7xl">🩺</div>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <span className="inline-block px-6 py-2 rounded-full bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 text-green-700 dark:text-green-300 text-sm font-semibold border border-green-200 dark:border-green-800 mb-6">
+              🏥 Revolutionary Healthcare Solution
+            </span>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-primary bg-clip-text text-transparent">
+              Smart Health Card
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+              Perfect for patients, pregnant women, and anyone who needs instant access to their medical information
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {healthCardFeatures.map((feature, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all transform hover:scale-105 border border-gray-200 dark:border-gray-700"
+              >
+                <div className="text-4xl mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-gray-100">{feature.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400">{feature.description}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <Link
+              href="/health-dashboard/create"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold text-lg rounded-xl shadow-2xl hover:shadow-green-500/50 transition-all transform hover:scale-105"
+            >
+              🏥 Create Your Health Card Now
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
       {/* How It Works */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">How It Works</h2>
+          <h2 className="text-4xl font-bold text-center mb-4 text-gray-900 dark:text-gray-100">How It Works</h2>
+          <p className="text-center text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto">
+            Create your smart card in 3 simple steps - whether it&apos;s for business or health
+          </p>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { step: "1", title: "Sign Up", desc: "Create your free account in seconds" },
-              { step: "2", title: "Design Your Card", desc: "Customize your card with your info and branding" },
-              { step: "3", title: "Share & Network", desc: "Share via QR, NFC, or link - it's that simple!" }
+              { step: "1", title: "Create Account", desc: "Sign up for free and choose your card type - Visiting or Health Card", icon: "👤" },
+              { step: "2", title: "Add Information", desc: "Fill in your details or upload prescriptions for AI to read automatically", icon: "✍️" },
+              { step: "3", title: "Share & Access", desc: "Share via QR code, NFC tap, or direct link - instant access anywhere!", icon: "🚀" }
             ].map((item, idx) => (
               <motion.div
                 key={idx}
@@ -343,8 +460,9 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.2 }}
-                className="text-center p-8 rounded-2xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 card-hover"
+                className="text-center p-8 rounded-2xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 card-hover border-2 border-transparent hover:border-blue-300 dark:hover:border-blue-700"
               >
+                <div className="text-5xl mb-4">{item.icon}</div>
                 <div className="w-16 h-16 mx-auto mb-4 rounded-full gradient-primary flex items-center justify-center text-white text-2xl font-bold">
                   {item.step}
                 </div>
@@ -359,7 +477,20 @@ export default function Home() {
       {/* Features */}
       <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-900">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">Powerful Features</h2>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+              Powerful Features for Every Need
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+              Two revolutionary card systems in one platform - Business networking and Healthcare management
+            </p>
+          </motion.div>
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, idx) => (
               <motion.div
@@ -368,22 +499,106 @@ export default function Home() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="glass-effect p-6 rounded-xl card-hover bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
+                className={`glass-effect p-6 rounded-xl card-hover border-2 transition-all ${feature.highlight
+                  ? 'bg-gradient-to-br from-green-500 to-emerald-600 border-green-400 text-white scale-105 shadow-2xl'
+                  : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                  }`}
               >
-                <div className="text-blue-600 dark:text-blue-400 mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">{feature.title}</h3>
-                <p className="text-gray-600 dark:text-gray-400">{feature.description}</p>
+                <div className={`mb-4 ${feature.highlight ? 'text-white' : 'text-blue-600 dark:text-blue-400'}`}>
+                  {feature.icon}
+                </div>
+                <h3 className={`text-xl font-semibold mb-2 ${feature.highlight ? 'text-white' : 'text-gray-900 dark:text-gray-100'}`}>
+                  {feature.title}
+                  {feature.highlight && <span className="ml-2 text-yellow-300">⭐</span>}
+                </h3>
+                <p className={feature.highlight ? 'text-white/90' : 'text-gray-600 dark:text-gray-400'}>
+                  {feature.description}
+                </p>
               </motion.div>
             ))}
           </div>
+
+          {/* Use Cases */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-16 grid md:grid-cols-2 gap-8"
+          >
+            {/* Visiting Card Use Case */}
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="text-4xl">📇</div>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Smart Visiting Card</h3>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">Perfect for professionals and businesses</p>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700 dark:text-gray-300">QR Code & NFC instant sharing</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700 dark:text-gray-300">Appointment booking system</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700 dark:text-gray-300">Schedule management for clients</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700 dark:text-gray-300">Professional digital presence</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Health Card Use Case */}
+            <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-8 rounded-2xl shadow-xl border-2 border-green-400">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="text-4xl">🏥</div>
+                <h3 className="text-2xl font-bold text-white">Smart Health Card</h3>
+              </div>
+              <p className="text-white/90 mb-4">Essential for patients and pregnant women</p>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-yellow-300 flex-shrink-0 mt-0.5" />
+                  <span className="text-white">AI prescription reading & data entry</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-yellow-300 flex-shrink-0 mt-0.5" />
+                  <span className="text-white">Complete medical history tracking</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-yellow-300 flex-shrink-0 mt-0.5" />
+                  <span className="text-white">Emergency access via NFC/QR scan</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-yellow-300 flex-shrink-0 mt-0.5" />
+                  <span className="text-white">Pregnancy & chronic condition support</span>
+                </li>
+              </ul>
+            </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Pricing */}
       <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-4 text-gray-900 dark:text-gray-100">Simple, Transparent Pricing</h2>
-          <p className="text-center text-gray-600 dark:text-gray-400 mb-12">Choose the plan that&rsquo;s right for you</p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+              Simple, Transparent Pricing
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+              Choose the perfect plan for your needs - Business, Health, or Both
+            </p>
+          </motion.div>
+
           <div className="grid md:grid-cols-3 gap-8">
             {pricingPlans.map((plan, idx) => (
               <motion.div
@@ -393,16 +608,26 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
                 className={`relative p-8 rounded-2xl ${plan.popular
-                  ? 'gradient-primary text-white scale-105'
-                  : 'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700'
+                  ? 'gradient-primary text-white scale-105 shadow-2xl'
+                  : plan.highlight
+                    ? 'bg-gradient-to-br from-green-500 to-emerald-600 text-white border-2 border-green-400 shadow-2xl'
+                    : 'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700'
                   } card-hover`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1 bg-yellow-400 dark:bg-yellow-500 text-gray-900 dark:text-gray-900 rounded-full text-sm font-bold">
-                    Most Popular
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1 bg-yellow-400 dark:bg-yellow-500 text-gray-900 rounded-full text-sm font-bold">
+                    {plan.type}
+                  </div>
+                )}
+                {plan.highlight && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1 bg-white text-green-600 rounded-full text-sm font-bold shadow-lg">
+                    🏥 {plan.type}
                   </div>
                 )}
                 <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
+                {!plan.popular && !plan.highlight && (
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{plan.type}</p>
+                )}
                 <div className="mb-6">
                   <span className="text-4xl font-bold">{plan.price}</span>
                   <span className="text-lg">{plan.period}</span>
@@ -410,14 +635,17 @@ export default function Home() {
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((feature, fIdx) => (
                     <li key={fIdx} className="flex items-start">
-                      <CheckCircle2 className={`w-5 h-5 mr-2 flex-shrink-0 ${plan.popular ? 'text-white' : 'text-green-500 dark:text-green-400'}`} />
-                      <span className={plan.popular ? '' : 'text-gray-700 dark:text-gray-300'}>{feature}</span>
+                      <CheckCircle2 className={`w-5 h-5 mr-2 flex-shrink-0 ${plan.popular || plan.highlight ? 'text-white' : 'text-green-500 dark:text-green-400'
+                        }`} />
+                      <span className={plan.popular || plan.highlight ? '' : 'text-gray-700 dark:text-gray-300'}>
+                        {feature}
+                      </span>
                     </li>
                   ))}
                 </ul>
                 <Link
                   href="/signup"
-                  className={`block text-center py-3 rounded-lg font-semibold transition ${plan.popular
+                  className={`block text-center py-3 rounded-lg font-semibold transition ${plan.popular || plan.highlight
                     ? 'bg-white text-blue-600 hover:bg-gray-100'
                     : 'btn-primary'
                     }`}
@@ -427,6 +655,25 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+
+          {/* Enterprise CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-12 text-center"
+          >
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
+              Need a custom solution for your hospital or large organization?
+            </p>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-semibold hover:shadow-lg transition-all transform hover:scale-105"
+            >
+              Contact Sales Team
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
         </div>
       </section>
 

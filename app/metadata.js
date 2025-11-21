@@ -1,26 +1,40 @@
 // SEO Metadata Configuration
 export const siteConfig = {
     name: 'Zapi Card',
-    title: 'Zapi Card - Smart NFC & QR Digital Visiting Cards | Modern Business Cards',
-    description: 'Create stunning digital business cards with NFC and QR code technology. Share your contact information instantly, book appointments, and network smarter with Zapi Card.',
+    title: 'Zapi Card - Smart Health Card & Digital Visiting Cards | NFC & QR Technology',
+    description: 'Revolutionary smart cards for business and healthcare. Create digital visiting cards with appointment booking, and smart health cards with AI prescription reading for patients and pregnant women. NFC & QR instant access.',
     url: process.env.NEXT_PUBLIC_SITE_URL || 'https://zapicard.com',
     ogImage: '/og-image.jpg',
     keywords: [
+        // Health Card Keywords (Primary Focus)
+        'smart health card',
+        'digital health card',
+        'medical card app',
+        'health card with NFC',
+        'AI prescription reading',
+        'pregnancy health card',
+        'patient medical card',
+        'emergency medical card',
+        'digital medical records',
+        'health information card',
+        'medical history card',
+        'prescription scanner app',
+        // Visiting Card Keywords
         'digital business card',
-        'NFC card',
+        'NFC visiting card',
         'QR code business card',
         'smart visiting card',
         'virtual business card',
         'contactless business card',
         'digital networking',
         'electronic business card',
-        'mobile business card',
-        'appointment booking card'
+        'appointment booking card',
+        'professional digital card'
     ],
     author: 'Zapi Card',
     creator: '@zapicard',
     publisher: 'Zapi Card',
-    category: 'Business & Professional Services',
+    category: 'Healthcare & Business Technology',
 }
 
 // Generate metadata for pages
