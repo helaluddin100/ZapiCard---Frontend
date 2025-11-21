@@ -16,10 +16,11 @@ import {
   Quote,
   ArrowRight
 } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function Home() {
   const [openFaq, setOpenFaq] = useState(null)
+  const [mounted, setMounted] = useState(false)
 
   const faqs = [
     {
@@ -78,6 +79,10 @@ export default function Home() {
       text: "The customization options are amazing. I can match my card to my brand perfectly!"
     }
   ]
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const features = [
     {
@@ -169,38 +174,40 @@ export default function Home() {
         </div>
 
         {/* Floating Elements */}
-        <div className="absolute inset-0 z-5 overflow-hidden pointer-events-none">
-          {[...Array(6)].map((_, i) => {
-            const randomLeft = 10 + Math.random() * 80
-            const randomTop = 10 + Math.random() * 80
-            return (
-              <motion.div
-                key={i}
-                className="absolute w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/10 backdrop-blur-sm"
-                initial={{
-                  scale: 0,
-                  opacity: 0,
-                }}
-                animate={{
-                  y: [0, -30, 0],
-                  x: [0, 20, 0],
-                  scale: [0, 1, 0.8],
-                  opacity: [0, 0.5, 0],
-                }}
-                transition={{
-                  duration: 8 + i * 2,
-                  repeat: Infinity,
-                  delay: i * 0.5,
-                  ease: "easeInOut",
-                }}
-                style={{
-                  left: `${randomLeft}%`,
-                  top: `${randomTop}%`,
-                }}
-              />
-            )
-          })}
-        </div>
+        {mounted && (
+          <div className="absolute inset-0 z-5 overflow-hidden pointer-events-none">
+            {[...Array(6)].map((_, i) => {
+              const randomLeft = 10 + (i * 13.33) % 80
+              const randomTop = 10 + (i * 15) % 80
+              return (
+                <motion.div
+                  key={i}
+                  className="absolute w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/10 backdrop-blur-sm"
+                  initial={{
+                    scale: 0,
+                    opacity: 0,
+                  }}
+                  animate={{
+                    y: [0, -30, 0],
+                    x: [0, 20, 0],
+                    scale: [0, 1, 0.8],
+                    opacity: [0, 0.5, 0],
+                  }}
+                  transition={{
+                    duration: 8 + i * 2,
+                    repeat: Infinity,
+                    delay: i * 0.5,
+                    ease: "easeInOut",
+                  }}
+                  style={{
+                    left: `${randomLeft}%`,
+                    top: `${randomTop}%`,
+                  }}
+                />
+              )
+            })}
+          </div>
+        )}
 
         {/* Content */}
         <div className="relative z-20 max-w-7xl mx-auto">
@@ -471,25 +478,34 @@ export default function Home() {
                   </div>
 
                   {/* Rating Stars */}
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.15 + 0.2 }}
-                    className="flex items-center gap-1 mb-6"
-                  >
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, scale: 0 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: idx * 0.15 + 0.3 + i * 0.1, type: 'spring' }}
-                      >
-                        <Star className="w-5 h-5 fill-yellow-400 text-yellow-400 drop-shadow-sm" />
-                      </motion.div>
-                    ))}
-                  </motion.div>
+                  {mounted && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: idx * 0.15 + 0.2 }}
+                      className="flex items-center gap-1 mb-6"
+                    >
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, scale: 0 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: idx * 0.15 + 0.3 + i * 0.1, type: 'spring' }}
+                        >
+                          <Star className="w-5 h-5 fill-yellow-400 text-yellow-400 drop-shadow-sm" />
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  )}
+                  {!mounted && (
+                    <div className="flex items-center gap-1 mb-6">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400 drop-shadow-sm" />
+                      ))}
+                    </div>
+                  )}
 
                   {/* Testimonial Text */}
                   <motion.p

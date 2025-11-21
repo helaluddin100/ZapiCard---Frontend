@@ -12,6 +12,7 @@ export default function PublicHealthCardPage() {
   const [loading, setLoading] = useState(true)
   const [expandedEntries, setExpandedEntries] = useState({})
   const [lightboxImage, setLightboxImage] = useState(null)
+  const [mounted, setMounted] = useState(false)
 
   const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
@@ -42,6 +43,7 @@ export default function PublicHealthCardPage() {
   }
 
   useEffect(() => {
+    setMounted(true)
     loadPublicCard()
   }, [username, slug])
 
@@ -323,33 +325,33 @@ END:VCARD`
             </div>
 
             {/* Pregnancy Progress */}
-            {pregnancyWeeks !== null && (
+            {pregnancyWeeks !== null && mounted && (
               <div className="bg-gradient-to-r from-pink-50 to-purple-50 rounded-xl p-4 sm:p-6 md:p-8 border border-pink-200">
                 <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">Pregnancy Progress</h3>
                 <div className="flex items-center justify-center">
                   <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56">
-                    <svg className="transform -rotate-90 w-full h-full">
+                    <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
                       <defs>
-                        <linearGradient id="pregnancyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <linearGradient id={`pregnancyGradient-${username}-${slug}`} x1="0%" y1="0%" x2="100%" y2="100%">
                           <stop offset="0%" stopColor="#3b82f6" />
                           <stop offset="50%" stopColor="#a855f7" />
                           <stop offset="100%" stopColor="#ec4899" />
                         </linearGradient>
                       </defs>
                       <circle
-                        cx="50%"
-                        cy="50%"
-                        r="45%"
+                        cx="50"
+                        cy="50"
+                        r="45"
                         stroke="#e5e7eb"
-                        strokeWidth="8%"
+                        strokeWidth="8"
                         fill="none"
                       />
                       <circle
-                        cx="50%"
-                        cy="50%"
-                        r="45%"
-                        stroke="url(#pregnancyGradient)"
-                        strokeWidth="8%"
+                        cx="50"
+                        cy="50"
+                        r="45"
+                        stroke={`url(#pregnancyGradient-${username}-${slug})`}
+                        strokeWidth="8"
                         fill="none"
                         strokeDasharray={`${(pregnancyWeeks / 40) * 283} 283`}
                       />
