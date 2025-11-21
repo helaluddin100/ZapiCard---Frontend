@@ -6,24 +6,27 @@ import { ThemeProvider } from '@/lib/theme'
 import { ToastProvider } from '@/lib/toast'
 import Toast from '@/components/Toast'
 import ToastHelper from '@/components/ToastHelper'
+import { generateMetadata as generateMeta, generateOrganizationSchema, generateWebsiteSchema } from './metadata'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const poppins = Poppins({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700', '800'],
-  variable: '--font-poppins'
+  variable: '--font-poppins',
+  display: 'swap', // Optimize font loading
 })
 
-export const metadata = {
-  title: 'Zapi Card - Smart NFC & QR Visiting Cards',
-  description: 'Create, manage, and share your smart visiting cards with QR and NFC technology. Modern digital business cards for professionals.',
-  keywords: 'digital business card, NFC card, QR code, visiting card, smart card',
-}
+// Enhanced SEO metadata
+export const metadata = generateMeta({})
 
 export default function RootLayout({ children }) {
+  const organizationSchema = generateOrganizationSchema()
+  const websiteSchema = generateWebsiteSchema()
+
   return (
     <html lang="en" className={`${inter.variable} ${poppins.variable}`} suppressHydrationWarning>
       <head>
+        {/* Theme Script - Must be in head for no-flash */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -49,14 +52,37 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
+
+        {/* Structured Data - Organization */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+
+        {/* Structured Data - Website */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+
+        {/* Preconnect to external domains for better performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className="font-sans antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+        {/* Skip to content link for accessibility */}
+        <a href="#main-content" className="skip-to-content">
+          Skip to main content
+        </a>
+
         <ThemeProvider>
           <AuthProviderWrapper>
             <ToastProvider>
               <ToastHelper />
               <ConditionalLayout>
-                {children}
+                <main id="main-content">
+                  {children}
+                </main>
               </ConditionalLayout>
               <Toast />
             </ToastProvider>

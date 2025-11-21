@@ -1,6 +1,8 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
+import Script from 'next/script'
 import { motion } from 'framer-motion'
 import {
   QrCode,
@@ -17,6 +19,7 @@ import {
   ArrowRight
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { generateFAQSchema } from './metadata'
 
 export default function Home() {
   const [openFaq, setOpenFaq] = useState(null)
@@ -154,8 +157,18 @@ export default function Home() {
     }
   ]
 
+  // Generate FAQ structured data
+  const faqSchema = generateFAQSchema(faqs)
+
   return (
     <>
+      {/* Structured Data for FAQs */}
+      <Script
+        id="faq-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600">
         {/* Animated Background Gradient */}
@@ -522,13 +535,16 @@ export default function Home() {
                   <div className="flex items-center gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                     <motion.div
                       whileHover={{ scale: 1.1, rotate: 5 }}
-                      className="relative"
+                      className="relative w-14 h-14 flex-shrink-0"
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full blur opacity-50"></div>
-                      <img
+                      <Image
                         src={testimonial.image}
                         alt={testimonial.name}
+                        width={56}
+                        height={56}
                         className="relative w-14 h-14 rounded-full object-cover border-2 border-white dark:border-gray-700 shadow-lg"
+                        quality={85}
                       />
                     </motion.div>
                     <div className="flex-1">
