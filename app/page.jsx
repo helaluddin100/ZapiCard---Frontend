@@ -16,7 +16,18 @@ import {
   Instagram,
   Linkedin,
   Quote,
-  ArrowRight
+  ArrowRight,
+  Zap,
+  Shield,
+  Clock,
+  Users,
+  TrendingUp,
+  Heart,
+  Smartphone,
+  Globe,
+  Award,
+  Target,
+  PlayCircle
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { generateFAQSchema } from './metadata'
@@ -28,59 +39,145 @@ export default function Home() {
   const faqs = [
     {
       id: 1,
-      question: "What is a smart visiting card?",
-      answer: "A smart visiting card combines traditional business card information with modern technology like QR codes and NFC chips, allowing instant digital sharing and contact saving."
+      question: "What is a Smart Health Card?",
+      answer: "A Smart Health Card is a digital card that stores your complete medical information including prescriptions, medical history, allergies, and emergency contacts. It can be accessed instantly via NFC tap or QR code scan, making it perfect for emergencies and doctor visits."
     },
     {
       id: 2,
-      question: "How does NFC technology work?",
-      answer: "NFC (Near Field Communication) allows two devices to communicate when they're close together. Simply tap your NFC card on a smartphone to instantly share your contact information."
+      question: "How does AI prescription reading work?",
+      answer: "Simply take a photo of your prescription. Our AI technology automatically reads and extracts information like medication names, dosages, and instructions, then populates your health card. You can also manually edit or add information as needed."
     },
     {
       id: 3,
-      question: "Can I customize my QR code?",
-      answer: "Yes! You can customize your QR code's color, shape, and even add your logo in the center to match your brand identity."
+      question: "Is my health data secure and private?",
+      answer: "Absolutely! We use bank-level encryption (256-bit SSL) to protect your data. Your health information is only accessible by people you authorize. You have complete control over who can view your card."
     },
     {
       id: 4,
-      question: "What happens if I lose my NFC card?",
-      answer: "Don't worry! You can deactivate the lost card from your dashboard and order a replacement. Your digital card will continue to work normally."
+      question: "Can pregnant women use the health card?",
+      answer: "Yes! We have specialized features for expectant mothers including prenatal visit tracking, medication logs, ultrasound records, and emergency contact information. It's perfect for keeping all pregnancy-related health information in one place."
     },
     {
       id: 5,
-      question: "Is there a mobile app?",
-      answer: "Currently, our platform is web-based and fully responsive. A mobile app is in development and will be available soon."
+      question: "How does the appointment booking system work?",
+      answer: "Card owners can set their available time slots in the dashboard. When someone views your visiting card, they can instantly book an appointment from your available schedule. You'll receive notifications and can manage all bookings from your dashboard."
+    },
+    {
+      id: 6,
+      question: "Do I need an app to view someone's card?",
+      answer: "No! That's the beauty of Zapi Card. Recipients don't need any app. They simply tap their phone on your NFC card or scan the QR code, and your card opens instantly in their web browser. It works on any smartphone."
+    },
+    {
+      id: 7,
+      question: "Can I have both a visiting card and health card?",
+      answer: "Yes! You can create and manage multiple cards of both types. The Free plan includes 1 of each, while Pro and Healthcare+ plans offer unlimited cards. Perfect for managing both your professional and personal health needs."
+    },
+    {
+      id: 8,
+      question: "What happens if I lose my NFC card?",
+      answer: "Your digital card is cloud-based, so it's never really lost! You can deactivate the physical NFC card from your dashboard and order a replacement. Your digital card link and QR code continue working normally."
     }
   ]
 
   const testimonials = [
     {
       id: 1,
-      name: "Sarah Johnson",
-      role: "Marketing Director",
-      company: "TechCorp",
+      name: "Dr. Sarah Ahmed",
+      role: "Cardiologist",
+      company: "City Hospital",
       image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop",
       rating: 5,
-      text: "Zapi Card transformed how I network. The NFC feature is a game-changer at events!"
+      text: "Smart Health Cards have revolutionized how we access patient information in emergencies. Life-saving technology!",
+      type: "health"
     },
     {
       id: 2,
-      name: "Michael Chen",
-      role: "Sales Manager",
-      company: "Global Sales Inc",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
+      name: "Ayesha Rahman",
+      role: "Expecting Mother",
+      company: "Healthcare User",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop",
       rating: 5,
-      text: "Professional, modern, and incredibly easy to use. My clients love the digital experience."
+      text: "The pregnancy tracking feature is amazing! All my prenatal records in one place with instant access.",
+      type: "health"
     },
     {
       id: 3,
+      name: "Michael Chen",
+      role: "Sales Manager",
+      company: "TechCorp Ltd",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
+      rating: 5,
+      text: "The appointment booking feature in my visiting card increased my bookings by 300%!",
+      type: "business"
+    },
+    {
+      id: 4,
+      name: "Rafiq Ahmed",
+      role: "Chronic Patient",
+      company: "Healthcare User",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop",
+      rating: 5,
+      text: "Managing my diabetes has never been easier. AI prescription reading saves so much time!",
+      type: "health"
+    },
+    {
+      id: 5,
       name: "Emily Rodriguez",
       role: "Freelance Designer",
       company: "Creative Studio",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop",
+      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop",
       rating: 5,
-      text: "The customization options are amazing. I can match my card to my brand perfectly!"
+      text: "Professional, modern NFC card. My clients are impressed every time I tap to share!",
+      type: "business"
+    },
+    {
+      id: 6,
+      name: "Dr. Rahman Khan",
+      role: "General Physician",
+      company: "Metro Clinic",
+      image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=150&h=150&fit=crop",
+      rating: 5,
+      text: "Recommending Smart Health Cards to all my patients. Quick access to medical history is crucial.",
+      type: "health"
     }
+  ]
+
+  const benefits = [
+    {
+      icon: <Zap className="w-6 h-6" />,
+      title: "Instant Access",
+      description: "Share or access information in seconds with NFC tap or QR scan"
+    },
+    {
+      icon: <Shield className="w-6 h-6" />,
+      title: "Secure & Private",
+      description: "Bank-level encryption protects your sensitive data"
+    },
+    {
+      icon: <Clock className="w-6 h-6" />,
+      title: "24/7 Available",
+      description: "Your digital card works anytime, anywhere"
+    },
+    {
+      icon: <Users className="w-6 h-6" />,
+      title: "Easy to Share",
+      description: "No app required - works with any smartphone"
+    },
+    {
+      icon: <TrendingUp className="w-6 h-6" />,
+      title: "Analytics Included",
+      description: "Track views, scans, and engagement metrics"
+    },
+    {
+      icon: <Heart className="w-6 h-6" />,
+      title: "Eco-Friendly",
+      description: "Save paper and reduce environmental impact"
+    }
+  ]
+
+  const trustedBy = [
+    "City Hospital", "Metro Clinic", "TechCorp Solutions", "Creative Agency",
+    "Global Sales Inc", "Healthcare Plus", "Digital Marketing Pro", "Wellness Center"
   ]
 
   useEffect(() => {
@@ -677,6 +774,145 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Why Choose Us / Benefits */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+              Why Choose Zapi Card?
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+              Trusted by thousands of professionals and healthcare users worldwide
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {benefits.map((benefit, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="flex items-start gap-4 p-6 rounded-xl bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 hover:shadow-lg transition-shadow"
+              >
+                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 text-white flex items-center justify-center">
+                  {benefit.icon}
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-gray-100">
+                    {benefit.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {benefit.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Video Demo Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-900">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+              See Zapi Card in Action
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400">
+              Watch how easy it is to create and share your smart cards
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-blue-600 to-purple-600"
+          >
+            {/* Video Placeholder */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <button className="group relative">
+                <div className="absolute inset-0 bg-white rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity"></div>
+                <div className="relative w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
+                  <PlayCircle className="w-12 h-12 text-blue-600" />
+                </div>
+              </button>
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+            <div className="absolute bottom-8 left-8 text-white">
+              <p className="text-2xl font-bold mb-2">3-Minute Quick Tour</p>
+              <p className="text-white/80">Learn everything about Smart Cards</p>
+            </div>
+          </motion.div>
+
+          {/* Key Stats Below Video */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
+            {[
+              { number: "2 Min", label: "Setup Time" },
+              { number: "100%", label: "Digital" },
+              { number: "∞", label: "Shares" },
+              { number: "24/7", label: "Access" }
+            ].map((stat, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="text-center p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg"
+              >
+                <div className="text-3xl md:text-4xl font-bold gradient-primary bg-clip-text text-transparent mb-2">
+                  {stat.number}
+                </div>
+                <div className="text-gray-600 dark:text-gray-400">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trusted By Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 border-y border-gray-200 dark:border-gray-800">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
+              Trusted by leading organizations
+            </p>
+            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+              {trustedBy.map((company, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.05 }}
+                  className="text-gray-500 dark:text-gray-500 font-semibold text-sm md:text-base hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                >
+                  {company}
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Testimonials */}
       <section id="testimonials" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
         {/* Background decorative elements */}
@@ -717,7 +953,7 @@ export default function Home() {
             </Link>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {testimonials.map((testimonial, idx) => (
               <motion.div
                 key={idx}
@@ -729,9 +965,15 @@ export default function Home() {
                 className="relative group"
               >
                 {/* Decorative gradient background on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity blur-xl"></div>
+                <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity blur-xl ${testimonial.type === 'health'
+                  ? 'bg-gradient-to-br from-green-500 via-emerald-500 to-teal-500'
+                  : 'bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500'
+                  }`}></div>
 
-                <div className="relative glass-effect p-6 md:p-8 rounded-2xl card-hover bg-white dark:bg-gray-800 border border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-2xl transition-all">
+                <div className={`relative glass-effect p-6 md:p-8 rounded-2xl card-hover shadow-lg hover:shadow-2xl transition-all ${testimonial.type === 'health'
+                  ? 'bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200/50 dark:border-green-700/50'
+                  : 'bg-white dark:bg-gray-800 border border-gray-200/50 dark:border-gray-700/50'
+                  }`}>
                   {/* Quote Icon */}
                   <div className="absolute top-4 right-4 opacity-10 dark:opacity-20">
                     <Quote className="w-16 h-16 text-blue-500 dark:text-blue-400" />
@@ -831,6 +1073,159 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Comparison: Traditional vs Smart Cards */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+              Traditional vs Smart Cards
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400">
+              See why thousands are making the switch
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Traditional Cards */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="p-8 bg-gray-100 dark:bg-gray-800 rounded-2xl border-2 border-gray-300 dark:border-gray-700"
+            >
+              <div className="text-center mb-6">
+                <div className="text-4xl mb-3">📄</div>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Traditional Cards</h3>
+              </div>
+              <ul className="space-y-4">
+                {[
+                  "❌ Limited information space",
+                  "❌ Easily lost or damaged",
+                  "❌ Need reprinting for updates",
+                  "❌ No analytics or tracking",
+                  "❌ Environmental waste",
+                  "❌ One-way information sharing",
+                  "❌ No appointment booking",
+                  "❌ Manual data entry required"
+                ].map((item, idx) => (
+                  <li key={idx} className="text-gray-700 dark:text-gray-300 flex items-start gap-2">
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Smart Cards */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="p-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl border-2 border-green-400 shadow-2xl transform scale-105"
+            >
+              <div className="text-center mb-6">
+                <div className="text-4xl mb-3">✨</div>
+                <h3 className="text-2xl font-bold text-white">Zapi Smart Cards</h3>
+              </div>
+              <ul className="space-y-4">
+                {[
+                  "✅ Unlimited information storage",
+                  "✅ Cloud-based, never lost",
+                  "✅ Instant updates anytime",
+                  "✅ Complete analytics dashboard",
+                  "✅ 100% eco-friendly",
+                  "✅ Two-way communication",
+                  "✅ Built-in appointment system",
+                  "✅ AI-powered data reading"
+                ].map((item, idx) => (
+                  <li key={idx} className="text-white font-medium flex items-start gap-2">
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-8 pt-6 border-t border-white/20">
+                <Link
+                  href="/signup"
+                  className="block text-center py-3 bg-white text-green-600 rounded-lg font-bold hover:bg-gray-100 transition-all transform hover:scale-105"
+                >
+                  Make the Switch Today →
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 relative overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0">
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-br from-blue-500/50 via-purple-500/50 to-pink-500/50"
+            animate={{
+              backgroundPosition: ['0% 0%', '100% 100%'],
+            }}
+            transition={{
+              duration: 10,
+              repeat: Infinity,
+              repeatType: 'reverse',
+            }}
+          />
+        </div>
+
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
+              Ready to Go Smart?
+            </h2>
+            <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto">
+              Join 15,000+ users who have already made the switch to smart digital cards
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+              <Link
+                href="/signup"
+                className="group px-8 py-4 bg-white text-blue-600 rounded-xl font-bold text-lg shadow-2xl hover:shadow-white/50 transition-all transform hover:scale-105"
+              >
+                <span className="flex items-center gap-2">
+                  Create Free Account
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </Link>
+              <Link
+                href="/nfc-order"
+                className="px-8 py-4 bg-white/10 backdrop-blur-md text-white border-2 border-white/30 rounded-xl font-bold text-lg hover:bg-white/20 transition-all transform hover:scale-105"
+              >
+                Order NFC Card
+              </Link>
+            </div>
+
+            <div className="flex flex-wrap justify-center items-center gap-6 text-white/80 text-sm">
+              <span className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5" />
+                No credit card required
+              </span>
+              <span className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5" />
+                Free forever plan
+              </span>
+              <span className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5" />
+                Cancel anytime
+              </span>
+            </div>
+          </motion.div>
         </div>
       </section>
 
