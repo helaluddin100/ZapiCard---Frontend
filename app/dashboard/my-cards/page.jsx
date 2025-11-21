@@ -33,6 +33,46 @@ export default function MyCardsPage() {
     const [error, setError] = useState(null)
     const [qrCodes, setQrCodes] = useState({})
 
+    // Get base URL for images (images are served from public directory, not /api)
+    const getImageBaseUrl = () => {
+        // Get API base URL from environment or default
+        let apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
+        
+        // Remove /api from the end if present
+        if (apiBase.endsWith('/api')) {
+            return apiBase.slice(0, -4)
+        } else if (apiBase.endsWith('/api/')) {
+            return apiBase.slice(0, -5)
+        }
+        
+        // If no /api, assume it's already the base URL
+        return apiBase
+    }
+
+    // Helper function to convert relative image paths to full URLs
+    const getImageUrl = (imagePath) => {
+        if (!imagePath) return null
+        
+        // If it's already a full URL, return as is
+        if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+            return imagePath
+        }
+        
+        // If it's a base64 data URL, return as is
+        if (imagePath.startsWith('data:image/')) {
+            return imagePath
+        }
+        
+        // If it's a relative path, prepend image base URL (without /api)
+        // Remove leading slash if present
+        let cleanPath = imagePath.startsWith('/') ? imagePath.slice(1) : imagePath
+        
+        const imageBase = getImageBaseUrl()
+        // Ensure no double slashes
+        const fullUrl = `${imageBase.replace(/\/$/, '')}/${cleanPath}`
+        return fullUrl
+    }
+
     useEffect(() => {
         fetchCards()
     }, [])
@@ -105,6 +145,15 @@ export default function MyCardsPage() {
             const response = await cardAPI.getCards()
             if (response.status === 'success' && response.data) {
                 setCards(response.data)
+                // Debug: Check first card's image
+                if (response.data.length > 0 && response.data[0].profile_photo) {
+                    const firstCard = response.data[0]
+                    console.log('🔍 First card image debug:', {
+                        original: firstCard.profile_photo,
+                        converted: getImageUrl(firstCard.profile_photo),
+                        imageBase: getImageBaseUrl()
+                    })
+                }
             } else {
                 setCards([])
             }
@@ -268,9 +317,22 @@ export default function MyCardsPage() {
                                     {card.profile_photo ? (
                                         <>
                                             <img
-                                                src={card.profile_photo}
+                                                src={getImageUrl(card.profile_photo) || ''}
                                                 alt={card.name}
                                                 className="w-full h-full object-cover"
+                                                onError={(e) => {
+                                                    console.error('❌ Background image failed to load:', {
+                                                        original: card.profile_photo,
+                                                        converted: getImageUrl(card.profile_photo),
+                                                        cardId: card.id,
+                                                        cardName: card.name
+                                                    })
+                                                    // Hide image and show fallback background
+                                                    e.target.style.display = 'none'
+                                                }}
+                                                onLoad={() => {
+                                                    console.log('✅ Background image loaded:', getImageUrl(card.profile_photo))
+                                                }}
                                             />
                                             <div className="absolute inset-0 bg-gradient-to-br from-blue-600/80 via-purple-600/80 to-pink-600/80"></div>
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
@@ -319,9 +381,17 @@ export default function MyCardsPage() {
                                             {card.profile_photo ? (
                                                 <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 md:border-4 border-white/90 shadow-xl overflow-hidden">
                                                     <img
-                                                        src={card.profile_photo}
+                                                        src={getImageUrl(card.profile_photo)}
                                                         alt={card.name}
                                                         className="w-full h-full object-cover"
+                                                        onError={(e) => {
+                                                            console.error('❌ Profile photo failed to load:', {
+                                                                original: card.profile_photo,
+                                                                converted: getImageUrl(card.profile_photo),
+                                                                cardId: card.id
+                                                            })
+                                                            e.target.style.display = 'none'
+                                                        }}
                                                     />
                                                 </div>
                                             ) : (
@@ -412,9 +482,17 @@ export default function MyCardsPage() {
                                 <div className="flex items-center gap-6">
                                     {card.profile_photo ? (
                                         <img
-                                            src={card.profile_photo}
+                                            src={getImageUrl(card.profile_photo)}
                                             alt={card.name}
                                             className="w-16 h-16 rounded-full object-cover"
+                                            onError={(e) => {
+                                                console.error('❌ List view image failed to load:', {
+                                                    original: card.profile_photo,
+                                                    converted: getImageUrl(card.profile_photo),
+                                                    cardId: card.id
+                                                })
+                                                e.target.style.display = 'none'
+                                            }}
                                         />
                                     ) : (
                                         <div 

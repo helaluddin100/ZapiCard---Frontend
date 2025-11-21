@@ -105,37 +105,39 @@ export default function PublicCardPage() {
             setLoading(true)
             setError(null)
 
-            // Collect visitor data (this will wait for geolocation up to 5 seconds)
+            // Collect visitor data (geolocation is now skipped to avoid permission prompts)
             console.log('🔄 Starting visitor data collection...')
             const visitorData = await getVisitorDataForAPI()
 
             // Log collected data for debugging
             console.log('✅ Collected visitor data:', visitorData)
 
-            // Send visitor data as query params
-            // Filter out null/undefined values and convert to strings
-            const queryParams = new URLSearchParams()
+            // Send visitor data via POST body instead of query params to avoid URL length issues
+            // Filter out null/undefined values and large objects
+            const cleanedVisitorData = {}
             Object.keys(visitorData).forEach(key => {
                 const value = visitorData[key]
-                if (value !== null && value !== undefined && value !== '') {
-                    if (typeof value === 'object') {
-                        try {
-                            queryParams.append(key, JSON.stringify(value))
-                        } catch (e) {
-                            console.warn(`Failed to stringify ${key}:`, e)
-                        }
-                    } else if (typeof value === 'boolean') {
-                        queryParams.append(key, value ? '1' : '0')
-                    } else {
-                        queryParams.append(key, String(value))
+                // Skip null/undefined/empty values
+                if (value === null || value === undefined || value === '') {
+                    return
+                }
+                // Skip large nested objects (like fingerprint_components) - they're too large
+                if (key === 'additional_data' && typeof value === 'object') {
+                    // Only keep essential parts, skip large fingerprint components
+                    const cleaned = {}
+                    if (value.full_ua_parsed) {
+                        cleaned.full_ua_parsed = value.full_ua_parsed
                     }
+                    // Skip fingerprint_components as it's too large
+                    cleanedVisitorData[key] = cleaned
+                } else {
+                    cleanedVisitorData[key] = value
                 }
             })
 
-            const queryString = queryParams.toString()
-            console.log('📤 Sending query params (length:', queryString.length, '):', queryString.substring(0, 300) + (queryString.length > 300 ? '...' : ''))
+            console.log('📤 Sending visitor data via POST body (keys:', Object.keys(cleanedVisitorData).length, ')')
 
-            const response = await cardAPI.getCardBySlug(slug, queryString)
+            const response = await cardAPI.getCardBySlug(slug, cleanedVisitorData)
             
             console.log('📥 Response received:', response)
 
