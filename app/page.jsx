@@ -7,6 +7,7 @@ import { generateFAQSchema } from './metadata'
 // Import all homepage components
 import {
   HeroSection,
+  StatsSection,
   HealthCardShowcase,
   HowItWorksSection,
   FeaturesSection,
@@ -85,6 +86,7 @@ export default function Home() {
 
       {/* All Sections as Components - Clean & Organized! */}
       <HeroSection mounted={mounted} />
+      <StatsSection />
       <HealthCardShowcase />
       <HowItWorksSection />
       <FeaturesSection />

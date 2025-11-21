@@ -1,5 +1,6 @@
 // Export all homepage components
 export { default as HeroSection } from './HeroSection'
+export { default as StatsSection } from './StatsSection'
 export { default as HealthCardShowcase } from './HealthCardShowcase'
 export { default as HowItWorksSection } from './HowItWorksSection'
 export { default as FeaturesSection } from './FeaturesSection'
