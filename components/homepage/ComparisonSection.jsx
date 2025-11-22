@@ -4,8 +4,8 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 
 export default function ComparisonSection() {
-    return (
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
+  return (
+    <section className="py-28 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
             <div className="max-w-6xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -56,7 +56,7 @@ export default function ComparisonSection() {
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="p-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl border-2 border-green-400 shadow-2xl transform scale-105"
+                        className="p-8 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl border-2 border-purple-400 shadow-2xl transform scale-105"
                     >
                         <div className="text-center mb-6">
                             <div className="text-4xl mb-3">✨</div>
@@ -79,12 +79,12 @@ export default function ComparisonSection() {
                             ))}
                         </ul>
                         <div className="mt-8 pt-6 border-t border-white/20">
-                            <Link
-                                href="/signup"
-                                className="block text-center py-3 bg-white text-green-600 rounded-lg font-bold hover:bg-gray-100 transition-all transform hover:scale-105"
-                            >
-                                Make the Switch Today →
-                            </Link>
+              <Link
+                href="/signup"
+                className="block text-center py-3 bg-white text-blue-600 rounded-lg font-bold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-md hover:shadow-lg"
+              >
+                Make the Switch Today →
+              </Link>
                         </div>
                     </motion.div>
                 </div>

@@ -9,10 +9,10 @@ export default function HowItWorksSection() {
         { step: "3", title: "Share & Access", desc: "Share via QR code, NFC tap, or direct link - instant access anywhere!", icon: "🚀" }
     ]
 
-    return (
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
-            <div className="max-w-7xl mx-auto">
-                <h2 className="text-4xl font-bold text-center mb-4 text-gray-900 dark:text-gray-100">How It Works</h2>
+  return (
+    <section className="py-28 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-gray-900 dark:text-gray-100">How It Works</h2>
                 <p className="text-center text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto">
                     Create your smart card in 3 simple steps - whether it&apos;s for business or health
                 </p>

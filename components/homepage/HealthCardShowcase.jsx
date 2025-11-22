@@ -38,8 +38,8 @@ export default function HealthCardShowcase() {
         }
     ]
 
-    return (
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
+  return (
+    <section className="py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
             {/* Background Pattern */}
             <div className="absolute inset-0 opacity-5">
                 <div className="absolute top-20 left-10 text-9xl">🏥</div>
@@ -88,10 +88,10 @@ export default function HealthCardShowcase() {
                     viewport={{ once: true }}
                     className="text-center"
                 >
-                    <Link
-                        href="/health-dashboard/create"
-                        className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold text-lg rounded-xl shadow-2xl hover:shadow-green-500/50 transition-all transform hover:scale-105"
-                    >
+          <Link
+            href="/health-dashboard/create"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold text-lg rounded-xl shadow-2xl hover:shadow-lg transition-all transform hover:scale-105"
+          >
                         🏥 Create Your Health Card Now
                         <ArrowRight className="w-5 h-5" />
                     </Link>

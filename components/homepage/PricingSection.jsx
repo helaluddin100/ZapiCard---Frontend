@@ -60,8 +60,8 @@ export default function PricingSection() {
         }
     ]
 
-    return (
-        <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
+  return (
+    <section id="pricing" className="py-28 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
             <div className="max-w-7xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -123,10 +123,10 @@ export default function PricingSection() {
                             </ul>
                             <Link
                                 href="/signup"
-                                className={`block text-center py-3 rounded-lg font-semibold transition ${plan.popular || plan.highlight
-                                    ? 'bg-white text-blue-600 hover:bg-gray-100'
-                                    : 'btn-primary'
-                                    }`}
+                className={`block text-center py-3 rounded-lg font-semibold transition ${plan.popular || plan.highlight
+                    ? 'bg-white text-blue-600 hover:bg-gray-100 shadow-md hover:shadow-lg'
+                    : 'bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white hover:shadow-lg transform hover:scale-105'
+                    }`}
                             >
                                 {plan.cta}
                             </Link>

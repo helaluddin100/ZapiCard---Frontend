@@ -8,8 +8,8 @@ export default function TrustedBySection() {
         "Global Sales Inc", "Healthcare Plus", "Digital Marketing Pro", "Wellness Center"
     ]
 
-    return (
-        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 border-y border-gray-200 dark:border-gray-800">
+  return (
+    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 border-y border-gray-200 dark:border-gray-800">
             <div className="max-w-7xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

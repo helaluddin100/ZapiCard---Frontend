@@ -5,8 +5,8 @@ import { motion } from 'framer-motion'
 import { CheckCircle2, ArrowRight } from 'lucide-react'
 
 export default function FinalCTASection() {
-    return (
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 relative overflow-hidden">
+  return (
+    <section className="py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 relative overflow-hidden">
             {/* Animated Background */}
             <div className="absolute inset-0">
                 <motion.div
