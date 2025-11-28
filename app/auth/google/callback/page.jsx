@@ -29,16 +29,26 @@ function GoogleCallbackHandler() {
                     const response = await authAPI.getCurrentUser()
                     console.log('User response:', response)
                     
+                    let userData = null
+                    
                     if (response && response.data) {
-                        updateUser(response.data)
-                        console.log('User updated from response.data')
+                        userData = response.data
                     } else if (response && response.id) {
-                        updateUser(response)
-                        console.log('User updated from response')
+                        userData = response
                     } else if (response) {
-                        // If response is the user object directly
-                        updateUser(response)
-                        console.log('User updated from direct response')
+                        userData = response
+                    }
+                    
+                    if (userData) {
+                        // Log image URL for debugging
+                        console.log('User image URL:', userData.image)
+                        updateUser(userData)
+                        console.log('User updated successfully', {
+                            name: userData.name,
+                            email: userData.email,
+                            hasImage: !!userData.image,
+                            imageUrl: userData.image ? userData.image.substring(0, 50) + '...' : 'N/A'
+                        })
                     } else {
                         console.warn('No user data in response')
                     }
