@@ -175,9 +175,12 @@ export default function SignupPage() {
 
     try {
       if (provider === 'google') {
-        // Redirect to backend Google OAuth endpoint
+        // Get backend URL (remove /api if present)
         const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
-        window.location.href = apiUrl.replace('/api', '') + '/login/google'
+        const backendUrl = apiUrl.replace('/api', '').replace(/\/$/, '')
+        
+        // Redirect to backend Google OAuth endpoint
+        window.location.href = `${backendUrl}/login/google`
       } else if (provider === 'facebook') {
         // Facebook OAuth will be implemented similarly
         // Facebook signup will be implemented soon

@@ -20,31 +20,48 @@ function GoogleCallbackHandler() {
         if (status === 'success' && token) {
             // Store token
             setAuthToken(token)
+            console.log('Token stored:', token.substring(0, 20) + '...')
 
             // Fetch user data and update context
             const fetchUser = async () => {
                 try {
+                    console.log('Fetching user data...')
                     const response = await authAPI.getCurrentUser()
-                    if (response.data) {
+                    console.log('User response:', response)
+                    
+                    if (response && response.data) {
                         updateUser(response.data)
-                    } else if (response.id) {
+                        console.log('User updated from response.data')
+                    } else if (response && response.id) {
                         updateUser(response)
+                        console.log('User updated from response')
+                    } else if (response) {
+                        // If response is the user object directly
+                        updateUser(response)
+                        console.log('User updated from direct response')
+                    } else {
+                        console.warn('No user data in response')
                     }
                 } catch (error) {
                     console.error('Failed to fetch user:', error)
+                    // Even if user fetch fails, redirect to dashboard
+                    // The token is already stored, so user can access protected routes
                 }
             }
             fetchUser()
 
             // Redirect to dashboard after a short delay
             setTimeout(() => {
+                console.log('Redirecting to dashboard...')
                 router.push('/dashboard')
-            }, 2000)
+            }, 1500)
         } else if (status === 'error') {
             // Redirect to login with error after a delay
             setTimeout(() => {
                 router.push(`/login?error=${encodeURIComponent(message || 'Google login failed')}`)
             }, 3000)
+        } else {
+            console.log('Waiting for status...', { status, token: token ? 'present' : 'missing' })
         }
     }, [token, status, message, router, updateUser])
 
