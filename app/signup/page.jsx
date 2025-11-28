@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Mail, Lock, User, ArrowRight, Chrome, Facebook, AlertCircle } from 'lucide-react'
+import { Mail, Lock, User, ArrowRight, Chrome, Facebook, AlertCircle, Eye, EyeOff } from 'lucide-react'
 import authAPI from '@/lib/api'
 import { useAuth } from '@/lib/auth'
 
@@ -19,20 +19,128 @@ export default function SignupPage() {
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [fieldErrors, setFieldErrors] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  })
+  const [touched, setTouched] = useState({
+    name: false,
+    email: false,
+    password: false,
+    confirmPassword: false
+  })
+
+  const validateName = (name) => {
+    if (!name) {
+      return 'Name is required'
+    }
+    if (name.length < 2) {
+      return 'Name must be at least 2 characters'
+    }
+    return ''
+  }
+
+  const validateEmail = (email) => {
+    if (!email) {
+      return 'Email is required'
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return 'Please enter a valid email address'
+    }
+    return ''
+  }
+
+  const validatePassword = (password) => {
+    if (!password) {
+      return 'Password is required'
+    }
+    if (password.length < 6) {
+      return 'Password must be at least 6 characters'
+    }
+    return ''
+  }
+
+  const validateConfirmPassword = (confirmPassword, password) => {
+    if (!confirmPassword) {
+      return 'Please confirm your password'
+    }
+    if (confirmPassword !== password) {
+      return 'Passwords do not match'
+    }
+    return ''
+  }
+
+  const handleBlur = (field) => {
+    setTouched({ ...touched, [field]: true })
+    
+    if (field === 'name') {
+      const nameError = validateName(formData.name)
+      setFieldErrors({ ...fieldErrors, name: nameError })
+    } else if (field === 'email') {
+      const emailError = validateEmail(formData.email)
+      setFieldErrors({ ...fieldErrors, email: emailError })
+    } else if (field === 'password') {
+      const passwordError = validatePassword(formData.password)
+      setFieldErrors({ ...fieldErrors, password: passwordError })
+      // Also validate confirm password if it's been touched
+      if (touched.confirmPassword) {
+        const confirmError = validateConfirmPassword(formData.confirmPassword, formData.password)
+        setFieldErrors({ ...fieldErrors, confirmPassword: confirmError })
+      }
+    } else if (field === 'confirmPassword') {
+      const confirmError = validateConfirmPassword(formData.confirmPassword, formData.password)
+      setFieldErrors({ ...fieldErrors, confirmPassword: confirmError })
+    }
+  }
+
+  const handleInputChange = (field, value) => {
+    setFormData({ ...formData, [field]: value })
+    // Clear error when user starts typing
+    if (fieldErrors[field]) {
+      setFieldErrors({ ...fieldErrors, [field]: '' })
+    }
+    // Clear general error when user starts typing
+    if (error) {
+      setError('')
+    }
+    // Re-validate confirm password if password changes
+    if (field === 'password' && touched.confirmPassword) {
+      const confirmError = validateConfirmPassword(formData.confirmPassword, value)
+      setFieldErrors({ ...fieldErrors, confirmPassword: confirmError })
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
 
-    // Validate passwords match
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match')
-      return
-    }
+    // Validate all fields
+    const nameError = validateName(formData.name)
+    const emailError = validateEmail(formData.email)
+    const passwordError = validatePassword(formData.password)
+    const confirmError = validateConfirmPassword(formData.confirmPassword, formData.password)
 
-    // Validate password length
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters')
+    setFieldErrors({
+      name: nameError,
+      email: emailError,
+      password: passwordError,
+      confirmPassword: confirmError
+    })
+
+    setTouched({
+      name: true,
+      email: true,
+      password: true,
+      confirmPassword: true
+    })
+
+    // If there are validation errors, don't submit
+    if (nameError || emailError || passwordError || confirmError) {
       return
     }
 
@@ -46,7 +154,16 @@ export default function SignupPage() {
         router.push(`/verify-email?email=${encodeURIComponent(formData.email)}`)
       }
     } catch (err) {
-      setError(err.message || 'Registration failed. Please try again.')
+      const errorMessage = err.message || 'Registration failed. Please try again.'
+      setError(errorMessage)
+      
+      // Check if email already exists
+      if (errorMessage.toLowerCase().includes('email') && 
+          (errorMessage.toLowerCase().includes('already') || 
+           errorMessage.toLowerCase().includes('exists') ||
+           errorMessage.toLowerCase().includes('taken'))) {
+        setFieldErrors({ ...fieldErrors, email: 'This email is already registered' })
+      }
     } finally {
       setLoading(false)
     }
@@ -111,12 +228,27 @@ export default function SignupPage() {
                   type="text"
                   required
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  onBlur={() => handleBlur('name')}
                   disabled={loading}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${
+                    touched.name && fieldErrors.name
+                      ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                      : 'border-gray-300 dark:border-gray-600'
+                  }`}
                   placeholder="John Doe"
                 />
               </div>
+              {touched.name && fieldErrors.name && (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center gap-1"
+                >
+                  <AlertCircle className="w-4 h-4" />
+                  {fieldErrors.name}
+                </motion.p>
+              )}
             </div>
 
             <div>
@@ -129,12 +261,27 @@ export default function SignupPage() {
                   type="email"
                   required
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  onBlur={() => handleBlur('email')}
                   disabled={loading}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${
+                    touched.email && fieldErrors.email
+                      ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                      : 'border-gray-300 dark:border-gray-600'
+                  }`}
                   placeholder="you@example.com"
                 />
               </div>
+              {touched.email && fieldErrors.email && (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center gap-1"
+                >
+                  <AlertCircle className="w-4 h-4" />
+                  {fieldErrors.email}
+                </motion.p>
+              )}
             </div>
 
             <div>
@@ -144,16 +291,44 @@ export default function SignupPage() {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
                   value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  onChange={(e) => handleInputChange('password', e.target.value)}
+                  onBlur={() => handleBlur('password')}
                   disabled={loading}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                  className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${
+                    touched.password && fieldErrors.password
+                      ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                      : 'border-gray-300 dark:border-gray-600'
+                  }`}
                   placeholder="••••••••"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors focus:outline-none"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Must be at least 8 characters</p>
+              {touched.password && fieldErrors.password ? (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center gap-1"
+                >
+                  <AlertCircle className="w-4 h-4" />
+                  {fieldErrors.password}
+                </motion.p>
+              ) : (
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Must be at least 6 characters</p>
+              )}
             </div>
 
             <div>
@@ -163,15 +338,42 @@ export default function SignupPage() {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
                 <input
-                  type="password"
+                  type={showConfirmPassword ? "text" : "password"}
                   required
                   value={formData.confirmPassword}
-                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                  onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                  onBlur={() => handleBlur('confirmPassword')}
                   disabled={loading}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                  className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${
+                    touched.confirmPassword && fieldErrors.confirmPassword
+                      ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                      : 'border-gray-300 dark:border-gray-600'
+                  }`}
                   placeholder="••••••••"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors focus:outline-none"
+                  aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
               </div>
+              {touched.confirmPassword && fieldErrors.confirmPassword && (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center gap-1"
+                >
+                  <AlertCircle className="w-4 h-4" />
+                  {fieldErrors.confirmPassword}
+                </motion.p>
+              )}
             </div>
 
             <motion.button

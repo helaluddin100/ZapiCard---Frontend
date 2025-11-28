@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Mail, Lock, ArrowRight, AlertCircle } from 'lucide-react'
+import { Mail, Lock, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react'
 import { Chrome, Facebook } from 'lucide-react'
 import authAPI from '@/lib/api'
 import { useAuth } from '@/lib/auth'
@@ -19,6 +19,15 @@ function LoginForm() {
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [fieldErrors, setFieldErrors] = useState({
+    email: '',
+    password: ''
+  })
+  const [touched, setTouched] = useState({
+    email: false,
+    password: false
+  })
 
   useEffect(() => {
     // Check for error from Google OAuth callback
@@ -28,9 +37,73 @@ function LoginForm() {
     }
   }, [searchParams])
 
+  const validateEmail = (email) => {
+    if (!email) {
+      return 'Email is required'
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return 'Please enter a valid email address'
+    }
+    return ''
+  }
+
+  const validatePassword = (password) => {
+    if (!password) {
+      return 'Password is required'
+    }
+    if (password.length < 6) {
+      return 'Password must be at least 6 characters'
+    }
+    return ''
+  }
+
+  const handleBlur = (field) => {
+    setTouched({ ...touched, [field]: true })
+    if (field === 'email') {
+      const emailError = validateEmail(formData.email)
+      setFieldErrors({ ...fieldErrors, email: emailError })
+    } else if (field === 'password') {
+      const passwordError = validatePassword(formData.password)
+      setFieldErrors({ ...fieldErrors, password: passwordError })
+    }
+  }
+
+  const handleInputChange = (field, value) => {
+    setFormData({ ...formData, [field]: value })
+    // Clear error when user starts typing
+    if (fieldErrors[field]) {
+      setFieldErrors({ ...fieldErrors, [field]: '' })
+    }
+    // Clear general error when user starts typing
+    if (error) {
+      setError('')
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
+    
+    // Validate all fields
+    const emailError = validateEmail(formData.email)
+    const passwordError = validatePassword(formData.password)
+    
+    setFieldErrors({
+      email: emailError,
+      password: passwordError
+    })
+    
+    setTouched({
+      email: true,
+      password: true
+    })
+
+    // If there are validation errors, don't submit
+    if (emailError || passwordError) {
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -43,7 +116,16 @@ function LoginForm() {
         router.push('/dashboard')
       }
     } catch (err) {
-      setError(err.message || 'Login failed. Please check your credentials.')
+      const errorMessage = err.message || 'Login failed. Please check your credentials.'
+      setError(errorMessage)
+      
+      // Try to map API errors to field errors
+      if (errorMessage.toLowerCase().includes('email') || errorMessage.toLowerCase().includes('user not found')) {
+        setFieldErrors({ ...fieldErrors, email: 'Invalid email address' })
+      }
+      if (errorMessage.toLowerCase().includes('password') || errorMessage.toLowerCase().includes('credentials')) {
+        setFieldErrors({ ...fieldErrors, password: 'Invalid password' })
+      }
     } finally {
       setLoading(false)
     }
@@ -108,12 +190,27 @@ function LoginForm() {
                   type="email"
                   required
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  onBlur={() => handleBlur('email')}
                   disabled={loading}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${
+                    touched.email && fieldErrors.email
+                      ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                      : 'border-gray-300 dark:border-gray-600'
+                  }`}
                   placeholder="you@example.com"
                 />
               </div>
+              {touched.email && fieldErrors.email && (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center gap-1"
+                >
+                  <AlertCircle className="w-4 h-4" />
+                  {fieldErrors.email}
+                </motion.p>
+              )}
             </div>
 
             <div>
@@ -123,15 +220,42 @@ function LoginForm() {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
                   value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  onChange={(e) => handleInputChange('password', e.target.value)}
+                  onBlur={() => handleBlur('password')}
                   disabled={loading}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                  className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${
+                    touched.password && fieldErrors.password
+                      ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                      : 'border-gray-300 dark:border-gray-600'
+                  }`}
                   placeholder="••••••••"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors focus:outline-none"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
               </div>
+              {touched.password && fieldErrors.password && (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center gap-1"
+                >
+                  <AlertCircle className="w-4 h-4" />
+                  {fieldErrors.password}
+                </motion.p>
+              )}
             </div>
 
             <div className="flex items-center justify-between">
