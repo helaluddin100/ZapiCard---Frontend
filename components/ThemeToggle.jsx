@@ -8,7 +8,13 @@ import { useState, useRef, useEffect } from 'react'
 export default function ThemeToggle() {
     const { theme, actualTheme, toggleTheme, setThemeMode } = useTheme()
     const [isOpen, setIsOpen] = useState(false)
+    const [mounted, setMounted] = useState(false)
     const dropdownRef = useRef(null)
+
+    // Prevent hydration mismatch by only rendering after mount
+    useEffect(() => {
+        setMounted(true)
+    }, [])
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -39,6 +45,21 @@ export default function ThemeToggle() {
     const handleThemeSelect = (themeValue) => {
         setThemeMode(themeValue)
         setIsOpen(false)
+    }
+
+    // Prevent hydration mismatch - show placeholder until mounted
+    if (!mounted) {
+        return (
+            <div className="relative">
+                <button
+                    className="relative p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
+                    aria-label="Toggle theme"
+                    disabled
+                >
+                    <div className="w-5 h-5" />
+                </button>
+            </div>
+        )
     }
 
     return (
