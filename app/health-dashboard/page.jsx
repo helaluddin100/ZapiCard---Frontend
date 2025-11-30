@@ -564,7 +564,7 @@ export default function HealthDashboardPage() {
                     className="group relative rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all cursor-pointer transform hover:scale-[1.02]"
                     onClick={() => setSelectedCard(card)}
                     style={{
-                      aspectRatio: '3.5 / 2',
+                      // aspectRatio: '3.5 / 2',
                       minHeight: '280px'
                     }}
                   >
@@ -590,7 +590,7 @@ export default function HealthDashboardPage() {
                       <Link
                         href={`/health-card/${card.username}/${card.slug}`}
                         target="_blank"
-                        className="p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-full hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg transition-all"
+                        className="flex items-center justify-center p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-full hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg transition-all"
                         onClick={(e) => e.stopPropagation()}
                         title="View Public Page"
                       >
@@ -598,7 +598,7 @@ export default function HealthDashboardPage() {
                       </Link>
                       <Link
                         href={`/health-dashboard/card/${card.id}/edit`}
-                        className="p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-full hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg transition-all"
+                        className="flex items-center justify-center p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-full hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg transition-all"
                         onClick={(e) => e.stopPropagation()}
                         title="Edit Card"
                       >
@@ -609,14 +609,14 @@ export default function HealthDashboardPage() {
                           e.stopPropagation()
                           toggleCardEntries(card.id)
                         }}
-                        className="p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-full hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg transition-all"
+                        className="flex items-center justify-center p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-full hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg transition-all"
                         title="View Entries"
                       >
                         <Eye className="w-4 h-4" />
                       </button>
                       <Link
                         href={`/health-dashboard/card/${card.id}/entry`}
-                        className="p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-full hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg transition-all"
+                        className="flex items-center justify-center p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-full hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg transition-all"
                         onClick={(e) => e.stopPropagation()}
                         title="Add New Entry"
                       >
@@ -646,7 +646,7 @@ export default function HealthDashboardPage() {
                         </div>
 
                         {/* QR Code */}
-                        <div className="flex-shrink-0">
+                        <div className="flex-shrink-0 relative">
                           {qrCodes[card.id] ? (
                             <div className="w-20 h-20 rounded-lg bg-white p-1.5 shadow-xl">
                               <img
@@ -660,17 +660,18 @@ export default function HealthDashboardPage() {
                               <QrCodeIcon className="w-10 h-10 text-gray-400 dark:text-gray-500 animate-pulse" />
                             </div>
                           )}
-                          {/* Download QR Button */}
+                          {/* Download QR Button - Position Absolute */}
                           {qrCodes[card.id] && (
                             <button
                               onClick={(e) => {
                                 e.stopPropagation()
                                 downloadQRCode(card)
                               }}
-                              className="mt-1.5 w-full px-2 py-1 text-xs bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-white dark:hover:bg-gray-700 hover:shadow-md transition-all opacity-0 group-hover:opacity-100"
+                              className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 px-2 py-1 text-xs bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-white dark:hover:bg-gray-700 hover:shadow-md transition-all opacity-0 group-hover:opacity-100 z-10 whitespace-nowrap"
                               title="Download QR Code"
                             >
-                              <Download className="w-3 h-3 mx-auto" />
+                              <Download className="w-3 h-3 inline mr-1" />
+                              <span className="hidden sm:inline">Download</span>
                             </button>
                           )}
                         </div>

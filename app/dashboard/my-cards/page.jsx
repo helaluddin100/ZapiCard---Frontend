@@ -307,10 +307,10 @@ export default function MyCardsPage() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: idx * 0.1 }}
                                 className="group relative rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all transform hover:scale-[1.02]"
-                                style={{
-                                    aspectRatio: '3.5 / 2',
-                                    minHeight: '300px'
-                                }}
+                            // style={{
+                            //     aspectRatio: '3.5 / 2',
+                            //     minHeight: '300px'
+                            // }}
                             >
                                 {/* Background Image with Gradient Overlay */}
                                 <div className="absolute inset-0">
@@ -350,7 +350,7 @@ export default function MyCardsPage() {
                                         <Link
                                             href={`/card/${card.slug}`}
                                             target="_blank"
-                                            className="p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-full hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg transition-all"
+                                            className="flex items-center justify-center p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-full hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg transition-all"
                                             title="View Public Page"
                                         >
                                             <ExternalLink className="w-4 h-4" />
@@ -358,14 +358,14 @@ export default function MyCardsPage() {
                                     )}
                                     <Link
                                         href={`/dashboard/edit/${card.id}`}
-                                        className="p-2 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full hover:bg-white hover:shadow-lg transition-all"
+                                        className="flex items-center justify-center p-2 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full hover:bg-white hover:shadow-lg transition-all"
                                         title="Edit Card"
                                     >
                                         <Edit className="w-4 h-4" />
                                     </Link>
                                     <button
                                         onClick={() => handleDelete(card.id)}
-                                        className="p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-red-600 dark:text-red-400 rounded-full hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg transition-all"
+                                        className="flex items-center justify-center p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-red-600 dark:text-red-400 rounded-full hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg transition-all"
                                         title="Delete Card"
                                     >
                                         <Trash2 className="w-4 h-4" />
@@ -402,7 +402,7 @@ export default function MyCardsPage() {
                                         </div>
 
                                         {/* QR Code */}
-                                        <div className="flex-shrink-0">
+                                        <div className="flex-shrink-0 relative">
                                             {qrCodes[card.id] ? (
                                                 <div className="w-16 h-16 md:w-20 md:h-20 rounded-lg bg-white p-1 md:p-1.5 shadow-xl">
                                                     <img
@@ -416,17 +416,18 @@ export default function MyCardsPage() {
                                                     <QrCode className="w-8 h-8 md:w-10 md:h-10 text-gray-400 dark:text-gray-500 animate-pulse" />
                                                 </div>
                                             )}
-                                            {/* Download QR Button */}
+                                            {/* Download QR Button - Position Absolute */}
                                             {qrCodes[card.id] && (
                                                 <button
                                                     onClick={(e) => {
                                                         e.stopPropagation()
                                                         downloadQRCode(card)
                                                     }}
-                                                    className="mt-1 w-full px-1.5 md:px-2 py-0.5 md:py-1 text-xs bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-white dark:hover:bg-gray-700 hover:shadow-md transition-all opacity-0 group-hover:opacity-100"
+                                                    className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 px-2 py-1 text-xs bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-white dark:hover:bg-gray-700 hover:shadow-md transition-all opacity-0 group-hover:opacity-100 z-10 whitespace-nowrap"
                                                     title="Download QR Code"
                                                 >
-                                                    <Download className="w-2.5 h-2.5 md:w-3 md:h-3 mx-auto" />
+                                                    <Download className="w-3 h-3 inline mr-1" />
+                                                    <span className="hidden sm:inline">Download</span>
                                                 </button>
                                             )}
                                         </div>
