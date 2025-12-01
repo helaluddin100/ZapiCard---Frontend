@@ -68,7 +68,7 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
-            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6 border border-gray-200 dark:border-gray-700"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 sm:p-6 space-y-4 sm:space-y-6 border border-gray-200 dark:border-gray-700"
         >
             <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Personal Information</h2>
 
@@ -216,12 +216,12 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
                 </div>
             </div>
 
-            <div>
+            <div className="w-full">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Bio
                 </label>
                 {mounted ? (
-                    <div className="border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden quill-editor-wrapper">
+                    <div className="w-full border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden quill-editor-wrapper">
                         <ReactQuill
                             theme="snow"
                             value={formData.bio || ''}
@@ -229,7 +229,7 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
                             modules={quillModules}
                             formats={quillFormats}
                             placeholder="Tell people about yourself..."
-                            className="bg-white dark:bg-gray-700"
+                            className="bg-white dark:bg-gray-700 w-full"
                             style={{ minHeight: '200px' }}
                         />
                     </div>
