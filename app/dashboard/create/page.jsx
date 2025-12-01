@@ -48,7 +48,8 @@ export default function CreateCardPage() {
         gradientColors: {
             from: '#3b82f6',
             to: '#8b5cf6'
-        }
+        },
+        enableAppointment: true
     })
 
     const steps = [
@@ -106,6 +107,7 @@ END:VCARD`
                 button_color: formData.buttonColor,
                 use_gradient: formData.useGradient || false,
                 gradient_colors: formData.gradientColors || null,
+                enable_appointment: formData.enableAppointment !== undefined ? formData.enableAppointment : true,
                 // QR customization will use backend defaults
                 qr_data: vcard,
             }

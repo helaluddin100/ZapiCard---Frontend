@@ -57,7 +57,8 @@ export default function EditCardPage() {
         gradientColors: {
             from: '#3b82f6',
             to: '#8b5cf6'
-        }
+        },
+        enableAppointment: true
     })
 
     const steps = [
@@ -102,7 +103,8 @@ export default function EditCardPage() {
                     gradientColors: card.gradient_colors || {
                         from: card.primary_color || '#3b82f6',
                         to: card.button_color || '#8b5cf6'
-                    }
+                    },
+                    enableAppointment: card.enable_appointment !== undefined ? card.enable_appointment : true
                 })
             } else {
                 setError('Card not found')
@@ -159,6 +161,7 @@ END:VCARD`
                 button_color: formData.buttonColor,
                 use_gradient: formData.useGradient || false,
                 gradient_colors: formData.gradientColors || null,
+                enable_appointment: formData.enableAppointment !== undefined ? formData.enableAppointment : true,
                 qr_data: vcard,
             }
 
