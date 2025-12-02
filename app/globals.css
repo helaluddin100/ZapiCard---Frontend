@@ -67,6 +67,11 @@
 }
 
 /* React Quill Editor Styles */
+.quill-editor-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
 .quill-editor-wrapper .ql-container {
     min-height: 200px;
     max-height: 300px;
@@ -86,6 +91,159 @@
     border-bottom: 1px solid #e5e7eb;
     background-color: #f9fafb;
     border-radius: 0.5rem 0.5rem 0 0;
+    padding: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    align-items: center;
+}
+
+.quill-editor-wrapper .ql-toolbar .ql-formats {
+    display: flex;
+    align-items: center;
+    margin-right: 0;
+    padding-right: 12px;
+    border-right: 1px solid #e5e7eb;
+    gap: 2px;
+}
+
+.quill-editor-wrapper .ql-toolbar .ql-formats:last-child {
+    border-right: none;
+    padding-right: 0;
+}
+
+.dark .quill-editor-wrapper .ql-toolbar .ql-formats {
+    border-right-color: #4b5563;
+}
+
+.quill-editor-wrapper .ql-toolbar button {
+    margin: 0;
+    padding: 6px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quill-editor-wrapper .ql-toolbar .ql-picker {
+    margin: 0;
+    padding-right: 4px;
+}
+
+/* Mobile Responsive Styles for Quill Editor - All Tools Visible */
+@media (max-width: 768px) {
+    .quill-editor-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .quill-editor-wrapper .ql-toolbar {
+        padding: 8px 6px;
+        gap: 0;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: center;
+        min-height: auto;
+        row-gap: 6px;
+    }
+
+    .quill-editor-wrapper .ql-toolbar .ql-formats {
+        margin-right: 0;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        padding-right: 6px;
+        border-right: 1px solid #e5e7eb;
+        gap: 2px;
+    }
+
+    .quill-editor-wrapper .ql-toolbar .ql-formats:last-child {
+        border-right: none;
+        padding-right: 0;
+    }
+
+    .dark .quill-editor-wrapper .ql-toolbar .ql-formats {
+        border-right-color: #4b5563;
+    }
+
+    .quill-editor-wrapper .ql-toolbar button {
+        width: 34px;
+        height: 34px;
+        padding: 5px;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        flex-shrink: 0;
+    }
+
+    .quill-editor-wrapper .ql-toolbar button svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .quill-editor-wrapper .ql-toolbar .ql-picker {
+        height: 34px;
+        font-size: 13px;
+        margin: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .quill-editor-wrapper .ql-toolbar .ql-picker-label {
+        padding: 5px 8px;
+        font-size: 13px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+    }
+
+    .quill-editor-wrapper .ql-toolbar .ql-picker-options {
+        font-size: 13px;
+        padding: 4px;
+        border-radius: 4px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .quill-editor-wrapper .ql-toolbar .ql-picker-item {
+        padding: 6px 8px;
+        font-size: 13px;
+    }
+
+    .quill-editor-wrapper .ql-container {
+        min-height: 180px;
+        max-height: 280px;
+        font-size: 16px; /* Better for mobile readability */
+    }
+
+    .quill-editor-wrapper .ql-editor {
+        min-height: 180px;
+        max-height: 280px;
+        padding: 12px;
+        font-size: 16px; /* Prevents zoom on iOS */
+        line-height: 1.6;
+    }
+
+}
+
+/* Tablet Styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .quill-editor-wrapper .ql-toolbar {
+        padding: 8px 6px;
+        gap: 4px;
+    }
+
+    .quill-editor-wrapper .ql-toolbar button {
+        width: 38px;
+        height: 38px;
+        padding: 7px;
+    }
+
+    .quill-editor-wrapper .ql-toolbar .ql-picker {
+        height: 38px;
+    }
 }
 
 .dark .quill-editor-wrapper .ql-toolbar {
