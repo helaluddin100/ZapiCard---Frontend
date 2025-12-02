@@ -137,28 +137,30 @@ export default function AppointmentsListPage() {
                     </div>
                 )}
 
-                {/* Tabs */}
-                <div className="mb-6 flex gap-2 overflow-x-auto">
-                    {tabs.map((tab) => (
-                        <button
-                            key={tab.id}
-                            onClick={() => setActiveTab(tab.id)}
-                            className={`
-                                px-6 py-3 rounded-lg font-medium transition whitespace-nowrap
-                                ${activeTab === tab.id
-                                    ? 'gradient-primary text-white shadow-lg'
-                                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'
-                                }
-                            `}
-                        >
-                            {tab.label}
-                            <span className={`ml-2 px-2 py-0.5 rounded-full text-xs ${
-                                activeTab === tab.id ? 'bg-white/20' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-                            }`}>
-                                {tab.count}
-                            </span>
-                        </button>
-                    ))}
+                {/* Tabs - Scrollable on Mobile */}
+                <div className="mb-6">
+                    <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
+                        {tabs.map((tab) => (
+                            <button
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                className={`
+                                    px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-medium transition whitespace-nowrap flex-shrink-0
+                                    ${activeTab === tab.id
+                                        ? 'gradient-primary text-white shadow-lg'
+                                        : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'
+                                    }
+                                `}
+                            >
+                                {tab.label}
+                                <span className={`ml-2 px-2 py-0.5 rounded-full text-xs ${
+                                    activeTab === tab.id ? 'bg-white/20' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                                }`}>
+                                    {tab.count}
+                                </span>
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Loading State */}
@@ -190,50 +192,55 @@ export default function AppointmentsListPage() {
                                         key={appointment.id}
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition"
+                                        className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 hover:shadow-md transition"
                                     >
-                                        <div className="flex items-start justify-between">
-                                            <div className="flex-1">
-                                                <div className="flex items-start gap-4 mb-4">
-                                                    <div className="w-12 h-12 rounded-lg gradient-primary flex items-center justify-center flex-shrink-0">
-                                                        <User className="w-6 h-6 text-white" />
+                                        {/* Mobile Layout: Stack everything vertically */}
+                                        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                                            <div className="flex-1 min-w-0">
+                                                {/* Header Section */}
+                                                <div className="flex items-start gap-3 sm:gap-4 mb-4">
+                                                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg gradient-primary flex items-center justify-center flex-shrink-0">
+                                                        <User className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                                                     </div>
-                                                    <div className="flex-1">
-                                                        <div className="flex items-center gap-3 mb-2">
-                                                            <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                                                    <div className="flex-1 min-w-0">
+                                                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
+                                                            <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 truncate">
                                                                 {appointment.patient_name}
                                                             </h3>
-                                                            {getStatusBadge(appointment.status)}
+                                                            <div className="flex-shrink-0">
+                                                                {getStatusBadge(appointment.status)}
+                                                            </div>
                                                         </div>
                                                         <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
-                                                            <div className="flex items-center gap-2">
-                                                                <Mail className="w-4 h-4" />
-                                                                <span>{appointment.patient_email}</span>
+                                                            <div className="flex items-center gap-2 min-w-0">
+                                                                <Mail className="w-4 h-4 flex-shrink-0" />
+                                                                <span className="truncate">{appointment.patient_email}</span>
                                                             </div>
                                                             {appointment.patient_phone && (
-                                                                <div className="flex items-center gap-2">
-                                                                    <Phone className="w-4 h-4" />
-                                                                    <span>{appointment.patient_phone}</span>
+                                                                <div className="flex items-center gap-2 min-w-0">
+                                                                    <Phone className="w-4 h-4 flex-shrink-0" />
+                                                                    <span className="truncate">{appointment.patient_phone}</span>
                                                                 </div>
                                                             )}
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                                                    <div className="flex items-center gap-2 text-sm">
-                                                        <MapPin className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                                                        <div>
-                                                            <div className="text-gray-500 dark:text-gray-400">Location</div>
-                                                            <div className="font-medium text-gray-900 dark:text-gray-100">
+                                                {/* Info Grid - Responsive */}
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-4">
+                                                    <div className="flex items-start gap-2 text-sm">
+                                                        <MapPin className="w-4 h-4 text-gray-500 dark:text-gray-400 flex-shrink-0 mt-0.5" />
+                                                        <div className="min-w-0">
+                                                            <div className="text-gray-500 dark:text-gray-400 text-xs">Location</div>
+                                                            <div className="font-medium text-gray-900 dark:text-gray-100 truncate">
                                                                 {appointment.location?.name || 'N/A'}
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="flex items-center gap-2 text-sm">
-                                                        <Calendar className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                                                        <div>
-                                                            <div className="text-gray-500 dark:text-gray-400">Date</div>
+                                                    <div className="flex items-start gap-2 text-sm">
+                                                        <Calendar className="w-4 h-4 text-gray-500 dark:text-gray-400 flex-shrink-0 mt-0.5" />
+                                                        <div className="min-w-0">
+                                                            <div className="text-gray-500 dark:text-gray-400 text-xs">Date</div>
                                                             <div className="font-medium text-gray-900 dark:text-gray-100">
                                                                 {new Date(appointment.appointment_date).toLocaleDateString('en-US', {
                                                                     weekday: 'short',
@@ -244,10 +251,10 @@ export default function AppointmentsListPage() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="flex items-center gap-2 text-sm">
-                                                        <Clock className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                                                        <div>
-                                                            <div className="text-gray-500 dark:text-gray-400">Time</div>
+                                                    <div className="flex items-start gap-2 text-sm sm:col-span-2 lg:col-span-1">
+                                                        <Clock className="w-4 h-4 text-gray-500 dark:text-gray-400 flex-shrink-0 mt-0.5" />
+                                                        <div className="min-w-0">
+                                                            <div className="text-gray-500 dark:text-gray-400 text-xs">Time</div>
                                                             <div className="font-medium text-gray-900 dark:text-gray-100">
                                                                 {appointment.appointment_time}
                                                             </div>
@@ -255,60 +262,62 @@ export default function AppointmentsListPage() {
                                                     </div>
                                                 </div>
 
+                                                {/* Notes */}
                                                 {appointment.notes && (
                                                     <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                                                         <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-1">
-                                                            <FileText className="w-4 h-4" />
+                                                            <FileText className="w-4 h-4 flex-shrink-0" />
                                                             <span className="font-medium">Notes</span>
                                                         </div>
-                                                        <p className="text-sm text-gray-700 dark:text-gray-300">{appointment.notes}</p>
+                                                        <p className="text-sm text-gray-700 dark:text-gray-300 break-words">{appointment.notes}</p>
                                                     </div>
                                                 )}
                                             </div>
 
-                                            <div className="flex flex-col gap-2 ml-4">
+                                            {/* Action Buttons - Responsive */}
+                                            <div className="flex flex-row lg:flex-col gap-2 flex-shrink-0 lg:ml-4">
                                                 {appointment.status === 'pending' && (
                                                     <>
                                                         <button
                                                             onClick={() => handleStatusChange(appointment.id, 'approved')}
-                                                            className="px-4 py-2 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/50 transition flex items-center gap-2 text-sm font-medium"
+                                                            className="flex-1 lg:flex-none px-3 sm:px-4 py-2 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/50 transition flex items-center justify-center gap-2 text-sm font-medium"
                                                         >
                                                             <Check className="w-4 h-4" />
-                                                            Approve
+                                                            <span className="hidden sm:inline">Approve</span>
                                                         </button>
                                                         <button
                                                             onClick={() => handleStatusChange(appointment.id, 'rejected')}
-                                                            className="px-4 py-2 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/50 transition flex items-center gap-2 text-sm font-medium"
+                                                            className="flex-1 lg:flex-none px-3 sm:px-4 py-2 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/50 transition flex items-center justify-center gap-2 text-sm font-medium"
                                                         >
                                                             <X className="w-4 h-4" />
-                                                            Reject
+                                                            <span className="hidden sm:inline">Reject</span>
                                                         </button>
                                                     </>
                                                 )}
                                                 {appointment.status === 'approved' && (
                                                     <button
                                                         onClick={() => handleStatusChange(appointment.id, 'rejected')}
-                                                        className="px-4 py-2 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/50 transition flex items-center gap-2 text-sm font-medium"
+                                                        className="flex-1 lg:flex-none px-3 sm:px-4 py-2 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/50 transition flex items-center justify-center gap-2 text-sm font-medium"
                                                     >
                                                         <X className="w-4 h-4" />
-                                                        Reject
+                                                        <span className="hidden sm:inline">Reject</span>
                                                     </button>
                                                 )}
                                                 {appointment.status === 'rejected' && (
                                                     <button
                                                         onClick={() => handleStatusChange(appointment.id, 'approved')}
-                                                        className="px-4 py-2 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/50 transition flex items-center gap-2 text-sm font-medium"
+                                                        className="flex-1 lg:flex-none px-3 sm:px-4 py-2 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/50 transition flex items-center justify-center gap-2 text-sm font-medium"
                                                     >
                                                         <Check className="w-4 h-4" />
-                                                        Approve
+                                                        <span className="hidden sm:inline">Approve</span>
                                                     </button>
                                                 )}
                                                 <button
                                                     onClick={() => handleDelete(appointment.id)}
-                                                    className="px-4 py-2 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-700 dark:hover:text-red-400 transition flex items-center gap-2 text-sm font-medium"
+                                                    className="flex-1 lg:flex-none px-3 sm:px-4 py-2 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-700 dark:hover:text-red-400 transition flex items-center justify-center gap-2 text-sm font-medium"
                                                 >
                                                     <Trash2 className="w-4 h-4" />
-                                                    Delete
+                                                    <span className="hidden sm:inline">Delete</span>
                                                 </button>
                                             </div>
                                         </div>

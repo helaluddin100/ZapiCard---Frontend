@@ -654,11 +654,12 @@ export default function EditEntryPage() {
                         placeholder="Duration (e.g., 7 days)"
                       />
                     </div>
-                    <div className="flex gap-3">
+                    <div className="overflow-x-auto pb-1">
+                      <div className="flex gap-2 min-w-max pr-6">
                       {['morning', 'noon', 'night'].map(timing => (
                         <label
                           key={timing}
-                          className={`flex items-center gap-2 px-4 py-2 border-2 rounded-lg cursor-pointer transition ${medicine.timing?.includes(timing)
+                          className={`flex items-center gap-2 px-4 py-2 border-2 rounded-lg cursor-pointer transition text-xs sm:text-sm font-medium capitalize whitespace-nowrap ${medicine.timing?.includes(timing)
                             ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
                             : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'
                             }`}
@@ -669,9 +670,11 @@ export default function EditEntryPage() {
                             onChange={() => handleMedicineTiming(index, timing)}
                             className="w-5 h-5 text-blue-600 dark:text-blue-400 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700"
                           />
-                          <span className="text-sm capitalize">{timing}</span>
+                          <span>{timing}</span>
                         </label>
                       ))}
+                      </div>
+                    </div>
                     </div>
                     {formData.medicines.length > 1 && (
                       <button
@@ -993,11 +996,12 @@ export default function EditEntryPage() {
                           placeholder="Duration"
                         />
                       </div>
-                      <div className="flex gap-2">
+                      <div className="overflow-x-auto pb-1">
+                        <div className="flex gap-2 min-w-max pr-6">
                         {['morning', 'noon', 'night'].map(timing => (
                           <label
                             key={timing}
-                            className={`flex items-center gap-1 px-3 py-1 border-2 rounded-lg cursor-pointer text-sm transition ${medicine.timing?.includes(timing)
+                            className={`flex items-center gap-2 px-4 py-2 border-2 rounded-lg cursor-pointer text-xs sm:text-sm font-medium whitespace-nowrap ${medicine.timing?.includes(timing)
                               ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
                               : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'
                               }`}
