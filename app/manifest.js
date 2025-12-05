@@ -1,8 +1,8 @@
 // Web App Manifest for PWA support
 export default function manifest() {
     return {
-        name: 'Zapi Card - Smart Digital Visiting Cards',
-        short_name: 'Zapi Card',
+        name: 'Zapy Card - Smart Digital Visiting Cards',
+        short_name: 'Zapy Card',
         description: 'Create stunning digital business cards with NFC and QR code technology',
         start_url: '/',
         display: 'standalone',

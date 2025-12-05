@@ -141,7 +141,7 @@ export default function AboutPage() {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 drop-shadow-2xl leading-tight"
             >
-              About Zapi Card
+              About Zapy Card
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -223,7 +223,7 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-gray-100">
-              Why Choose Zapi Card?
+              Why Choose Zapy Card?
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               Discover what makes us different

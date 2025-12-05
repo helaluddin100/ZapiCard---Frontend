@@ -81,7 +81,7 @@ function ResetPasswordForm() {
                 <div className="glass-effect rounded-2xl p-8 shadow-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                     <div className="text-center mb-8">
                         <Link href="/" className="text-3xl font-bold gradient-primary bg-clip-text text-transparent inline-block mb-2">
-                            Zapi Card
+                            Zapy Card
                         </Link>
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Reset Your Password</h2>
                         <p className="text-gray-600 dark:text-gray-400 mt-2">Enter your new password below</p>

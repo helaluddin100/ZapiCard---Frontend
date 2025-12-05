@@ -1,9 +1,9 @@
 // SEO Metadata Configuration
 export const siteConfig = {
-    name: 'Zapi Card',
-    title: 'Zapi Card - Smart Health Card & Digital Visiting Cards | NFC & QR Technology',
+    name: 'Zapy Card',
+    title: 'Zapy Card - Smart Health Card & Digital Visiting Cards | NFC & QR Technology',
     description: 'Revolutionary smart cards for business and healthcare. Create digital visiting cards with appointment booking, and smart health cards with AI prescription reading for patients and pregnant women. NFC & QR instant access.',
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://zapicard.com',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://zapycard.com',
     ogImage: '/og-image.jpg',
     keywords: [
         // Health Card Keywords (Primary Focus)
@@ -31,9 +31,9 @@ export const siteConfig = {
         'appointment booking card',
         'professional digital card'
     ],
-    author: 'Zapi Card',
-    creator: '@zapicard',
-    publisher: 'Zapi Card',
+    author: 'Zapy Card',
+    creator: '@zapycard',
+    publisher: 'Zapy Card',
     category: 'Healthcare & Business Technology',
 }
 
@@ -124,13 +124,13 @@ export function generateOrganizationSchema() {
         contactPoint: {
             '@type': 'ContactPoint',
             contactType: 'Customer Service',
-            email: 'support@zapicard.com',
+            email: 'support@zapycard.com',
         },
         sameAs: [
-            'https://www.facebook.com/zapicard',
-            'https://twitter.com/zapicard',
-            'https://www.linkedin.com/company/zapicard',
-            'https://www.instagram.com/zapicard',
+            'https://www.facebook.com/zapycard',
+            'https://twitter.com/zapycard',
+            'https://www.linkedin.com/company/zapycard',
+            'https://www.instagram.com/zapycard',
         ],
     }
 }

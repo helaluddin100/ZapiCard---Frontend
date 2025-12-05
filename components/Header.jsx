@@ -57,7 +57,7 @@ export default function Header() {
                             <Zap className="w-6 h-6 text-white" />
                         </motion.div>
                         <span className="text-2xl md:text-3xl font-bold gradient-primary bg-clip-text text-transparent group-hover:scale-105 transition-transform">
-                            Zapi Card
+                            Zapy Card
                         </span>
                     </Link>
 

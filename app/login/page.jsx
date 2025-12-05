@@ -83,16 +83,16 @@ function LoginForm() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
-    
+
     // Validate all fields
     const emailError = validateEmail(formData.email)
     const passwordError = validatePassword(formData.password)
-    
+
     setFieldErrors({
       email: emailError,
       password: passwordError
     })
-    
+
     setTouched({
       email: true,
       password: true
@@ -117,7 +117,7 @@ function LoginForm() {
     } catch (err) {
       const errorMessage = err.message || 'Login failed. Please check your credentials.'
       setError(errorMessage)
-      
+
       // Try to map API errors to field errors
       if (errorMessage.toLowerCase().includes('email') || errorMessage.toLowerCase().includes('user not found')) {
         setFieldErrors({ ...fieldErrors, email: 'Invalid email address' })
@@ -139,7 +139,7 @@ function LoginForm() {
         // Get backend URL (remove /api if present)
         const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
         const backendUrl = apiUrl.replace('/api', '').replace(/\/$/, '')
-        
+
         // Redirect to backend Google OAuth endpoint
         window.location.href = `${backendUrl}/login/google`
       }
@@ -159,7 +159,7 @@ function LoginForm() {
         <div className="glass-effect rounded-2xl p-8 shadow-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <div className="text-center mb-8">
             <Link href="/" className="text-3xl font-bold gradient-primary bg-clip-text text-transparent inline-block mb-2">
-              Zapi Card
+              Zapy Card
             </Link>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Welcome Back</h2>
             <p className="text-gray-600 dark:text-gray-400 mt-2">Sign in to your account</p>
@@ -190,11 +190,10 @@ function LoginForm() {
                   onChange={(e) => handleInputChange('email', e.target.value)}
                   onBlur={() => handleBlur('email')}
                   disabled={loading}
-                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${
-                    touched.email && fieldErrors.email
+                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${touched.email && fieldErrors.email
                       ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
                       : 'border-gray-300 dark:border-gray-600'
-                  }`}
+                    }`}
                   placeholder="you@example.com"
                 />
               </div>
@@ -223,11 +222,10 @@ function LoginForm() {
                   onChange={(e) => handleInputChange('password', e.target.value)}
                   onBlur={() => handleBlur('password')}
                   disabled={loading}
-                  className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${
-                    touched.password && fieldErrors.password
+                  className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${touched.password && fieldErrors.password
                       ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
                       : 'border-gray-300 dark:border-gray-600'
-                  }`}
+                    }`}
                   placeholder="••••••••"
                 />
                 <button

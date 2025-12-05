@@ -3,8 +3,8 @@ import { Mail, Phone, MapPin, MessageCircle } from 'lucide-react'
 
 export const metadata = generateMeta({
   title: 'Contact Us',
-  description: 'Get in touch with Zapi Card team. We are here to help you with your digital business card needs. Email, phone, or chat support available.',
-  keywords: ['contact zapi card', 'customer support', 'help', 'get in touch'],
+  description: 'Get in touch with Zapy Card team. We are here to help you with your digital business card needs. Email, phone, or chat support available.',
+  keywords: ['contact zapy card', 'customer support', 'help', 'get in touch'],
   canonical: '/contact',
 })
 
@@ -29,8 +29,8 @@ export default function ContactPage() {
               {
                 icon: <Mail className="w-8 h-8" />,
                 title: 'Email',
-                content: 'support@zapicard.com',
-                link: 'mailto:support@zapicard.com',
+                content: 'support@zapycard.com',
+                link: 'mailto:support@zapycard.com',
               },
               {
                 icon: <Phone className="w-8 h-8" />,

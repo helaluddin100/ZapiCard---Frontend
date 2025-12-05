@@ -77,7 +77,7 @@ export default function SignupPage() {
 
   const handleBlur = (field) => {
     setTouched({ ...touched, [field]: true })
-    
+
     if (field === 'name') {
       const nameError = validateName(formData.name)
       setFieldErrors({ ...fieldErrors, name: nameError })
@@ -156,12 +156,12 @@ export default function SignupPage() {
     } catch (err) {
       const errorMessage = err.message || 'Registration failed. Please try again.'
       setError(errorMessage)
-      
+
       // Check if email already exists
-      if (errorMessage.toLowerCase().includes('email') && 
-          (errorMessage.toLowerCase().includes('already') || 
-           errorMessage.toLowerCase().includes('exists') ||
-           errorMessage.toLowerCase().includes('taken'))) {
+      if (errorMessage.toLowerCase().includes('email') &&
+        (errorMessage.toLowerCase().includes('already') ||
+          errorMessage.toLowerCase().includes('exists') ||
+          errorMessage.toLowerCase().includes('taken'))) {
         setFieldErrors({ ...fieldErrors, email: 'This email is already registered' })
       }
     } finally {
@@ -178,7 +178,7 @@ export default function SignupPage() {
         // Get backend URL (remove /api if present)
         const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
         const backendUrl = apiUrl.replace('/api', '').replace(/\/$/, '')
-        
+
         // Redirect to backend Google OAuth endpoint
         window.location.href = `${backendUrl}/login/google`
       }
@@ -198,7 +198,7 @@ export default function SignupPage() {
         <div className="glass-effect rounded-2xl p-8 shadow-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <div className="text-center mb-8">
             <Link href="/" className="text-3xl font-bold gradient-primary bg-clip-text text-transparent inline-block mb-2">
-              Zapi Card
+              Zapy Card
             </Link>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Create Your Account</h2>
             <p className="text-gray-600 dark:text-gray-400 mt-2">Start building your smart visiting card</p>
@@ -229,11 +229,10 @@ export default function SignupPage() {
                   onChange={(e) => handleInputChange('name', e.target.value)}
                   onBlur={() => handleBlur('name')}
                   disabled={loading}
-                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${
-                    touched.name && fieldErrors.name
+                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${touched.name && fieldErrors.name
                       ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
                       : 'border-gray-300 dark:border-gray-600'
-                  }`}
+                    }`}
                   placeholder="John Doe"
                 />
               </div>
@@ -262,11 +261,10 @@ export default function SignupPage() {
                   onChange={(e) => handleInputChange('email', e.target.value)}
                   onBlur={() => handleBlur('email')}
                   disabled={loading}
-                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${
-                    touched.email && fieldErrors.email
+                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${touched.email && fieldErrors.email
                       ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
                       : 'border-gray-300 dark:border-gray-600'
-                  }`}
+                    }`}
                   placeholder="you@example.com"
                 />
               </div>
@@ -295,11 +293,10 @@ export default function SignupPage() {
                   onChange={(e) => handleInputChange('password', e.target.value)}
                   onBlur={() => handleBlur('password')}
                   disabled={loading}
-                  className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${
-                    touched.password && fieldErrors.password
+                  className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${touched.password && fieldErrors.password
                       ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
                       : 'border-gray-300 dark:border-gray-600'
-                  }`}
+                    }`}
                   placeholder="••••••••"
                 />
                 <button
@@ -342,11 +339,10 @@ export default function SignupPage() {
                   onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                   onBlur={() => handleBlur('confirmPassword')}
                   disabled={loading}
-                  className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${
-                    touched.confirmPassword && fieldErrors.confirmPassword
+                  className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${touched.confirmPassword && fieldErrors.confirmPassword
                       ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
                       : 'border-gray-300 dark:border-gray-600'
-                  }`}
+                    }`}
                   placeholder="••••••••"
                 />
                 <button

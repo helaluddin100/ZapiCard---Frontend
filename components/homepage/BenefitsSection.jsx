@@ -4,56 +4,56 @@ import { motion } from 'framer-motion'
 import { Zap, Shield, Clock, Users, TrendingUp, Heart, Sparkles, Star } from 'lucide-react'
 
 export default function BenefitsSection() {
-    const benefits = [
-        {
-            icon: Zap,
-            title: "Instant Access",
-            description: "Share or access information in seconds with NFC tap or QR scan",
-            iconColor: 'from-blue-500 to-cyan-500',
-            bgColor: 'from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20',
-            borderColor: 'border-blue-200 dark:border-blue-800'
-        },
-        {
-            icon: Shield,
-            title: "Secure & Private",
-            description: "Bank-level encryption protects your sensitive data",
-            iconColor: 'from-purple-500 to-pink-500',
-            bgColor: 'from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20',
-            borderColor: 'border-purple-200 dark:border-purple-800'
-        },
-        {
-            icon: Clock,
-            title: "24/7 Available",
-            description: "Your digital card works anytime, anywhere",
-            iconColor: 'from-indigo-500 to-purple-500',
-            bgColor: 'from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20',
-            borderColor: 'border-indigo-200 dark:border-indigo-800'
-        },
-        {
-            icon: Users,
-            title: "Easy to Share",
-            description: "No app required - works with any smartphone",
-            iconColor: 'from-pink-500 to-rose-500',
-            bgColor: 'from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20',
-            borderColor: 'border-pink-200 dark:border-pink-800'
-        },
-        {
-            icon: TrendingUp,
-            title: "Analytics Included",
-            description: "Track views, scans, and engagement metrics",
-            iconColor: 'from-blue-500 to-cyan-500',
-            bgColor: 'from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20',
-            borderColor: 'border-blue-200 dark:border-blue-800'
-        },
-        {
-            icon: Heart,
-            title: "Eco-Friendly",
-            description: "Save paper and reduce environmental impact",
-            iconColor: 'from-emerald-500 to-teal-500',
-            bgColor: 'from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20',
-            borderColor: 'border-emerald-200 dark:border-emerald-800'
-        }
-    ]
+  const benefits = [
+    {
+      icon: Zap,
+      title: "Instant Access",
+      description: "Share or access information in seconds with NFC tap or QR scan",
+      iconColor: 'from-blue-500 to-cyan-500',
+      bgColor: 'from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20',
+      borderColor: 'border-blue-200 dark:border-blue-800'
+    },
+    {
+      icon: Shield,
+      title: "Secure & Private",
+      description: "Bank-level encryption protects your sensitive data",
+      iconColor: 'from-purple-500 to-pink-500',
+      bgColor: 'from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20',
+      borderColor: 'border-purple-200 dark:border-purple-800'
+    },
+    {
+      icon: Clock,
+      title: "24/7 Available",
+      description: "Your digital card works anytime, anywhere",
+      iconColor: 'from-indigo-500 to-purple-500',
+      bgColor: 'from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20',
+      borderColor: 'border-indigo-200 dark:border-indigo-800'
+    },
+    {
+      icon: Users,
+      title: "Easy to Share",
+      description: "No app required - works with any smartphone",
+      iconColor: 'from-pink-500 to-rose-500',
+      bgColor: 'from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20',
+      borderColor: 'border-pink-200 dark:border-pink-800'
+    },
+    {
+      icon: TrendingUp,
+      title: "Analytics Included",
+      description: "Track views, scans, and engagement metrics",
+      iconColor: 'from-blue-500 to-cyan-500',
+      bgColor: 'from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20',
+      borderColor: 'border-blue-200 dark:border-blue-800'
+    },
+    {
+      icon: Heart,
+      title: "Eco-Friendly",
+      description: "Save paper and reduce environmental impact",
+      iconColor: 'from-emerald-500 to-teal-500',
+      bgColor: 'from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20',
+      borderColor: 'border-emerald-200 dark:border-emerald-800'
+    }
+  ]
 
   return (
     <section className="py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
@@ -108,7 +108,7 @@ export default function BenefitsSection() {
           </motion.div>
 
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent leading-tight">
-            Why Choose Zapi Card?
+            Why Choose Zapy Card?
           </h2>
           <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
             Trusted by thousands of professionals and healthcare users worldwide

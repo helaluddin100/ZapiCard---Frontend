@@ -33,7 +33,7 @@ export default function TestimonialsPage() {
       company: 'TechCorp',
       image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop',
       rating: 5,
-      text: 'Zapi Card transformed how I network. The NFC feature is a game-changer at events! I can share my contact information instantly with just a tap.',
+      text: 'Zapy Card transformed how I network. The NFC feature is a game-changer at events! I can share my contact information instantly with just a tap.',
       date: '2024-01-15',
       verified: true
     },
@@ -66,7 +66,7 @@ export default function TestimonialsPage() {
       company: 'StartupHub',
       image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop',
       rating: 5,
-      text: 'As a startup founder, networking is crucial. Zapi Card makes it so easy to share my information. The analytics feature helps me track who views my card.',
+      text: 'As a startup founder, networking is crucial. Zapy Card makes it so easy to share my information. The analytics feature helps me track who views my card.',
       date: '2024-02-05',
       verified: true
     },
@@ -99,7 +99,7 @@ export default function TestimonialsPage() {
       company: 'Celebrations Co',
       image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop',
       rating: 5,
-      text: 'I use Zapi Card at every event. The NFC feature is perfect for networking events - no more fumbling with business cards. Clients love the modern approach!',
+      text: 'I use Zapy Card at every event. The NFC feature is perfect for networking events - no more fumbling with business cards. Clients love the modern approach!',
       date: '2024-02-15',
       verified: true
     },
@@ -176,7 +176,7 @@ export default function TestimonialsPage() {
       company: 'Wealth Management',
       image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop',
       rating: 5,
-      text: 'Professional appearance is crucial in finance. Zapi Card gives me that edge. The NFC card quality is excellent and makes a great impression.',
+      text: 'Professional appearance is crucial in finance. Zapy Card gives me that edge. The NFC card quality is excellent and makes a great impression.',
       date: '2024-03-03',
       verified: true
     },
@@ -281,7 +281,7 @@ export default function TestimonialsPage() {
               What Our Users Say
             </h1>
             <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
-              Join thousands of professionals who are networking smarter with Zapi Card
+              Join thousands of professionals who are networking smarter with Zapy Card
             </p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}

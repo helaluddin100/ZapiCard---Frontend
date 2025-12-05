@@ -35,7 +35,7 @@ export default function Footer() {
                                 <Zap className="w-6 h-6 text-white" />
                             </motion.div>
                             <span className="text-2xl font-bold gradient-primary bg-clip-text text-transparent">
-                                Zapi Card
+                                Zapy Card
                             </span>
                         </Link>
                         <p className="text-gray-400 mb-6 leading-relaxed">
@@ -152,7 +152,7 @@ export default function Footer() {
                 <div className="border-t border-gray-800 pt-8">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                         <p className="text-gray-400 text-sm">
-                            &copy; 2024 Zapi Card. All rights reserved.
+                            &copy; 2024 Zapy Card. All rights reserved.
                         </p>
                         <div className="flex items-center gap-6 text-sm text-gray-400">
                             <Link href="#" className="hover:text-white transition">Privacy Policy</Link>

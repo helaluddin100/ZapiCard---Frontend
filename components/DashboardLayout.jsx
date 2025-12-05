@@ -134,7 +134,7 @@ export default function DashboardLayout({ children }) {
       {/* Mobile Header */}
       <div className="lg:hidden bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between">
         <Link href="/" className="text-xl font-bold gradient-primary bg-clip-text text-transparent">
-          Zapi Card
+          Zapy Card
         </Link>
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -156,7 +156,7 @@ export default function DashboardLayout({ children }) {
           <div className="h-full flex flex-col">
             <div className="p-6 border-b border-gray-200 flex-shrink-0">
               <Link href="/" className="text-2xl font-bold gradient-primary bg-clip-text text-transparent">
-                Zapi Card
+                Zapy Card
               </Link>
             </div>
 
@@ -248,7 +248,7 @@ export default function DashboardLayout({ children }) {
                 <div className="flex items-center gap-4">
                   {/* Theme Toggle */}
                   <ThemeToggle />
-                  
+
                   {/* Notification Bell */}
                   <div className="relative">
                     <button

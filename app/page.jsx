@@ -54,7 +54,7 @@ export default function Home() {
     {
       id: 6,
       question: "Do I need an app to view someone's card?",
-      answer: "No! That's the beauty of Zapi Card. Recipients don't need any app. They simply tap their phone on your NFC card or scan the QR code, and your card opens instantly in their web browser. It works on any smartphone."
+      answer: "No! That's the beauty of Zapy Card. Recipients don't need any app. They simply tap their phone on your NFC card or scan the QR code, and your card opens instantly in their web browser. It works on any smartphone."
     },
     {
       id: 7,

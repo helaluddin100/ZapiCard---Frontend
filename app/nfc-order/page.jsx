@@ -85,7 +85,7 @@ export default function NFCOrderPage() {
                 if (!card.qrCode && card.slug) {
                     const cardUrl = typeof window !== 'undefined'
                         ? `${window.location.origin}/card/${card.slug}`
-                        : `https://zapicard.com/card/${card.slug}`
+                        : `https://zapycard.com/card/${card.slug}`
                     card.qrCode = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(cardUrl)}`
                 }
 

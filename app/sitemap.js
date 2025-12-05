@@ -1,6 +1,6 @@
 // Dynamic Sitemap for SEO
 export default async function sitemap() {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://zapicard.com'
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://zapycard.com'
 
     // Static routes
     const routes = [

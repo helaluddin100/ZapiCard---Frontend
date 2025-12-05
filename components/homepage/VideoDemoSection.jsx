@@ -4,8 +4,8 @@ import { motion } from 'framer-motion'
 import { PlayCircle } from 'lucide-react'
 
 export default function VideoDemoSection() {
-  return (
-    <section className="py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-900">
+    return (
+        <section className="py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-900">
             <div className="max-w-6xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -14,7 +14,7 @@ export default function VideoDemoSection() {
                     className="text-center mb-12"
                 >
                     <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-gray-100">
-                        See Zapi Card in Action
+                        See Zapy Card in Action
                     </h2>
                     <p className="text-xl text-gray-600 dark:text-gray-400">
                         Watch how easy it is to create and share your smart cards

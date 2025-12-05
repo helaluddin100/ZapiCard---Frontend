@@ -78,7 +78,7 @@ export default function FAQSection({ faqs, openFaq, setOpenFaq }) {
             Frequently Asked Questions
           </h2>
           <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Everything you need to know about Zapi Card
+            Everything you need to know about Zapy Card
           </p>
         </motion.div>
 
@@ -110,7 +110,7 @@ export default function FAQSection({ faqs, openFaq, setOpenFaq }) {
                     <div className={`flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm shadow-lg ${openFaq === faq.id ? 'scale-110' : ''} transition-transform`}>
                       {idx + 1}
                     </div>
-                    
+
                     {/* Question Text */}
                     <span className={`font-bold text-lg md:text-xl text-gray-900 dark:text-gray-100 pr-4 group-hover/button:text-blue-600 dark:group-hover/button:text-blue-400 transition-colors flex-1 ${openFaq === faq.id ? 'text-blue-600 dark:text-blue-400' : ''}`}>
                       {faq.question}
@@ -119,7 +119,7 @@ export default function FAQSection({ faqs, openFaq, setOpenFaq }) {
 
                   {/* Chevron Icon */}
                   <motion.div
-                    animate={{ 
+                    animate={{
                       rotate: openFaq === faq.id ? 180 : 0,
                       scale: openFaq === faq.id ? 1.1 : 1
                     }}
@@ -157,7 +157,7 @@ export default function FAQSection({ faqs, openFaq, setOpenFaq }) {
                       <div className="absolute top-4 right-4 opacity-20">
                         <Sparkles className="w-8 h-8 text-blue-500" />
                       </div>
-                      
+
                       <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-base md:text-lg relative z-10">
                         {faq.answer}
                       </p>

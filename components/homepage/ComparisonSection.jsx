@@ -187,7 +187,7 @@ export default function ComparisonSection() {
                                         <Sparkles className="w-12 h-12 text-white" />
                                     </motion.div>
                                     <h3 className="text-3xl md:text-4xl font-bold text-white mb-3">
-                                        Zapi Smart Cards
+                                        Zapy Smart Cards
                                     </h3>
                                     <p className="text-base text-white/90 font-medium">
                                         The future of networking

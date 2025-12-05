@@ -28,7 +28,7 @@ export default function ForgotPasswordPage() {
                         <>
                             <div className="text-center mb-8">
                                 <Link href="/" className="text-3xl font-bold gradient-primary bg-clip-text text-transparent inline-block mb-2">
-                                    Zapi Card
+                                    Zapy Card
                                 </Link>
                                 <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Forgot Password?</h2>
                                 <p className="text-gray-600 dark:text-gray-400 mt-2">

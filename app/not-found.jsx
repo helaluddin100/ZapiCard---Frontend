@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Home, Search, ArrowLeft } from 'lucide-react'
 
 export const metadata = {
-    title: '404 - Page Not Found | Zapi Card',
+    title: '404 - Page Not Found | Zapy Card',
     description: 'The page you are looking for does not exist.',
 }
 
