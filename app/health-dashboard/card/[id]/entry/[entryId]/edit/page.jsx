@@ -656,25 +656,24 @@ export default function EditEntryPage() {
                     </div>
                     <div className="overflow-x-auto pb-1">
                       <div className="flex gap-2 min-w-max pr-6">
-                      {['morning', 'noon', 'night'].map(timing => (
-                        <label
-                          key={timing}
-                          className={`flex items-center gap-2 px-4 py-2 border-2 rounded-lg cursor-pointer transition text-xs sm:text-sm font-medium capitalize whitespace-nowrap ${medicine.timing?.includes(timing)
-                            ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
-                            : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-                            }`}
-                        >
-                          <input
-                            type="checkbox"
-                            checked={medicine.timing?.includes(timing) || false}
-                            onChange={() => handleMedicineTiming(index, timing)}
-                            className="w-5 h-5 text-blue-600 dark:text-blue-400 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700"
-                          />
-                          <span>{timing}</span>
-                        </label>
-                      ))}
+                        {['morning', 'noon', 'night'].map(timing => (
+                          <label
+                            key={timing}
+                            className={`flex items-center gap-2 px-4 py-2 border-2 rounded-lg cursor-pointer transition text-xs sm:text-sm font-medium capitalize whitespace-nowrap ${medicine.timing?.includes(timing)
+                              ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
+                              : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                              }`}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={medicine.timing?.includes(timing) || false}
+                              onChange={() => handleMedicineTiming(index, timing)}
+                              className="w-5 h-5 text-blue-600 dark:text-blue-400 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700"
+                            />
+                            <span>{timing}</span>
+                          </label>
+                        ))}
                       </div>
-                    </div>
                     </div>
                     {formData.medicines.length > 1 && (
                       <button
@@ -998,32 +997,33 @@ export default function EditEntryPage() {
                       </div>
                       <div className="overflow-x-auto pb-1">
                         <div className="flex gap-2 min-w-max pr-6">
-                        {['morning', 'noon', 'night'].map(timing => (
-                          <label
-                            key={timing}
-                            className={`flex items-center gap-2 px-4 py-2 border-2 rounded-lg cursor-pointer text-xs sm:text-sm font-medium whitespace-nowrap ${medicine.timing?.includes(timing)
-                              ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
-                              : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-                              }`}
-                          >
-                            <input
-                              type="checkbox"
-                              checked={medicine.timing?.includes(timing) || false}
-                              onChange={() => {
-                                const newMedicines = [...editableAiOutput.medicines]
-                                const currentTiming = newMedicines[index].timing || []
-                                if (currentTiming.includes(timing)) {
-                                  newMedicines[index].timing = currentTiming.filter(t => t !== timing)
-                                } else {
-                                  newMedicines[index].timing = [...currentTiming, timing]
-                                }
-                                setEditableAiOutput(prev => ({ ...prev, medicines: newMedicines }))
-                              }}
-                              className="w-4 h-4 text-blue-600 dark:text-blue-400 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700"
-                            />
-                            <span className="capitalize">{timing}</span>
-                          </label>
-                        ))}
+                          {['morning', 'noon', 'night'].map(timing => (
+                            <label
+                              key={timing}
+                              className={`flex items-center gap-2 px-4 py-2 border-2 rounded-lg cursor-pointer text-xs sm:text-sm font-medium whitespace-nowrap ${medicine.timing?.includes(timing)
+                                ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
+                                : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                                }`}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={medicine.timing?.includes(timing) || false}
+                                onChange={() => {
+                                  const newMedicines = [...editableAiOutput.medicines]
+                                  const currentTiming = newMedicines[index].timing || []
+                                  if (currentTiming.includes(timing)) {
+                                    newMedicines[index].timing = currentTiming.filter(t => t !== timing)
+                                  } else {
+                                    newMedicines[index].timing = [...currentTiming, timing]
+                                  }
+                                  setEditableAiOutput(prev => ({ ...prev, medicines: newMedicines }))
+                                }}
+                                className="w-4 h-4 text-blue-600 dark:text-blue-400 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700"
+                              />
+                              <span className="capitalize">{timing}</span>
+                            </label>
+                          ))}
+                        </div>
                       </div>
                       {editableAiOutput.medicines.length > 1 && (
                         <button

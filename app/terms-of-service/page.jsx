@@ -143,10 +143,10 @@ export default function TermsOfServicePage() {
                     className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8"
                 >
                     <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                        Welcome to <strong>Zapy Card</strong>. These Terms and Conditions ("Terms") govern your use of our website, mobile applications, and services, including but not limited to digital business cards, health cards, NFC cards, and related services.
+                        Welcome to <strong>Zapy Card</strong>. These Terms and Conditions (&quot;Terms&quot;) govern your use of our website, mobile applications, and services, including but not limited to digital business cards, health cards, NFC cards, and related services.
                     </p>
                     <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                        These Terms are governed by the laws of the <strong>People's Republic of Bangladesh</strong>, including the Contract Act, 1872, the Sale of Goods Act, 1930, the Consumer Rights Protection Act, 2009, and other applicable laws. By using our services, you agree to comply with these Terms and all applicable Bangladeshi laws.
+                        These Terms are governed by the laws of the <strong>People&apos;s Republic of Bangladesh</strong>, including the Contract Act, 1872, the Sale of Goods Act, 1930, the Consumer Rights Protection Act, 2009, and other applicable laws. By using our services, you agree to comply with these Terms and all applicable Bangladeshi laws.
                     </p>
                 </motion.div>
 

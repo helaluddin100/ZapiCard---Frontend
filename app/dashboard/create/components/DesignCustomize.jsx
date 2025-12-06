@@ -250,7 +250,7 @@ export default function DesignCustomize({ formData, setFormData, onNext, onBack,
                             className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
                         />
                         <label htmlFor="enable-appointment" className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
-                            Enable "Book Appointment" button on card view
+                            Enable &quot;Book Appointment&quot; button on card view
                             <HelpCircle className="w-4 h-4 text-gray-400 dark:text-gray-500" title="Toggle to show/hide the appointment booking button on your public card page" />
                         </label>
                     </div>
