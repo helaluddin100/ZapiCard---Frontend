@@ -26,6 +26,18 @@ export default function Header() {
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
+    // Prevent body scroll when mobile menu is open
+    useEffect(() => {
+        if (mobileMenuOpen) {
+            document.body.style.overflow = 'hidden'
+        } else {
+            document.body.style.overflow = ''
+        }
+        return () => {
+            document.body.style.overflow = ''
+        }
+    }, [mobileMenuOpen])
+
     const navLinks = [
         { href: '/', label: 'Home', icon: Home },
         { href: '/#features', label: 'Features', icon: Sparkles },
@@ -39,9 +51,9 @@ export default function Header() {
         <motion.nav
             initial={{ y: -100 }}
             animate={{ y: 0 }}
-            className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
-                ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl shadow-lg border-b border-gray-200/50 dark:border-gray-700/50'
-                : 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg'
+            className={`fixed top-0 w-full z-[60] transition-all duration-300 bg-blur ${scrolled
+                ? 'bg-white/95 dark:bg-gray-900/95 shadow-lg border-b border-gray-200/50 dark:border-gray-700/50'
+                : 'bg-white/80 dark:bg-gray-900/80'
                 }`}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -190,7 +202,8 @@ export default function Header() {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setMobileMenuOpen(false)}
-                            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+                            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[55] md:hidden"
+                            style={{ touchAction: 'none' }}
                         />
 
                         {/* Slide-in Panel */}
@@ -199,14 +212,23 @@ export default function Header() {
                             animate={{ x: 0 }}
                             exit={{ x: '100%' }}
                             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-                            className="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white dark:bg-gray-900 shadow-2xl z-50 md:hidden overflow-y-auto"
+                            className="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white dark:bg-gray-900 shadow-2xl z-[60] md:hidden overflow-y-auto"
+                            style={{ touchAction: 'auto' }}
+                            onClick={(e) => e.stopPropagation()}
                         >
                             {/* Header with Gradient */}
                             <div className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 p-6 pb-8">
                                 <div className="flex items-center justify-between mb-6">
                                     <div className="flex items-center gap-3">
                                         <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center shadow-lg">
-                                            <Zap className="w-7 h-7 text-white" />
+                                            <Image
+                                                src={logo}
+                                                alt="Zapy Card Logo"
+                                                width={40}
+                                                height={40}
+                                                className="h-auto"
+                                                priority
+                                            />
                                         </div>
                                         <div>
                                             <h2 className="text-xl font-bold text-white">Menu</h2>
@@ -368,14 +390,14 @@ export default function Header() {
                                                 </motion.div>
 
                                                 {/* Theme Toggle */}
-                                                <motion.div
+                                                {/* <motion.div
                                                     initial={{ opacity: 0, y: 10 }}
                                                     animate={{ opacity: 1, y: 0 }}
                                                     transition={{ delay: navLinks.length * 0.05 + 0.2 }}
                                                     className="flex justify-center pt-4"
                                                 >
                                                     <ThemeToggle />
-                                                </motion.div>
+                                                </motion.div> */}
                                             </>
                                         )}
                                     </>

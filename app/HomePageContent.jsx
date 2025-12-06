@@ -90,10 +90,10 @@ export default function HomePageContent() {
       <HealthCardShowcase />
       <HowItWorksSection />
       <FeaturesSection />
-      <PricingSection />
+      {/* <PricingSection /> */}
       <BenefitsSection />
-      <VideoDemoSection />
-      <TrustedBySection />
+      {/* <VideoDemoSection /> */}
+      {/* <TrustedBySection /> */}
       <TestimonialsSection mounted={mounted} />
       <ComparisonSection />
       <FinalCTASection />

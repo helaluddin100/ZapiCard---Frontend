@@ -4,24 +4,24 @@ import { motion } from 'framer-motion'
 
 export default function StatsSection() {
     const stats = [
-        { number: '15K+', label: 'Active Users', color: 'from-blue-500 to-cyan-500' },
-        { number: '80K+', label: 'Cards Created', color: 'from-purple-500 to-pink-500' },
-        { number: '5K+', label: 'Health Cards', color: 'from-pink-500 to-rose-500' },
+        { number: '10K+', label: 'Active Users', color: 'from-blue-500 to-cyan-500' },
+        { number: '12K+', label: 'Cards Created', color: 'from-purple-500 to-pink-500' },
+        { number: '1.5K+', label: 'Health Cards', color: 'from-pink-500 to-rose-500' },
         { number: '4.9★', label: 'User Rating', color: 'from-blue-500 to-purple-500' }
     ]
 
-  return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-            Trusted by Thousands Worldwide
-          </h2>
+    return (
+        <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
+            <div className="max-w-7xl mx-auto">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="text-center mb-16"
+                >
+                    <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                        Trusted by Thousands Worldwide
+                    </h2>
                     <p className="text-lg text-gray-600 dark:text-gray-400">
                         Join the smart card revolution today
                     </p>
