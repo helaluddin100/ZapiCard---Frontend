@@ -189,10 +189,12 @@ export default function Footer() {
                         <h4 className="font-bold text-lg mb-6 text-white">Product</h4>
                         <ul className="space-y-3">
                             {[
+                                { href: '/about', label: 'About Us' },
+
                                 { href: '/#features', label: 'Features' },
-                                { href: '/#pricing', label: 'Pricing' },
+                                // { href: '/#pricing', label: 'Pricing' },
                                 { href: '/testimonials', label: 'Testimonials' },
-                                { href: '/nfc-order', label: 'Order NFC Card' }
+                                // { href: '/nfc-order', label: 'Order NFC Card' }
                             ].map((link, idx) => (
                                 <li key={idx}>
                                     <Link
@@ -217,7 +219,6 @@ export default function Footer() {
                         <h4 className="font-bold text-lg mb-6 text-white">Company</h4>
                         <ul className="space-y-3">
                             {[
-                                { href: '/about', label: 'About Us' },
                                 { href: '/contact', label: 'Contact' },
                                 { href: '/testimonials', label: 'Testimonials' },
                                 { href: '/#faq', label: 'FAQ' }
@@ -299,11 +300,12 @@ export default function Footer() {
                 <div className="border-t border-gray-800 pt-8">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                         <p className="text-gray-400 text-sm">
-                            &copy; 2024 Zapy Card. All rights reserved.
+                            &copy; 2025 Zapy Card. All rights reserved.
                         </p>
                         <div className="flex items-center gap-6 text-sm text-gray-400">
                             <Link href="/privacy-policy" className="hover:text-white transition">Privacy Policy</Link>
                             <Link href="/terms-of-service" className="hover:text-white transition">Terms of Service</Link>
+                            <Link href="/return-policy" className="hover:text-white transition">Return Policy</Link>
                         </div>
                     </div>
                 </div>
