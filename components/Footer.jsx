@@ -1,8 +1,10 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Facebook, Twitter, Instagram, Linkedin, Zap, Mail, ArrowUp } from 'lucide-react'
+import logo from '../app/assets/images/logo.png'
 
 export default function Footer() {
     const scrollToTop = () => {
@@ -26,33 +28,43 @@ export default function Footer() {
                         viewport={{ once: true }}
                         className="md:col-span-1"
                     >
-                        <Link href="/" className="flex items-center gap-2 mb-4 group">
+                        <Link href="/" className="inline-block mb-4 group">
                             <motion.div
-                                whileHover={{ rotate: 360 }}
-                                transition={{ duration: 0.5 }}
-                                className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg"
+                                whileHover={{ scale: 1.05 }}
+                                transition={{ duration: 0.3 }}
+                                className="flex items-center gap-2"
                             >
-                                <Zap className="w-6 h-6 text-white" />
+                                <Image
+                                    src={logo}
+                                    alt="Zapy Card Logo"
+                                    width={40}
+                                    height={50}
+                                    className="h-auto"
+                                    priority
+                                />
+                                <span className="text-2xl md:text-3xl font-bold gradient-primary bg-clip-text text-transparent group-hover:scale-105 transition-transform">
+                                    Zapy Card
+                                </span>
                             </motion.div>
-                            <span className="text-2xl font-bold gradient-primary bg-clip-text text-transparent">
-                                Zapy Card
-                            </span>
                         </Link>
                         <p className="text-gray-400 mb-6 leading-relaxed">
-                            Smart visiting cards for the modern professional. Network smarter, not harder.
+                            Smart digital cards for business networking and healthcare. Create your digital identity with NFC & QR technology.
                         </p>
                         <div className="flex space-x-4">
                             {[
-                                { icon: Facebook, color: 'hover:text-blue-400' },
-                                { icon: Twitter, color: 'hover:text-blue-400' },
-                                { icon: Instagram, color: 'hover:text-pink-400' },
-                                { icon: Linkedin, color: 'hover:text-blue-400' }
+                                { icon: Facebook, color: 'hover:text-blue-400', href: 'https://facebook.com/zapycards', ariaLabel: 'Facebook' },
+                                { icon: Twitter, color: 'hover:text-blue-400', href: 'https://twitter.com/zapycards', ariaLabel: 'Twitter' },
+                                { icon: Instagram, color: 'hover:text-pink-400', href: 'https://instagram.com/zapycards', ariaLabel: 'Instagram' },
+                                { icon: Linkedin, color: 'hover:text-blue-400', href: 'https://linkedin.com/company/zapycards', ariaLabel: 'LinkedIn' }
                             ].map((social, idx) => {
                                 const Icon = social.icon
                                 return (
                                     <motion.a
                                         key={idx}
-                                        href="#"
+                                        href={social.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={social.ariaLabel}
                                         whileHover={{ scale: 1.2, y: -2 }}
                                         whileTap={{ scale: 0.9 }}
                                         className={`w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center text-gray-400 ${social.color} transition-all border border-gray-700 hover:border-gray-600`}
@@ -155,8 +167,8 @@ export default function Footer() {
                             &copy; 2024 Zapy Card. All rights reserved.
                         </p>
                         <div className="flex items-center gap-6 text-sm text-gray-400">
-                            <Link href="#" className="hover:text-white transition">Privacy Policy</Link>
-                            <Link href="#" className="hover:text-white transition">Terms of Service</Link>
+                            <Link href="/privacy-policy" className="hover:text-white transition">Privacy Policy</Link>
+                            <Link href="/terms-of-service" className="hover:text-white transition">Terms of Service</Link>
                         </div>
                     </div>
                 </div>

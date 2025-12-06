@@ -1,10 +1,12 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { useState, Suspense } from 'react'
 import { Lock, CheckCircle2, ArrowLeft } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
+import logo from '../assets/images/logo.png'
 
 function ResetPasswordForm() {
     const searchParams = useSearchParams()
@@ -80,8 +82,15 @@ function ResetPasswordForm() {
             >
                 <div className="glass-effect rounded-2xl p-8 shadow-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                     <div className="text-center mb-8">
-                        <Link href="/" className="text-3xl font-bold gradient-primary bg-clip-text text-transparent inline-block mb-2">
-                            Zapy Card
+                        <Link href="/" className="inline-block mb-4 hover:opacity-80 transition-opacity">
+                            <Image
+                                src={logo}
+                                alt="Zapy Card Logo"
+                                width={80}
+                                height={40}
+                                className="h-auto mx-auto"
+                                priority
+                            />
                         </Link>
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Reset Your Password</h2>
                         <p className="text-gray-600 dark:text-gray-400 mt-2">Enter your new password below</p>

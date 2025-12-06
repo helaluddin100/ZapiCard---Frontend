@@ -1,12 +1,14 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Mail, Lock, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react'
 import authAPI from '@/lib/api'
 import { useAuth } from '@/lib/auth'
+import logo from '../assets/images/logo.png'
 
 function LoginForm() {
   const router = useRouter()
@@ -158,8 +160,15 @@ function LoginForm() {
       >
         <div className="glass-effect rounded-2xl p-8 shadow-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <div className="text-center mb-8">
-            <Link href="/" className="text-3xl font-bold gradient-primary bg-clip-text text-transparent inline-block mb-2">
-              Zapy Card
+            <Link href="/" className="inline-block mb-4 hover:opacity-80 transition-opacity">
+              <Image
+                src={logo}
+                alt="Zapy Card Logo"
+                width={80}
+                height={40}
+                className="h-auto mx-auto"
+                priority
+              />
             </Link>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Welcome Back</h2>
             <p className="text-gray-600 dark:text-gray-400 mt-2">Sign in to your account</p>
@@ -191,8 +200,8 @@ function LoginForm() {
                   onBlur={() => handleBlur('email')}
                   disabled={loading}
                   className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${touched.email && fieldErrors.email
-                      ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
-                      : 'border-gray-300 dark:border-gray-600'
+                    ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                    : 'border-gray-300 dark:border-gray-600'
                     }`}
                   placeholder="you@example.com"
                 />
@@ -223,8 +232,8 @@ function LoginForm() {
                   onBlur={() => handleBlur('password')}
                   disabled={loading}
                   className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${touched.password && fieldErrors.password
-                      ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
-                      : 'border-gray-300 dark:border-gray-600'
+                    ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                    : 'border-gray-300 dark:border-gray-600'
                     }`}
                   placeholder="••••••••"
                 />

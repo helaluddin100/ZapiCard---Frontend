@@ -1,12 +1,14 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Mail, Lock, User, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react'
 import authAPI from '@/lib/api'
 import { useAuth } from '@/lib/auth'
+import logo from '../assets/images/logo.png'
 
 export default function SignupPage() {
   const router = useRouter()
@@ -197,8 +199,15 @@ export default function SignupPage() {
       >
         <div className="glass-effect rounded-2xl p-8 shadow-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <div className="text-center mb-8">
-            <Link href="/" className="text-3xl font-bold gradient-primary bg-clip-text text-transparent inline-block mb-2">
-              Zapy Card
+            <Link href="/" className="inline-block mb-4 hover:opacity-80 transition-opacity">
+              <Image
+                src={logo}
+                alt="Zapy Card Logo"
+                width={80}
+                height={40}
+                className="h-auto mx-auto"
+                priority
+              />
             </Link>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Create Your Account</h2>
             <p className="text-gray-600 dark:text-gray-400 mt-2">Start building your smart visiting card</p>
@@ -230,8 +239,8 @@ export default function SignupPage() {
                   onBlur={() => handleBlur('name')}
                   disabled={loading}
                   className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${touched.name && fieldErrors.name
-                      ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
-                      : 'border-gray-300 dark:border-gray-600'
+                    ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                    : 'border-gray-300 dark:border-gray-600'
                     }`}
                   placeholder="John Doe"
                 />
@@ -262,8 +271,8 @@ export default function SignupPage() {
                   onBlur={() => handleBlur('email')}
                   disabled={loading}
                   className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${touched.email && fieldErrors.email
-                      ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
-                      : 'border-gray-300 dark:border-gray-600'
+                    ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                    : 'border-gray-300 dark:border-gray-600'
                     }`}
                   placeholder="you@example.com"
                 />
@@ -294,8 +303,8 @@ export default function SignupPage() {
                   onBlur={() => handleBlur('password')}
                   disabled={loading}
                   className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${touched.password && fieldErrors.password
-                      ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
-                      : 'border-gray-300 dark:border-gray-600'
+                    ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                    : 'border-gray-300 dark:border-gray-600'
                     }`}
                   placeholder="••••••••"
                 />
@@ -340,8 +349,8 @@ export default function SignupPage() {
                   onBlur={() => handleBlur('confirmPassword')}
                   disabled={loading}
                   className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${touched.confirmPassword && fieldErrors.confirmPassword
-                      ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
-                      : 'border-gray-300 dark:border-gray-600'
+                    ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                    : 'border-gray-300 dark:border-gray-600'
                     }`}
                   placeholder="••••••••"
                 />

@@ -35,20 +35,23 @@ export default function ContactPage() {
               {
                 icon: <Phone className="w-8 h-8" />,
                 title: 'Phone',
-                content: '+1 (555) 123-4567',
-                link: 'tel:+15551234567',
+                content: '+880 1744220807',
+                link: 'tel:+8801744220807',
+                note: 'Sunday-Thursday, 9AM-5PM EST',
               },
               {
                 icon: <MapPin className="w-8 h-8" />,
-                title: 'Address',
-                content: '123 Business St, Tech City, TC 12345',
+                title: 'Office',
+                content: 'Dhaka, Bangladesh',
                 link: null,
+                note: 'Remote-first company',
               },
               {
                 icon: <MessageCircle className="w-8 h-8" />,
-                title: 'Live Chat',
-                content: 'Available 24/7',
+                title: 'Support',
+                content: 'Email or Contact Form',
                 link: null,
+                note: 'We respond within 24 hours',
               },
             ].map((item, idx) => (
               <div
@@ -70,6 +73,9 @@ export default function ContactPage() {
                   </a>
                 ) : (
                   <p className="text-gray-600 dark:text-gray-400">{item.content}</p>
+                )}
+                {item.note && (
+                  <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">{item.note}</p>
                 )}
               </div>
             ))}

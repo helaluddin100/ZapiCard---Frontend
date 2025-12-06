@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -8,6 +9,7 @@ import { Menu, X, Zap, LayoutDashboard, User, LogOut, Home, Sparkles, Award, Mes
 import { useAuth } from '@/lib/auth'
 import authAPI from '@/lib/api'
 import ThemeToggle from '@/components/ThemeToggle'
+import logo from '../app/assets/images/logo.png'
 
 export default function Header() {
     const router = useRouter()
@@ -27,8 +29,8 @@ export default function Header() {
     const navLinks = [
         { href: '/', label: 'Home', icon: Home },
         { href: '/#features', label: 'Features', icon: Sparkles },
-        { href: '/#pricing', label: 'Pricing', icon: Award },
-        { href: '/#testimonials', label: 'Testimonials', icon: MessageSquare },
+        // { href: '/#pricing', label: 'Pricing', icon: Award },
+        { href: '/testimonials', label: 'Testimonials', icon: MessageSquare },
         { href: '/about', label: 'About', icon: Info },
         { href: '/contact', label: 'Contact', icon: Phone }
     ]
@@ -50,11 +52,18 @@ export default function Header() {
                         className="flex items-center gap-2 group"
                     >
                         <motion.div
-                            whileHover={{ rotate: 360, scale: 1.1 }}
-                            transition={{ duration: 0.5 }}
-                            className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg"
+                            whileHover={{ scale: 1.05 }}
+                            transition={{ duration: 0.3 }}
+                            className="flex items-center"
                         >
-                            <Zap className="w-6 h-6 text-white" />
+                            <Image
+                                src={logo}
+                                alt="Zapy Card Logo"
+                                width={100}
+                                height={40}
+                                className="h-8 md:h-10 w-auto"
+                                priority
+                            />
                         </motion.div>
                         <span className="text-2xl md:text-3xl font-bold gradient-primary bg-clip-text text-transparent group-hover:scale-105 transition-transform">
                             Zapy Card

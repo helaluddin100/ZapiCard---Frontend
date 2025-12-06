@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter } from 'next/navigation'
@@ -8,6 +9,7 @@ import { Mail, CheckCircle2, XCircle, ArrowRight, RefreshCw, AlertCircle } from 
 import { useSearchParams } from 'next/navigation'
 import authAPI from '@/lib/api'
 import { useAuth } from '@/lib/auth'
+import logo from '../assets/images/logo.png'
 
 function VerifyEmailForm() {
     const router = useRouter()
@@ -135,6 +137,16 @@ function VerifyEmailForm() {
                             animate={{ opacity: 1 }}
                             className="text-center"
                         >
+                            <Link href="/" className="inline-block mb-6 hover:opacity-80 transition-opacity">
+                                <Image
+                                    src={logo}
+                                    alt="Zapy Card Logo"
+                                    width={80}
+                                    height={40}
+                                    className="h-auto mx-auto"
+                                    priority
+                                />
+                            </Link>
                             <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Verify Your Email</h2>
                             <p className="text-gray-600 dark:text-gray-400 mb-6">
                                 We&apos;ve sent a 6-digit verification code to <strong className="text-gray-900 dark:text-gray-100">{email}</strong>

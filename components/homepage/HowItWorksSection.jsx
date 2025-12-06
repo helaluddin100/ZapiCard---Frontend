@@ -1,38 +1,39 @@
 'use client'
 
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { UserPlus, FileEdit, Share2, Sparkles, ArrowRight } from 'lucide-react'
 
 export default function HowItWorksSection() {
-    const steps = [
-        { 
-            step: "1", 
-            title: "Create Account", 
-            desc: "Sign up for free and choose your card type - Visiting or Health Card", 
-            icon: UserPlus,
-            iconColor: 'from-blue-500 to-cyan-500',
-            bgColor: 'from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20',
-            borderColor: 'border-blue-200 dark:border-blue-800'
-        },
-        { 
-            step: "2", 
-            title: "Add Information", 
-            desc: "Fill in your details or upload prescriptions for AI to read automatically", 
-            icon: FileEdit,
-            iconColor: 'from-purple-500 to-pink-500',
-            bgColor: 'from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20',
-            borderColor: 'border-purple-200 dark:border-purple-800'
-        },
-        { 
-            step: "3", 
-            title: "Share & Access", 
-            desc: "Share via QR code, NFC tap, or direct link - instant access anywhere!", 
-            icon: Share2,
-            iconColor: 'from-pink-500 to-rose-500',
-            bgColor: 'from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20',
-            borderColor: 'border-pink-200 dark:border-pink-800'
-        }
-    ]
+  const steps = [
+    {
+      step: "1",
+      title: "Create Account",
+      desc: "Sign up for free and choose your card type - Visiting or Health Card",
+      icon: UserPlus,
+      iconColor: 'from-blue-500 to-cyan-500',
+      bgColor: 'from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20',
+      borderColor: 'border-blue-200 dark:border-blue-800'
+    },
+    {
+      step: "2",
+      title: "Add Information",
+      desc: "Fill in your details or upload prescriptions for AI to read automatically",
+      icon: FileEdit,
+      iconColor: 'from-purple-500 to-pink-500',
+      bgColor: 'from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20',
+      borderColor: 'border-purple-200 dark:border-purple-800'
+    },
+    {
+      step: "3",
+      title: "Share & Access",
+      desc: "Share via QR code, NFC tap, or direct link - instant access anywhere!",
+      icon: Share2,
+      iconColor: 'from-pink-500 to-rose-500',
+      bgColor: 'from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20',
+      borderColor: 'border-pink-200 dark:border-pink-800'
+    }
+  ]
 
   return (
     <section className="py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
@@ -155,19 +156,21 @@ export default function HowItWorksSection() {
           <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-6">
             Ready to get started? It only takes a few minutes!
           </p>
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold text-lg rounded-xl shadow-2xl hover:shadow-blue-500/50 transition-all cursor-pointer"
-          >
-            <span>Get Started Now</span>
-            <motion.span
-              animate={{ x: [0, 5, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
+          <Link href="/signup">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold text-lg rounded-xl shadow-2xl hover:shadow-blue-500/50 transition-all cursor-pointer"
             >
-              <ArrowRight className="w-5 h-5" />
-            </motion.span>
-          </motion.div>
+              <span>Get Started Now</span>
+              <motion.span
+                animate={{ x: [0, 5, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                <ArrowRight className="w-5 h-5" />
+              </motion.span>
+            </motion.div>
+          </Link>
         </motion.div>
       </div>
     </section>
