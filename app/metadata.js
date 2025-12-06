@@ -99,9 +99,13 @@ export function generateMetadata({
             images: [metaImage],
         },
         icons: {
-            icon: '/favicon.ico',
-            shortcut: '/favicon-16x16.png',
-            apple: '/apple-touch-icon.png',
+            icon: [
+                { url: '/favicon.png', type: 'image/png' },
+                { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
+                { url: '/favicon.png', sizes: '16x16', type: 'image/png' },
+            ],
+            shortcut: '/favicon.png',
+            apple: '/favicon.png',
         },
         manifest: '/site.webmanifest',
         verification: {
