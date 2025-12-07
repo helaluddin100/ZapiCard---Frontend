@@ -55,30 +55,6 @@ export default function OrdersPage() {
         loadOrders()
     }
 
-    const getStatusColor = (status) => {
-        const colors = {
-            'pending': 'bg-yellow-100 text-yellow-800',
-            'confirmed': 'bg-blue-100 text-blue-800',
-            'processing': 'bg-purple-100 text-purple-800',
-            'shipped': 'bg-indigo-100 text-indigo-800',
-            'delivered': 'bg-green-100 text-green-800',
-            'cancelled': 'bg-red-100 text-red-800',
-            'refunded': 'bg-gray-100 text-gray-800'
-        }
-        return colors[status] || 'bg-gray-100 text-gray-800'
-    }
-
-    const getPaymentStatusColor = (status) => {
-        const colors = {
-            'pending': 'bg-yellow-100 text-yellow-800',
-            'processing': 'bg-blue-100 text-blue-800',
-            'completed': 'bg-green-100 text-green-800',
-            'failed': 'bg-red-100 text-red-800',
-            'refunded': 'bg-gray-100 text-gray-800',
-            'cancelled': 'bg-red-100 text-red-800'
-        }
-        return colors[status] || 'bg-gray-100 text-gray-800'
-    }
 
     const filteredOrders = orders.filter(order => {
         if (searchTerm) {
@@ -93,11 +69,36 @@ export default function OrdersPage() {
         return true
     })
 
+    const getStatusColor = (status) => {
+        const colors = {
+            'pending': 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300',
+            'confirmed': 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300',
+            'processing': 'bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300',
+            'shipped': 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300',
+            'delivered': 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300',
+            'cancelled': 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300',
+            'refunded': 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
+        }
+        return colors[status] || 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
+    }
+
+    const getPaymentStatusColor = (status) => {
+        const colors = {
+            'pending': 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300',
+            'processing': 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300',
+            'completed': 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300',
+            'failed': 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300',
+            'refunded': 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300',
+            'cancelled': 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300'
+        }
+        return colors[status] || 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
+    }
+
     if (loading) {
         return (
             <DashboardLayout>
                 <div className="flex items-center justify-center min-h-screen">
-                    <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+                    <Loader2 className="w-8 h-8 animate-spin text-blue-500 dark:text-blue-400" />
                 </div>
             </DashboardLayout>
         )
@@ -108,24 +109,24 @@ export default function OrdersPage() {
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">My Orders</h1>
-                    <p className="text-gray-600">View and manage all your orders</p>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">My Orders</h1>
+                    <p className="text-gray-600 dark:text-gray-400">View and manage all your orders</p>
                 </div>
 
                 {/* Filters */}
-                <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 border border-gray-200 dark:border-gray-700">
                     <div className="grid md:grid-cols-4 gap-4">
                         {/* Search */}
                         <div className="md:col-span-2">
                             <div className="relative">
-                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
                                 <input
                                     type="text"
                                     placeholder="Search orders..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                     onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                                 />
                             </div>
                         </div>
@@ -135,7 +136,7 @@ export default function OrdersPage() {
                             <select
                                 value={filterStatus}
                                 onChange={(e) => setFilterStatus(e.target.value)}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                             >
                                 <option value="all">All Status</option>
                                 <option value="pending">Pending</option>
@@ -152,7 +153,7 @@ export default function OrdersPage() {
                             <select
                                 value={filterPaymentStatus}
                                 onChange={(e) => setFilterPaymentStatus(e.target.value)}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                             >
                                 <option value="all">All Payments</option>
                                 <option value="pending">Pending</option>
@@ -166,13 +167,13 @@ export default function OrdersPage() {
 
                 {/* Orders List */}
                 {filteredOrders.length === 0 ? (
-                    <div className="bg-white rounded-xl shadow-lg p-12 text-center">
-                        <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">No orders found</h3>
-                        <p className="text-gray-600 mb-6">You haven&apos;t placed any orders yet.</p>
+                    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-12 text-center border border-gray-200 dark:border-gray-700">
+                        <Package className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">No orders found</h3>
+                        <p className="text-gray-600 dark:text-gray-400 mb-6">You haven&apos;t placed any orders yet.</p>
                         <Link
                             href="/dashboard/products"
-                            className="inline-flex items-center px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition font-medium"
+                            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transition font-medium shadow-lg hover:shadow-xl"
                         >
                             Browse Products
                             <ArrowRight className="w-5 h-5 ml-2" />
@@ -186,15 +187,15 @@ export default function OrdersPage() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
-                                className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition"
+                                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition border border-gray-200 dark:border-gray-700"
                             >
                                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                                     {/* Order Info */}
                                     <div className="flex-1">
                                         <div className="flex items-start gap-4 mb-4">
                                             <div className="flex-1">
-                                                <div className="flex items-center gap-2 mb-2">
-                                                    <h3 className="text-lg font-bold text-gray-900">
+                                                <div className="flex items-center gap-2 mb-2 flex-wrap">
+                                                    <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
                                                         {order.order_number}
                                                     </h3>
                                                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.order_status)}`}>
@@ -204,22 +205,22 @@ export default function OrdersPage() {
                                                         {order.payment_status}
                                                     </span>
                                                 </div>
-                                                <p className="text-gray-900 font-medium mb-1">{order.product_name}</p>
-                                                <p className="text-sm text-gray-600">Quantity: {order.quantity}</p>
+                                                <p className="text-gray-900 dark:text-gray-100 font-medium mb-1">{order.product_name}</p>
+                                                <p className="text-sm text-gray-600 dark:text-gray-400">Quantity: {order.quantity}</p>
                                             </div>
                                         </div>
 
                                         {/* Order Details */}
                                         <div className="grid md:grid-cols-3 gap-4 text-sm">
-                                            <div className="flex items-center text-gray-600">
+                                            <div className="flex items-center text-gray-600 dark:text-gray-400">
                                                 <Calendar className="w-4 h-4 mr-2" />
                                                 {new Date(order.created_at).toLocaleDateString()}
                                             </div>
-                                            <div className="flex items-center text-gray-600">
+                                            <div className="flex items-center text-gray-600 dark:text-gray-400">
                                                 <CreditCard className="w-4 h-4 mr-2" />
                                                 {order.currency_symbol}{parseFloat(order.total_amount).toFixed(2)}
                                             </div>
-                                            <div className="text-gray-600">
+                                            <div className="text-gray-600 dark:text-gray-400">
                                                 Payment: {order.payment_method}
                                             </div>
                                         </div>
@@ -229,7 +230,7 @@ export default function OrdersPage() {
                                     <div className="flex items-center gap-3">
                                         <Link
                                             href={`/dashboard/orders/${order.id}/confirmation`}
-                                            className="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition font-medium"
+                                            className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transition font-medium shadow-lg hover:shadow-xl"
                                         >
                                             <Eye className="w-4 h-4 mr-2" />
                                             View Details
