@@ -3,10 +3,10 @@
 import { useState, useEffect } from 'react'
 import { useParams, useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import DashboardLayout from '@/components/DashboardLayout'
 import { useToast } from '@/lib/toast'
-import { productAPI, orderAPI, paymentAPI } from '@/lib/api'
+import { productAPI, orderAPI, paymentAPI, cardAPI, healthCardAPI } from '@/lib/api'
 import {
     ArrowLeft,
     CreditCard,
@@ -19,7 +19,9 @@ import {
     Package,
     Phone,
     Mail,
-    MapPin
+    MapPin,
+    Heart,
+    Briefcase
 } from 'lucide-react'
 
 export default function CheckoutPage() {
@@ -30,12 +32,21 @@ export default function CheckoutPage() {
     const [product, setProduct] = useState(null)
     const [loading, setLoading] = useState(true)
     const [processing, setProcessing] = useState(false)
-    const [paymentMethod, setPaymentMethod] = useState('stripe')
-    const [showManualPayment, setShowManualPayment] = useState(false)
     const [selectedManualPayment, setSelectedManualPayment] = useState('bkash')
+    const [showPaymentModal, setShowPaymentModal] = useState(false)
+    const [cards, setCards] = useState([])
+    const [loadingCards, setLoadingCards] = useState(true)
+
+    // Payment modal form data
+    const [paymentFormData, setPaymentFormData] = useState({
+        sender_number: '',
+        transaction_id: ''
+    })
 
     // Form data
     const [formData, setFormData] = useState({
+        card_id: '',
+        card_type: '', // 'visiting' or 'health'
         name: '',
         email: '',
         phone: '',
@@ -48,6 +59,7 @@ export default function CheckoutPage() {
     useEffect(() => {
         if (params.slug) {
             loadProduct()
+            loadCards()
             const qty = searchParams.get('quantity')
             if (qty) {
                 setFormData(prev => ({ ...prev, quantity: parseInt(qty) || 1 }))
@@ -74,86 +86,113 @@ export default function CheckoutPage() {
         }
     }
 
+    const loadCards = async () => {
+        try {
+            setLoadingCards(true)
+            // Fetch both visiting cards and health cards
+            const [visitingCardsRes, healthCardsRes] = await Promise.all([
+                cardAPI.getCards().catch(() => ({ status: 'success', data: [] })),
+                healthCardAPI.getHealthCards().catch(() => ({ status: 'success', data: [] }))
+            ])
+
+            const visitingCards = visitingCardsRes.status === 'success' && visitingCardsRes.data
+                ? visitingCardsRes.data.map(card => ({
+                    id: card.id,
+                    name: card.name || 'Unnamed Card',
+                    type: 'visiting',
+                    displayName: `${card.name || 'Unnamed Card'} (Visiting Card)`
+                }))
+                : []
+
+            const healthCards = healthCardsRes.status === 'success' && healthCardsRes.data
+                ? healthCardsRes.data.map(card => ({
+                    id: card.id,
+                    name: card.person_name || 'Unnamed Health Card',
+                    type: 'health',
+                    displayName: `${card.person_name || 'Unnamed Health Card'} (Health Card)`
+                }))
+                : []
+
+            // Combine both types
+            setCards([...visitingCards, ...healthCards])
+        } catch (err) {
+            console.error('Error loading cards:', err)
+            setCards([])
+        } finally {
+            setLoadingCards(false)
+        }
+    }
+
     const handleInputChange = (e) => {
         const { name, value } = e.target
         setFormData(prev => ({ ...prev, [name]: value }))
     }
 
-    const handleStripeCheckout = async () => {
-        if (!validateForm()) return
-
-        try {
-            setProcessing(true)
-
-            // First create the order
-            const orderData = {
-                product_id: product.id,
-                quantity: formData.quantity,
-                customer_name: formData.name,
-                customer_email: formData.email,
-                customer_phone: formData.phone,
-                shipping_address: formData.address,
-                shipping_city: formData.city,
-                shipping_postal_code: formData.postal_code,
-                payment_method: 'stripe',
-                order_notes: 'Order placed via Stripe',
-            }
-
-            const orderResponse = await orderAPI.createOrder(orderData)
-
-            if (orderResponse.status === 'success') {
-                // TODO: Integrate with Stripe Checkout
-                // For now, show message
-                showError('Stripe integration pending. Please use manual payment for now.')
-                // Example:
-                // const response = await fetch('/api/create-stripe-session', {
-                //     method: 'POST',
-                //     body: JSON.stringify({ orderId: orderResponse.data.id, ...formData })
-                // })
-                // const { url } = await response.json()
-                // window.location.href = url
-            } else {
-                showError(orderResponse.message || 'Failed to create order')
-            }
-        } catch (err) {
-            console.error('Stripe checkout error:', err)
-            showError(err.message || 'Failed to process payment')
-        } finally {
-            setProcessing(false)
+    const handleCardSelect = (e) => {
+        const selectedValue = e.target.value
+        if (selectedValue) {
+            const [cardId, cardType] = selectedValue.split('|')
+            setFormData(prev => ({
+                ...prev,
+                card_id: cardId,
+                card_type: cardType
+            }))
+        } else {
+            setFormData(prev => ({
+                ...prev,
+                card_id: '',
+                card_type: ''
+            }))
         }
     }
 
-    const handleManualPayment = async () => {
+    const handlePaymentInputChange = (e) => {
+        const { name, value } = e.target
+        setPaymentFormData(prev => ({ ...prev, [name]: value }))
+    }
+
+    const handleMobileBankingClick = () => {
         if (!validateForm()) return
+        setShowPaymentModal(true)
+    }
+
+    const handlePlaceOrder = async () => {
+        // Validate payment form
+        if (!paymentFormData.sender_number.trim()) {
+            showError('Please enter sender number')
+            return
+        }
+        if (!paymentFormData.transaction_id.trim()) {
+            showError('Please enter transaction ID')
+            return
+        }
 
         try {
             setProcessing(true)
 
             const orderData = {
                 product_id: product.id,
+                card_id: formData.card_id,
+                card_type: formData.card_type,
                 quantity: formData.quantity,
                 customer_name: formData.name,
-                customer_email: formData.email,
+                customer_email: formData.email || null,
                 customer_phone: formData.phone,
                 shipping_address: formData.address,
                 shipping_city: formData.city,
                 shipping_postal_code: formData.postal_code,
                 payment_method: selectedManualPayment,
-                order_notes: `Order placed via ${selectedManualPayment}`,
+                payment_sender_number: paymentFormData.sender_number,
+                payment_transaction_id: paymentFormData.transaction_id,
+                order_notes: `Order placed via ${selectedManualPayment}. Transaction ID: ${paymentFormData.transaction_id}`,
             }
 
             const response = await orderAPI.createOrder(orderData)
 
             if (response.status === 'success') {
-                success('Order placed successfully! Please complete the payment using the instructions below.')
-                setShowManualPayment(true)
-                // Store order ID for later reference
-                localStorage.setItem('last_order_id', response.data.id)
-                localStorage.setItem('last_order_number', response.data.order_number)
-                // Redirect to confirmation page after a delay
-                setTimeout(() => {
-                    router.push(`/dashboard/orders/${response.data.id}/confirmation`)
-                }, 3000)
+                success('Order placed successfully!')
+                // Redirect to order confirmation
+                router.push(`/dashboard/orders/${response.data.id}/confirmation`)
             } else {
                 showError(response.message || 'Failed to create order')
             }
@@ -162,15 +201,21 @@ export default function CheckoutPage() {
             showError(err.message || 'Failed to create order')
         } finally {
             setProcessing(false)
+            setShowPaymentModal(false)
         }
     }
 
     const validateForm = () => {
+        if (!formData.card_id || !formData.card_type) {
+            showError('Please select a card profile')
+            return false
+        }
         if (!formData.name.trim()) {
             showError('Please enter your name')
             return false
         }
-        if (!formData.email.trim() || !formData.email.includes('@')) {
+        // Email is optional - only validate format if provided
+        if (formData.email && formData.email.trim() && !formData.email.includes('@')) {
             showError('Please enter a valid email')
             return false
         }
@@ -259,7 +304,9 @@ export default function CheckoutPage() {
         }
     ]
 
-    if (loading) {
+    const selectedPaymentMethod = manualPaymentMethods.find(m => m.id === selectedManualPayment)
+
+    if (loading || loadingCards) {
         return (
             <DashboardLayout>
                 <div className="flex items-center justify-center min-h-screen">
@@ -292,6 +339,32 @@ export default function CheckoutPage() {
                             <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Shipping Information</h2>
 
                             <div className="space-y-4">
+                                {/* Card Selection */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Select Card Profile * <span className="text-xs text-gray-500">(Choose which card you're ordering for)</span>
+                                    </label>
+                                    <select
+                                        name="card_id"
+                                        value={formData.card_id && formData.card_type ? `${formData.card_id}|${formData.card_type}` : ''}
+                                        onChange={handleCardSelect}
+                                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                                        required
+                                    >
+                                        <option value="">-- Select a Card --</option>
+                                        {cards.map((card) => (
+                                            <option key={`${card.type}-${card.id}`} value={`${card.id}|${card.type}`}>
+                                                {card.displayName}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {cards.length === 0 && (
+                                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                            No cards found. Please create a card first.
+                                        </p>
+                                    )}
+                                </div>
+
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Full Name *
@@ -309,7 +382,7 @@ export default function CheckoutPage() {
                                 <div className="grid md:grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                            Email *
+                                            Email
                                         </label>
                                         <input
                                             type="email"
@@ -317,7 +390,6 @@ export default function CheckoutPage() {
                                             value={formData.email}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
-                                            required
                                         />
                                     </div>
                                     <div>
@@ -410,51 +482,15 @@ export default function CheckoutPage() {
                             <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Payment Method</h2>
 
                             <div className="space-y-4">
-                                {/* Stripe */}
+                                {/* Mobile Banking Options */}
                                 <div
-                                    onClick={() => setPaymentMethod('stripe')}
-                                    className={`p-4 border-2 rounded-lg cursor-pointer transition ${paymentMethod === 'stripe'
-                                        ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/30'
-                                        : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
-                                        }`}
+                                    className="p-4 border-2 rounded-lg border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/30"
                                 >
-                                    <div className="flex items-center">
-                                        <input
-                                            type="radio"
-                                            name="payment"
-                                            value="stripe"
-                                            checked={paymentMethod === 'stripe'}
-                                            onChange={() => setPaymentMethod('stripe')}
-                                            className="w-5 h-5 text-blue-500 dark:text-blue-400"
-                                        />
-                                        <CreditCard className="w-6 h-6 ml-3 text-gray-700 dark:text-gray-300" />
-                                        <span className="ml-3 font-medium text-gray-900 dark:text-gray-100">Stripe (Credit/Debit Card)</span>
-                                    </div>
-                                </div>
-
-                                {/* Manual Payment Options */}
-                                <div
-                                    onClick={() => setPaymentMethod('manual')}
-                                    className={`p-4 border-2 rounded-lg cursor-pointer transition ${paymentMethod === 'manual'
-                                        ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/30'
-                                        : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
-                                        }`}
-                                >
-                                    <div className="flex items-center">
-                                        <input
-                                            type="radio"
-                                            name="payment"
-                                            value="manual"
-                                            checked={paymentMethod === 'manual'}
-                                            onChange={() => setPaymentMethod('manual')}
-                                            className="w-5 h-5 text-blue-500 dark:text-blue-400"
-                                        />
-                                        <Phone className="w-6 h-6 ml-3 text-gray-700 dark:text-gray-300" />
+                                    <div className="flex items-center mb-4">
+                                        <Phone className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                                         <span className="ml-3 font-medium text-gray-900 dark:text-gray-100">Mobile Banking (bKash/Rocket/Nagad)</span>
                                     </div>
-                                </div>
 
-                                {paymentMethod === 'manual' && (
                                     <div className="ml-8 mt-4 space-y-3">
                                         {manualPaymentMethods.map((method) => (
                                             <div
@@ -462,7 +498,7 @@ export default function CheckoutPage() {
                                                 onClick={() => setSelectedManualPayment(method.id)}
                                                 className={`p-3 border rounded-lg cursor-pointer transition ${selectedManualPayment === method.id
                                                     ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/30'
-                                                    : 'border-gray-200 dark:border-gray-600'
+                                                    : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                                                     }`}
                                             >
                                                 <div className="flex items-center">
@@ -479,11 +515,11 @@ export default function CheckoutPage() {
                                             </div>
                                         ))}
                                     </div>
-                                )}
+                                </div>
 
                                 {/* Payment Button */}
                                 <motion.button
-                                    onClick={paymentMethod === 'stripe' ? handleStripeCheckout : handleManualPayment}
+                                    onClick={handleMobileBankingClick}
                                     disabled={processing}
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
@@ -497,52 +533,12 @@ export default function CheckoutPage() {
                                     ) : (
                                         <>
                                             <Lock className="w-5 h-5 inline mr-2" />
-                                            {paymentMethod === 'stripe' ? 'Pay with Stripe' : 'Place Order'}
+                                            Place Order
                                         </>
                                     )}
                                 </motion.button>
                             </div>
                         </div>
-
-                        {/* Manual Payment Instructions */}
-                        {showManualPayment && paymentMethod === 'manual' && (
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-6 mt-6"
-                            >
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-                                    Payment Instructions - {manualPaymentMethods.find(m => m.id === selectedManualPayment)?.name}
-                                </h3>
-                                <div className="space-y-3">
-                                    <div className="flex items-center">
-                                        <Phone className="w-5 h-5 text-blue-600 dark:text-blue-400 mr-2" />
-                                        <span className="font-medium text-gray-900 dark:text-gray-100">Send payment to:</span>
-                                        <span className="ml-2 text-lg font-bold text-blue-600 dark:text-blue-400">
-                                            {manualPaymentMethods.find(m => m.id === selectedManualPayment)?.number}
-                                        </span>
-                                    </div>
-                                    <p className="text-gray-700 dark:text-gray-300">
-                                        {manualPaymentMethods.find(m => m.id === selectedManualPayment)?.instructions}
-                                    </p>
-                                    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 mt-4 border border-gray-200 dark:border-gray-700">
-                                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Amount to send:</p>
-                                        <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{currencySymbol}{total.toFixed(2)}</p>
-                                        {localStorage.getItem('last_order_number') && (
-                                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                                                Order Number: <span className="font-bold">{localStorage.getItem('last_order_number')}</span>
-                                            </p>
-                                        )}
-                                    </div>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-4">
-                                        After sending the payment, please contact us with your transaction ID. We will verify and process your order.
-                                    </p>
-                                    <p className="text-sm text-blue-600 dark:text-blue-400 font-medium mt-2">
-                                        You will be redirected to order confirmation page shortly...
-                                    </p>
-                                </div>
-                            </motion.div>
-                        )}
                     </div>
 
                     {/* Order Summary */}
@@ -591,7 +587,136 @@ export default function CheckoutPage() {
                     </div>
                 </div>
             </div>
+
+            {/* Payment Modal */}
+            <AnimatePresence>
+                {showPaymentModal && selectedPaymentMethod && (
+                    <>
+                        {/* Backdrop */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setShowPaymentModal(false)}
+                            className="fixed inset-0 bg-black bg-opacity-50 z-50"
+                        />
+
+                        {/* Modal */}
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+                                <div className="p-6">
+                                    {/* Header */}
+                                    <div className="flex items-center justify-between mb-6">
+                                        <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                                            Payment Details - {selectedPaymentMethod.name}
+                                        </h3>
+                                        <button
+                                            onClick={() => setShowPaymentModal(false)}
+                                            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400"
+                                        >
+                                            <X className="w-5 h-5" />
+                                        </button>
+                                    </div>
+
+                                    {/* Payment Information */}
+                                    <div className="space-y-4">
+                                        {/* Amount */}
+                                        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+                                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Amount to Pay</p>
+                                            <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                                                {currencySymbol}{total.toFixed(2)}
+                                            </p>
+                                        </div>
+
+                                        {/* Receiver Number */}
+                                        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+                                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Receiver Number</p>
+                                            <p className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center">
+                                                <Phone className="w-4 h-4 mr-2" />
+                                                {selectedPaymentMethod.number}
+                                            </p>
+                                        </div>
+
+                                        {/* Sender Number */}
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                                Your {selectedPaymentMethod.name} Number *
+                                            </label>
+                                            <input
+                                                type="tel"
+                                                name="sender_number"
+                                                value={paymentFormData.sender_number}
+                                                onChange={handlePaymentInputChange}
+                                                placeholder={`Enter your ${selectedPaymentMethod.name} number`}
+                                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                                                required
+                                            />
+                                        </div>
+
+                                        {/* Transaction ID */}
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                                Transaction ID *
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="transaction_id"
+                                                value={paymentFormData.transaction_id}
+                                                onChange={handlePaymentInputChange}
+                                                placeholder="Enter transaction ID"
+                                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                                                required
+                                            />
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                                Enter the transaction ID you received after sending money
+                                            </p>
+                                        </div>
+
+                                        {/* Instructions */}
+                                        <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-4 border border-yellow-200 dark:border-yellow-800">
+                                            <p className="text-sm text-gray-700 dark:text-gray-300">
+                                                <strong>Instructions:</strong> Send {currencySymbol}{total.toFixed(2)} to {selectedPaymentMethod.number} via {selectedPaymentMethod.name}. After sending, enter your number and the transaction ID above.
+                                            </p>
+                                        </div>
+
+                                        {/* Actions */}
+                                        <div className="flex gap-3 pt-4">
+                                            <button
+                                                onClick={() => setShowPaymentModal(false)}
+                                                className="flex-1 px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition font-medium"
+                                            >
+                                                Cancel
+                                            </button>
+                                            <motion.button
+                                                onClick={handlePlaceOrder}
+                                                disabled={processing || !paymentFormData.sender_number.trim() || !paymentFormData.transaction_id.trim()}
+                                                whileHover={{ scale: 1.02 }}
+                                                whileTap={{ scale: 0.98 }}
+                                                className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                            >
+                                                {processing ? (
+                                                    <>
+                                                        <Loader2 className="w-4 h-4 inline mr-2 animate-spin" />
+                                                        Processing...
+                                                    </>
+                                                ) : (
+                                                    'Place Order'
+                                                )}
+                                            </motion.button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
         </DashboardLayout>
     )
 }
-
