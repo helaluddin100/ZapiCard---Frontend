@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -22,6 +23,7 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@/lib/auth'
 import ThemeToggle from '@/components/ThemeToggle'
+import logo from '../app/assets/images/logo.png'
 
 export default function DashboardLayout({ children }) {
   const router = useRouter()
@@ -133,8 +135,18 @@ export default function DashboardLayout({ children }) {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Mobile Header */}
       <div className="lg:hidden bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between">
-        <Link href="/" className="text-xl font-bold gradient-primary bg-clip-text text-transparent">
-          Zapy Card
+        <Link href="/" className="flex items-center gap-2">
+          <Image
+            src={logo}
+            alt="Zapy Card Logo"
+            width={80}
+            height={40}
+            className="h-8 w-auto"
+            priority
+          />
+          <span className="text-xl font-bold gradient-primary bg-clip-text text-transparent">
+            Zapy Card
+          </span>
         </Link>
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -154,9 +166,19 @@ export default function DashboardLayout({ children }) {
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}>
           <div className="h-full flex flex-col">
-            <div className="p-6 border-b border-gray-200 flex-shrink-0">
-              <Link href="/" className="text-2xl font-bold gradient-primary bg-clip-text text-transparent">
-                Zapy Card
+            <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+              <Link href="/" className="flex items-center gap-3">
+                <Image
+                  src={logo}
+                  alt="Zapy Card Logo"
+                  width={100}
+                  height={40}
+                  className="h-8 md:h-10 w-auto"
+                  priority
+                />
+                <span className="text-2xl font-bold gradient-primary bg-clip-text text-transparent">
+                  Zapy Card
+                </span>
               </Link>
             </div>
 
