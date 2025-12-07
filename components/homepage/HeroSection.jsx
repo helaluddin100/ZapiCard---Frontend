@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { Heart, Briefcase, ArrowRight } from 'lucide-react'
 
 export default function HeroSection({ mounted }) {
     // Animated background icons
@@ -16,7 +17,7 @@ export default function HeroSection({ mounted }) {
     ]
 
     return (
-        <section className="relative pt-24 pb-20 md:pt-40 md:pb-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 min-h-[600px] md:min-h-[800px]">
+        <section className="relative pt-40 pb-20 md:pt-40 md:pb-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 min-h-[600px] md:min-h-[800px]">
             {/* Animated Background Gradient */}
             <div className="absolute inset-0 z-0">
                 <motion.div
@@ -91,20 +92,19 @@ export default function HeroSection({ mounted }) {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.3 }}
-                        className="text-3xl sm:text-4xl md:text-7xl lg:text-8xl font-bold mb-6 md:mb-8 text-white drop-shadow-2xl leading-tight px-2"
+                        className="text-3xl sm:text-4xl md:text-7xl lg:text-8xl font-bold mb-4 sm:mb-5 md:mb-6 lg:mb-8 text-white drop-shadow-2xl leading-tight px-2 space-y-2"
                     >
-                        Smart Cards for
-                        <br />
-                        <span className="bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 bg-clip-text text-transparent">
+                        <div className="block">Smart Cards for</div>
+                        <div className="block bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 bg-clip-text text-transparent">
                             Business & Health
-                        </span>
+                        </div>
                     </motion.h1>
 
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.5 }}
-                        className="text-base sm:text-lg md:text-2xl lg:text-3xl text-white/90 mb-6 md:mb-12 max-w-3xl mx-auto leading-relaxed font-light px-2"
+                        className="text-base sm:text-lg md:text-2xl lg:text-3xl text-white/90 mb-3 sm:mb-4 md:mb-5 lg:mb-6 max-w-3xl mx-auto leading-relaxed font-light px-2"
                     >
                         Create your digital identity with{' '}
                         <span className="font-semibold text-yellow-300">NFC & QR technology</span>
@@ -114,7 +114,7 @@ export default function HeroSection({ mounted }) {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.6 }}
-                        className="text-sm sm:text-base md:text-xl text-white/80 mb-8 md:mb-12 max-w-2xl mx-auto px-2"
+                        className="text-sm sm:text-base md:text-xl text-white/80 mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-2xl mx-auto px-2"
                     >
                         Professional networking meets healthcare innovation
                     </motion.p>
@@ -123,29 +123,41 @@ export default function HeroSection({ mounted }) {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.8 }}
-                        className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mt-4 px-4"
+                        className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center items-center mt-4 px-4"
                     >
                         <Link
                             href="/health-dashboard/create"
-                            className="group relative w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-5 bg-white text-blue-600 rounded-xl font-bold text-base sm:text-lg md:text-xl shadow-2xl hover:shadow-white/50 transition-all duration-300 transform hover:scale-105 border-2 border-white/20 text-center"
+                            className="group relative w-full sm:w-auto px-6 sm:px-8 md:px-12 py-3.5 sm:py-4 md:py-5 bg-white text-blue-600 rounded-xl font-bold text-base sm:text-lg md:text-xl shadow-2xl hover:shadow-white/50 transition-all duration-300 transform hover:scale-105 border-2 border-white/20 text-center overflow-hidden"
                         >
-                            <span className="flex items-center justify-center gap-2 sm:gap-3">
-                                🏥 Create Health Card
+                            <span className="relative z-10 flex items-center justify-center gap-2 sm:gap-3">
+                                <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 group-hover:scale-110 transition-transform" />
+                                <span>Create Health Card</span>
                                 <motion.span
                                     animate={{ x: [0, 5, 0] }}
                                     transition={{ duration: 1.5, repeat: Infinity }}
+                                    className="hidden sm:inline-block"
                                 >
-                                    →
+                                    <ArrowRight className="w-5 h-5" />
                                 </motion.span>
                             </span>
+                            <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-purple-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </Link>
                         <Link
                             href="/dashboard/create"
-                            className="group relative w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-5 bg-white/10 backdrop-blur-md text-white border-2 border-white/30 rounded-xl font-bold text-base sm:text-lg md:text-xl hover:bg-white/20 hover:border-white/50 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl text-center"
+                            className="group relative w-full sm:w-auto px-6 sm:px-8 md:px-12 py-3.5 sm:py-4 md:py-5 bg-white/10 backdrop-blur-md text-white border-2 border-white/30 rounded-xl font-bold text-base sm:text-lg md:text-xl hover:bg-white/20 hover:border-white/50 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl text-center overflow-hidden"
                         >
-                            <span className="flex items-center justify-center gap-2 sm:gap-3">
-                                📇 Create Visiting Card
+                            <span className="relative z-10 flex items-center justify-center gap-2 sm:gap-3">
+                                <Briefcase className="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:scale-110 transition-transform" />
+                                <span>Create Visiting Card</span>
+                                <motion.span
+                                    animate={{ x: [0, 5, 0] }}
+                                    transition={{ duration: 1.5, repeat: Infinity }}
+                                    className="hidden sm:inline-block"
+                                >
+                                    <ArrowRight className="w-5 h-5" />
+                                </motion.span>
                             </span>
+                            <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </Link>
                     </motion.div>
                 </motion.div>

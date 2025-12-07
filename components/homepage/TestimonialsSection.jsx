@@ -104,7 +104,7 @@ export default function TestimonialsSection({ mounted }) {
     }
 
     return (
-        <section id="testimonials" className="py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
+        <section id="testimonials" className="py-16 md:py-20 lg:py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
             {/* Background decorative elements */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-20 left-10 w-96 h-96 bg-blue-200 dark:bg-blue-900/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
@@ -117,26 +117,26 @@ export default function TestimonialsSection({ mounted }) {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="text-center mb-16"
+                    className="text-center  md:mb-12 lg:mb-16"
                 >
                     <motion.div
                         initial={{ scale: 0 }}
                         whileInView={{ scale: 1 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.2, type: 'spring' }}
-                        className="inline-block mb-6"
+                        className="inline-block mb-4 md:mb-5 lg:mb-6"
                     >
                         <span className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-700 dark:text-blue-300 text-sm font-semibold border border-blue-200 dark:border-blue-800">
                             ✨ Testimonials
                         </span>
                     </motion.div>
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4 gradient-primary bg-clip-text text-transparent">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 md:mb-3 lg:mb-4 gradient-primary bg-clip-text text-transparent leading-tight px-2">
                         What Our Users Say
                     </h2>
-                    <p className="text-gray-600 dark:text-gray-400 text-lg mb-6">Join thousands of satisfied professionals</p>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base md:text-lg mb-3 md:mb-4 lg:mb-5 px-2">Join thousands of satisfied professionals</p>
                     <Link
                         href="/testimonials"
-                        className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold group"
+                        className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold group mb-6 md:mb-8 lg:mb-10"
                     >
                         View All Testimonials
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -273,7 +273,7 @@ export default function TestimonialsSection({ mounted }) {
                             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
                         >
                             {testimonials.map((testimonial, idx) => (
-                                <div key={idx} className="min-w-full px-2">
+                                <div key={idx} className="min-w-full px-3">
                                     <motion.div
                                         initial={{ opacity: 0, scale: 0.9 }}
                                         animate={{ opacity: 1, scale: 1 }}
@@ -328,13 +328,13 @@ export default function TestimonialsSection({ mounted }) {
                                                 initial={{ opacity: 0, y: 10 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 transition={{ delay: 0.3 }}
-                                                className="text-gray-700 dark:text-gray-300 mb-6 italic text-base leading-relaxed relative z-10"
+                                                className="text-gray-700 dark:text-gray-300 mb-5 md:mb-6 italic text-sm sm:text-base leading-relaxed relative z-10"
                                             >
                                                 &ldquo;{testimonial.text}&rdquo;
                                             </motion.p>
 
                                             {/* Author Info */}
-                                            <div className="flex items-center gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                            <div className="flex items-center gap-3 sm:gap-4 pt-3 md:pt-4 border-t border-gray-200 dark:border-gray-700">
                                                 <motion.div
                                                     whileHover={{ scale: 1.1, rotate: 5 }}
                                                     className="relative w-14 h-14 flex-shrink-0"
@@ -354,7 +354,7 @@ export default function TestimonialsSection({ mounted }) {
                                                         initial={{ opacity: 0, x: -10 }}
                                                         animate={{ opacity: 1, x: 0 }}
                                                         transition={{ delay: 0.4 }}
-                                                        className="font-bold text-gray-900 dark:text-gray-100 text-lg"
+                                                        className="font-bold text-gray-900 dark:text-gray-100 text-base sm:text-lg"
                                                     >
                                                         {testimonial.name}
                                                     </motion.div>
@@ -362,7 +362,7 @@ export default function TestimonialsSection({ mounted }) {
                                                         initial={{ opacity: 0, x: -10 }}
                                                         animate={{ opacity: 1, x: 0 }}
                                                         transition={{ delay: 0.5 }}
-                                                        className="text-sm text-gray-600 dark:text-gray-400 font-medium"
+                                                        className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 font-medium mt-0.5"
                                                     >
                                                         {testimonial.role}
                                                     </motion.div>
@@ -370,7 +370,7 @@ export default function TestimonialsSection({ mounted }) {
                                                         initial={{ opacity: 0, x: -10 }}
                                                         animate={{ opacity: 1, x: 0 }}
                                                         transition={{ delay: 0.6 }}
-                                                        className="text-xs text-gray-500 dark:text-gray-500"
+                                                        className="text-xs text-gray-500 dark:text-gray-500 mt-0.5"
                                                     >
                                                         {testimonial.company}
                                                     </motion.div>
@@ -387,7 +387,7 @@ export default function TestimonialsSection({ mounted }) {
                     </div>
 
                     {/* Dots Indicator */}
-                    <div className="flex justify-center items-center gap-2.5 mt-8">
+                    <div className="flex justify-center items-center gap-2 mt-4 md:mt-5 lg:mt-6">
                         {testimonials.map((_, idx) => (
                             <button
                                 key={idx}
@@ -398,11 +398,11 @@ export default function TestimonialsSection({ mounted }) {
                                 {idx === currentSlide ? (
                                     <motion.div
                                         layoutId="activeDot"
-                                        className="w-12 h-3 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 shadow-lg shadow-purple-500/60 ring-2 ring-purple-400/40 dark:ring-purple-500/60"
+                                        className="w-10 h-2.5 sm:w-12 sm:h-3 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 shadow-lg shadow-purple-500/60 ring-2 ring-purple-400/40 dark:ring-purple-500/60"
                                         transition={{ type: "spring", stiffness: 500, damping: 30 }}
                                     />
                                 ) : (
-                                    <div className="w-3 h-3 rounded-full bg-gray-400/60 dark:bg-gray-500/60 group-hover:bg-gray-500 dark:group-hover:bg-gray-400 transition-all duration-300 group-hover:scale-125" />
+                                    <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-gray-400/60 dark:bg-gray-500/60 group-hover:bg-gray-500 dark:group-hover:bg-gray-400 transition-all duration-300 group-hover:scale-125" />
                                 )}
                             </button>
                         ))}
