@@ -124,13 +124,11 @@ export default function DashboardLayout({ children }) {
   const menuItems = [
     { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/dashboard/my-cards', label: 'My Cards', icon: CreditCard },
-    { href: '/dashboard/create', label: 'Create New Card', icon: Plus },
     { href: '/health-dashboard', label: 'Health Cards', icon: Heart },
+    { href: '/dashboard/appointments/list', label: 'Appointment List', icon: List },
+    { href: '/dashboard/appointments', label: 'Time Slots', icon: Calendar },
     { href: '/dashboard/products', label: 'Card Shop', icon: Store },
     { href: '/dashboard/orders', label: 'All Orders', icon: Package },
-    { href: '/dashboard/appointments', label: 'Time Slots', icon: Calendar },
-    { href: '/dashboard/appointments/list', label: 'Appointments List', icon: List },
-    { href: '/nfc-order', label: 'Order NFC Card', icon: ShoppingCart },
   ]
 
   return (
