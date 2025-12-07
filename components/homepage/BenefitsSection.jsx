@@ -56,7 +56,7 @@ export default function BenefitsSection() {
   ]
 
   return (
-    <section className="py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
+    <section className="py-16 md:py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -93,30 +93,30 @@ export default function BenefitsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-12 md:mb-16"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-block mb-6"
+            className="inline-block mb-4 md:mb-6"
           >
-            <span className="px-6 py-2.5 rounded-full bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-blue-300/30 dark:border-blue-600/30 text-blue-600 dark:text-blue-400 text-sm md:text-base font-semibold flex items-center gap-2">
-              <Star className="w-4 h-4" />
+            <span className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-blue-300/30 dark:border-blue-600/30 text-blue-600 dark:text-blue-400 text-xs sm:text-sm md:text-base font-semibold flex items-center gap-2">
+              <Star className="w-3 h-3 sm:w-4 sm:h-4" />
               Key Benefits
             </span>
           </motion.div>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent leading-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-gray-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent leading-tight px-2">
             Why Choose Zapy Card?
           </h2>
-          <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto px-2">
             Trusted by thousands of professionals and healthcare users worldwide
           </p>
         </motion.div>
 
         {/* Benefits Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {benefits.map((benefit, idx) => {
             const IconComponent = benefit.icon
             return (
@@ -130,20 +130,20 @@ export default function BenefitsSection() {
                 className="relative group"
               >
                 {/* Card */}
-                <div className={`relative h-full p-8 rounded-3xl border-2 transition-all duration-300 bg-gradient-to-br ${benefit.bgColor} ${benefit.borderColor} shadow-lg hover:shadow-2xl dark:bg-gray-800/50`}>
+                <div className={`relative h-full p-5 sm:p-6 md:p-8 rounded-2xl md:rounded-3xl border-2 transition-all duration-300 bg-gradient-to-br ${benefit.bgColor} ${benefit.borderColor} shadow-lg hover:shadow-2xl dark:bg-gray-800/50`}>
                   {/* Icon with gradient background */}
                   <motion.div
                     whileHover={{ scale: 1.1, rotate: 5 }}
-                    className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6 bg-gradient-to-br ${benefit.iconColor} shadow-lg`}
+                    className={`inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl md:rounded-2xl mb-4 md:mb-6 bg-gradient-to-br ${benefit.iconColor} shadow-lg`}
                   >
-                    <IconComponent className="w-8 h-8 text-white" />
+                    <IconComponent className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                   </motion.div>
 
                   {/* Content */}
-                  <h3 className="text-xl md:text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 md:mb-3 text-gray-900 dark:text-gray-100">
                     {benefit.title}
                   </h3>
-                  <p className="text-base md:text-lg leading-relaxed text-gray-600 dark:text-gray-400">
+                  <p className="text-sm sm:text-base md:text-lg leading-relaxed text-gray-600 dark:text-gray-400">
                     {benefit.description}
                   </p>
 

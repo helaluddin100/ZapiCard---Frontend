@@ -16,7 +16,7 @@ export default function HeroSection({ mounted }) {
     ]
 
     return (
-        <section className="relative pt-40 pb-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 min-h-[700px] md:min-h-[800px]">
+        <section className="relative pt-24 pb-20 md:pt-40 md:pb-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 min-h-[600px] md:min-h-[800px]">
             {/* Animated Background Gradient */}
             <div className="absolute inset-0 z-0">
                 <motion.div
@@ -91,7 +91,7 @@ export default function HeroSection({ mounted }) {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.3 }}
-                        className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 text-white drop-shadow-2xl leading-tight"
+                        className="text-3xl sm:text-4xl md:text-7xl lg:text-8xl font-bold mb-6 md:mb-8 text-white drop-shadow-2xl leading-tight px-2"
                     >
                         Smart Cards for
                         <br />
@@ -104,7 +104,7 @@ export default function HeroSection({ mounted }) {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.5 }}
-                        className="text-xl md:text-2xl lg:text-3xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed font-light"
+                        className="text-base sm:text-lg md:text-2xl lg:text-3xl text-white/90 mb-6 md:mb-12 max-w-3xl mx-auto leading-relaxed font-light px-2"
                     >
                         Create your digital identity with{' '}
                         <span className="font-semibold text-yellow-300">NFC & QR technology</span>
@@ -114,7 +114,7 @@ export default function HeroSection({ mounted }) {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.6 }}
-                        className="text-lg md:text-xl text-white/80 mb-12 max-w-2xl mx-auto"
+                        className="text-sm sm:text-base md:text-xl text-white/80 mb-8 md:mb-12 max-w-2xl mx-auto px-2"
                     >
                         Professional networking meets healthcare innovation
                     </motion.p>
@@ -123,13 +123,13 @@ export default function HeroSection({ mounted }) {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.8 }}
-                        className="flex flex-col sm:flex-row gap-6 justify-center items-center mt-4"
+                        className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mt-4 px-4"
                     >
                         <Link
                             href="/health-dashboard/create"
-                            className="group relative px-12 py-5 bg-white text-blue-600 rounded-xl font-bold text-xl shadow-2xl hover:shadow-white/50 transition-all duration-300 transform hover:scale-105 border-2 border-white/20"
+                            className="group relative w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-5 bg-white text-blue-600 rounded-xl font-bold text-base sm:text-lg md:text-xl shadow-2xl hover:shadow-white/50 transition-all duration-300 transform hover:scale-105 border-2 border-white/20 text-center"
                         >
-                            <span className="flex items-center gap-3">
+                            <span className="flex items-center justify-center gap-2 sm:gap-3">
                                 🏥 Create Health Card
                                 <motion.span
                                     animate={{ x: [0, 5, 0] }}
@@ -141,9 +141,9 @@ export default function HeroSection({ mounted }) {
                         </Link>
                         <Link
                             href="/dashboard/create"
-                            className="group relative px-12 py-5 bg-white/10 backdrop-blur-md text-white border-2 border-white/30 rounded-xl font-bold text-xl hover:bg-white/20 hover:border-white/50 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
+                            className="group relative w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-5 bg-white/10 backdrop-blur-md text-white border-2 border-white/30 rounded-xl font-bold text-base sm:text-lg md:text-xl hover:bg-white/20 hover:border-white/50 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl text-center"
                         >
-                            <span className="flex items-center gap-3">
+                            <span className="flex items-center justify-center gap-2 sm:gap-3">
                                 📇 Create Visiting Card
                             </span>
                         </Link>

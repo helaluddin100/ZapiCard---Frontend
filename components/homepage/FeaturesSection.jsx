@@ -44,7 +44,7 @@ export default function FeaturesSection() {
     ]
 
   return (
-    <section id="features" className="py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50/50 via-purple-50/50 to-pink-50/50 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 relative overflow-hidden">
+    <section id="features" className="py-16 md:py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50/50 via-purple-50/50 to-pink-50/50 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-10 left-10 w-96 h-96 bg-blue-200/20 rounded-full blur-3xl"></div>
@@ -58,29 +58,29 @@ export default function FeaturesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-12 md:mb-16"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-block mb-6"
+            className="inline-block mb-4 md:mb-6"
           >
-            <span className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-blue-300/30 dark:border-blue-600/30 text-blue-600 dark:text-blue-400 text-sm font-semibold flex items-center gap-2">
-              <Sparkles className="w-4 h-4" />
+            <span className="px-4 sm:px-6 py-2 rounded-full bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-blue-300/30 dark:border-blue-600/30 text-blue-600 dark:text-blue-400 text-xs sm:text-sm font-semibold flex items-center gap-2">
+              <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
               Core Features
             </span>
           </motion.div>
 
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 bg-gradient-to-r from-gray-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent px-2">
             Powerful Features for Every Need
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto px-2">
             Two revolutionary card systems in one platform - Business networking and Healthcare management
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
           {features.map((feature, idx) => {
             const IconComponent = feature.icon
             return (
@@ -98,7 +98,7 @@ export default function FeaturesSection() {
                   <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-3xl blur-xl opacity-75 group-hover:opacity-100 transition-opacity"></div>
                 )}
 
-                <div className={`relative h-full p-8 rounded-3xl border-2 transition-all duration-300 ${
+                <div className={`relative h-full p-5 sm:p-6 md:p-8 rounded-2xl md:rounded-3xl border-2 transition-all duration-300 ${
                   feature.highlight
                     ? 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 border-purple-400 shadow-2xl text-white'
                     : `bg-gradient-to-br ${feature.bgColor} ${feature.borderColor} shadow-lg hover:shadow-xl dark:bg-gray-800/50`
@@ -106,18 +106,18 @@ export default function FeaturesSection() {
                   {/* Icon with gradient background */}
                   <motion.div
                     whileHover={{ scale: 1.1, rotate: 5 }}
-                    className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6 ${
+                    className={`inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl md:rounded-2xl mb-4 md:mb-6 ${
                       feature.highlight
                         ? 'bg-white/20 backdrop-blur-sm border border-white/30'
                         : `bg-gradient-to-br ${feature.iconColor} shadow-lg`
                     }`}
                   >
-                    <IconComponent className={`w-8 h-8 ${
+                    <IconComponent className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 ${
                       feature.highlight ? 'text-white' : 'text-white'
                     }`} />
                   </motion.div>
 
-                  <h3 className={`text-xl md:text-2xl font-bold mb-3 ${
+                  <h3 className={`text-lg sm:text-xl md:text-2xl font-bold mb-2 md:mb-3 ${
                     feature.highlight ? 'text-white' : 'text-gray-900 dark:text-gray-100'
                   }`}>
                     {feature.title}
@@ -131,7 +131,7 @@ export default function FeaturesSection() {
                       </motion.span>
                     )}
                   </h3>
-                  <p className={`text-base leading-relaxed ${
+                  <p className={`text-sm sm:text-base leading-relaxed ${
                     feature.highlight ? 'text-white/90' : 'text-gray-600 dark:text-gray-400'
                   }`}>
                     {feature.description}
@@ -153,7 +153,7 @@ export default function FeaturesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
-          className="mt-20 grid md:grid-cols-2 gap-8 lg:gap-12"
+          className="mt-12 md:mt-20 grid md:grid-cols-2 gap-6 sm:gap-8 lg:gap-12"
         >
           {/* Visiting Card Use Case */}
           <motion.div
@@ -161,17 +161,17 @@ export default function FeaturesSection() {
             className="relative group"
           >
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-3xl blur opacity-25 group-hover:opacity-40 transition-opacity"></div>
-            <div className="relative bg-white dark:bg-gray-800 p-8 md:p-10 rounded-3xl shadow-xl border-2 border-gray-200 dark:border-gray-700">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg">
-                  <CreditCard className="w-8 h-8 text-white" />
+            <div className="relative bg-white dark:bg-gray-800 p-6 sm:p-8 md:p-10 rounded-2xl md:rounded-3xl shadow-xl border-2 border-gray-200 dark:border-gray-700">
+              <div className="flex items-center gap-3 sm:gap-4 mb-4 md:mb-6">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg">
+                  <CreditCard className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">Smart Visiting Card</h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Perfect for professionals</p>
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">Smart Visiting Card</h3>
+                  <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Perfect for professionals</p>
                 </div>
               </div>
-              <p className="text-gray-600 dark:text-gray-400 mb-6 text-lg">Ideal for business networking and professional connections</p>
+              <p className="text-gray-600 dark:text-gray-400 mb-4 md:mb-6 text-base sm:text-lg">Ideal for business networking and professional connections</p>
               <ul className="space-y-4">
                 {[
                   "QR Code & NFC instant sharing",
@@ -201,17 +201,17 @@ export default function FeaturesSection() {
             className="relative group"
           >
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-3xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity"></div>
-            <div className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 p-8 md:p-10 rounded-3xl shadow-2xl border-2 border-purple-400">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center">
-                  <Heart className="w-8 h-8 text-white" />
+            <div className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 p-6 sm:p-8 md:p-10 rounded-2xl md:rounded-3xl shadow-2xl border-2 border-purple-400">
+              <div className="flex items-center gap-3 sm:gap-4 mb-4 md:mb-6">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center">
+                  <Heart className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-2xl md:text-3xl font-bold text-white">Smart Health Card</h3>
-                  <p className="text-sm text-white/80">Essential for healthcare</p>
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">Smart Health Card</h3>
+                  <p className="text-xs sm:text-sm text-white/80">Essential for healthcare</p>
                 </div>
               </div>
-              <p className="text-white/90 mb-6 text-lg">Revolutionary solution for patients and healthcare providers</p>
+              <p className="text-white/90 mb-4 md:mb-6 text-base sm:text-lg">Revolutionary solution for patients and healthcare providers</p>
               <ul className="space-y-4">
                 {[
                   "AI prescription reading & data entry",

@@ -4,8 +4,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Star, Quote, ArrowRight } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
 
 export default function TestimonialsSection({ mounted }) {
+    const [currentSlide, setCurrentSlide] = useState(0)
+    const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+    const intervalRef = useRef(null)
     const testimonials = [
         {
             id: 1,
@@ -69,8 +73,38 @@ export default function TestimonialsSection({ mounted }) {
         }
     ]
 
-  return (
-    <section id="testimonials" className="py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
+    // Auto-slide functionality
+    useEffect(() => {
+        if (isAutoPlaying && mounted) {
+            intervalRef.current = setInterval(() => {
+                setCurrentSlide((prev) => (prev + 1) % testimonials.length)
+            }, 5000) // Auto-slide every 5 seconds
+        }
+
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current)
+            }
+        }
+    }, [isAutoPlaying, mounted, testimonials.length])
+
+    const goToSlide = (index) => {
+        setCurrentSlide(index)
+        setIsAutoPlaying(false)
+        // Resume auto-play after 10 seconds
+        setTimeout(() => setIsAutoPlaying(true), 10000)
+    }
+
+    const nextSlide = () => {
+        goToSlide((currentSlide + 1) % testimonials.length)
+    }
+
+    const prevSlide = () => {
+        goToSlide((currentSlide - 1 + testimonials.length) % testimonials.length)
+    }
+
+    return (
+        <section id="testimonials" className="py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
             {/* Background decorative elements */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-20 left-10 w-96 h-96 bg-blue-200 dark:bg-blue-900/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
@@ -109,7 +143,8 @@ export default function TestimonialsSection({ mounted }) {
                     </Link>
                 </motion.div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                {/* Desktop Grid View */}
+                <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     {testimonials.map((testimonial, idx) => (
                         <motion.div
                             key={idx}
@@ -228,6 +263,150 @@ export default function TestimonialsSection({ mounted }) {
                             </div>
                         </motion.div>
                     ))}
+                </div>
+
+                {/* Mobile Slider View */}
+                <div className="md:hidden relative">
+                    <div className="overflow-hidden rounded-2xl">
+                        <div
+                            className="flex transition-transform duration-500 ease-in-out"
+                            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                        >
+                            {testimonials.map((testimonial, idx) => (
+                                <div key={idx} className="min-w-full px-2">
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="relative group"
+                                    >
+                                        {/* Decorative gradient background on hover */}
+                                        <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity blur-xl ${testimonial.type === 'health'
+                                            ? 'bg-gradient-to-br from-green-500 via-emerald-500 to-teal-500'
+                                            : 'bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500'
+                                            }`}></div>
+
+                                        <div className={`relative glass-effect p-6 rounded-2xl card-hover shadow-lg ${testimonial.type === 'health'
+                                            ? 'bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200/50 dark:border-green-700/50'
+                                            : 'bg-white dark:bg-gray-800 border border-gray-200/50 dark:border-gray-700/50'
+                                            }`}>
+                                            {/* Quote Icon */}
+                                            <div className="absolute top-4 right-4 opacity-10 dark:opacity-20">
+                                                <Quote className="w-16 h-16 text-blue-500 dark:text-blue-400" />
+                                            </div>
+
+                                            {/* Rating Stars */}
+                                            {mounted && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, scale: 0.8 }}
+                                                    animate={{ opacity: 1, scale: 1 }}
+                                                    transition={{ delay: 0.2 }}
+                                                    className="flex items-center gap-1 mb-6"
+                                                >
+                                                    {[...Array(testimonial.rating)].map((_, i) => (
+                                                        <motion.div
+                                                            key={i}
+                                                            initial={{ opacity: 0, scale: 0 }}
+                                                            animate={{ opacity: 1, scale: 1 }}
+                                                            transition={{ delay: 0.3 + i * 0.1, type: 'spring' }}
+                                                        >
+                                                            <Star className="w-5 h-5 fill-yellow-400 text-yellow-400 drop-shadow-sm" />
+                                                        </motion.div>
+                                                    ))}
+                                                </motion.div>
+                                            )}
+                                            {!mounted && (
+                                                <div className="flex items-center gap-1 mb-6">
+                                                    {[...Array(testimonial.rating)].map((_, i) => (
+                                                        <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400 drop-shadow-sm" />
+                                                    ))}
+                                                </div>
+                                            )}
+
+                                            {/* Testimonial Text */}
+                                            <motion.p
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: 0.3 }}
+                                                className="text-gray-700 dark:text-gray-300 mb-6 italic text-base leading-relaxed relative z-10"
+                                            >
+                                                &ldquo;{testimonial.text}&rdquo;
+                                            </motion.p>
+
+                                            {/* Author Info */}
+                                            <div className="flex items-center gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                                <motion.div
+                                                    whileHover={{ scale: 1.1, rotate: 5 }}
+                                                    className="relative w-14 h-14 flex-shrink-0"
+                                                >
+                                                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full blur opacity-50"></div>
+                                                    <Image
+                                                        src={testimonial.image}
+                                                        alt={testimonial.name}
+                                                        width={56}
+                                                        height={56}
+                                                        className="relative w-14 h-14 rounded-full object-cover border-2 border-white dark:border-gray-700 shadow-lg"
+                                                        quality={85}
+                                                    />
+                                                </motion.div>
+                                                <div className="flex-1">
+                                                    <motion.div
+                                                        initial={{ opacity: 0, x: -10 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ delay: 0.4 }}
+                                                        className="font-bold text-gray-900 dark:text-gray-100 text-lg"
+                                                    >
+                                                        {testimonial.name}
+                                                    </motion.div>
+                                                    <motion.div
+                                                        initial={{ opacity: 0, x: -10 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ delay: 0.5 }}
+                                                        className="text-sm text-gray-600 dark:text-gray-400 font-medium"
+                                                    >
+                                                        {testimonial.role}
+                                                    </motion.div>
+                                                    <motion.div
+                                                        initial={{ opacity: 0, x: -10 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ delay: 0.6 }}
+                                                        className="text-xs text-gray-500 dark:text-gray-500"
+                                                    >
+                                                        {testimonial.company}
+                                                    </motion.div>
+                                                </div>
+                                            </div>
+
+                                            {/* Decorative bottom accent */}
+                                            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-b-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                        </div>
+                                    </motion.div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Dots Indicator */}
+                    <div className="flex justify-center items-center gap-2.5 mt-8">
+                        {testimonials.map((_, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => goToSlide(idx)}
+                                className="relative group"
+                                aria-label={`Go to slide ${idx + 1}`}
+                            >
+                                {idx === currentSlide ? (
+                                    <motion.div
+                                        layoutId="activeDot"
+                                        className="w-12 h-3 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 shadow-lg shadow-purple-500/60 ring-2 ring-purple-400/40 dark:ring-purple-500/60"
+                                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                                    />
+                                ) : (
+                                    <div className="w-3 h-3 rounded-full bg-gray-400/60 dark:bg-gray-500/60 group-hover:bg-gray-500 dark:group-hover:bg-gray-400 transition-all duration-300 group-hover:scale-125" />
+                                )}
+                            </button>
+                        ))}
+                    </div>
                 </div>
             </div>
         </section>

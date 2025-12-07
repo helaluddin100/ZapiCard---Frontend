@@ -36,7 +36,7 @@ export default function HowItWorksSection() {
   ]
 
   return (
-    <section className="py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
+    <section className="py-16 md:py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-96 h-96 bg-blue-200/10 rounded-full blur-3xl"></div>
@@ -50,24 +50,24 @@ export default function HowItWorksSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-12 md:mb-16"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-block mb-6"
+            className="inline-block mb-4 md:mb-6"
           >
-            <span className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-blue-300/30 dark:border-blue-600/30 text-blue-600 dark:text-blue-400 text-sm md:text-base font-semibold flex items-center gap-2">
-              <Sparkles className="w-4 h-4" />
+            <span className="px-4 sm:px-6 py-2 rounded-full bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-blue-300/30 dark:border-blue-600/30 text-blue-600 dark:text-blue-400 text-xs sm:text-sm md:text-base font-semibold flex items-center gap-2">
+              <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
               Simple Process
             </span>
           </motion.div>
 
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 bg-gradient-to-r from-gray-900 via-blue-600 to-purple-600 dark:from-white dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent px-2">
             How It Works
           </h2>
-          <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto px-2">
             Create your smart card in 3 simple steps - whether it&apos;s for business or health
           </p>
         </motion.div>
@@ -79,7 +79,7 @@ export default function HowItWorksSection() {
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-20"></div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 lg:gap-12 relative z-10">
+          <div className="grid md:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 relative z-10">
             {steps.map((item, idx) => {
               const IconComponent = item.icon
               return (
@@ -93,15 +93,15 @@ export default function HowItWorksSection() {
                   className="relative"
                 >
                   {/* Step Card */}
-                  <div className={`relative h-full p-8 md:p-10 rounded-3xl border-2 transition-all duration-300 bg-gradient-to-br ${item.bgColor} ${item.borderColor} shadow-lg hover:shadow-2xl dark:bg-gray-800/50`}>
+                  <div className={`relative h-full p-6 sm:p-8 md:p-10 rounded-2xl md:rounded-3xl border-2 transition-all duration-300 bg-gradient-to-br ${item.bgColor} ${item.borderColor} shadow-lg hover:shadow-2xl dark:bg-gray-800/50`}>
                     {/* Step Number Badge */}
-                    <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-20">
+                    <div className="absolute -top-5 sm:-top-6 left-1/2 transform -translate-x-1/2 z-20">
                       <motion.div
                         initial={{ scale: 0 }}
                         whileInView={{ scale: 1 }}
                         viewport={{ once: true }}
                         transition={{ delay: idx * 0.2 + 0.3, type: "spring", stiffness: 200 }}
-                        className={`w-14 h-14 rounded-full bg-gradient-to-br ${item.iconColor} flex items-center justify-center text-white text-2xl font-bold shadow-2xl border-4 border-white dark:border-gray-900`}
+                        className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br ${item.iconColor} flex items-center justify-center text-white text-xl sm:text-2xl font-bold shadow-2xl border-3 sm:border-4 border-white dark:border-gray-900`}
                       >
                         {item.step}
                       </motion.div>
@@ -110,16 +110,16 @@ export default function HowItWorksSection() {
                     {/* Icon */}
                     <motion.div
                       whileHover={{ scale: 1.1, rotate: 5 }}
-                      className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6 mt-4 bg-gradient-to-br ${item.iconColor} shadow-lg`}
+                      className={`inline-flex items-center justify-center w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-xl md:rounded-2xl mb-4 md:mb-6 mt-2 md:mt-4 bg-gradient-to-br ${item.iconColor} shadow-lg`}
                     >
-                      <IconComponent className="w-10 h-10 text-white" />
+                      <IconComponent className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 text-white" />
                     </motion.div>
 
                     {/* Content */}
-                    <h3 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 md:mb-4 text-gray-900 dark:text-gray-100">
                       {item.title}
                     </h3>
-                    <p className="text-base md:text-lg leading-relaxed text-gray-600 dark:text-gray-400">
+                    <p className="text-sm sm:text-base md:text-lg leading-relaxed text-gray-600 dark:text-gray-400">
                       {item.desc}
                     </p>
 
@@ -153,21 +153,21 @@ export default function HowItWorksSection() {
           transition={{ delay: 0.8 }}
           className="text-center mt-16"
         >
-          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-6">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-4 md:mb-6 px-2">
             Ready to get started? It only takes a few minutes!
           </p>
           <Link href="/signup">
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold text-lg rounded-xl shadow-2xl hover:shadow-blue-500/50 transition-all cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold text-base sm:text-lg rounded-xl shadow-2xl hover:shadow-blue-500/50 transition-all cursor-pointer"
             >
               <span>Get Started Now</span>
               <motion.span
                 animate={{ x: [0, 5, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               >
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </motion.span>
             </motion.div>
           </Link>
