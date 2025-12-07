@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Script from 'next/script'
+import { motion, AnimatePresence } from 'framer-motion'
 import DashboardLayout from '@/components/DashboardLayout'
-import { Plus, Calendar, FileText, Activity, User, Clock, Stethoscope, Pill, TestTube, AlertCircle, ChevronDown, ChevronUp, Edit2, Eye, ExternalLink, Download, QrCode as QrCodeIcon } from 'lucide-react'
+import { Plus, Calendar, FileText, Activity, User, Clock, Stethoscope, Pill, TestTube, AlertCircle, ChevronDown, ChevronUp, Edit2, Eye, ExternalLink, Download, QrCode as QrCodeIcon, Trash2, Loader2, X, AlertTriangle } from 'lucide-react'
 import { healthCardAPI } from '@/lib/api'
 import { useToast } from '@/lib/toast'
 import QRCodeLib from 'qrcode'
@@ -18,6 +19,8 @@ export default function HealthDashboardPage() {
   const [expandedCardId, setExpandedCardId] = useState(null)
   const [cardEntries, setCardEntries] = useState({})
   const [qrCodes, setQrCodes] = useState({})
+  const [deletingEntryId, setDeletingEntryId] = useState(null)
+  const [deleteConfirmModal, setDeleteConfirmModal] = useState(null) // { cardId, entryId, entry }
   const [stats, setStats] = useState({
     totalCards: 0,
     totalEntries: 0,
@@ -420,6 +423,37 @@ export default function HealthDashboardPage() {
     }
   }
 
+  const handleDeleteEntry = async () => {
+    if (!deleteConfirmModal) return
+
+    const { cardId, entryId } = deleteConfirmModal
+
+    try {
+      setDeletingEntryId(entryId)
+      const response = await healthCardAPI.deleteEntry(cardId, entryId)
+      
+      if (response.status === 'success') {
+        success('Entry deleted successfully!')
+        // Remove entry from local state
+        setCardEntries(prev => ({
+          ...prev,
+          [cardId]: (prev[cardId] || []).filter(entry => entry.id !== entryId)
+        }))
+        // Close modal
+        setDeleteConfirmModal(null)
+        // Reload cards to update stats
+        loadHealthCards()
+      } else {
+        throw new Error(response.message || 'Failed to delete entry')
+      }
+    } catch (error) {
+      console.error('Error deleting entry:', error)
+      showError(error.message || 'Failed to delete entry. Please try again.')
+    } finally {
+      setDeletingEntryId(null)
+    }
+  }
+
   return (
     <>
       <Script
@@ -746,13 +780,27 @@ export default function HealthDashboardPage() {
                                     </p>
                                   )}
                                 </div>
-                                <Link
-                                  href={`/health-dashboard/card/${card.id}/entry/${entry.id}/edit`}
-                                  className="p-1.5 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition"
-                                  onClick={(e) => e.stopPropagation()}
-                                >
-                                  <Edit2 className="w-4 h-4" />
-                                </Link>
+                                <div className="flex items-center gap-2">
+                                  <Link
+                                    href={`/health-dashboard/card/${card.id}/entry/${entry.id}/edit`}
+                                    className="p-1.5 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition"
+                                    onClick={(e) => e.stopPropagation()}
+                                    title="Edit Entry"
+                                  >
+                                    <Edit2 className="w-4 h-4" />
+                                  </Link>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      setDeleteConfirmModal({ cardId: card.id, entryId: entry.id, entry })
+                                    }}
+                                    disabled={deletingEntryId === entry.id}
+                                    className="p-1.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition disabled:opacity-50"
+                                    title="Delete Entry"
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </div>
                               </div>
 
                               {/* Medicines */}
@@ -916,6 +964,115 @@ export default function HealthDashboardPage() {
               })()}
             </div>
           )}
+
+          {/* Delete Confirmation Modal */}
+          <AnimatePresence>
+            {deleteConfirmModal && (
+              <>
+                {/* Backdrop */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setDeleteConfirmModal(null)}
+                  className="fixed inset-0 bg-black bg-opacity-50 z-50"
+                />
+
+                {/* Modal */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                  className="fixed inset-0 z-50 flex items-center justify-center p-4"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full">
+                    <div className="p-6">
+                      {/* Header */}
+                      <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-3">
+                          <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-full">
+                            <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400" />
+                          </div>
+                          <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                            Delete Entry
+                          </h3>
+                        </div>
+                        <button
+                          onClick={() => setDeleteConfirmModal(null)}
+                          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition"
+                          disabled={deletingEntryId !== null}
+                        >
+                          <X className="w-5 h-5" />
+                        </button>
+                      </div>
+
+                      {/* Content */}
+                      <div className="space-y-4">
+                        <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-4 border border-red-200 dark:border-red-800">
+                          <p className="text-sm font-medium text-red-800 dark:text-red-300 mb-2">
+                            Warning: This action cannot be undone
+                          </p>
+                          <p className="text-sm text-red-700 dark:text-red-400">
+                            Are you sure you want to delete this health entry? All associated data including medicines, tests, and prescription will be permanently removed.
+                          </p>
+                        </div>
+
+                        {/* Entry Details */}
+                        {deleteConfirmModal.entry && (
+                          <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Entry Date</p>
+                            <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                              {formatDate(deleteConfirmModal.entry.entry_date || deleteConfirmModal.entry.created_at)}
+                            </p>
+                            {deleteConfirmModal.entry.doctor_name && (
+                              <>
+                                <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 mb-1">Doctor</p>
+                                <p className="text-base font-medium text-gray-900 dark:text-gray-100">
+                                  Dr. {deleteConfirmModal.entry.doctor_name}
+                                  {deleteConfirmModal.entry.doctor_specialty && ` - ${deleteConfirmModal.entry.doctor_specialty}`}
+                                </p>
+                              </>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Actions */}
+                        <div className="flex gap-3 pt-4">
+                          <button
+                            onClick={() => setDeleteConfirmModal(null)}
+                            disabled={deletingEntryId !== null}
+                            className="flex-1 px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Cancel
+                          </button>
+                          <motion.button
+                            onClick={handleDeleteEntry}
+                            disabled={deletingEntryId !== null}
+                            whileHover={{ scale: deletingEntryId === null ? 1.02 : 1 }}
+                            whileTap={{ scale: deletingEntryId === null ? 0.98 : 1 }}
+                            className="flex-1 px-4 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {deletingEntryId === deleteConfirmModal?.entryId ? (
+                              <>
+                                <Loader2 className="w-4 h-4 inline mr-2 animate-spin" />
+                                Deleting...
+                              </>
+                            ) : (
+                              <>
+                                <Trash2 className="w-4 h-4 inline mr-2" />
+                                Delete Entry
+                              </>
+                            )}
+                          </motion.button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
         </div>
       </DashboardLayout >
     </>

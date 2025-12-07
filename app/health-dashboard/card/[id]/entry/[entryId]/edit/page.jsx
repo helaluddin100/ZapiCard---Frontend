@@ -178,32 +178,28 @@ export default function EditEntryPage() {
     }))
   }
 
-  const handleImageUpload = (e, type) => {
+  const handlePrescriptionUpload = (e) => {
     const files = Array.from(e.target.files)
-    const maxFiles = type === 'prescription' ? 5 : 5
+    if (files.length > 0) {
+      const newImages = []
+      let loadedCount = 0
 
-    if (files.length > maxFiles) {
-      showError(`Maximum ${maxFiles} images allowed`)
-      return
-    }
+      files.forEach(file => {
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          newImages.push(reader.result)
+          loadedCount++
 
-    files.forEach(file => {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        if (type === 'prescription') {
-          setFormData(prev => ({
-            ...prev,
-            prescription_images: [...prev.prescription_images, reader.result]
-          }))
-        } else {
-          setFormData(prev => ({
-            ...prev,
-            test_report_images: [...prev.test_report_images, reader.result]
-          }))
+          if (loadedCount === files.length) {
+            setFormData(prev => ({
+              ...prev,
+              prescription_images: [...prev.prescription_images, ...newImages]
+            }))
+          }
         }
-      }
-      reader.readAsDataURL(file)
-    })
+        reader.readAsDataURL(file)
+      })
+    }
   }
 
   const removePrescriptionImage = (index) => {
@@ -213,7 +209,21 @@ export default function EditEntryPage() {
     }))
   }
 
-  const removeTestReportImage = (index) => {
+  const handleTestReportUpload = (e) => {
+    const files = Array.from(e.target.files)
+    files.forEach(file => {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setFormData(prev => ({
+          ...prev,
+          test_report_images: [...prev.test_report_images, reader.result]
+        }))
+      }
+      reader.readAsDataURL(file)
+    })
+  }
+
+  const removeTestReport = (index) => {
     setFormData(prev => ({
       ...prev,
       test_report_images: prev.test_report_images.filter((_, i) => i !== index)
@@ -221,15 +231,19 @@ export default function EditEntryPage() {
   }
 
   const handleOCR = async () => {
-    if (formData.prescription_images.length === 0) {
-      showError('Please upload prescription images first')
+    if (!formData.prescription_images || formData.prescription_images.length === 0) {
+      showError('Please upload at least one prescription image first')
       return
     }
 
-    if (ocrLoading) return
+    // Prevent multiple simultaneous requests
+    if (ocrLoading) {
+      return
+    }
 
+    // Warn if too many images
     if (formData.prescription_images.length > 5) {
-      showError('Maximum 5 images can be processed at once for OCR')
+      showError('Too many images. Please upload maximum 5 images at once to avoid API quota limits.')
       return
     }
 
@@ -630,37 +644,51 @@ export default function EditEntryPage() {
               </div>
               <div className="space-y-4">
                 {formData.medicines.map((medicine, index) => (
-                  <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-3 bg-gray-50 dark:bg-gray-900/50">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                      <input
-                        type="text"
-                        value={medicine.name}
-                        onChange={(e) => handleMedicineChange(index, 'name', e.target.value)}
-                        className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
-                        placeholder="Medicine name"
-                      />
-                      <input
-                        type="text"
-                        value={medicine.dosage}
-                        onChange={(e) => handleMedicineChange(index, 'dosage', e.target.value)}
-                        className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
-                        placeholder="Dosage (e.g., 500mg)"
-                      />
-                      <input
-                        type="text"
-                        value={medicine.duration}
-                        onChange={(e) => handleMedicineChange(index, 'duration', e.target.value)}
-                        className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
-                        placeholder="Duration (e.g., 7 days)"
-                      />
+                  <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-3 bg-gray-50 dark:bg-gray-700/30">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <input
+                          type="text"
+                          value={medicine.name}
+                          onChange={(e) => handleMedicineChange(index, 'name', e.target.value)}
+                          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                          placeholder="Medicine name"
+                        />
+                        <input
+                          type="text"
+                          value={medicine.dosage}
+                          onChange={(e) => handleMedicineChange(index, 'dosage', e.target.value)}
+                          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                          placeholder="Dosage (e.g., 500mg)"
+                        />
+                        <input
+                          type="text"
+                          value={medicine.duration}
+                          onChange={(e) => handleMedicineChange(index, 'duration', e.target.value)}
+                          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                          placeholder="Duration (e.g., 7 days)"
+                        />
+                      </div>
+                      {formData.medicines.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => removeMedicine(index)}
+                          className="ml-3 p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition"
+                        >
+                          <X className="w-5 h-5" />
+                        </button>
+                      )}
                     </div>
-                    <div className="overflow-x-auto pb-1">
-                      <div className="flex gap-2 min-w-max pr-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Timing
+                      </label>
+                      <div className="flex gap-3">
                         {['morning', 'noon', 'night'].map(timing => (
                           <label
                             key={timing}
-                            className={`flex items-center gap-2 px-4 py-2 border-2 rounded-lg cursor-pointer transition text-xs sm:text-sm font-medium capitalize whitespace-nowrap ${medicine.timing?.includes(timing)
-                              ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
+                            className={`flex items-center gap-2 px-4 py-2 border-2 rounded-lg cursor-pointer transition ${medicine.timing?.includes(timing)
+                              ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
                               : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'
                               }`}
                           >
@@ -668,22 +696,16 @@ export default function EditEntryPage() {
                               type="checkbox"
                               checked={medicine.timing?.includes(timing) || false}
                               onChange={() => handleMedicineTiming(index, timing)}
-                              className="w-5 h-5 text-blue-600 dark:text-blue-400 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700"
+                              className="sr-only"
                             />
-                            <span>{timing}</span>
+                            {timing === 'morning' && <Sun className="w-4 h-4" />}
+                            {timing === 'noon' && <Clock className="w-4 h-4" />}
+                            {timing === 'night' && <Moon className="w-4 h-4" />}
+                            <span className="text-sm capitalize">{timing}</span>
                           </label>
                         ))}
                       </div>
                     </div>
-                    {formData.medicines.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeMedicine(index)}
-                        className="text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 px-3 py-1 rounded text-sm transition"
-                      >
-                        Remove Medicine
-                      </button>
-                    )}
                   </div>
                 ))}
               </div>
@@ -708,20 +730,21 @@ export default function EditEntryPage() {
               <div className="space-y-3">
                 {formData.diet_routine.map((diet, index) => (
                   <div key={index} className="flex gap-3 items-start">
-                    <input
-                      type="text"
-                      value={diet.time}
-                      onChange={(e) => handleDietChange(index, 'time', e.target.value)}
-                      className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
-                      placeholder="Time (e.g., Morning, Afternoon)"
-                    />
-                    <input
-                      type="text"
-                      value={diet.food}
-                      onChange={(e) => handleDietChange(index, 'food', e.target.value)}
-                      className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
-                      placeholder="Food items"
-                    />
+                    <div className="flex-1 grid grid-cols-2 gap-3">
+                      <input
+                        type="time"
+                        value={diet.time}
+                        onChange={(e) => handleDietChange(index, 'time', e.target.value)}
+                        className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                      />
+                      <input
+                        type="text"
+                        value={diet.food}
+                        onChange={(e) => handleDietChange(index, 'food', e.target.value)}
+                        className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                        placeholder="Food items"
+                      />
+                    </div>
                     {formData.diet_routine.length > 1 && (
                       <button
                         type="button"
@@ -736,34 +759,37 @@ export default function EditEntryPage() {
               </div>
             </div>
 
-            {/* Prescription Images */}
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Prescription Images
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={(e) => handleImageUpload(e, 'prescription')}
-                className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:gradient-primary file:text-white hover:file:shadow-lg"
-              />
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                You can upload multiple images for multi-page prescriptions (max 5 images at once to avoid API quota limits)
-              </p>
-              {formData.prescription_images.length > 0 && (
-                <>
+            {/* Uploads */}
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-6 space-y-4">
+              {/* Prescription */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Prescription Images (Multiple pages supported)
+                  </label>
                   {formData.prescription_images.length > 0 && (
                     <button
                       type="button"
                       onClick={handleOCR}
                       disabled={ocrLoading}
-                      className="flex items-center gap-2 px-4 py-2 gradient-primary text-white rounded-lg hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-md mt-3"
+                      className="flex items-center gap-2 px-4 py-2 gradient-primary text-white rounded-lg hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
                     >
                       <Sparkles className="w-4 h-4" />
                       {ocrLoading ? 'Analyzing with AI...' : 'Read with AI (Gemini)'}
                     </button>
                   )}
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handlePrescriptionUpload}
+                  className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:gradient-primary file:text-white hover:file:shadow-lg"
+                />
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  You can upload multiple images for multi-page prescriptions (max 5 images at once to avoid API quota limits)
+                </p>
+                {formData.prescription_images.length > 0 && (
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
                     {formData.prescription_images.map((img, index) => (
                       <div key={index} className="relative group">
@@ -780,50 +806,47 @@ export default function EditEntryPage() {
                           onClick={() => removePrescriptionImage(index)}
                           className="absolute top-1 right-1 p-1 bg-red-600 dark:bg-red-500 text-white rounded-full hover:bg-red-700 dark:hover:bg-red-600 opacity-0 group-hover:opacity-100 transition"
                         >
-                          <X className="w-4 h-4" />
+                          <X className="w-3 h-3" />
                         </button>
                       </div>
                     ))}
                   </div>
-                </>
-              )}
-            </div>
+                )}
+              </div>
 
-            {/* Test Report Images */}
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Test Report Images
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={(e) => handleImageUpload(e, 'test')}
-                className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:gradient-primary file:text-white hover:file:shadow-lg"
-              />
-              {formData.test_report_images.length > 0 && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
-                  {formData.test_report_images.map((img, index) => (
-                    <div key={index} className="relative group">
-                      <img
-                        src={img}
-                        alt={`Test report ${index + 1}`}
-                        className="w-full h-32 object-cover rounded-lg border-2 border-blue-500 dark:border-blue-400"
-                      />
-                      <div className="absolute top-1 left-1 gradient-primary text-white text-xs px-2 py-1 rounded font-semibold">
-                        Report {index + 1}
+              {/* Test Reports */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Test Report Images
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleTestReportUpload}
+                  className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:gradient-primary file:text-white hover:file:shadow-lg"
+                />
+                {formData.test_report_images.length > 0 && (
+                  <div className="grid grid-cols-4 gap-3 mt-3">
+                    {formData.test_report_images.map((img, index) => (
+                      <div key={index} className="relative">
+                        <img
+                          src={img}
+                          alt={`Test report ${index + 1}`}
+                          className="w-full h-24 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeTestReport(index)}
+                          className="absolute top-1 right-1 p-1 bg-red-600 dark:bg-red-500 text-white rounded-full hover:bg-red-700 dark:hover:bg-red-600"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => removeTestReportImage(index)}
-                        className="absolute top-1 right-1 p-1 bg-red-600 dark:bg-red-500 text-white rounded-full hover:bg-red-700 dark:hover:bg-red-600 opacity-0 group-hover:opacity-100 transition"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* WhatsApp Reminder */}
@@ -847,13 +870,13 @@ export default function EditEntryPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 px-6 py-3 gradient-primary text-white font-semibold rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+                className="btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Updating...' : 'Update Entry'}
               </button>
               <Link
                 href="/health-dashboard"
-                className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+                className="btn-outline"
               >
                 Cancel
               </Link>
@@ -862,10 +885,10 @@ export default function EditEntryPage() {
         </div>
       </DashboardLayout>
 
-      {/* AI Output Preview Modal - Same as entry page */}
+      {/* AI Output Preview Modal */}
       {showAIPreview && editableAiOutput && (
         <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col border border-gray-200 dark:border-gray-700">
             <div className="gradient-primary text-white p-6 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Sparkles className="w-6 h-6" />
@@ -881,7 +904,7 @@ export default function EditEntryPage() {
 
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
               {/* Doctor Information */}
-              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-900/50">
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-700/30">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
                   <Stethoscope className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   Doctor Information
@@ -939,7 +962,7 @@ export default function EditEntryPage() {
               </div>
 
               {/* Medicines */}
-              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-900/50">
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-700/30">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                     <Pill className="w-5 h-5 text-purple-600 dark:text-purple-400" />
@@ -995,57 +1018,53 @@ export default function EditEntryPage() {
                           placeholder="Duration"
                         />
                       </div>
-                      <div className="overflow-x-auto pb-1">
-                        <div className="flex gap-2 min-w-max pr-6">
-                          {['morning', 'noon', 'night'].map(timing => (
-                            <label
-                              key={timing}
-                              className={`flex items-center gap-2 px-4 py-2 border-2 rounded-lg cursor-pointer text-xs sm:text-sm font-medium whitespace-nowrap ${medicine.timing?.includes(timing)
-                                ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
-                                : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-                                }`}
-                            >
-                              <input
-                                type="checkbox"
-                                checked={medicine.timing?.includes(timing) || false}
-                                onChange={() => {
-                                  const newMedicines = [...editableAiOutput.medicines]
-                                  const currentTiming = newMedicines[index].timing || []
-                                  if (currentTiming.includes(timing)) {
-                                    newMedicines[index].timing = currentTiming.filter(t => t !== timing)
-                                  } else {
-                                    newMedicines[index].timing = [...currentTiming, timing]
-                                  }
-                                  setEditableAiOutput(prev => ({ ...prev, medicines: newMedicines }))
-                                }}
-                                className="w-4 h-4 text-blue-600 dark:text-blue-400 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700"
-                              />
-                              <span className="capitalize">{timing}</span>
-                            </label>
-                          ))}
-                        </div>
+                      <div className="flex gap-2">
+                        {['morning', 'noon', 'night'].map(timing => (
+                          <label
+                            key={timing}
+                            className={`flex items-center gap-1 px-3 py-1 border-2 rounded-lg cursor-pointer text-sm transition ${medicine.timing?.includes(timing)
+                              ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
+                              : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                              }`}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={medicine.timing?.includes(timing) || false}
+                              onChange={(e) => {
+                                const newMedicines = [...editableAiOutput.medicines]
+                                const currentTiming = newMedicines[index].timing || []
+                                if (e.target.checked) {
+                                  newMedicines[index].timing = [...currentTiming, timing]
+                                } else {
+                                  newMedicines[index].timing = currentTiming.filter(t => t !== timing)
+                                }
+                                setEditableAiOutput(prev => ({ ...prev, medicines: newMedicines }))
+                              }}
+                              className="sr-only"
+                            />
+                            <span className="capitalize">{timing}</span>
+                          </label>
+                        ))}
+                        {editableAiOutput.medicines.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const newMedicines = editableAiOutput.medicines.filter((_, i) => i !== index)
+                              setEditableAiOutput(prev => ({ ...prev, medicines: newMedicines }))
+                            }}
+                            className="ml-auto px-2 py-1 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded text-sm"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        )}
                       </div>
-                      {editableAiOutput.medicines.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setEditableAiOutput(prev => ({
-                              ...prev,
-                              medicines: prev.medicines.filter((_, i) => i !== index)
-                            }))
-                          }}
-                          className="text-red-600 dark:text-red-400 text-sm hover:underline"
-                        >
-                          Remove
-                        </button>
-                      )}
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Tests */}
-              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-900/50">
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-700/30">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                     <TestTube className="w-5 h-5 text-purple-600 dark:text-purple-400" />
@@ -1108,8 +1127,8 @@ export default function EditEntryPage() {
               </div>
 
               {/* Recommendations */}
-              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-900/50">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Recommendations</label>
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-700/30">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Recommendations</h3>
                 <textarea
                   value={editableAiOutput.recommendations}
                   onChange={(e) => setEditableAiOutput(prev => ({
@@ -1117,22 +1136,23 @@ export default function EditEntryPage() {
                     recommendations: e.target.value
                   }))}
                   rows="4"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
-                  placeholder="Recommendations..."
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                  placeholder="Doctor recommendations and notes..."
                 />
               </div>
             </div>
 
-            <div className="border-t border-gray-200 dark:border-gray-700 p-6 flex items-center justify-end gap-4">
+            {/* Footer */}
+            <div className="border-t border-gray-200 dark:border-gray-700 p-6 flex items-center justify-end gap-3">
               <button
                 onClick={() => setShowAIPreview(false)}
-                className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+                className="btn-outline"
               >
                 Cancel
               </button>
               <button
                 onClick={applyAIDataToForm}
-                className="flex items-center gap-2 px-6 py-2 gradient-primary text-white rounded-lg hover:shadow-lg transition shadow-md"
+                className="btn-primary flex items-center gap-2"
               >
                 <Check className="w-5 h-5" />
                 Apply to Form
