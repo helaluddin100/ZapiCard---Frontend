@@ -342,7 +342,7 @@ export default function CheckoutPage() {
                                 {/* Card Selection */}
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Select Card Profile * <span className="text-xs text-gray-500">(Choose which card you're ordering for)</span>
+                                        Select Card Profile * <span className="text-xs text-gray-500">(Choose which card you&apos;re ordering for)</span>
                                     </label>
                                     <select
                                         name="card_id"
