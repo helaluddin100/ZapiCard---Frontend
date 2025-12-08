@@ -250,18 +250,36 @@ export default function AppointmentModal({ isOpen, onClose, cardSlug, cardId, tr
     }
 
     const getDuration = () => {
-        return selectedTimeSlots.length * 30 // 30 minutes per slot
+        if (selectedTimeSlots.length === 0) return 0
+        if (selectedTimeSlots.length === 1) return 30 // Single slot = 30 min
+        
+        // For multiple slots: duration = last slot time - first slot time
+        // Last slot is the END time, not another 30-min slot
+        const sorted = sortTimeSlots(selectedTimeSlots)
+        const firstTime = sorted[0]
+        const lastTime = sorted[sorted.length - 1]
+        
+        const firstMinutes = timeToMinutes(firstTime)
+        const lastMinutes = timeToMinutes(lastTime)
+        
+        return lastMinutes - firstMinutes // Direct difference
     }
 
     const getEndTime = () => {
         if (selectedTimeSlots.length === 0) return ''
         const sorted = sortTimeSlots(selectedTimeSlots)
-        const lastTime = sorted[sorted.length - 1]
-        const [hours, minutes] = lastTime.split(':').map(Number)
-        const totalMinutes = hours * 60 + minutes + 30 // Add 30 min for the last slot
-        const endHours = Math.floor(totalMinutes / 60)
-        const endMins = totalMinutes % 60
-        return `${String(endHours).padStart(2, '0')}:${String(endMins).padStart(2, '0')}`
+        
+        if (sorted.length === 1) {
+            // Single slot: end time = start + 30 min
+            const [hours, minutes] = sorted[0].split(':').map(Number)
+            const totalMinutes = hours * 60 + minutes + 30
+            const endHours = Math.floor(totalMinutes / 60)
+            const endMins = totalMinutes % 60
+            return `${String(endHours).padStart(2, '0')}:${String(endMins).padStart(2, '0')}`
+        }
+        
+        // Multiple slots: last slot IS the end time
+        return sorted[sorted.length - 1]
     }
 
     const handleSubmit = async (e) => {
@@ -271,12 +289,12 @@ export default function AppointmentModal({ isOpen, onClose, cardSlug, cardId, tr
 
         try {
             // Calculate duration from selected slots
-            const duration = selectedTimeSlots.length * 30 // minutes
+            const duration = getDuration() // Use the corrected getDuration function
             const endTime = getEndTime()
 
             // Add duration info to notes
             const notesWithDuration = formData.notes +
-                (selectedTimeSlots.length > 1 ? `\n\nDuration: ${duration} minutes (${selectedTimeSlots.length} slots)` : '')
+                (selectedTimeSlots.length > 1 ? `\n\nDuration: ${duration} minutes (${formatTime(sortTimeSlots(selectedTimeSlots)[0])} - ${formatTime(endTime)})` : '')
 
             const appointmentPayload = {
                 card_id: cardId,
@@ -523,9 +541,9 @@ export default function AppointmentModal({ isOpen, onClose, cardSlug, cardId, tr
                                             </div>
                                         ) : (
                                             <div className="space-y-4">
-                                                <div className="p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                                                <div className="p-3 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
                                                     <p className="text-sm text-blue-800 dark:text-blue-300">
-                                                        💡 Select multiple consecutive time slots for longer appointments (30 min each)
+                                                        💡 <strong>Tip:</strong> Select your <span className="text-emerald-600 dark:text-emerald-400 font-semibold">START</span> time and <span className="text-rose-600 dark:text-rose-400 font-semibold">END</span> time. For 1 hour appointment, select 9:00 AM → 10:00 AM.
                                                     </p>
                                                 </div>
                                                 <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
@@ -561,13 +579,13 @@ export default function AppointmentModal({ isOpen, onClose, cardSlug, cardId, tr
                                                                     </div>
                                                                 )}
                                                                 {isSelected && isFirst && sortedSelected.length > 1 && (
-                                                                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 text-xs text-blue-600 dark:text-blue-400 font-medium">
-                                                                        Start
+                                                                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 text-[10px] text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-100 dark:bg-emerald-900/50 px-1.5 py-0.5 rounded">
+                                                                        START
                                                                     </div>
                                                                 )}
                                                                 {isSelected && isLast && sortedSelected.length > 1 && (
-                                                                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 text-xs text-blue-600 dark:text-blue-400 font-medium">
-                                                                        End
+                                                                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 text-[10px] text-rose-600 dark:text-rose-400 font-bold bg-rose-100 dark:bg-rose-900/50 px-1.5 py-0.5 rounded">
+                                                                        END
                                                                     </div>
                                                                 )}
                                                             </button>
@@ -597,7 +615,10 @@ export default function AppointmentModal({ isOpen, onClose, cardSlug, cardId, tr
                                                             </div>
                                                         </div>
                                                         <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">
-                                                            {selectedTimeSlots.length} slot{selectedTimeSlots.length > 1 ? 's' : ''} selected ({getDuration()} minutes)
+                                                            {selectedTimeSlots.length === 1 
+                                                                ? '1 slot selected (30 minutes)' 
+                                                                : `From ${formatTime(sortTimeSlots(selectedTimeSlots)[0])} to ${formatTime(getEndTime())} (${getDuration()} minutes)`
+                                                            }
                                                         </p>
                                                         <button
                                                             type="button"

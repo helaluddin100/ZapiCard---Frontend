@@ -542,26 +542,96 @@ END:VCARD`
                                 </div>
                             )}
 
-                            {/* Action Buttons with 3D inset shadow */}
-                            <div className={`grid gap-3 sm:gap-4 mb-6 sm:mb-8 ${cardData.enable_appointment !== false ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1'}`}>
+                            {/* Action Buttons - Premium Design with Shimmer & Glow */}
+                            <div className={`grid gap-4 sm:gap-5 mb-6 sm:mb-8 ${cardData.enable_appointment !== false ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1'}`}>
+                                {/* Save Contact Button */}
                                 <motion.button
                                     onClick={handleDownloadVCard}
-                                    whileHover={{ scale: 1.03, y: -3 }}
-                                    whileTap={{ scale: 0.97, y: 0 }}
-                                    className="relative flex items-center justify-center py-4 sm:py-3.5 px-6 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-sm sm:text-base font-bold shadow-[0_4px_14px_rgba(37,99,235,0.4),inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-2px_4px_rgba(0,0,0,0.2)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.5),inset_0_1px_0_rgba(255,255,255,0.3),inset_0_-2px_6px_rgba(0,0,0,0.3)] active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] transition-all duration-200"
+                                    whileHover={{ scale: 1.02, y: -4 }}
+                                    whileTap={{ scale: 0.98, y: 0 }}
+                                    className="group relative overflow-hidden flex items-center justify-center py-4 sm:py-4 px-6 rounded-2xl text-white text-sm sm:text-base font-bold transition-all duration-300"
                                 >
-                                    <Download className="w-5 h-5 sm:w-6 sm:h-6 mr-2 relative z-10" />
-                                    <span className="relative z-10">Save Contact</span>
+                                    {/* Animated gradient background */}
+                                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 dark:from-emerald-600 dark:via-teal-600 dark:to-cyan-600" />
+                                    
+                                    {/* Shimmer effect */}
+                                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out" />
+                                    </div>
+                                    
+                                    {/* Glow effect */}
+                                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 -z-10 scale-110" />
+                                    
+                                    {/* Top shine */}
+                                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+                                    
+                                    {/* Inner shadow overlay */}
+                                    <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-50" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                                    
+                                    {/* Icon with bounce animation */}
+                                    <motion.div
+                                        className="relative z-10 mr-3"
+                                        whileHover={{ y: [0, -3, 0] }}
+                                        transition={{ duration: 0.4, repeat: Infinity, repeatDelay: 0.5 }}
+                                    >
+                                        <div className="p-2 rounded-xl bg-white/20 backdrop-blur-sm shadow-inner">
+                                            <Download className="w-5 h-5 sm:w-5 sm:h-5" />
+                                        </div>
+                                    </motion.div>
+                                    
+                                    {/* Text */}
+                                    <span className="relative z-10 tracking-wide">Save Contact</span>
+                                    
+                                    {/* Bottom border glow */}
+                                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-1 bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                                 </motion.button>
+                                
+                                {/* Book Appointment Button */}
                                 {cardData.enable_appointment !== false && (
                                     <motion.button
                                         onClick={() => setShowAppointmentModal(true)}
-                                        whileHover={{ scale: 1.03, y: -3 }}
-                                        whileTap={{ scale: 0.97, y: 0 }}
-                                        className="relative flex items-center justify-center py-4 sm:py-3.5 px-6 rounded-2xl bg-gradient-to-br from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white text-sm sm:text-base font-bold shadow-[0_4px_14px_rgba(147,51,234,0.4),inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-2px_4px_rgba(0,0,0,0.2)] hover:shadow-[0_6px_20px_rgba(147,51,234,0.5),inset_0_1px_0_rgba(255,255,255,0.3),inset_0_-2px_6px_rgba(0,0,0,0.3)] active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] transition-all duration-200"
+                                        whileHover={{ scale: 1.02, y: -4 }}
+                                        whileTap={{ scale: 0.98, y: 0 }}
+                                        className="group relative overflow-hidden flex items-center justify-center py-4 sm:py-4 px-6 rounded-2xl text-white text-sm sm:text-base font-bold transition-all duration-300"
                                     >
-                                        <Calendar className="w-5 h-5 sm:w-6 sm:h-6 mr-2 relative z-10" />
-                                        <span className="relative z-10">Book Appointment</span>
+                                        {/* Animated gradient background */}
+                                        <div className="absolute inset-0 bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500 dark:from-violet-600 dark:via-purple-600 dark:to-fuchsia-600" />
+                                        
+                                        {/* Shimmer effect */}
+                                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out" />
+                                        </div>
+                                        
+                                        {/* Glow effect */}
+                                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 -z-10 scale-110" />
+                                        
+                                        {/* Top shine */}
+                                        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+                                        
+                                        {/* Inner shadow overlay */}
+                                        <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-50" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                                        
+                                        {/* Icon with pulse animation */}
+                                        <motion.div
+                                            className="relative z-10 mr-3"
+                                            whileHover={{ rotate: [0, -10, 10, 0] }}
+                                            transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 0.8 }}
+                                        >
+                                            <div className="p-2 rounded-xl bg-white/20 backdrop-blur-sm shadow-inner">
+                                                <Calendar className="w-5 h-5 sm:w-5 sm:h-5" />
+                                            </div>
+                                        </motion.div>
+                                        
+                                        {/* Text */}
+                                        <span className="relative z-10 tracking-wide">Book Appointment</span>
+                                        
+                                        {/* Animated ring effect on hover */}
+                                        <div className="absolute inset-0 rounded-2xl border-2 border-white/0 group-hover:border-white/30 transition-all duration-300 group-hover:scale-105 opacity-0 group-hover:opacity-100" />
+                                        
+                                        {/* Bottom border glow */}
+                                        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-1 bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                                     </motion.button>
                                 )}
                             </div>
