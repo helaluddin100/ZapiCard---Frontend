@@ -264,9 +264,18 @@ export default function CheckoutPage() {
 
         // If URL is relative, convert to absolute
         if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('//')) {
+            // Check if we're on production
+            const isProduction = typeof window !== 'undefined' &&
+                (window.location.hostname === 'smart.buytiq.store' ||
+                    window.location.hostname === 'www.smart.buytiq.store')
+
+            // Use appropriate base URL
+            const apiBase = isProduction
+                ? 'https://smart.buytiq.store/api'
+                : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000')
+
             if (imageUrl.startsWith('/storage/')) {
                 // Relative storage path - prepend API base URL
-                const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
                 imageUrl = apiBase.replace('/api', '') + imageUrl
             } else if (!imageUrl.startsWith('/')) {
                 // Missing leading slash

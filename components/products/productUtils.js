@@ -10,7 +10,16 @@ export const getProductImages = (product) => {
         return [PLACEHOLDER_IMAGE]
     }
 
-    const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+    // Check if we're on production
+    const isProduction = typeof window !== 'undefined' &&
+        (window.location.hostname === 'smart.buytiq.store' ||
+            window.location.hostname === 'www.smart.buytiq.store')
+
+    // Use appropriate base URL
+    const apiBase = isProduction
+        ? 'https://smart.buytiq.store/api'
+        : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000')
+
     const baseUrl = apiBase.replace('/api', '')
 
     return product.images.map(img => {

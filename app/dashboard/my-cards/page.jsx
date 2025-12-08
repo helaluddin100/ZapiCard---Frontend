@@ -35,8 +35,15 @@ export default function MyCardsPage() {
 
     // Get base URL for images (images are served from public directory, not /api)
     const getImageBaseUrl = () => {
-        // Get API base URL from environment or default
-        let apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
+        // Check if we're on production
+        const isProduction = typeof window !== 'undefined' &&
+            (window.location.hostname === 'smart.buytiq.store' ||
+                window.location.hostname === 'www.smart.buytiq.store')
+
+        // Use appropriate base URL
+        let apiBase = isProduction
+            ? 'https://smart.buytiq.store/api'
+            : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api')
 
         // Remove /api from the end if present
         if (apiBase.endsWith('/api')) {

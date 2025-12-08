@@ -14,7 +14,15 @@ export default function PublicHealthCardPage() {
   const [lightboxImage, setLightboxImage] = useState(null)
   const [mounted, setMounted] = useState(false)
 
-  const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+  // Check if we're on production
+  const isProduction = typeof window !== 'undefined' && 
+    (window.location.hostname === 'smart.buytiq.store' || 
+     window.location.hostname === 'www.smart.buytiq.store')
+  
+  // Use appropriate API base URL
+  const apiBase = isProduction 
+    ? 'https://smart.buytiq.store/api'
+    : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000')
 
   // Get base URL for images (remove /api if present, as images are served from public directory)
   const getImageBaseUrl = () => {

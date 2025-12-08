@@ -107,9 +107,18 @@ export default function ProductsPage() {
 
             // If URL is relative, convert to absolute
             if (!imageUrl.startsWith('http') && !imageUrl.startsWith('//') && !imageUrl.startsWith('data:')) {
-                const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+                // Check if we're on production
+                const isProduction = typeof window !== 'undefined' &&
+                    (window.location.hostname === 'smart.buytiq.store' ||
+                        window.location.hostname === 'www.smart.buytiq.store')
+
+                // Use appropriate base URL
+                const apiBase = isProduction
+                    ? 'https://smart.buytiq.store/api'
+                    : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000')
+
                 const baseUrl = apiBase.replace('/api', '')
-                
+
                 if (imageUrl.startsWith('/storage/') || imageUrl.startsWith('storage/')) {
                     imageUrl = baseUrl + '/' + imageUrl.replace(/^\//, '')
                 } else if (imageUrl.startsWith('/')) {
