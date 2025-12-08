@@ -2,28 +2,34 @@
  * Utility functions for product data processing
  */
 
+// SVG placeholder as data URL to avoid 404 errors
+export const PLACEHOLDER_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect fill='%23f3f4f6' width='400' height='300'/%3E%3Cg fill='%239ca3af'%3E%3Crect x='175' y='100' width='50' height='60' rx='4'/%3E%3Ccircle cx='200' cy='85' r='20'/%3E%3Ctext x='200' y='180' text-anchor='middle' font-family='system-ui' font-size='14'%3ENo Image%3C/text%3E%3C/g%3E%3C/svg%3E"
+
 export const getProductImages = (product) => {
     if (!product || !product.images || product.images.length === 0) {
-        return ['/placeholder-card.png']
+        return [PLACEHOLDER_IMAGE]
     }
 
     const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+    const baseUrl = apiBase.replace('/api', '')
 
     return product.images.map(img => {
-        let imageUrl = img.image_url || img.thumbnail_url
+        let imageUrl = img.image_url || img.thumbnail_url || img.full_image_url
+
+        if (!imageUrl) return PLACEHOLDER_IMAGE
 
         // If URL is relative, convert to absolute
-        if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('//')) {
-            if (imageUrl.startsWith('/storage/')) {
-                // Relative storage path - prepend API base URL
-                imageUrl = apiBase.replace('/api', '') + imageUrl
-            } else if (!imageUrl.startsWith('/')) {
-                // Missing leading slash
-                imageUrl = '/' + imageUrl
+        if (!imageUrl.startsWith('http') && !imageUrl.startsWith('//') && !imageUrl.startsWith('data:')) {
+            if (imageUrl.startsWith('/storage/') || imageUrl.startsWith('storage/')) {
+                imageUrl = baseUrl + '/' + imageUrl.replace(/^\//, '')
+            } else if (imageUrl.startsWith('/')) {
+                imageUrl = baseUrl + imageUrl
+            } else {
+                imageUrl = baseUrl + '/storage/' + imageUrl
             }
         }
 
-        return imageUrl || '/placeholder-card.png'
+        return imageUrl
     })
 }
 

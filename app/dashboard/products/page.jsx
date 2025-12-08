@@ -21,6 +21,7 @@ export default function ProductsPage() {
     const [products, setProducts] = useState([])
     const [categories, setCategories] = useState([])
     const [loading, setLoading] = useState(true)
+    const [initialLoad, setInitialLoad] = useState(true) // Track first load
     const [searchTerm, setSearchTerm] = useState('')
     const [selectedCategory, setSelectedCategory] = useState(null)
     const [currentPage, setCurrentPage] = useState(1)
@@ -73,9 +74,13 @@ export default function ProductsPage() {
             }
         } catch (err) {
             console.error('Error loading products:', err)
-            showError('Failed to load products')
+            // Only show error if not initial load to avoid flash
+            if (!initialLoad) {
+                showError('Failed to load products')
+            }
         } finally {
             setLoading(false)
+            setInitialLoad(false)
         }
     }
 
@@ -90,26 +95,33 @@ export default function ProductsPage() {
         loadProducts()
     }
 
+    // SVG placeholder as data URL to avoid 404 errors
+    const PLACEHOLDER_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect fill='%23f3f4f6' width='400' height='300'/%3E%3Cg fill='%239ca3af'%3E%3Crect x='175' y='100' width='50' height='60' rx='4'/%3E%3Ccircle cx='200' cy='85' r='20'/%3E%3Ctext x='200' y='180' text-anchor='middle' font-family='system-ui' font-size='14'%3ENo Image%3C/text%3E%3C/g%3E%3C/svg%3E"
+
     const getProductImage = (product) => {
         if (product.images && product.images.length > 0) {
             const primaryImage = product.images.find(img => img.is_primary) || product.images[0]
-            let imageUrl = primaryImage.image_url || primaryImage.thumbnail_url
+            let imageUrl = primaryImage.image_url || primaryImage.thumbnail_url || primaryImage.full_image_url
+
+            if (!imageUrl) return PLACEHOLDER_IMAGE
 
             // If URL is relative, convert to absolute
-            if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('//')) {
-                if (imageUrl.startsWith('/storage/')) {
-                    // Relative storage path - prepend API base URL
-                    const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
-                    imageUrl = apiBase.replace('/api', '') + imageUrl
-                } else if (!imageUrl.startsWith('/')) {
-                    // Missing leading slash
-                    imageUrl = '/' + imageUrl
+            if (!imageUrl.startsWith('http') && !imageUrl.startsWith('//') && !imageUrl.startsWith('data:')) {
+                const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+                const baseUrl = apiBase.replace('/api', '')
+                
+                if (imageUrl.startsWith('/storage/') || imageUrl.startsWith('storage/')) {
+                    imageUrl = baseUrl + '/' + imageUrl.replace(/^\//, '')
+                } else if (imageUrl.startsWith('/')) {
+                    imageUrl = baseUrl + imageUrl
+                } else {
+                    imageUrl = baseUrl + '/storage/' + imageUrl
                 }
             }
 
-            return imageUrl || '/placeholder-card.png'
+            return imageUrl
         }
-        return '/placeholder-card.png'
+        return PLACEHOLDER_IMAGE
     }
 
     const getProductPrice = (product) => {
@@ -203,9 +215,10 @@ export default function ProductsPage() {
                 </div>
 
                 {/* Products Grid */}
-                {loading ? (
+                {loading || initialLoad ? (
                     <div className="flex items-center justify-center py-20">
                         <Loader2 className="w-8 h-8 animate-spin text-blue-500 dark:text-blue-400" />
+                        <span className="ml-3 text-gray-600 dark:text-gray-400">Loading products...</span>
                     </div>
                 ) : products.length === 0 ? (
                     <div className="text-center py-20 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
@@ -234,9 +247,13 @@ export default function ProductsPage() {
                                                 <img
                                                     src={getProductImage(product)}
                                                     alt={product.name}
-                                                    className="w-full h-64 object-cover"
+                                                    className="w-full h-64 object-cover bg-gray-100 dark:bg-gray-700"
                                                     onError={(e) => {
-                                                        e.target.src = '/placeholder-card.png'
+                                                        // Prevent infinite loop by checking if already using placeholder
+                                                        if (!e.target.dataset.fallback) {
+                                                            e.target.dataset.fallback = 'true'
+                                                            e.target.src = PLACEHOLDER_IMAGE
+                                                        }
                                                     }}
                                                 />
                                                 {product.is_featured && (

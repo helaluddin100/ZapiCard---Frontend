@@ -3,13 +3,14 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { ZoomIn, ChevronLeft, ChevronRight } from 'lucide-react'
+import { PLACEHOLDER_IMAGE } from './productUtils'
 
 export default function ProductImageGallery({ images, productName }) {
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [isZoomed, setIsZoomed] = useState(false)
 
     if (!images || images.length === 0) {
-        images = ['/placeholder-card.png']
+        images = [PLACEHOLDER_IMAGE]
     }
 
     const handlePrevious = () => {
@@ -29,12 +30,15 @@ export default function ProductImageGallery({ images, productName }) {
                         key={selectedIndex}
                         src={images[selectedIndex]}
                         alt={productName}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover bg-gray-100 dark:bg-gray-700"
                         initial={{ opacity: 0, scale: 1.1 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.3 }}
                         onError={(e) => {
-                            e.target.src = '/placeholder-card.png'
+                            if (!e.target.dataset.fallback) {
+                                e.target.dataset.fallback = 'true'
+                                e.target.src = PLACEHOLDER_IMAGE
+                            }
                         }}
                     />
 
@@ -91,9 +95,12 @@ export default function ProductImageGallery({ images, productName }) {
                             <img
                                 src={img}
                                 alt={`${productName} - ${index + 1}`}
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-cover bg-gray-100 dark:bg-gray-700"
                                 onError={(e) => {
-                                    e.target.src = '/placeholder-card.png'
+                                    if (!e.target.dataset.fallback) {
+                                        e.target.dataset.fallback = 'true'
+                                        e.target.src = PLACEHOLDER_IMAGE
+                                    }
                                 }}
                             />
                             {selectedIndex === index && (
