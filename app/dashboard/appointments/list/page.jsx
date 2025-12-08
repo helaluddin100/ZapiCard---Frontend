@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
     Calendar,
     Clock,
@@ -18,7 +18,12 @@ import {
     X,
     Loader2,
     AlertCircle,
-    FileText
+    FileText,
+    Video,
+    Building2,
+    Link2,
+    Send,
+    MessageSquare
 } from 'lucide-react'
 import DashboardLayout from '@/components/DashboardLayout'
 import { appointmentListAPI } from '@/lib/api'
@@ -26,11 +31,20 @@ import { appointmentListAPI } from '@/lib/api'
 export default function AppointmentsListPage() {
     const [appointments, setAppointments] = useState([])
     const [filteredAppointments, setFilteredAppointments] = useState([])
-    const [activeTab, setActiveTab] = useState('pending') // 'pending', 'approved', 'rejected', 'all'
+    const [activeTab, setActiveTab] = useState('pending')
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
     const [selectedAppointment, setSelectedAppointment] = useState(null)
-    const [showDetailsModal, setShowDetailsModal] = useState(false)
+    
+    // Modal states
+    const [showApproveModal, setShowApproveModal] = useState(false)
+    const [showRejectModal, setShowRejectModal] = useState(false)
+    const [modalLoading, setModalLoading] = useState(false)
+    
+    // Form states for modals
+    const [meetingLink, setMeetingLink] = useState('')
+    const [approveNote, setApproveNote] = useState('')
+    const [rejectReason, setRejectReason] = useState('')
 
     useEffect(() => {
         fetchAppointments()
@@ -64,16 +78,91 @@ export default function AppointmentsListPage() {
         }
     }
 
-    const handleStatusChange = async (id, newStatus) => {
+    // Open Approve Modal
+    const openApproveModal = (appointment) => {
+        setSelectedAppointment(appointment)
+        setMeetingLink('')
+        setApproveNote('')
+        setShowApproveModal(true)
+    }
+
+    // Open Reject Modal
+    const openRejectModal = (appointment) => {
+        setSelectedAppointment(appointment)
+        setRejectReason('')
+        setShowRejectModal(true)
+    }
+
+    // Handle Approve Submit
+    const handleApproveSubmit = async () => {
+        if (!selectedAppointment) return
+        
+        // Validate meeting link for online meetings
+        if (selectedAppointment.meeting_type === 'online' && !meetingLink.trim()) {
+            setError('Please provide a meeting link for online appointments')
+            return
+        }
+
         try {
+            setModalLoading(true)
             setError('')
-            const response = await appointmentListAPI.updateAppointmentStatus(id, newStatus)
+            
+            // Build the note with meeting link if online
+            let note = approveNote.trim()
+            if (selectedAppointment.meeting_type === 'online' && meetingLink.trim()) {
+                note = `Meeting Link: ${meetingLink.trim()}${note ? '\n\n' + note : ''}`
+            } else if (selectedAppointment.preferred_location) {
+                note = `Location: ${selectedAppointment.preferred_location}${note ? '\n\n' + note : ''}`
+            }
+            
+            const response = await appointmentListAPI.updateAppointmentStatus(
+                selectedAppointment.id, 
+                'approved',
+                note || 'Your appointment has been approved.'
+            )
+            
             if (response.status === 'success') {
-                await fetchAppointments() // Refresh list
+                await fetchAppointments()
+                setShowApproveModal(false)
+                setSelectedAppointment(null)
             }
         } catch (err) {
-            setError(err.message || 'Failed to update appointment status')
-            console.error('Error updating status:', err)
+            setError(err.message || 'Failed to approve appointment')
+            console.error('Error approving:', err)
+        } finally {
+            setModalLoading(false)
+        }
+    }
+
+    // Handle Reject Submit
+    const handleRejectSubmit = async () => {
+        if (!selectedAppointment) return
+        
+        if (!rejectReason.trim()) {
+            setError('Please provide a reason for rejection')
+            return
+        }
+
+        try {
+            setModalLoading(true)
+            setError('')
+            
+            const response = await appointmentListAPI.updateAppointmentStatus(
+                selectedAppointment.id, 
+                'rejected',
+                rejectReason.trim()
+            )
+            
+            if (response.status === 'success') {
+                await fetchAppointments()
+                setShowRejectModal(false)
+                setSelectedAppointment(null)
+            }
+        } catch (err) {
+            setError(err.message || 'Failed to reject appointment')
+            console.error('Error rejecting:', err)
+        } finally {
+            setModalLoading(false)
         }
     }
 
@@ -83,7 +172,7 @@ export default function AppointmentsListPage() {
                 setError('')
                 const response = await appointmentListAPI.deleteAppointment(id)
                 if (response.status === 'success') {
-                    await fetchAppointments() // Refresh list
+                    await fetchAppointments()
                 }
             } catch (err) {
                 setError(err.message || 'Failed to delete appointment')
@@ -113,6 +202,23 @@ export default function AppointmentsListPage() {
         )
     }
 
+    const getMeetingTypeBadge = (meetingType) => {
+        if (meetingType === 'online') {
+            return (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                    <Video className="w-3.5 h-3.5" />
+                    Online Meeting
+                </span>
+            )
+        }
+        return (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
+                <Building2 className="w-3.5 h-3.5" />
+                In-Person
+            </span>
+        )
+    }
+
     const tabs = [
         { id: 'all', label: 'All', count: appointments.length },
         { id: 'pending', label: 'Pending', count: appointments.filter(a => a.status === 'pending').length },
@@ -134,6 +240,9 @@ export default function AppointmentsListPage() {
                     <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-center gap-2 text-red-700 dark:text-red-300">
                         <AlertCircle className="w-5 h-5" />
                         <span>{error}</span>
+                        <button onClick={() => setError('')} className="ml-auto">
+                            <X className="w-4 h-4" />
+                        </button>
                     </div>
                 )}
 
@@ -207,15 +316,18 @@ export default function AppointmentsListPage() {
                                                             <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 truncate">
                                                                 {appointment.patient_name}
                                                             </h3>
-                                                            <div className="flex-shrink-0">
+                                                            <div className="flex flex-wrap items-center gap-2">
                                                                 {getStatusBadge(appointment.status)}
+                                                                {getMeetingTypeBadge(appointment.meeting_type)}
                                                             </div>
                                                         </div>
                                                         <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
-                                                            <div className="flex items-center gap-2 min-w-0">
-                                                                <Mail className="w-4 h-4 flex-shrink-0" />
-                                                                <span className="truncate">{appointment.patient_email}</span>
-                                                            </div>
+                                                            {appointment.patient_email && (
+                                                                <div className="flex items-center gap-2 min-w-0">
+                                                                    <Mail className="w-4 h-4 flex-shrink-0" />
+                                                                    <span className="truncate">{appointment.patient_email}</span>
+                                                                </div>
+                                                            )}
                                                             {appointment.patient_phone && (
                                                                 <div className="flex items-center gap-2 min-w-0">
                                                                     <Phone className="w-4 h-4 flex-shrink-0" />
@@ -233,7 +345,10 @@ export default function AppointmentsListPage() {
                                                         <div className="min-w-0">
                                                             <div className="text-gray-500 dark:text-gray-400 text-xs">Location</div>
                                                             <div className="font-medium text-gray-900 dark:text-gray-100 truncate">
-                                                                {appointment.location?.name || 'N/A'}
+                                                                {appointment.meeting_type === 'online' 
+                                                                    ? 'Online Meeting' 
+                                                                    : (appointment.preferred_location || appointment.location?.name || 'N/A')
+                                                                }
                                                             </div>
                                                         </div>
                                                     </div>
@@ -269,7 +384,17 @@ export default function AppointmentsListPage() {
                                                             <FileText className="w-4 h-4 flex-shrink-0" />
                                                             <span className="font-medium">Notes</span>
                                                         </div>
-                                                        <p className="text-sm text-gray-700 dark:text-gray-300 break-words">{appointment.notes}</p>
+                                                        <p className="text-sm text-gray-700 dark:text-gray-300 break-words whitespace-pre-line">{appointment.notes}</p>
+                                                    </div>
+                                                )}
+
+                                                {/* No Email Warning */}
+                                                {!appointment.patient_email && (
+                                                    <div className="mb-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+                                                        <div className="flex items-center gap-2 text-sm text-amber-700 dark:text-amber-300">
+                                                            <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                                                            <span>No email provided - notification won&apos;t be sent</span>
+                                                        </div>
                                                     </div>
                                                 )}
                                             </div>
@@ -279,14 +404,14 @@ export default function AppointmentsListPage() {
                                                 {appointment.status === 'pending' && (
                                                     <>
                                                         <button
-                                                            onClick={() => handleStatusChange(appointment.id, 'approved')}
+                                                            onClick={() => openApproveModal(appointment)}
                                                             className="flex-1 lg:flex-none px-3 sm:px-4 py-2 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/50 transition flex items-center justify-center gap-2 text-sm font-medium"
                                                         >
                                                             <Check className="w-4 h-4" />
                                                             <span className="hidden sm:inline">Approve</span>
                                                         </button>
                                                         <button
-                                                            onClick={() => handleStatusChange(appointment.id, 'rejected')}
+                                                            onClick={() => openRejectModal(appointment)}
                                                             className="flex-1 lg:flex-none px-3 sm:px-4 py-2 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/50 transition flex items-center justify-center gap-2 text-sm font-medium"
                                                         >
                                                             <X className="w-4 h-4" />
@@ -296,7 +421,7 @@ export default function AppointmentsListPage() {
                                                 )}
                                                 {appointment.status === 'approved' && (
                                                     <button
-                                                        onClick={() => handleStatusChange(appointment.id, 'rejected')}
+                                                        onClick={() => openRejectModal(appointment)}
                                                         className="flex-1 lg:flex-none px-3 sm:px-4 py-2 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/50 transition flex items-center justify-center gap-2 text-sm font-medium"
                                                     >
                                                         <X className="w-4 h-4" />
@@ -305,7 +430,7 @@ export default function AppointmentsListPage() {
                                                 )}
                                                 {appointment.status === 'rejected' && (
                                                     <button
-                                                        onClick={() => handleStatusChange(appointment.id, 'approved')}
+                                                        onClick={() => openApproveModal(appointment)}
                                                         className="flex-1 lg:flex-none px-3 sm:px-4 py-2 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/50 transition flex items-center justify-center gap-2 text-sm font-medium"
                                                     >
                                                         <Check className="w-4 h-4" />
@@ -328,7 +453,267 @@ export default function AppointmentsListPage() {
                     </>
                 )}
             </div>
+
+            {/* Approve Modal */}
+            <AnimatePresence>
+                {showApproveModal && selectedAppointment && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden"
+                        >
+                            {/* Modal Header */}
+                            <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 px-6 py-4">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-white/20 rounded-lg">
+                                            <CheckCircle2 className="w-6 h-6 text-white" />
+                                        </div>
+                                        <h2 className="text-xl font-bold text-white">Approve Appointment</h2>
+                                    </div>
+                                    <button
+                                        onClick={() => setShowApproveModal(false)}
+                                        className="p-2 hover:bg-white/20 rounded-full transition"
+                                    >
+                                        <X className="w-5 h-5 text-white" />
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Modal Body */}
+                            <div className="p-6 space-y-5">
+                                {/* Appointment Info */}
+                                <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                                        {selectedAppointment.patient_name}
+                                    </h3>
+                                    <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                        <p>📅 {new Date(selectedAppointment.appointment_date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                                        <p>🕐 {selectedAppointment.appointment_time}</p>
+                                        <p className="flex items-center gap-1">
+                                            {selectedAppointment.meeting_type === 'online' ? '💻 Online Meeting' : '🏢 In-Person Meeting'}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Meeting Link (for online meetings) */}
+                                {selectedAppointment.meeting_type === 'online' && (
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                            <Link2 className="w-4 h-4 inline mr-2" />
+                                            Meeting Link <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="url"
+                                            value={meetingLink}
+                                            onChange={(e) => setMeetingLink(e.target.value)}
+                                            placeholder="https://meet.google.com/xxx-xxxx-xxx"
+                                            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400"
+                                        />
+                                        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                            Google Meet, Zoom, or any video conferencing link
+                                        </p>
+                                    </div>
+                                )}
+
+                                {/* Additional Note */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        <MessageSquare className="w-4 h-4 inline mr-2" />
+                                        Additional Message (Optional)
+                                    </label>
+                                    <textarea
+                                        value={approveNote}
+                                        onChange={(e) => setApproveNote(e.target.value)}
+                                        rows={3}
+                                        placeholder="Any additional information for the patient..."
+                                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 resize-none"
+                                    />
+                                </div>
+
+                                {/* Email Notice */}
+                                {selectedAppointment.patient_email ? (
+                                    <div className="p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
+                                        <div className="flex items-start gap-2 text-sm text-blue-700 dark:text-blue-300">
+                                            <Mail className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                                            <span>Notification will be sent to <strong>{selectedAppointment.patient_email}</strong></span>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl">
+                                        <div className="flex items-start gap-2 text-sm text-amber-700 dark:text-amber-300">
+                                            <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                                            <span>No email provided - status will be updated but no notification will be sent</span>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Modal Footer */}
+                            <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700/50 flex gap-3">
+                                <button
+                                    onClick={() => setShowApproveModal(false)}
+                                    disabled={modalLoading}
+                                    className="flex-1 px-4 py-2.5 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-600 transition font-medium"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleApproveSubmit}
+                                    disabled={modalLoading || (selectedAppointment.meeting_type === 'online' && !meetingLink.trim())}
+                                    className="flex-1 px-4 py-2.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-xl hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 transition font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                >
+                                    {modalLoading ? (
+                                        <>
+                                            <Loader2 className="w-4 h-4 animate-spin" />
+                                            Approving...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Send className="w-4 h-4" />
+                                            Approve & Notify
+                                        </>
+                                    )}
+                                </button>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
+
+            {/* Reject Modal */}
+            <AnimatePresence>
+                {showRejectModal && selectedAppointment && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden"
+                        >
+                            {/* Modal Header */}
+                            <div className="bg-gradient-to-r from-rose-500 via-red-500 to-orange-500 px-6 py-4">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-white/20 rounded-lg">
+                                            <XCircle className="w-6 h-6 text-white" />
+                                        </div>
+                                        <h2 className="text-xl font-bold text-white">Reject Appointment</h2>
+                                    </div>
+                                    <button
+                                        onClick={() => setShowRejectModal(false)}
+                                        className="p-2 hover:bg-white/20 rounded-full transition"
+                                    >
+                                        <X className="w-5 h-5 text-white" />
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Modal Body */}
+                            <div className="p-6 space-y-5">
+                                {/* Appointment Info */}
+                                <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                                        {selectedAppointment.patient_name}
+                                    </h3>
+                                    <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                        <p>📅 {new Date(selectedAppointment.appointment_date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                                        <p>🕐 {selectedAppointment.appointment_time}</p>
+                                    </div>
+                                </div>
+
+                                {/* Rejection Reason */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        <MessageSquare className="w-4 h-4 inline mr-2" />
+                                        Reason for Rejection <span className="text-red-500">*</span>
+                                    </label>
+                                    <textarea
+                                        value={rejectReason}
+                                        onChange={(e) => setRejectReason(e.target.value)}
+                                        rows={4}
+                                        placeholder="Please provide a reason for rejecting this appointment..."
+                                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-red-500 dark:focus:ring-red-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 resize-none"
+                                    />
+                                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                        This message will be sent to the patient explaining why the appointment was rejected.
+                                    </p>
+                                </div>
+
+                                {/* Quick Reasons */}
+                                <div>
+                                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Quick Reasons:</p>
+                                    <div className="flex flex-wrap gap-2">
+                                        {[
+                                            'Schedule conflict',
+                                            'Not available on this date',
+                                            'Time slot already booked',
+                                            'Need more information',
+                                            'Outside service area'
+                                        ].map((reason) => (
+                                            <button
+                                                key={reason}
+                                                type="button"
+                                                onClick={() => setRejectReason(reason)}
+                                                className="px-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+                                            >
+                                                {reason}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Email Notice */}
+                                {selectedAppointment.patient_email ? (
+                                    <div className="p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
+                                        <div className="flex items-start gap-2 text-sm text-blue-700 dark:text-blue-300">
+                                            <Mail className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                                            <span>Rejection notice will be sent to <strong>{selectedAppointment.patient_email}</strong></span>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl">
+                                        <div className="flex items-start gap-2 text-sm text-amber-700 dark:text-amber-300">
+                                            <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                                            <span>No email provided - status will be updated but no notification will be sent</span>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Modal Footer */}
+                            <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700/50 flex gap-3">
+                                <button
+                                    onClick={() => setShowRejectModal(false)}
+                                    disabled={modalLoading}
+                                    className="flex-1 px-4 py-2.5 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-600 transition font-medium"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleRejectSubmit}
+                                    disabled={modalLoading || !rejectReason.trim()}
+                                    className="flex-1 px-4 py-2.5 bg-gradient-to-r from-rose-500 via-red-500 to-orange-500 text-white rounded-xl hover:from-rose-600 hover:via-red-600 hover:to-orange-600 transition font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                >
+                                    {modalLoading ? (
+                                        <>
+                                            <Loader2 className="w-4 h-4 animate-spin" />
+                                            Rejecting...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <XCircle className="w-4 h-4" />
+                                            Reject & Notify
+                                        </>
+                                    )}
+                                </button>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </DashboardLayout>
     )
 }
-
