@@ -109,7 +109,7 @@ export function generateMetadata({
         },
         manifest: '/site.webmanifest',
         verification: {
-            google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+            google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'nhjBmG9EOUqKItAkF4NotyGqM92zmsmVHo_Utl_IiS0',
             // yandex: 'your-yandex-verification-code',
             // bing: 'your-bing-verification-code',
         },
