@@ -699,7 +699,7 @@ export default function AddEntryPage() {
                       className="flex items-center gap-2 px-4 py-2 gradient-primary text-white rounded-lg hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
                     >
                       <Sparkles className="w-4 h-4" />
-                      {ocrLoading ? 'Analyzing with AI...' : 'Read with AI (Gemini)'}
+                      {ocrLoading ? 'Analyzing with AI...' : 'Read with (Zapy AI)'}
                     </button>
                   )}
                 </div>
