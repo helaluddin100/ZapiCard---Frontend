@@ -177,9 +177,17 @@ export default function SignupPage() {
 
     try {
       if (provider === 'google') {
-        // Get backend URL (remove /api if present)
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
-        const backendUrl = apiUrl.replace('/api', '').replace(/\/$/, '')
+        // Detect if production based on hostname
+        const isProduction = typeof window !== 'undefined' && 
+          (window.location.hostname === 'zapycard.com' || 
+           window.location.hostname === 'www.zapycard.com' ||
+           window.location.hostname === 'smart.buytiq.store' ||
+           window.location.hostname === 'www.smart.buytiq.store')
+        
+        // Use appropriate backend URL
+        const backendUrl = isProduction 
+          ? 'https://smart.buytiq.store'
+          : 'http://localhost:8000'
 
         // Redirect to backend Google OAuth endpoint
         window.location.href = `${backendUrl}/login/google`
