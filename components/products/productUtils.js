@@ -10,16 +10,26 @@ export const getProductImages = (product) => {
         return [PLACEHOLDER_IMAGE]
     }
 
-    // Check if we're on production
-    const isProduction = typeof window !== 'undefined' &&
-        (window.location.hostname === 'smart.buytiq.store' ||
-            window.location.hostname === 'www.smart.buytiq.store')
+    // Get API URL from environment variable first (primary source of truth)
+    let apiBase = process.env.NEXT_PUBLIC_API_URL
 
-    // Use appropriate base URL
-    const apiBase = isProduction
-        ? 'https://smart.buytiq.store/api'
-        : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000')
+    // If env variable is not set, check if we're on production by hostname
+    if (!apiBase && typeof window !== 'undefined') {
+        const isProduction = window.location.hostname === 'smart.buytiq.store' ||
+            window.location.hostname === 'www.smart.buytiq.store' ||
+            window.location.hostname.includes('buytiq.store')
 
+        if (isProduction) {
+            apiBase = 'https://smart.buytiq.store/api'
+        }
+    }
+
+    // Fallback to localhost only if nothing else is available
+    if (!apiBase) {
+        apiBase = 'http://localhost:8000/api'
+    }
+
+    // Remove /api suffix to get base URL for images
     const baseUrl = apiBase.replace('/api', '')
 
     return product.images.map(img => {
@@ -27,8 +37,12 @@ export const getProductImages = (product) => {
 
         if (!imageUrl) return PLACEHOLDER_IMAGE
 
+        // Replace localhost URLs with production URL (handle backend returning localhost URLs)
+        if (imageUrl.startsWith('http://localhost:8000') || imageUrl.startsWith('http://127.0.0.1:8000')) {
+            imageUrl = imageUrl.replace(/http:\/\/(localhost|127\.0\.0\.1):8000/, baseUrl)
+        }
         // If URL is relative, convert to absolute
-        if (!imageUrl.startsWith('http') && !imageUrl.startsWith('//') && !imageUrl.startsWith('data:')) {
+        else if (!imageUrl.startsWith('http') && !imageUrl.startsWith('//') && !imageUrl.startsWith('data:')) {
             if (imageUrl.startsWith('/storage/') || imageUrl.startsWith('storage/')) {
                 imageUrl = baseUrl + '/' + imageUrl.replace(/^\//, '')
             } else if (imageUrl.startsWith('/')) {
