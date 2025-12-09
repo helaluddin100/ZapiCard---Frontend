@@ -244,7 +244,7 @@ END:VCARD`
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
         <div className="max-w-5xl mx-auto px-3 sm:px-4 py-4 sm:py-8 space-y-4 sm:space-y-6">
           {/* Header Actions */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
+          {/* <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
             <h1 className="text-xl sm:text-2xl font-bold gradient-primary bg-clip-text text-transparent">Health Card</h1>
             <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
               <div id="qr-code-container" className="hidden print:block"></div>
@@ -264,7 +264,7 @@ END:VCARD`
                 <span className="hidden min-[375px]:inline">Share</span>
               </button>
             </div>
-          </div>
+          </div> */}
 
           {/* Main Card */}
           <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl border border-gray-200 p-4 sm:p-6 md:p-8 space-y-6 sm:space-y-8">
