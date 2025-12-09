@@ -37,8 +37,12 @@ export const getProductImages = (product) => {
 
         if (!imageUrl) return PLACEHOLDER_IMAGE
 
+        // Replace localhost URLs with production URL (handle backend returning localhost URLs)
+        if (imageUrl.startsWith('http://localhost:8000') || imageUrl.startsWith('http://127.0.0.1:8000')) {
+            imageUrl = imageUrl.replace(/http:\/\/(localhost|127\.0\.0\.1):8000/, baseUrl)
+        }
         // If URL is relative, convert to absolute
-        if (!imageUrl.startsWith('http') && !imageUrl.startsWith('//') && !imageUrl.startsWith('data:')) {
+        else if (!imageUrl.startsWith('http') && !imageUrl.startsWith('//') && !imageUrl.startsWith('data:')) {
             if (imageUrl.startsWith('/storage/') || imageUrl.startsWith('storage/')) {
                 imageUrl = baseUrl + '/' + imageUrl.replace(/^\//, '')
             } else if (imageUrl.startsWith('/')) {

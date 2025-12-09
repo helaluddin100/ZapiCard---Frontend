@@ -262,28 +262,45 @@ export default function CheckoutPage() {
         const primaryImage = product.images.find(img => img.is_primary) || product.images[0]
         let imageUrl = primaryImage.image_url || primaryImage.thumbnail_url
 
-        // If URL is relative, convert to absolute
-        if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('//')) {
-            // Check if we're on production
-            const isProduction = typeof window !== 'undefined' &&
-                (window.location.hostname === 'smart.buytiq.store' ||
-                    window.location.hostname === 'www.smart.buytiq.store')
+        if (!imageUrl) return '/placeholder-card.png'
 
-            // Use appropriate base URL
-            const apiBase = isProduction
-                ? 'https://smart.buytiq.store/api'
-                : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000')
+        // Get API URL from environment variable first (primary source of truth)
+        let apiBase = process.env.NEXT_PUBLIC_API_URL
 
-            if (imageUrl.startsWith('/storage/')) {
-                // Relative storage path - prepend API base URL
-                imageUrl = apiBase.replace('/api', '') + imageUrl
-            } else if (!imageUrl.startsWith('/')) {
-                // Missing leading slash
-                imageUrl = '/' + imageUrl
+        // If env variable is not set, check if we're on production by hostname
+        if (!apiBase && typeof window !== 'undefined') {
+            const isProduction = window.location.hostname === 'smart.buytiq.store' ||
+                window.location.hostname === 'www.smart.buytiq.store' ||
+                window.location.hostname.includes('buytiq.store')
+
+            if (isProduction) {
+                apiBase = 'https://smart.buytiq.store/api'
             }
         }
 
-        return imageUrl || '/placeholder-card.png'
+        // Fallback to localhost only if nothing else is available
+        if (!apiBase) {
+            apiBase = 'http://localhost:8000/api'
+        }
+
+        const baseUrl = apiBase.replace('/api', '')
+
+        // Replace localhost URLs with production URL (handle backend returning localhost URLs)
+        if (imageUrl.startsWith('http://localhost:8000') || imageUrl.startsWith('http://127.0.0.1:8000')) {
+            imageUrl = imageUrl.replace(/http:\/\/(localhost|127\.0\.0\.1):8000/, baseUrl)
+        }
+        // If URL is relative, convert to absolute
+        else if (!imageUrl.startsWith('http') && !imageUrl.startsWith('//')) {
+            if (imageUrl.startsWith('/storage/') || imageUrl.startsWith('storage/')) {
+                imageUrl = baseUrl + '/' + imageUrl.replace(/^\//, '')
+            } else if (imageUrl.startsWith('/')) {
+                imageUrl = baseUrl + imageUrl
+            } else {
+                imageUrl = baseUrl + '/storage/' + imageUrl
+            }
+        }
+
+        return imageUrl
     }
 
     const price = getProductPrice()

@@ -14,15 +14,30 @@ export default function PublicHealthCardPage() {
   const [lightboxImage, setLightboxImage] = useState(null)
   const [mounted, setMounted] = useState(false)
 
-  // Check if we're on production
-  const isProduction = typeof window !== 'undefined' && 
-    (window.location.hostname === 'smart.buytiq.store' || 
-     window.location.hostname === 'www.smart.buytiq.store')
-  
-  // Use appropriate API base URL
-  const apiBase = isProduction 
-    ? 'https://smart.buytiq.store/api'
-    : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000')
+  // Get API URL from environment variable first (primary source of truth)
+  const getApiBase = () => {
+    let base = process.env.NEXT_PUBLIC_API_URL
+
+    // If env variable is not set, check if we're on production by hostname
+    if (!base && typeof window !== 'undefined') {
+      const isProduction = window.location.hostname === 'smart.buytiq.store' ||
+        window.location.hostname === 'www.smart.buytiq.store' ||
+        window.location.hostname.includes('buytiq.store')
+
+      if (isProduction) {
+        base = 'https://smart.buytiq.store/api'
+      }
+    }
+
+    // Fallback to localhost only if nothing else is available
+    if (!base) {
+      base = 'http://localhost:8000/api'
+    }
+
+    return base
+  }
+
+  const apiBase = getApiBase()
 
   // Get base URL for images (remove /api if present, as images are served from public directory)
   const getImageBaseUrl = () => {
@@ -39,14 +54,22 @@ export default function PublicHealthCardPage() {
   // Helper function to convert relative image paths to full URLs
   const getImageUrl = (imagePath) => {
     if (!imagePath) return null
+
+    const imageBase = getImageBaseUrl()
+
+    // Replace localhost URLs with production URL (handle backend returning localhost URLs)
+    if (imagePath.startsWith('http://localhost:8000') || imagePath.startsWith('http://127.0.0.1:8000')) {
+      return imagePath.replace(/http:\/\/(localhost|127\.0\.0\.1):8000/, imageBase)
+    }
+
     // If it's already a full URL, return as is
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
       return imagePath
     }
+
     // If it's a relative path, prepend image base URL (without /api)
     // Remove leading slash if present
     const cleanPath = imagePath.startsWith('/') ? imagePath.slice(1) : imagePath
-    const imageBase = getImageBaseUrl()
     return `${imageBase}/${cleanPath}`
   }
 
