@@ -1,7 +1,7 @@
-// Dynamic Robots.txt for SEO
+// Dynamic robots.txt generation for SEO
 export default function robots() {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://zapycard.com'
-
+    
     return {
         rules: [
             {
@@ -12,8 +12,10 @@ export default function robots() {
                     '/dashboard/',
                     '/admin/',
                     '/_next/',
-                    '/checkout/',
-                    '/orders/',
+                    '/health-dashboard/card/*/edit',
+                    '/health-dashboard/card/*/entry',
+                    '/dashboard/edit/',
+                    '/dashboard/create',
                 ],
             },
             {
@@ -23,12 +25,12 @@ export default function robots() {
                     '/api/',
                     '/dashboard/',
                     '/admin/',
-                    '/checkout/',
-                    '/orders/',
+                    '/_next/',
                 ],
+                crawlDelay: 0,
             },
         ],
         sitemap: `${baseUrl}/sitemap.xml`,
+        host: baseUrl,
     }
 }
-
