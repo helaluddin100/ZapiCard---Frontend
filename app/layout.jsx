@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/lib/theme'
 import { ToastProvider } from '@/lib/toast'
 import Toast from '@/components/Toast'
 import ToastHelper from '@/components/ToastHelper'
+import FacebookPixel from '@/components/FacebookPixel'
 import { generateMetadata as generateMeta, generateOrganizationSchema, generateWebsiteSchema } from './metadata'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
@@ -68,7 +69,7 @@ export default function RootLayout({ children }) {
         {/* Preconnect to external domains for better performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
+
         {/* Favicon */}
         <link rel="icon" type="image/png" href="/favicon.png" />
         <link rel="shortcut icon" type="image/png" href="/favicon.png" />
@@ -80,6 +81,7 @@ export default function RootLayout({ children }) {
           Skip to main content
         </a>
 
+        <FacebookPixel />
         <ThemeProvider>
           <AuthProviderWrapper>
             <ToastProvider>
