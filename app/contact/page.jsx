@@ -137,8 +137,8 @@ export default function ContactPage() {
               {
                 icon: <Mail className="w-8 h-8" />,
                 title: 'Email',
-                content: 'support@zapycard.com',
-                link: 'mailto:support@zapycard.com',
+                content: 'zapycardbd@gmail.com',
+                link: 'mailto:zapycardbd@gmail.com',
               },
               {
                 icon: <Phone className="w-8 h-8" />,
