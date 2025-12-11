@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import {
   Star,
@@ -24,14 +25,17 @@ export default function TestimonialsPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 12
 
+  // Blank user image placeholder with user icon
+  const blankUserImage = 'data:image/svg+xml,%3Csvg width="150" height="150" xmlns="http://www.w3.org/2000/svg"%3E%3Ccircle cx="75" cy="75" r="75" fill="%23e5e7ea"/%3E%3Ccircle cx="75" cy="60" r="20" fill="%239ca3af"/%3E%3Cpath d="M30 120 Q30 100 75 100 Q120 100 120 120" fill="%239ca3af"/%3E%3C/svg%3E'
+
   // Extended mock testimonials data
   const allTestimonials = [
     {
       id: 1,
-      name: 'Sarah Johnson',
+      name: 'Fatima Begum',
       role: 'Marketing Director',
       company: 'TechCorp',
-      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop',
+      image: blankUserImage,
       rating: 5,
       text: 'Zapy Card transformed how I network. The NFC feature is a game-changer at events! I can share my contact information instantly with just a tap.',
       date: '2024-01-15',
@@ -39,10 +43,10 @@ export default function TestimonialsPage() {
     },
     {
       id: 2,
-      name: 'Michael Chen',
+      name: 'Hasan Ahmed',
       role: 'Sales Manager',
       company: 'Global Sales Inc',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop',
+      image: blankUserImage,
       rating: 5,
       text: 'Professional, modern, and incredibly easy to use. My clients love the digital experience. The QR code customization options are fantastic!',
       date: '2024-01-20',
@@ -50,10 +54,10 @@ export default function TestimonialsPage() {
     },
     {
       id: 3,
-      name: 'Emily Rodriguez',
+      name: 'Ayesha Khan',
       role: 'Freelance Designer',
       company: 'Creative Studio',
-      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop',
+      image: blankUserImage,
       rating: 5,
       text: 'The customization options are amazing. I can match my card to my brand perfectly! The appointment booking feature has increased my client bookings significantly.',
       date: '2024-02-01',
@@ -61,10 +65,10 @@ export default function TestimonialsPage() {
     },
     {
       id: 4,
-      name: 'David Thompson',
+      name: 'Mohammad Rahman',
       role: 'CEO',
       company: 'StartupHub',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop',
+      image: blankUserImage,
       rating: 5,
       text: 'As a startup founder, networking is crucial. Zapy Card makes it so easy to share my information. The analytics feature helps me track who views my card.',
       date: '2024-02-05',
@@ -72,10 +76,10 @@ export default function TestimonialsPage() {
     },
     {
       id: 5,
-      name: 'Lisa Anderson',
+      name: 'Nusrat Jahan',
       role: 'Real Estate Agent',
       company: 'Prime Properties',
-      image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop',
+      image: blankUserImage,
       rating: 5,
       text: 'Perfect for real estate! Clients can save my contact instantly and book viewings directly from my card. The NFC card is a conversation starter at open houses.',
       date: '2024-02-10',
@@ -83,10 +87,10 @@ export default function TestimonialsPage() {
     },
     {
       id: 6,
-      name: 'James Wilson',
+      name: 'Rahim Uddin',
       role: 'Consultant',
       company: 'Independent',
-      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop',
+      image: blankUserImage,
       rating: 5,
       text: 'The best investment I&apos;ve made for my business. Professional appearance, easy to update, and the QR code works flawlessly. Highly recommend!',
       date: '2024-02-12',
@@ -94,10 +98,10 @@ export default function TestimonialsPage() {
     },
     {
       id: 7,
-      name: 'Maria Garcia',
+      name: 'Sharmin Akter',
       role: 'Event Planner',
       company: 'Celebrations Co',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop',
+      image: blankUserImage,
       rating: 5,
       text: 'I use Zapy Card at every event. The NFC feature is perfect for networking events - no more fumbling with business cards. Clients love the modern approach!',
       date: '2024-02-15',
@@ -105,10 +109,10 @@ export default function TestimonialsPage() {
     },
     {
       id: 8,
-      name: 'Robert Brown',
+      name: 'Karim Hossain',
       role: 'Photographer',
       company: 'Capture Moments',
-      image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop',
+      image: blankUserImage,
       rating: 5,
       text: 'The portfolio integration feature is amazing! Clients can see my work directly from my card. The design options are beautiful and professional.',
       date: '2024-02-18',
@@ -116,10 +120,10 @@ export default function TestimonialsPage() {
     },
     {
       id: 9,
-      name: 'Jennifer Lee',
+      name: 'Taslima Khatun',
       role: 'Fitness Trainer',
       company: 'FitLife Gym',
-      image: 'https://images.unsplash.com/photo-1580489944761-15a19d654d0b?w=150&h=150&fit=crop',
+      image: blankUserImage,
       rating: 5,
       text: 'My clients can book sessions directly from my card. The appointment feature is seamless and has increased my bookings by 30%. Love it!',
       date: '2024-02-20',
@@ -127,10 +131,10 @@ export default function TestimonialsPage() {
     },
     {
       id: 10,
-      name: 'Christopher Taylor',
+      name: 'Abdul Malek',
       role: 'Lawyer',
       company: 'Legal Partners',
-      image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop',
+      image: blankUserImage,
       rating: 5,
       text: 'Professional and secure. Perfect for legal professionals who need to maintain a polished image. The vCard download feature is very useful for clients.',
       date: '2024-02-22',
@@ -138,10 +142,10 @@ export default function TestimonialsPage() {
     },
     {
       id: 11,
-      name: 'Amanda White',
+      name: 'Rashida Begum',
       role: 'Interior Designer',
       company: 'Design Studio',
-      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop',
+      image: blankUserImage,
       rating: 5,
       text: 'The visual customization is incredible. I can showcase my design style through my card. Clients are always impressed with the modern approach.',
       date: '2024-02-25',
@@ -149,10 +153,10 @@ export default function TestimonialsPage() {
     },
     {
       id: 12,
-      name: 'Daniel Martinez',
+      name: 'Shahidul Islam',
       role: 'Software Developer',
       company: 'CodeCraft',
-      image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&h=150&fit=crop',
+      image: blankUserImage,
       rating: 5,
       text: 'As a developer, I appreciate the clean API and easy integration. The platform is well-built and the support team is responsive. Great product!',
       date: '2024-02-28',
@@ -160,10 +164,10 @@ export default function TestimonialsPage() {
     },
     {
       id: 13,
-      name: 'Rachel Green',
+      name: 'Mahmuda Akter',
       role: 'Nutritionist',
       company: 'Healthy Living',
-      image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=150&h=150&fit=crop',
+      image: blankUserImage,
       rating: 5,
       text: 'The appointment booking feature is perfect for my practice. Clients can schedule consultations directly, and I can manage my calendar easily.',
       date: '2024-03-01',
@@ -171,10 +175,10 @@ export default function TestimonialsPage() {
     },
     {
       id: 14,
-      name: 'Kevin Park',
+      name: 'Kamrul Hasan',
       role: 'Financial Advisor',
       company: 'Wealth Management',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop',
+      image: blankUserImage,
       rating: 5,
       text: 'Professional appearance is crucial in finance. Zapy Card gives me that edge. The NFC card quality is excellent and makes a great impression.',
       date: '2024-03-03',
@@ -182,10 +186,10 @@ export default function TestimonialsPage() {
     },
     {
       id: 15,
-      name: 'Sophie Turner',
+      name: 'Farzana Begum',
       role: 'Life Coach',
       company: 'Transform Coaching',
-      image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&h=150&fit=crop',
+      image: blankUserImage,
       rating: 5,
       text: 'The platform is intuitive and the results speak for themselves. My clients love the modern approach, and it reflects my forward-thinking brand.',
       date: '2024-03-05',
@@ -193,10 +197,10 @@ export default function TestimonialsPage() {
     },
     {
       id: 16,
-      name: 'Thomas Anderson',
+      name: 'Mizanur Rahman',
       role: 'Architect',
       company: 'Design Build',
-      image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop',
+      image: blankUserImage,
       rating: 4,
       text: 'Great platform overall. The design options are good, though I&apos;d love to see more architectural templates. The NFC feature works well.',
       date: '2024-03-08',
@@ -204,10 +208,10 @@ export default function TestimonialsPage() {
     },
     {
       id: 17,
-      name: 'Olivia Davis',
+      name: 'Jannatul Ferdous',
       role: 'Yoga Instructor',
       company: 'Zen Studio',
-      image: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=150&h=150&fit=crop',
+      image: blankUserImage,
       rating: 5,
       text: 'Perfect for wellness professionals! The calming design options match my brand perfectly. Students can book classes directly from my card.',
       date: '2024-03-10',
@@ -215,10 +219,10 @@ export default function TestimonialsPage() {
     },
     {
       id: 18,
-      name: 'William Jackson',
+      name: 'Rafiqul Islam',
       role: 'Mechanic',
       company: 'AutoCare Plus',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop',
+      image: blankUserImage,
       rating: 5,
       text: 'Even in a traditional industry, the modern approach works! Customers appreciate the convenience. The QR code is great for quick contact sharing.',
       date: '2024-03-12',
@@ -501,9 +505,11 @@ export default function TestimonialsPage() {
                         className="relative"
                       >
                         <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full blur opacity-50"></div>
-                        <img
+                        <Image
                           src={testimonial.image}
                           alt={testimonial.name}
+                          width={56}
+                          height={56}
                           className="relative w-14 h-14 rounded-full object-cover border-2 border-white dark:border-gray-700 shadow-lg"
                         />
                       </motion.div>
@@ -526,7 +532,7 @@ export default function TestimonialsPage() {
                         >
                           {testimonial.role}
                         </motion.div>
-                        <motion.div
+                        {/* <motion.div
                           initial={{ opacity: 0, x: -10 }}
                           whileInView={{ opacity: 1, x: 0 }}
                           viewport={{ once: true }}
@@ -534,7 +540,7 @@ export default function TestimonialsPage() {
                           className="text-xs text-gray-500 dark:text-gray-500"
                         >
                           {testimonial.company}
-                        </motion.div>
+                        </motion.div> */}
                       </div>
                     </div>
 
@@ -578,9 +584,11 @@ export default function TestimonialsPage() {
                         className="flex-shrink-0 relative"
                       >
                         <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full blur opacity-50"></div>
-                        <img
+                        <Image
                           src={testimonial.image}
                           alt={testimonial.name}
+                          width={80}
+                          height={80}
                           className="relative w-20 h-20 rounded-full object-cover border-2 border-white dark:border-gray-700 shadow-lg"
                         />
                       </motion.div>
