@@ -156,9 +156,9 @@ export default function Footer() {
                         <div className="flex space-x-4">
                             {[
                                 { icon: Facebook, color: 'hover:text-blue-400', href: 'https://facebook.com/zapycards', ariaLabel: 'Facebook' },
-                                { icon: Twitter, color: 'hover:text-blue-400', href: 'https://twitter.com/zapycards', ariaLabel: 'Twitter' },
-                                { icon: Instagram, color: 'hover:text-pink-400', href: 'https://instagram.com/zapycards', ariaLabel: 'Instagram' },
-                                { icon: Linkedin, color: 'hover:text-blue-400', href: 'https://linkedin.com/company/zapycards', ariaLabel: 'LinkedIn' }
+                                { icon: Twitter, color: 'hover:text-blue-400', href: 'https://x.com/zapycardbd', ariaLabel: 'Twitter' },
+                                { icon: Instagram, color: 'hover:text-pink-400', href: 'https://www.instagram.com/zapycardbd', ariaLabel: 'Instagram' },
+                                { icon: Linkedin, color: 'hover:text-blue-400', href: 'https://www.linkedin.com/in/zapycard', ariaLabel: 'LinkedIn' }
                             ].map((social, idx) => {
                                 const Icon = social.icon
                                 return (
