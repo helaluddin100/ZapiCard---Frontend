@@ -23,6 +23,7 @@ export default function SignupPage() {
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [googleLoginRequired, setGoogleLoginRequired] = useState(false)
   const [fieldErrors, setFieldErrors] = useState({
     name: '',
     email: '',
@@ -109,6 +110,7 @@ export default function SignupPage() {
     // Clear general error when user starts typing
     if (error) {
       setError('')
+      setGoogleLoginRequired(false)
     }
     // Re-validate confirm password if password changes
     if (field === 'password' && touched.confirmPassword) {
@@ -157,14 +159,24 @@ export default function SignupPage() {
       }
     } catch (err) {
       const errorMessage = err.message || 'Registration failed. Please try again.'
-      setError(errorMessage)
-
-      // Check if email already exists
-      if (errorMessage.toLowerCase().includes('email') &&
-        (errorMessage.toLowerCase().includes('already') ||
-          errorMessage.toLowerCase().includes('exists') ||
-          errorMessage.toLowerCase().includes('taken'))) {
-        setFieldErrors({ ...fieldErrors, email: 'This email is already registered' })
+      
+      // Check if this is a Google login required error
+      if (err.response?.data?.google_login_required || 
+          (errorMessage.toLowerCase().includes('google') && 
+           errorMessage.toLowerCase().includes('login'))) {
+        setGoogleLoginRequired(true)
+        setError('This email is already registered with Google. Please login with Google instead.')
+        setFieldErrors({ ...fieldErrors, email: 'This email is already registered with Google. Please login with Google instead.' })
+      } else {
+        setGoogleLoginRequired(false)
+        setError(errorMessage)
+        // Check if email already exists
+        if (errorMessage.toLowerCase().includes('email') &&
+          (errorMessage.toLowerCase().includes('already') ||
+            errorMessage.toLowerCase().includes('exists') ||
+            errorMessage.toLowerCase().includes('taken'))) {
+          setFieldErrors({ ...fieldErrors, email: 'This email is already registered' })
+        }
       }
     } finally {
       setLoading(false)
@@ -225,7 +237,9 @@ export default function SignupPage() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg flex items-center gap-2 mb-6"
+              className={`${googleLoginRequired 
+                ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400' 
+                : 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400'} px-4 py-3 rounded-lg flex items-center gap-2 mb-6`}
             >
               <AlertCircle className="w-5 h-5" />
               <span className="text-sm">{error}</span>
