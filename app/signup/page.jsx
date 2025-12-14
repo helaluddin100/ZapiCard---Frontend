@@ -159,11 +159,11 @@ export default function SignupPage() {
       }
     } catch (err) {
       const errorMessage = err.message || 'Registration failed. Please try again.'
-      
+
       // Check if this is a Google login required error
-      if (err.response?.data?.google_login_required || 
-          (errorMessage.toLowerCase().includes('google') && 
-           errorMessage.toLowerCase().includes('login'))) {
+      if (err.response?.data?.google_login_required ||
+        (errorMessage.toLowerCase().includes('google') &&
+          errorMessage.toLowerCase().includes('login'))) {
         setGoogleLoginRequired(true)
         setError('This email is already registered with Google. Please login with Google instead.')
         setFieldErrors({ ...fieldErrors, email: 'This email is already registered with Google. Please login with Google instead.' })
@@ -190,14 +190,14 @@ export default function SignupPage() {
     try {
       if (provider === 'google') {
         // Detect if production based on hostname
-        const isProduction = typeof window !== 'undefined' && 
-          (window.location.hostname === 'zapycard.com' || 
-           window.location.hostname === 'www.zapycard.com' ||
-           window.location.hostname === 'smart.buytiq.store' ||
-           window.location.hostname === 'www.smart.buytiq.store')
-        
+        const isProduction = typeof window !== 'undefined' &&
+          (window.location.hostname === 'zapycard.com' ||
+            window.location.hostname === 'www.zapycard.com' ||
+            window.location.hostname === 'smart.buytiq.store' ||
+            window.location.hostname === 'www.smart.buytiq.store')
+
         // Use appropriate backend URL
-        const backendUrl = isProduction 
+        const backendUrl = isProduction
           ? 'https://smart.buytiq.store'
           : 'http://localhost:8000'
 
@@ -215,7 +215,7 @@ export default function SignupPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md"
+        className="w-full max-w-xl"
       >
         <div className="glass-effect rounded-2xl p-8 shadow-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <div className="text-center mb-8">
@@ -237,8 +237,8 @@ export default function SignupPage() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`${googleLoginRequired 
-                ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400' 
+              className={`${googleLoginRequired
+                ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400'
                 : 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400'} px-4 py-3 rounded-lg flex items-center gap-2 mb-6`}
             >
               <AlertCircle className="w-5 h-5" />
