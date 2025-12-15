@@ -313,19 +313,19 @@ export default function CheckoutPage() {
         {
             id: 'bkash',
             name: 'bKash',
-            number: '01712345678',
+            number: '01792892198',
             instructions: 'Send money to this bKash number and include your order ID in the reference.'
         },
         {
             id: 'rocket',
             name: 'Rocket',
-            number: '01712345678',
+            number: '01792892198',
             instructions: 'Send money to this Rocket number and include your order ID in the reference.'
         },
         {
             id: 'nagad',
             name: 'Nagad',
-            number: '01712345678',
+            number: '01792892198',
             instructions: 'Send money to this Nagad number and include your order ID in the reference.'
         }
     ]
