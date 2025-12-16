@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Mail, Lock, User, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react'
+import { Mail, Lock, User, ArrowRight, AlertCircle, Eye, EyeOff, Phone } from 'lucide-react'
 import authAPI from '@/lib/api'
 import { useAuth } from '@/lib/auth'
 import logo from '../assets/images/logo.png'
@@ -16,6 +16,7 @@ export default function SignupPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     password: '',
     confirmPassword: ''
   })
@@ -27,12 +28,14 @@ export default function SignupPage() {
   const [fieldErrors, setFieldErrors] = useState({
     name: '',
     email: '',
+    phone: '',
     password: '',
     confirmPassword: ''
   })
   const [touched, setTouched] = useState({
     name: false,
     email: false,
+    phone: false,
     password: false,
     confirmPassword: false
   })
@@ -54,6 +57,23 @@ export default function SignupPage() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
       return 'Please enter a valid email address'
+    }
+    return ''
+  }
+
+  const validatePhone = (phone) => {
+    if (!phone) {
+      return 'Phone number is required'
+    }
+    // Basic phone validation - allows digits, spaces, dashes, parentheses, and +
+    const phoneRegex = /^[\d\s\-\+\(\)]+$/
+    if (!phoneRegex.test(phone)) {
+      return 'Please enter a valid phone number'
+    }
+    // Remove non-digit characters for length check
+    const digitsOnly = phone.replace(/\D/g, '')
+    if (digitsOnly.length < 10) {
+      return 'Phone number must be at least 10 digits'
     }
     return ''
   }
@@ -87,6 +107,9 @@ export default function SignupPage() {
     } else if (field === 'email') {
       const emailError = validateEmail(formData.email)
       setFieldErrors({ ...fieldErrors, email: emailError })
+    } else if (field === 'phone') {
+      const phoneError = validatePhone(formData.phone)
+      setFieldErrors({ ...fieldErrors, phone: phoneError })
     } else if (field === 'password') {
       const passwordError = validatePassword(formData.password)
       setFieldErrors({ ...fieldErrors, password: passwordError })
@@ -126,12 +149,14 @@ export default function SignupPage() {
     // Validate all fields
     const nameError = validateName(formData.name)
     const emailError = validateEmail(formData.email)
+    const phoneError = validatePhone(formData.phone)
     const passwordError = validatePassword(formData.password)
     const confirmError = validateConfirmPassword(formData.confirmPassword, formData.password)
 
     setFieldErrors({
       name: nameError,
       email: emailError,
+      phone: phoneError,
       password: passwordError,
       confirmPassword: confirmError
     })
@@ -139,12 +164,13 @@ export default function SignupPage() {
     setTouched({
       name: true,
       email: true,
+      phone: true,
       password: true,
       confirmPassword: true
     })
 
     // If there are validation errors, don't submit
-    if (nameError || emailError || passwordError || confirmError) {
+    if (nameError || emailError || phoneError || passwordError || confirmError) {
       return
     }
 
@@ -307,6 +333,38 @@ export default function SignupPage() {
                 >
                   <AlertCircle className="w-4 h-4" />
                   {fieldErrors.email}
+                </motion.p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Phone Number *
+              </label>
+              <div className="relative">
+                <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
+                <input
+                  type="tel"
+                  required
+                  value={formData.phone}
+                  onChange={(e) => handleInputChange('phone', e.target.value)}
+                  onBlur={() => handleBlur('phone')}
+                  disabled={loading}
+                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${touched.phone && fieldErrors.phone
+                    ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                    : 'border-gray-300 dark:border-gray-600'
+                    }`}
+                  placeholder="+1 234 567 8900"
+                />
+              </div>
+              {touched.phone && fieldErrors.phone && (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center gap-1"
+                >
+                  <AlertCircle className="w-4 h-4" />
+                  {fieldErrors.phone}
                 </motion.p>
               )}
             </div>
