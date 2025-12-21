@@ -11,6 +11,11 @@ import {
     Github,
     X,
 } from 'lucide-react'
+import { FaBehance, FaDiscord, FaPinterest, FaSnapchat, FaThreads, FaTiktok, FaWhatsapp, FaXTwitter, FaYoutube } from 'react-icons/fa6';
+import { FaTelegramPlane, FaDribbble } from 'react-icons/fa';
+import { FaMedium } from 'react-icons/fa';
+import { FaReddit } from 'react-icons/fa';
+import { FaFacebookF } from 'react-icons/fa';
 // Using lucide-react icons where available and custom SVGs for others
 // Custom SVG icons for social media platforms not available in lucide-react
 const WhatsAppIcon = ({ className }) => (
@@ -96,8 +101,8 @@ const socialMediaOptions = [
     },
     {
         key: "twitter",
-        label: "X (Twitter)",
-        icon: X, // Using X icon from lucide-react for the new X logo
+        label: "Twitter",
+        icon: FaXTwitter,
         color: "bg-black",
         hoverColor: "hover:bg-gray-900",
     },
@@ -111,7 +116,7 @@ const socialMediaOptions = [
     {
         key: "threads",
         label: "Threads",
-        icon: ThreadsIcon,
+        icon: FaThreads,
         color: "bg-black",
         hoverColor: "hover:opacity-90",
     },
@@ -139,7 +144,7 @@ const socialMediaOptions = [
     {
         key: "whatsapp",
         label: "WhatsApp",
-        icon: WhatsAppIcon,
+        icon: FaWhatsapp,
         color: "bg-green-500",
         hoverColor: "hover:bg-green-600",
     },
@@ -153,56 +158,56 @@ const socialMediaOptions = [
     {
         key: "snapchat",
         label: "Snapchat",
-        icon: SnapchatIcon,
+        icon: FaSnapchat,
         color: "bg-yellow-400",
         hoverColor: "hover:bg-yellow-500",
     },
     {
         key: "pinterest",
         label: "Pinterest",
-        icon: PinterestIcon,
+        icon: FaPinterest,
         color: "bg-red-700",
         hoverColor: "hover:bg-red-800",
     },
     {
         key: "telegram",
         label: "Telegram",
-        icon: TelegramIcon,
+        icon: FaTelegramPlane,
         color: "bg-blue-500",
         hoverColor: "hover:bg-blue-600",
     },
     {
         key: "discord",
         label: "Discord",
-        icon: DiscordIcon,
+        icon: FaDiscord,
         color: "bg-indigo-600",
         hoverColor: "hover:bg-indigo-700",
     },
     {
         key: "behance",
         label: "Behance",
-        icon: BehanceIcon,
+        icon: FaBehance,
         color: "bg-blue-500",
         hoverColor: "hover:bg-blue-600",
     },
     {
         key: "dribbble",
         label: "Dribbble",
-        icon: DribbbleIcon,
+        icon: FaDribbble,
         color: "bg-pink-500",
         hoverColor: "hover:bg-pink-600",
     },
     {
         key: "medium",
         label: "Medium",
-        icon: MediumIcon,
+        icon: FaMedium,
         color: "bg-gray-800",
         hoverColor: "hover:bg-gray-900",
     },
     {
         key: "reddit",
         label: "Reddit",
-        icon: RedditIcon,
+        icon: FaReddit,
         color: "bg-orange-500",
         hoverColor: "hover:bg-orange-600",
     },
@@ -260,7 +265,7 @@ export default function SocialLinks({ formData, setFormData, onNext, onBack }) {
                                 type="button"
                                 onClick={() => handleSocialClick(social.key)}
                                 className={`
-                                    w-full aspect-square rounded-lg flex flex-col gap-1 items-center justify-center
+                                    w-full aspect-square rounded-lg flex flex-col gap-1 md:gap-2 items-center justify-center
                                     transition-all duration-200
                                     ${hasValue
                                         ? `${social.color} text-white shadow-lg scale-105`

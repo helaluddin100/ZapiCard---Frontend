@@ -159,7 +159,7 @@ export default function Preview({ formData }) {
                       <Instagram className="w-6 h-6" />
                     </div>
                   )}
-                  {formData.socialLinks?.Threads && (
+                  {formData.socialLinks?.threads && (
                     <div className="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center">
                       <FaThreads className="w-6 h-6" />
                     </div>

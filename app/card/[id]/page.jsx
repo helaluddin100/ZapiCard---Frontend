@@ -21,7 +21,7 @@ import {
     FaReddit,
     FaFacebookF,
 } from "react-icons/fa6";
-import { FaTelegramPlane, FaDribbble } from "react-icons/fa";
+import { FaTelegramPlane, FaDribbble, FaMediumM } from "react-icons/fa";
 import {
     Mail,
     Phone,
@@ -284,23 +284,23 @@ export default function PublicCardPage() {
     const getSocialIcon = (key) => {
         const icons = {
             facebook: FacebookIconSVG,
-            twitter: X, // Using X icon from lucide-react for the new X logo
+            twitter: FaXTwitter, // Using X icon from lucide-react for the new X logo
             instagram: Instagram,
             linkedin: Linkedin,
             youtube: Youtube,
             threads: FaThreads,
             github: Github,
-            whatsapp: WhatsAppIcon,
-            tiktok: TikTokIcon,
-            snapchat: SnapchatIcon,
-            pinterest: PinterestIcon,
-            telegram: TelegramIcon,
-            discord: DiscordIcon,
-            behance: BehanceIcon,
-            dribbble: DribbbleIcon,
-            medium: MediumIcon,
-            reddit: RedditIcon,
-            threads: ThreadsIcon
+            whatsapp: FaWhatsapp,
+            tiktok: FaTiktok,
+            snapchat: FaSnapchat,
+            pinterest: FaPinterest,
+            telegram: FaTelegramPlane,
+            discord: FaDiscord,
+            behance: FaBehance,
+            dribbble: FaDribbble,
+            medium: FaMediumM,
+            reddit: FaReddit,
+            threads: FaThreads,
         }
         return icons[key] || LinkIcon
     }
@@ -322,7 +322,7 @@ export default function PublicCardPage() {
             discord: 'bg-indigo-600 hover:bg-indigo-700',
             behance: 'bg-blue-500 hover:bg-blue-600',
             dribbble: 'bg-pink-500 hover:bg-pink-600',
-            medium: 'bg-gray-800 hover:bg-gray-900',
+            medium: 'bg-black hover:bg-gray-900',
             reddit: 'bg-orange-500 hover:bg-orange-600',
             threads: 'bg-black hover:bg-gray-900'
         }
