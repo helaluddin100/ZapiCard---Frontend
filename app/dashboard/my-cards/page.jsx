@@ -352,7 +352,7 @@ export default function MyCardsPage() {
                                 </div>
 
                                 {/* Action Buttons on Hover */}
-                                <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-all z-20">
+                                <div className="absolute top-3 right-3 flex gap-2 transition-all z-20">
                                     {card.slug && (
                                         <Link
                                             href={`/card/${card.slug}`}
@@ -430,7 +430,7 @@ export default function MyCardsPage() {
                                                         e.stopPropagation()
                                                         downloadQRCode(card)
                                                     }}
-                                                    className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 px-2 py-1 text-xs bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-white dark:hover:bg-gray-700 hover:shadow-md transition-all opacity-0 group-hover:opacity-100 z-10 whitespace-nowrap"
+                                                    className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 px-2 py-1 text-xs bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-md hover:bg-white dark:hover:bg-gray-700 hover:shadow-md transition-all  z-10 whitespace-nowrap"
                                                     title="Download QR Code"
                                                 >
                                                     <Download className="w-3 h-3 inline mr-1" />

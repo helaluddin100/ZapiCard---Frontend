@@ -176,7 +176,7 @@ export default function SocialLinks({ formData, setFormData, onNext, onBack }) {
             <p className="text-gray-600 dark:text-gray-400">Click on any social media icon to add your profile link</p>
 
             {/* Social Media Grid */}
-            <div className="grid grid-cols-4 sm:grid-cols-6 gap-4">
+            <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 md:gap-4">
                 {socialMediaOptions.map((social) => {
                     const Icon = social.icon
                     const hasValue = formData.socialLinks?.[social.key]
@@ -188,7 +188,7 @@ export default function SocialLinks({ formData, setFormData, onNext, onBack }) {
                                 type="button"
                                 onClick={() => handleSocialClick(social.key)}
                                 className={`
-                                    w-full aspect-square rounded-lg flex flex-col gap-3 items-center justify-center
+                                    w-full aspect-square rounded-lg flex flex-col gap-1 items-center justify-center
                                     transition-all duration-200
                                     ${hasValue
                                         ? `${social.color} text-white shadow-lg scale-105`
@@ -198,7 +198,7 @@ export default function SocialLinks({ formData, setFormData, onNext, onBack }) {
                                 `}
                             >
                                 <Icon className="w-6 h-6" />
-                                <span className="text-xs font-medium">{social.label}</span>
+                                <span className="text-xs font-light md:font-medium">{social.label}</span>
                             </button>
                             {hasValue && !isActive && (
                                 <button

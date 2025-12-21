@@ -248,13 +248,13 @@ END:VCARD`
                         <ArrowLeft className="w-4 h-4 mr-2" />
                         Back to My Cards
                     </Link>
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Edit Card</h1>
+                    <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">Edit Card</h1>
                     <p className="text-gray-600 dark:text-gray-400 mt-1">Update your smart visiting card</p>
                 </div>
 
                 <div className="grid lg:grid-cols-3 gap-8">
                     {/* Main Form */}
-                    <div className="lg:col-span-2">
+                    <div className="lg:col-span-2 pb-6 md:pb-0">
                         {/* Progress Steps */}
                         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 border border-gray-200 dark:border-gray-700">
                             <div className="flex items-center justify-between">
@@ -267,8 +267,8 @@ END:VCARD`
                                             <div className="flex flex-col items-center flex-1">
                                                 <div className={`
                           w-12 h-12 rounded-full flex items-center justify-center mb-2 transition
-                          ${isActive ? 'gradient-primary text-white scale-110' : ''}
-                          ${isCompleted ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'}
+                          ${isActive ? 'gradient-primary text-white scale-110 dark:text-white' : ''}
+                          ${isCompleted ? 'bg-green-500 text-white' : 'bg-gray-200  dark:text-gray-400 text-gray-500'}
                         `}>
                                                     {isCompleted ? (
                                                         <CheckCircle2 className="w-6 h-6" />
@@ -276,7 +276,7 @@ END:VCARD`
                                                         <Icon className="w-6 h-6" />
                                                     )}
                                                 </div>
-                                                <span className={`text-xs font-medium ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`}>
+                                                <span className={`text-xs text-center font-medium ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`}>
                                                     {s.title}
                                                 </span>
                                             </div>
@@ -346,7 +346,7 @@ END:VCARD`
                     </div>
 
                     {/* Live Preview */}
-                    <div className="lg:col-span-1">
+                    <div className="lg:col-span-1 hidden md:block">
                         <Preview formData={formData} />
                     </div>
                 </div>

@@ -150,7 +150,13 @@ export default function ImageCropper({
     }
 
     const handleStart = (e) => {
+        // Only prevent default if clicking inside crop area, not on buttons
+        const target = e.target
+        if (target.closest('button') || target.closest('.controls')) {
+            return
+        }
         e.preventDefault()
+        e.stopPropagation()
         setIsDragging(true)
         const point = getTouchPoint(e)
         const rect = containerRef.current.getBoundingClientRect()
@@ -166,6 +172,7 @@ export default function ImageCropper({
     const handleMove = (e) => {
         if (!isDragging) return
         e.preventDefault()
+        e.stopPropagation()
         
         const point = getTouchPoint(e)
         const rect = containerRef.current.getBoundingClientRect()
@@ -183,7 +190,9 @@ export default function ImageCropper({
     }
 
     const handleEnd = (e) => {
+        if (!isDragging) return
         e.preventDefault()
+        e.stopPropagation()
         setIsDragging(false)
     }
 
@@ -315,9 +324,23 @@ export default function ImageCropper({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-2 sm:p-4"
-                onMouseUp={handleEnd}
+                onMouseUp={(e) => {
+                    if (!e.target.closest('button')) {
+                        handleEnd(e)
+                    }
+                }}
                 onMouseLeave={handleEnd}
-                onTouchEnd={handleEnd}
+                onTouchEnd={(e) => {
+                    if (!e.target.closest('button')) {
+                        handleEnd(e)
+                    }
+                }}
+                onClick={(e) => {
+                    // Prevent backdrop click from interfering with buttons
+                    if (e.target === e.currentTarget) {
+                        e.stopPropagation()
+                    }
+                }}
             >
                 <motion.div
                     initial={{ scale: 0.9, opacity: 0 }}
@@ -342,19 +365,21 @@ export default function ImageCropper({
                     <div className="flex-1 p-3 sm:p-6 overflow-auto bg-gray-100 dark:bg-gray-900 flex items-center justify-center min-h-0">
                         <div 
                             ref={containerRef}
-                            className="relative bg-gray-200 dark:bg-gray-700 overflow-hidden"
+                            className="relative bg-gray-200 dark:bg-gray-700 overflow-hidden touch-none"
                             style={{ 
                                 width: '100%',
                                 maxWidth: '400px',
                                 height: '400px',
                                 maxHeight: 'calc(90vh - 300px)',
                                 minHeight: '250px',
-                                aspectRatio: '1'
+                                aspectRatio: '1',
+                                touchAction: 'none'
                             }}
                             onMouseDown={handleStart}
                             onMouseMove={handleMove}
                             onTouchStart={handleStart}
                             onTouchMove={handleMove}
+                            onTouchEnd={handleEnd}
                         >
                             {imageSrc && (
                                 <img
@@ -436,28 +461,55 @@ export default function ImageCropper({
                     </div>
 
                     {/* Controls */}
-                    <div className="p-3 sm:p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+                    <div className="p-3 sm:p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 controls">
                         <div className="flex items-center justify-center gap-3 sm:gap-4 mb-3 sm:mb-4">
                             <button
                                 type="button"
-                                onClick={() => adjustZoom(-5)}
-                                className="p-2 sm:p-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 active:scale-95 transition"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    adjustZoom(-5)
+                                }}
+                                onTouchEnd={(e) => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    adjustZoom(-5)
+                                }}
+                                className="p-2 sm:p-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 active:scale-95 transition touch-manipulation"
                                 title="Zoom Out"
                             >
                                 <ZoomOut className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 dark:text-gray-400" />
                             </button>
                             <button
                                 type="button"
-                                onClick={() => adjustZoom(5)}
-                                className="p-2 sm:p-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 active:scale-95 transition"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    adjustZoom(5)
+                                }}
+                                onTouchEnd={(e) => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    adjustZoom(5)
+                                }}
+                                className="p-2 sm:p-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 active:scale-95 transition touch-manipulation"
                                 title="Zoom In"
                             >
                                 <ZoomIn className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 dark:text-gray-400" />
                             </button>
                             <button
                                 type="button"
-                                onClick={rotateImage}
-                                className="p-2 sm:p-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 active:scale-95 transition"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    rotateImage()
+                                }}
+                                onTouchEnd={(e) => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    rotateImage()
+                                }}
+                                className="p-2 sm:p-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 active:scale-95 transition touch-manipulation"
                                 title="Rotate 90°"
                             >
                                 <RotateCw className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 dark:text-gray-400" />
@@ -469,15 +521,33 @@ export default function ImageCropper({
                         <div className="flex gap-2 sm:gap-3 justify-end">
                             <button
                                 type="button"
-                                onClick={onCancel}
-                                className="px-4 sm:px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 active:scale-95 transition font-medium text-sm sm:text-base"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    onCancel()
+                                }}
+                                onTouchEnd={(e) => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    onCancel()
+                                }}
+                                className="px-4 sm:px-6 py-2.5 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 active:scale-95 transition font-medium text-sm sm:text-base touch-manipulation"
                             >
                                 Cancel
                             </button>
                             <button
                                 type="button"
-                                onClick={handleCrop}
-                                className="px-4 sm:px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 active:scale-95 transition font-medium flex items-center gap-2 text-sm sm:text-base"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    handleCrop()
+                                }}
+                                onTouchEnd={(e) => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    handleCrop()
+                                }}
+                                className="px-4 sm:px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 active:scale-95 transition font-medium flex items-center gap-2 text-sm sm:text-base touch-manipulation cursor-pointer z-10 relative"
                             >
                                 <Check className="w-4 h-4 sm:w-5 sm:h-5" />
                                 Apply Crop
