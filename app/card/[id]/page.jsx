@@ -9,6 +9,20 @@ import { useToast } from '@/lib/toast'
 import { getVisitorDataForAPI } from '@/lib/visitorData'
 import AppointmentModal from './components/AppointmentModal'
 import {
+  FaWhatsapp,
+  FaTiktok,
+  FaXTwitter,
+  FaThreads,
+  FaMedium,
+  FaSnapchat,
+  FaDiscord,
+  FaPinterest,
+  FaBehance,
+  FaReddit,
+  FaFacebookF,
+} from "react-icons/fa6";
+import { FaTelegramPlane, FaDribbble } from "react-icons/fa";
+import {
     Mail,
     Phone,
     MapPin,
@@ -196,21 +210,22 @@ export default function PublicCardPage() {
     const getSocialIcon = (key) => {
         const icons = {
             facebook: Facebook,
-            twitter: Twitter,
+            twitter: FaXTwitter,
             instagram: Instagram,
             linkedin: Linkedin,
             youtube: Youtube,
+            threads: FaThreads,
             github: Github,
-            whatsapp: LinkIcon,
-            tiktok: LinkIcon,
-            snapchat: LinkIcon,
-            pinterest: LinkIcon,
-            telegram: LinkIcon,
-            discord: LinkIcon,
-            behance: LinkIcon,
-            dribbble: LinkIcon,
-            medium: LinkIcon,
-            reddit: LinkIcon
+            whatsapp: FaWhatsapp,
+            tiktok: FaTiktok,
+            snapchat: FaSnapchat,
+            pinterest: FaPinterest,
+            telegram: FaTelegramPlane,
+            discord: FaDiscord,
+            behance: FaBehance,
+            dribbble: FaDribbble,
+            medium: FaMedium,
+            reddit: FaReddit
         }
         return icons[key] || LinkIcon
     }
@@ -222,7 +237,8 @@ export default function PublicCardPage() {
             instagram: 'bg-gradient-to-br from-purple-600 to-pink-600 hover:opacity-90',
             linkedin: 'bg-blue-600 hover:bg-blue-700',
             youtube: 'bg-red-600 hover:bg-red-700',
-            github: 'bg-gray-800 hover:bg-gray-900',
+            threads: 'bg-black text-white hover:bg-gray-900',
+            github: 'bg-black text-white hover:bg-gray-900',
             whatsapp: 'bg-green-500 hover:bg-green-600',
             tiktok: 'bg-black hover:bg-gray-900',
             snapchat: 'bg-yellow-400 hover:bg-yellow-500',
@@ -231,7 +247,7 @@ export default function PublicCardPage() {
             discord: 'bg-indigo-600 hover:bg-indigo-700',
             behance: 'bg-blue-500 hover:bg-blue-600',
             dribbble: 'bg-pink-500 hover:bg-pink-600',
-            medium: 'bg-gray-800 hover:bg-gray-900',
+            medium: 'bg-black hover:bg-gray-900',
             reddit: 'bg-orange-500 hover:bg-orange-600'
         }
         return colors[key] || 'bg-gray-600 hover:bg-gray-700'
@@ -319,6 +335,7 @@ END:VCARD`
         }
     }
 
+    console.log('cardData', cardData.social_links)
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-4 sm:py-8 px-3 sm:px-4 lg:px-8">
             <div className="max-w-md sm:max-w-2xl lg:max-w-4xl mx-auto perspective-1000">

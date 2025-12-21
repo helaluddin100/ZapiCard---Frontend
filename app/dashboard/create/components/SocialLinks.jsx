@@ -12,7 +12,7 @@ import {
     X,
 } from 'lucide-react'
 import { FaWhatsapp,FaTiktok, FaXTwitter,FaThreads , FaMedium, FaSnapchat,FaDiscord, FaPinterest, FaBehance, FaReddit, FaFacebookF } from "react-icons/fa6";
-import { FaTelegram, FaDribbble } from "react-icons/fa";
+import { FaTelegramPlane, FaDribbble } from "react-icons/fa";
 
 const socialMediaOptions = [
   {
@@ -95,7 +95,7 @@ const socialMediaOptions = [
   {
     key: "telegram",
     label: "Telegram",
-    icon: FaTelegram,
+    icon: FaTelegramPlane,
     color: "bg-blue-500",
     hoverColor: "hover:bg-blue-600",
   },
@@ -124,7 +124,7 @@ const socialMediaOptions = [
     key: "medium",
     label: "Medium",
     icon: FaMedium,
-    color: "bg-gray-800",
+    color: "bg-black",
     hoverColor: "hover:bg-gray-900",
   },
   {
