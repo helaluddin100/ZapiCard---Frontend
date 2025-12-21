@@ -344,7 +344,7 @@ export default function ProfilePage() {
               ) : (
                 <>
                   <Save className="w-5 h-5" />
-                  Save Changes
+                  Submit
                 </>
               )}
             </button>

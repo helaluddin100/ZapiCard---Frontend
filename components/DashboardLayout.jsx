@@ -13,6 +13,7 @@ import {
   Menu,
   X,
   LogOut,
+  Settings,
   User,
   ShoppingCart,
   Calendar,
@@ -24,6 +25,7 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@/lib/auth'
 import ThemeToggle from '@/components/ThemeToggle'
+import SettingsModal from '@/components/SettingsModal'
 import logo from '../app/assets/images/logo.png'
 
 export default function DashboardLayout({ children }) {
@@ -35,6 +37,7 @@ export default function DashboardLayout({ children }) {
   const [unreadCount, setUnreadCount] = useState(0)
   const [notificationOpen, setNotificationOpen] = useState(false)
   const [loadingNotifications, setLoadingNotifications] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
 
   useEffect(() => {
     // Redirect to login if not authenticated
@@ -152,19 +155,27 @@ export default function DashboardLayout({ children }) {
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
         >
-          {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {sidebarOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
         </button>
       </div>
 
       <div className="flex relative">
         {/* Sidebar - Fixed on all screens */}
-        <aside className={`
+        <aside
+          className={`
           fixed inset-y-0 left-0 z-40
           w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700
           h-screen overflow-y-auto
           transform transition-transform duration-300 ease-in-out
-          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-        `}>
+          ${
+            sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+          }
+        `}
+        >
           <div className="h-full flex flex-col">
             <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
               <Link href="/" className="flex items-center gap-3">
@@ -184,11 +195,13 @@ export default function DashboardLayout({ children }) {
 
             <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
               {menuItems.map((item) => {
-                const Icon = item.icon
+                const Icon = item.icon;
                 // For dashboard, check if pathname starts with the href
-                const isActive = item.href === '/dashboard'
-                  ? pathname === '/dashboard' || pathname === '/dashboard/'
-                  : pathname === item.href || pathname.startsWith(item.href + '/')
+                const isActive =
+                  item.href === "/dashboard"
+                    ? pathname === "/dashboard" || pathname === "/dashboard/"
+                    : pathname === item.href ||
+                      pathname.startsWith(item.href + "/");
                 return (
                   <Link
                     key={item.href}
@@ -196,16 +209,17 @@ export default function DashboardLayout({ children }) {
                     onClick={() => setSidebarOpen(false)}
                     className={`
                       flex items-center space-x-3 px-4 py-3 rounded-lg transition
-                      ${isActive
-                        ? 'gradient-primary text-white'
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                      ${
+                        isActive
+                          ? "gradient-primary text-white"
+                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                       }
                     `}
                   >
                     <Icon className="w-5 h-5" />
                     <span className="font-medium">{item.label}</span>
                   </Link>
-                )
+                );
               })}
             </nav>
 
@@ -221,20 +235,28 @@ export default function DashboardLayout({ children }) {
                       />
                     ) : (
                       <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-white font-semibold">
-                        {user.name?.charAt(0).toUpperCase() || 'U'}
+                        {user.name?.charAt(0).toUpperCase() || "U"}
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
-                      <div className="font-semibold text-sm truncate text-gray-900 dark:text-gray-100">{user.name || 'User'}</div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email || ''}</div>
+                      <div className="font-semibold text-sm truncate text-gray-900 dark:text-gray-100">
+                        {user.name || "User"}
+                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                        {user.email || ""}
+                      </div>
                     </div>
                   </div>
-                  <div className="mb-2 px-4">
-                    <ThemeToggle />
-                  </div>
+                  <button
+                    onClick={() => setSettingsOpen(true)}
+                    className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition"
+                  >
+                    <Settings className="w-5 h-5" />
+                    <span className="font-medium">Settings</span>
+                  </button>
                   <button
                     onClick={async () => {
-                      await logout()
+                      await logout();
                     }}
                     className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition"
                   >
@@ -261,15 +283,16 @@ export default function DashboardLayout({ children }) {
           <div className="hidden lg:block bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-8 py-4 sticky top-0 z-30">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Dashboard</h2>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                  Dashboard
+                </h2>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Welcome back, {user?.name || 'User'}
+                  Welcome back, {user?.name || "User"}
                 </p>
               </div>
               {user && (
                 <div className="flex items-center gap-4">
-                  {/* Theme Toggle */}
-                  <ThemeToggle />
+                
 
                   {/* Notification Bell */}
                   <div className="relative">
@@ -280,7 +303,7 @@ export default function DashboardLayout({ children }) {
                       <Bell className="w-6 h-6 text-gray-600 dark:text-gray-400" />
                       {unreadCount > 0 && (
                         <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">
-                          {unreadCount > 9 ? '9+' : unreadCount}
+                          {unreadCount > 9 ? "9+" : unreadCount}
                         </span>
                       )}
                     </button>
@@ -300,7 +323,9 @@ export default function DashboardLayout({ children }) {
                             className="absolute right-0 mt-2 w-96 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-50 max-h-[500px] overflow-hidden flex flex-col"
                           >
                             <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-                              <h3 className="font-semibold text-gray-900 dark:text-gray-100">Notifications</h3>
+                              <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                                Notifications
+                              </h3>
                               {unreadCount > 0 && (
                                 <button
                                   onClick={handleMarkAllAsRead}
@@ -312,7 +337,9 @@ export default function DashboardLayout({ children }) {
                             </div>
                             <div className="overflow-y-auto flex-1">
                               {loadingNotifications ? (
-                                <div className="p-8 text-center text-gray-500 dark:text-gray-400">Loading...</div>
+                                <div className="p-8 text-center text-gray-500 dark:text-gray-400">
+                                  Loading...
+                                </div>
                               ) : notifications.length === 0 ? (
                                 <div className="p-8 text-center text-gray-500 dark:text-gray-400">
                                   <Bell className="w-12 h-12 mx-auto mb-2 text-gray-300 dark:text-gray-600" />
@@ -321,30 +348,41 @@ export default function DashboardLayout({ children }) {
                               ) : (
                                 <div className="divide-y divide-gray-200 dark:divide-gray-700">
                                   {notifications.map((notification) => {
-                                    const isUnread = !notification.read_at
-                                    const data = notification.data || {}
+                                    const isUnread = !notification.read_at;
+                                    const data = notification.data || {};
 
                                     return (
                                       <div
                                         key={notification.id}
-                                        className={`p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition cursor-pointer ${isUnread ? 'bg-blue-50/50 dark:bg-blue-900/20' : ''
-                                          }`}
+                                        className={`p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition cursor-pointer ${
+                                          isUnread
+                                            ? "bg-blue-50/50 dark:bg-blue-900/20"
+                                            : ""
+                                        }`}
                                         onClick={() => {
                                           if (isUnread) {
-                                            handleMarkAsRead(notification.id)
+                                            handleMarkAsRead(notification.id);
                                           }
                                           if (data.appointment_id) {
-                                            router.push('/dashboard/appointments/list')
-                                            setNotificationOpen(false)
+                                            router.push(
+                                              "/dashboard/appointments/list"
+                                            );
+                                            setNotificationOpen(false);
                                           }
                                         }}
                                       >
                                         <div className="flex items-start gap-3">
-                                          <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${isUnread ? 'bg-blue-500' : 'bg-transparent'
-                                            }`} />
+                                          <div
+                                            className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
+                                              isUnread
+                                                ? "bg-blue-500"
+                                                : "bg-transparent"
+                                            }`}
+                                          />
                                           <div className="flex-1 min-w-0">
                                             <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                                              {notification.data?.message || 'New notification'}
+                                              {notification.data?.message ||
+                                                "New notification"}
                                             </p>
                                             {data.patient_name && (
                                               <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
@@ -353,16 +391,21 @@ export default function DashboardLayout({ children }) {
                                             )}
                                             {data.appointment_date && (
                                               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                                {new Date(data.appointment_date).toLocaleDateString()} at {data.appointment_time}
+                                                {new Date(
+                                                  data.appointment_date
+                                                ).toLocaleDateString()}{" "}
+                                                at {data.appointment_time}
                                               </p>
                                             )}
                                             <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-                                              {formatNotificationTime(notification.created_at)}
+                                              {formatNotificationTime(
+                                                notification.created_at
+                                              )}
                                             </p>
                                           </div>
                                         </div>
                                       </div>
-                                    )
+                                    );
                                   })}
                                 </div>
                               )}
@@ -396,24 +439,32 @@ export default function DashboardLayout({ children }) {
                       />
                     ) : (
                       <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center text-white font-semibold text-sm">
-                        {user.name?.charAt(0).toUpperCase() || 'U'}
+                        {user.name?.charAt(0).toUpperCase() || "U"}
                       </div>
                     )}
                     <div>
-                      <div className="font-semibold text-sm text-gray-900 dark:text-gray-100">{user.name || 'User'}</div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">{user.email || ''}</div>
+                      <div className="font-semibold text-sm text-gray-900 dark:text-gray-100">
+                        {user.name || "User"}
+                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                        {user.email || ""}
+                      </div>
                     </div>
                   </Link>
                 </div>
               )}
             </div>
           </div>
-          <div className="p-4 lg:p-8">
-            {children}
-          </div>
+          <div className="p-4 lg:p-8">{children}</div>
         </main>
       </div>
+
+      {/* Settings Modal */}
+      <SettingsModal
+        isOpen={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+      />
     </div>
-  )
+  );
 }
 
