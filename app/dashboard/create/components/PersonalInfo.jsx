@@ -24,7 +24,7 @@ const ReactQuill = dynamic(
             return FallbackEditor
         }
     },
-    { 
+    {
         ssr: false,
         loading: () => (
             <div className="h-[200px] border border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-center">
@@ -37,12 +37,117 @@ const ReactQuill = dynamic(
 // Import CSS - Next.js will handle this properly
 import 'react-quill/dist/quill.snow.css'
 
-export default function PersonalInfo({ formData, setFormData, onNext }) {
+export default function PersonalInfo({ formData, setFormData, onNext, errors = {}, setErrors }) {
     const [mounted, setMounted] = useState(false)
+    const [touched, setTouched] = useState({})
 
     useEffect(() => {
         setMounted(true)
     }, [])
+
+    // Validation function
+    const validateField = (field, value) => {
+        const newErrors = { ...errors }
+
+        switch (field) {
+            case 'name':
+                if (!value || value.trim() === '') {
+                    newErrors.name = 'Name field is required'
+                } else {
+                    delete newErrors.name
+                }
+                break
+            case 'email':
+                if (!value || value.trim() === '') {
+                    newErrors.email = 'Email field is required'
+                } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                    newErrors.email = 'Please enter a valid email address'
+                } else {
+                    delete newErrors.email
+                }
+                break
+            case 'website':
+                if (value && value.trim() !== '') {
+                    const trimmedValue = value.trim()
+                    // Accept various URL formats:
+                    // example.com, www.example.com, http://example.com, https://example.com, https://www.example.com
+                    const urlPattern = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}(\/.*)?$/
+
+                    if (urlPattern.test(trimmedValue)) {
+                        delete newErrors.website
+                    } else {
+                        newErrors.website = 'Please enter a valid URL (e.g., example.com or https://example.com)'
+                    }
+                } else {
+                    delete newErrors.website
+                }
+                break
+            default:
+                break
+        }
+
+        if (setErrors) {
+            setErrors(newErrors)
+        }
+        return newErrors
+    }
+
+    // Handle field change
+    const handleFieldChange = (field, value) => {
+        setFormData({ ...formData, [field]: value })
+
+        // Clear error when user starts typing
+        if (errors[field] && touched[field]) {
+            validateField(field, value)
+        }
+    }
+
+    // Handle field blur
+    const handleFieldBlur = (field) => {
+        setTouched({ ...touched, [field]: true })
+        validateField(field, formData[field])
+    }
+
+    // Handle next button click with validation
+    const handleNextClick = (e) => {
+        e.preventDefault()
+
+        // Mark all required fields as touched
+        const newTouched = { ...touched, name: true, email: true }
+        setTouched(newTouched)
+
+        // Validate all required fields
+        let newErrors = { ...errors }
+
+        // Validate name
+        if (!formData.name || formData.name.trim() === '') {
+            newErrors.name = 'Name field is required'
+        } else {
+            delete newErrors.name
+        }
+
+        // Validate email
+        if (!formData.email || formData.email.trim() === '') {
+            newErrors.email = 'Email field is required'
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            newErrors.email = 'Please enter a valid email address'
+        } else {
+            delete newErrors.email
+        }
+
+        // Update errors state
+        if (setErrors) {
+            setErrors(newErrors)
+        }
+
+        // Check if there are any errors
+        if (newErrors.name || newErrors.email) {
+            return
+        }
+
+        // If validation passes, proceed to next step
+        onNext()
+    }
 
     const quillModules = {
         toolbar: [
@@ -83,11 +188,18 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
                             type="text"
                             required
                             value={formData.name || ''}
-                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                            onChange={(e) => handleFieldChange('name', e.target.value)}
+                            onBlur={() => handleFieldBlur('name')}
+                            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${errors.name
+                                ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                                : 'border-gray-300 dark:border-gray-600'
+                                }`}
                             placeholder="John Doe"
                         />
                     </div>
+                    {errors.name && (
+                        <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.name}</p>
+                    )}
                 </div>
 
                 <div>
@@ -96,29 +208,41 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
                     </label>
                     <input
                         type="text"
-                        required
                         value={formData.title || ''}
-                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                        onChange={(e) => handleFieldChange('title', e.target.value)}
+                        onBlur={() => handleFieldBlur('title')}
+                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${errors.title
+                            ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                            : 'border-gray-300 dark:border-gray-600'
+                            }`}
                         placeholder="Marketing Director"
                     />
+                    {errors.title && (
+                        <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.title}</p>
+                    )}
                 </div>
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Company 
+                        Company
                     </label>
                     <div className="relative">
                         <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
                         <input
                             type="text"
-                            required
                             value={formData.company || ''}
-                            onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                            className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                            onChange={(e) => handleFieldChange('company', e.target.value)}
+                            onBlur={() => handleFieldBlur('company')}
+                            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${errors.company
+                                ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                                : 'border-gray-300 dark:border-gray-600'
+                                }`}
                             placeholder="TechCorp Inc"
                         />
                     </div>
+                    {errors.company && (
+                        <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.company}</p>
+                    )}
                 </div>
 
                 <div>
@@ -131,11 +255,18 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
                             type="email"
                             required
                             value={formData.email || ''}
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                            className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                            onChange={(e) => handleFieldChange('email', e.target.value)}
+                            onBlur={() => handleFieldBlur('email')}
+                            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${errors.email
+                                ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                                : 'border-gray-300 dark:border-gray-600'
+                                }`}
                             placeholder="john@example.com"
                         />
                     </div>
+                    {errors.email && (
+                        <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.email}</p>
+                    )}
                 </div>
 
                 <div>
@@ -147,11 +278,18 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
                         <input
                             type="tel"
                             value={formData.phone || ''}
-                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                            className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                            onChange={(e) => handleFieldChange('phone', e.target.value)}
+                            onBlur={() => handleFieldBlur('phone')}
+                            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${errors.phone
+                                ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                                : 'border-gray-300 dark:border-gray-600'
+                                }`}
                             placeholder="+1 (555) 123-4567"
                         />
                     </div>
+                    {errors.phone && (
+                        <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.phone}</p>
+                    )}
                 </div>
 
                 <div>
@@ -163,11 +301,18 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
                         <input
                             type="tel"
                             value={formData.whatsapp || ''}
-                            onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
-                            className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                            onChange={(e) => handleFieldChange('whatsapp', e.target.value)}
+                            onBlur={() => handleFieldBlur('whatsapp')}
+                            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${errors.whatsapp
+                                ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                                : 'border-gray-300 dark:border-gray-600'
+                                }`}
                             placeholder="+1 (555) 123-4567"
                         />
                     </div>
+                    {errors.whatsapp && (
+                        <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.whatsapp}</p>
+                    )}
                 </div>
 
                 <div>
@@ -179,11 +324,18 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
                         <input
                             type="tel"
                             value={formData.secondary_phone || ''}
-                            onChange={(e) => setFormData({ ...formData, secondary_phone: e.target.value })}
-                            className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                            onChange={(e) => handleFieldChange('secondary_phone', e.target.value)}
+                            onBlur={() => handleFieldBlur('secondary_phone')}
+                            className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${errors.secondary_phone
+                                ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                                : 'border-gray-300 dark:border-gray-600'
+                                }`}
                             placeholder="+1 (555) 987-6543"
                         />
                     </div>
+                    {errors.secondary_phone && (
+                        <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.secondary_phone}</p>
+                    )}
                 </div>
 
                 <div>
@@ -191,12 +343,19 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
                         Website
                     </label>
                     <input
-                        type="url"
+                        type="text"
                         value={formData.website || ''}
-                        onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
-                        placeholder="https://example.com"
+                        onChange={(e) => handleFieldChange('website', e.target.value)}
+                        onBlur={() => handleFieldBlur('website')}
+                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${errors.website
+                            ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                            : 'border-gray-300 dark:border-gray-600'
+                            }`}
+                        placeholder="example.com or https://example.com"
                     />
+                    {errors.website && (
+                        <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.website}</p>
+                    )}
                 </div>
             </div>
 
@@ -209,11 +368,18 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
                     <input
                         type="text"
                         value={formData.address || ''}
-                        onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                        className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+                        onChange={(e) => handleFieldChange('address', e.target.value)}
+                        onBlur={() => handleFieldBlur('address')}
+                        className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${errors.address
+                            ? 'border-red-500 dark:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                            : 'border-gray-300 dark:border-gray-600'
+                            }`}
                         placeholder="123 Main St, City, State 12345"
                     />
                 </div>
+                {errors.address && (
+                    <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.address}</p>
+                )}
             </div>
 
             <div className="w-full">
@@ -245,7 +411,7 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
             </div>
 
             <div className="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700">
-                <button type="button" onClick={onNext} className="btn-primary flex items-center">
+                <button type="button" onClick={handleNextClick} className="btn-primary flex items-center">
                     Next Step
                     <ArrowRight className="w-5 h-5 ml-2" />
                 </button>
