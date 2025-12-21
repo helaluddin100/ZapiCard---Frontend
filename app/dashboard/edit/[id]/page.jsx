@@ -35,6 +35,7 @@ export default function EditCardPage() {
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
     const [error, setError] = useState(null)
+    const [errors, setErrors] = useState({})
     const [formData, setFormData] = useState({
         // Step 1: Personal Info
         name: '',
@@ -133,6 +134,7 @@ export default function EditCardPage() {
         e.preventDefault()
         setSaving(true)
         setError(null)
+        setErrors({}) // Clear previous errors
 
         try {
             // Generate vCard data for QR code
@@ -186,8 +188,47 @@ END:VCARD`
             }
         } catch (error) {
             console.error('Error updating card:', error)
-            setError(error.message || 'Failed to update card. Please try again.')
-            showError(error.message || 'Failed to update card. Please try again.')
+            
+            // Handle validation errors from backend
+            if (error.response?.data?.errors) {
+                const backendErrors = error.response.data.errors
+                const fieldErrors = {}
+                
+                // Direct mapping of backend field names (snake_case) to frontend field names
+                const fieldMap = {
+                    'name': 'name',
+                    'email': 'email',
+                    'phone': 'phone',
+                    'website': 'website',
+                    'address': 'address',
+                    'title': 'title',
+                    'company': 'company',
+                    'whatsapp': 'whatsapp',
+                    'secondary_phone': 'secondary_phone'
+                }
+                
+                // Map backend errors to frontend field names
+                Object.keys(backendErrors).forEach(backendKey => {
+                    const frontendKey = fieldMap[backendKey] || backendKey
+                    fieldErrors[frontendKey] = Array.isArray(backendErrors[backendKey]) 
+                        ? backendErrors[backendKey][0] 
+                        : backendErrors[backendKey]
+                })
+                
+                setErrors(fieldErrors)
+                
+                // If errors are in step 1 fields, go back to step 1
+                if (fieldErrors.name || fieldErrors.email || fieldErrors.phone || fieldErrors.website || 
+                    fieldErrors.address || fieldErrors.title || fieldErrors.company || fieldErrors.whatsapp || fieldErrors.secondary_phone) {
+                    setStep(1)
+                }
+                
+                showError('Please fix the validation errors and try again.')
+            } else {
+                const errorMessage = error.message || 'Failed to update card. Please try again.'
+                setError(errorMessage)
+                showError(errorMessage)
+            }
         } finally {
             setSaving(false)
         }
@@ -306,6 +347,8 @@ END:VCARD`
                                         formData={formData}
                                         setFormData={setFormData}
                                         onNext={handleNext}
+                                        errors={errors}
+                                        setErrors={setErrors}
                                     />
                                 )}
 
