@@ -394,8 +394,8 @@ export default function SettingsModal({ isOpen, onClose }) {
 
                     <div className="mt-6 p-3 sm:p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
                       <p className="text-xs sm:text-sm text-blue-800 dark:text-blue-200">
-                        <strong>Tip:</strong> Select "Dark" for night mode or
-                        "System" to match your device settings.
+                        <strong>Tip:</strong> Select &quot;Dark&quot; for night mode or
+                        &quot;System&quot; to match your device settings.
                       </p>
                     </div>
                   </motion.div>
