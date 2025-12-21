@@ -41,7 +41,7 @@ export default function Preview({ formData }) {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="glass-effect rounded-3xl shadow-2xl overflow-hidden"
+                    className="glass-effect rounded-xl shadow-2xl overflow-hidden"
                 >
                     {/* Header with gradient/color background */}
                     <div className="relative p-8 sm:p-12" style={getBackgroundStyle()}>
@@ -67,13 +67,13 @@ export default function Preview({ formData }) {
                                 )}
                             </motion.div>
 
-                            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
+                            <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
                                 {formData.name || 'Your Name'}
                             </h1>
-                            <p className="text-xl text-white/90 mb-1">
+                            <p className="text-lg md:text-xl text-white/90 mb-1">
                                 {formData.title || 'Your Title'}
                             </p>
-                            <p className="text-lg text-white/80">
+                            <p className="text-lg md:text-xl text-white/80">
                                 {formData.company || 'Your Company'}
                             </p>
                         </div>

@@ -17,7 +17,7 @@ const colorPresets = [
     { primary: '#1565c0', button: '#e91e63' },
 ]
 
-export default function DesignCustomize({ formData, setFormData, onNext, onBack, buttonText = 'Next Step', disabled = false }) {
+export default function DesignCustomize({ formData, setFormData, onNext, onBack, buttonText, disabled = false }) {
     const [isExpanded, setIsExpanded] = useState(true)
 
     const handlePresetSelect = (preset) => {

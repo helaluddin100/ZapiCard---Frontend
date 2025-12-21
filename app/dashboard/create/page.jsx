@@ -24,6 +24,7 @@ import Preview from './components/Preview'
 export default function CreateCardPage() {
     const { success, error: showError } = useToast()
     const [step, setStep] = useState(1)
+    const [saving, setSaving] = useState(false)
     const [formData, setFormData] = useState({
         // Step 1: Personal Info
         name: '',
@@ -69,7 +70,7 @@ export default function CreateCardPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
+        setSaving(true)
         try {
             // Generate vCard data for QR code
             const vcard = `BEGIN:VCARD
@@ -129,6 +130,8 @@ END:VCARD`
         } catch (error) {
             console.error('Error creating card:', error)
             showError(error.message || 'Failed to create card. Please try again.')
+        } finally {
+            setSaving(false)
         }
     }
 
@@ -143,107 +146,138 @@ END:VCARD`
     }
 
     return (
-        <DashboardLayout>
-            <div className="max-w-7xl mx-auto">
-                {/* Header */}
-                <div className="mb-8">
-                    <Link href="/dashboard/my-cards" className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 mb-4">
-                        <ArrowLeft className="w-4 h-4 mr-2" />
-                        Back to My Cards
-                    </Link>
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Create New Card</h1>
-                    <p className="text-gray-600 dark:text-gray-400 mt-1">Build your smart visiting card step by step</p>
-                </div>
+      <DashboardLayout>
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="mb-8">
+            <Link
+              href="/dashboard/my-cards"
+              className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 mb-2"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to My Cards
+            </Link>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">
+              Create New Card
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-1">
+              Build your smart visiting card step by step
+            </p>
+          </div>
 
-                <div className="grid lg:grid-cols-3 gap-8">
-                    {/* Main Form */}
-                    <div className="lg:col-span-2">
-                        {/* Progress Steps */}
-                        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 border border-gray-200 dark:border-gray-700">
-                            <div className="flex items-center justify-between">
-                                {steps.map((s, idx) => {
-                                    const Icon = s.icon
-                                    const isActive = step === s.number
-                                    const isCompleted = step > s.number
-                                    return (
-                                        <div key={s.number} className="flex items-center flex-1">
-                                            <div className="flex flex-col items-center flex-1">
-                                                <div className={`
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Main Form */}
+            <div className="lg:col-span-2 pb-6 md:pb-0">
+              {/* Progress Steps */}
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6 border border-gray-200 dark:border-gray-700">
+                <div className="flex items-start justify-between">
+                  {steps.map((s, idx) => {
+                    const Icon = s.icon;
+                    const isActive = step === s.number;
+                    const isCompleted = step > s.number;
+                    return (
+                      <div key={s.number} className="flex items-center flex-1">
+                        <div className="flex flex-col items-center flex-1">
+                          <div
+                            className={`
                           w-12 h-12 rounded-full flex items-center justify-center mb-2 transition
-                          ${isActive ? 'gradient-primary text-white scale-110' : ''}
-                          ${isCompleted ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'}
-                        `}>
-                                                    {isCompleted ? (
-                                                        <CheckCircle2 className="w-6 h-6" />
-                                                    ) : (
-                                                        <Icon className="w-6 h-6" />
-                                                    )}
-                                                </div>
-                                                <span className={`text-xs font-medium ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`}>
-                                                    {s.title}
-                                                </span>
-                                            </div>
-                                            {idx < steps.length - 1 && (
-                                                <div className={`h-1 flex-1 mx-2 ${step > s.number ? 'bg-green-500' : 'bg-gray-200 dark:bg-gray-700'}`} />
-                                            )}
-                                        </div>
-                                    )
-                                })}
-                            </div>
+                          ${
+                            isActive
+                              ? "gradient-primary text-white scale-105"
+                              : ""
+                          }
+                          ${
+                            isCompleted
+                              ? "bg-green-500 text-white"
+                              : "bg-gray-200 dark:text-white  dark:bg-gray-700 text-gray-500"
+                          }
+                        `}
+                          >
+                            {isCompleted ? (
+                              <CheckCircle2 className="w-6 h-6" />
+                            ) : (
+                              <Icon className="w-6 h-6" />
+                            )}
+                          </div>
+                          <span
+                            className={`text-xs text-center font-medium ${
+                              isActive
+                                ? "text-blue-600 dark:text-blue-400"
+                                : "text-gray-500 dark:text-gray-400"
+                            }`}
+                          >
+                            {s.title}
+                          </span>
                         </div>
-
-                        {/* Form Steps */}
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            <AnimatePresence mode="wait">
-                                {/* Step 1: Personal Info */}
-                                {step === 1 && (
-                                    <PersonalInfo
-                                        formData={formData}
-                                        setFormData={setFormData}
-                                        onNext={handleNext}
-                                    />
-                                )}
-
-                                {/* Step 2: Social Links */}
-                                {step === 2 && (
-                                    <SocialLinks
-                                        formData={formData}
-                                        setFormData={setFormData}
-                                        onNext={handleNext}
-                                        onBack={handleBack}
-                                    />
-                                )}
-
-                                {/* Step 3: Photo & Logo */}
-                                {step === 3 && (
-                                    <PhotoLogo
-                                        formData={formData}
-                                        setFormData={setFormData}
-                                        onNext={handleNext}
-                                        onBack={handleBack}
-                                        handleFileUpload={handleFileUpload}
-                                    />
-                                )}
-
-                                {/* Step 4: Design & Customize */}
-                                {step === 4 && (
-                                    <DesignCustomize
-                                        formData={formData}
-                                        setFormData={setFormData}
-                                        onNext={handleSubmit}
-                                        onBack={handleBack}
-                                    />
-                                )}
-                            </AnimatePresence>
-                        </form>
-                    </div>
-
-                    {/* Live Preview */}
-                    <div className="lg:col-span-1">
-                        <Preview formData={formData} />
-                    </div>
+                        {idx < steps.length - 1 && (
+                          <div
+                            className={`h-1 flex-1 mx-2 ${
+                              step > s.number
+                                ? "bg-green-500"
+                                : "bg-gray-200 dark:bg-gray-700"
+                            }`}
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
+              </div>
+
+              {/* Form Steps */}
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <AnimatePresence mode="wait">
+                  {/* Step 1: Personal Info */}
+                  {step === 1 && (
+                    <PersonalInfo
+                      formData={formData}
+                      setFormData={setFormData}
+                      onNext={handleNext}
+                    />
+                  )}
+
+                  {/* Step 2: Social Links */}
+                  {step === 2 && (
+                    <SocialLinks
+                      formData={formData}
+                      setFormData={setFormData}
+                      onNext={handleNext}
+                      onBack={handleBack}
+                    />
+                  )}
+
+                  {/* Step 3: Photo & Logo */}
+                  {step === 3 && (
+                    <PhotoLogo
+                      formData={formData}
+                      setFormData={setFormData}
+                      onNext={handleNext}
+                      onBack={handleBack}
+                      handleFileUpload={handleFileUpload}
+                    />
+                  )}
+
+                  {/* Step 4: Design & Customize */}
+                  {step === 4 && (
+                    <DesignCustomize
+                      formData={formData}
+                      setFormData={setFormData}
+                      onNext={handleSubmit}
+                      onBack={handleBack}
+                      buttonText={saving ? "Saving..." : "Create Card"}
+                      disabled={saving}
+                    />
+                  )}
+                </AnimatePresence>
+              </form>
             </div>
-        </DashboardLayout>
-    )
+
+            {/* Live Preview */}
+            <div className="lg:col-span-1 hidden md:block">
+              <Preview formData={formData} />
+            </div>
+          </div>
+        </div>
+      </DashboardLayout>
+    );
 }

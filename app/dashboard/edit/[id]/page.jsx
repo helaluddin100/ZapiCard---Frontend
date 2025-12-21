@@ -42,6 +42,8 @@ export default function EditCardPage() {
         company: '',
         email: '',
         phone: '',
+        whatsapp: '',
+        secondary_phone: '',
         website: '',
         address: '',
         bio: '',
@@ -91,6 +93,8 @@ export default function EditCardPage() {
                     company: card.company || '',
                     email: card.email || '',
                     phone: card.phone || '',
+                    whatsapp: card.whatsapp || '',
+                    secondary_phone: card.secondary_phone || '',
                     website: card.website || '',
                     address: card.address || '',
                     bio: card.bio || '',
@@ -139,6 +143,8 @@ ORG:${formData.company || 'Company'}
 TITLE:${formData.title || 'Title'}
 EMAIL:${formData.email || ''}
 TEL:${formData.phone || ''}
+${formData.whatsapp ? `TEL;TYPE=CELL;PREF:${formData.whatsapp}` : ''}
+${formData.secondary_phone ? `TEL;TYPE=CELL:${formData.secondary_phone}` : ''}
 URL:${formData.website || ''}
 ADR:;;${formData.address || ''};;;;
 NOTE:${formData.bio ? formData.bio.replace(/<[^>]*>/g, '') : ''}
@@ -151,6 +157,8 @@ END:VCARD`
                 company: formData.company,
                 email: formData.email,
                 phone: formData.phone,
+                whatsapp: formData.whatsapp,
+                secondary_phone: formData.secondary_phone,
                 website: formData.website,
                 address: formData.address,
                 bio: formData.bio,

@@ -75,7 +75,7 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
             <div className="grid md:grid-cols-2 gap-6">
                 <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Full Name *
+                        Full Name <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                         <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
@@ -92,7 +92,7 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Job Title *
+                        Job Title
                     </label>
                     <input
                         type="text"
@@ -106,7 +106,7 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Company *
+                        Company 
                     </label>
                     <div className="relative">
                         <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
@@ -123,7 +123,7 @@ export default function PersonalInfo({ formData, setFormData, onNext }) {
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Email *
+                        Email <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                         <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />

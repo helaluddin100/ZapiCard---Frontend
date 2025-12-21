@@ -4,35 +4,137 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
     ArrowLeft,
-    ArrowRight,
-    Facebook,
-    Twitter,
+    ArrowRight, 
     Instagram,
     Linkedin,
     Youtube,
     Github,
     X,
-    Link as LinkIcon
 } from 'lucide-react'
+import { FaWhatsapp,FaTiktok, FaXTwitter,FaThreads , FaMedium, FaSnapchat,FaDiscord, FaPinterest, FaBehance, FaReddit, FaFacebookF } from "react-icons/fa6";
+import { FaTelegram, FaDribbble } from "react-icons/fa";
 
 const socialMediaOptions = [
-    { key: 'facebook', label: 'Facebook', icon: Facebook, color: 'bg-blue-600', hoverColor: 'hover:bg-blue-700' },
-    { key: 'twitter', label: 'Twitter', icon: Twitter, color: 'bg-blue-400', hoverColor: 'hover:bg-blue-500' },
-    { key: 'instagram', label: 'Instagram', icon: Instagram, color: 'bg-gradient-to-br from-purple-600 to-pink-600', hoverColor: 'hover:opacity-90' },
-    { key: 'linkedin', label: 'LinkedIn', icon: Linkedin, color: 'bg-blue-700', hoverColor: 'hover:bg-blue-800' },
-    { key: 'youtube', label: 'YouTube', icon: Youtube, color: 'bg-red-600', hoverColor: 'hover:bg-red-700' },
-    { key: 'github', label: 'GitHub', icon: Github, color: 'bg-gray-800', hoverColor: 'hover:bg-gray-900' },
-    { key: 'whatsapp', label: 'WhatsApp', icon: LinkIcon, color: 'bg-green-500', hoverColor: 'hover:bg-green-600' },
-    { key: 'tiktok', label: 'TikTok', icon: LinkIcon, color: 'bg-black', hoverColor: 'hover:bg-gray-900' },
-    { key: 'snapchat', label: 'Snapchat', icon: LinkIcon, color: 'bg-yellow-400', hoverColor: 'hover:bg-yellow-500' },
-    { key: 'pinterest', label: 'Pinterest', icon: LinkIcon, color: 'bg-red-700', hoverColor: 'hover:bg-red-800' },
-    { key: 'telegram', label: 'Telegram', icon: LinkIcon, color: 'bg-blue-500', hoverColor: 'hover:bg-blue-600' },
-    { key: 'discord', label: 'Discord', icon: LinkIcon, color: 'bg-indigo-600', hoverColor: 'hover:bg-indigo-700' },
-    { key: 'behance', label: 'Behance', icon: LinkIcon, color: 'bg-blue-500', hoverColor: 'hover:bg-blue-600' },
-    { key: 'dribbble', label: 'Dribbble', icon: LinkIcon, color: 'bg-pink-500', hoverColor: 'hover:bg-pink-600' },
-    { key: 'medium', label: 'Medium', icon: LinkIcon, color: 'bg-gray-800', hoverColor: 'hover:bg-gray-900' },
-    { key: 'reddit', label: 'Reddit', icon: LinkIcon, color: 'bg-orange-500', hoverColor: 'hover:bg-orange-600' },
-]
+  {
+    key: "facebook",
+    label: "Facebook",
+    icon: FaFacebookF,
+    color: "bg-blue-600",
+    hoverColor: "hover:bg-blue-700",
+  },
+  {
+    key: "twitter",
+    label: "Twitter",
+    icon: FaXTwitter,
+    color: "bg-blue-400",
+    hoverColor: "hover:bg-blue-500",
+  },
+  {
+    key: "instagram",
+    label: "Instagram",
+    icon: Instagram,
+    color: "bg-gradient-to-br from-purple-600 to-pink-600",
+    hoverColor: "hover:opacity-90",
+  },
+  {
+    key: "Threads",
+    label: "Threads",
+    icon: FaThreads,
+    color: "bg-black",
+    hoverColor: "hover:opacity-90",
+  },
+  {
+    key: "linkedin",
+    label: "LinkedIn",
+    icon: Linkedin,
+    color: "bg-blue-700",
+    hoverColor: "hover:bg-blue-800",
+  },
+  {
+    key: "youtube",
+    label: "YouTube",
+    icon: Youtube,
+    color: "bg-red-600",
+    hoverColor: "hover:bg-red-700",
+  },
+  {
+    key: "github",
+    label: "GitHub",
+    icon: Github,
+    color: "bg-gray-800",
+    hoverColor: "hover:bg-gray-900",
+  },
+  {
+    key: "whatsapp",
+    label: "WhatsApp",
+    icon: FaWhatsapp,
+    color: "bg-green-500",
+    hoverColor: "hover:bg-green-600",
+  },
+  {
+    key: "tiktok",
+    label: "TikTok",
+    icon: FaTiktok,
+    color: "bg-black",
+    hoverColor: "hover:bg-gray-900",
+  },
+  {
+    key: "snapchat",
+    label: "Snapchat",
+    icon: FaSnapchat,
+    color: "bg-yellow-400",
+    hoverColor: "hover:bg-yellow-500",
+  },
+  {
+    key: "pinterest",
+    label: "Pinterest",
+    icon: FaPinterest,
+    color: "bg-red-700",
+    hoverColor: "hover:bg-red-800",
+  },
+  {
+    key: "telegram",
+    label: "Telegram",
+    icon: FaTelegram,
+    color: "bg-blue-500",
+    hoverColor: "hover:bg-blue-600",
+  },
+  {
+    key: "discord",
+    label: "Discord",
+    icon: FaDiscord,
+    color: "bg-indigo-600",
+    hoverColor: "hover:bg-indigo-700",
+  },
+  {
+    key: "behance",
+    label: "Behance",
+    icon: FaBehance,
+    color: "bg-blue-500",
+    hoverColor: "hover:bg-blue-600",
+  },
+  {
+    key: "dribbble",
+    label: "Dribbble",
+    icon: FaDribbble,
+    color: "bg-pink-500",
+    hoverColor: "hover:bg-pink-600",
+  },
+  {
+    key: "medium",
+    label: "Medium",
+    icon: FaMedium,
+    color: "bg-gray-800",
+    hoverColor: "hover:bg-gray-900",
+  },
+  {
+    key: "reddit",
+    label: "Reddit",
+    icon: FaReddit,
+    color: "bg-orange-500",
+    hoverColor: "hover:bg-orange-600",
+  },
+];
 
 export default function SocialLinks({ formData, setFormData, onNext, onBack }) {
     const [activeInput, setActiveInput] = useState(null)
@@ -86,16 +188,17 @@ export default function SocialLinks({ formData, setFormData, onNext, onBack }) {
                                 type="button"
                                 onClick={() => handleSocialClick(social.key)}
                                 className={`
-                                    w-full aspect-square rounded-lg flex items-center justify-center
+                                    w-full aspect-square rounded-lg flex flex-col gap-3 items-center justify-center
                                     transition-all duration-200
                                     ${hasValue
                                         ? `${social.color} text-white shadow-lg scale-105`
                                         : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                                     }
-                                    ${isActive ? 'ring-4 ring-blue-400 ring-offset-2' : ''}
+                                    ${isActive ? 'ring-2 ring-primary-400 ring-offset-2' : ''}
                                 `}
                             >
                                 <Icon className="w-6 h-6" />
+                                <span className="text-xs font-medium">{social.label}</span>
                             </button>
                             {hasValue && !isActive && (
                                 <button
@@ -104,9 +207,9 @@ export default function SocialLinks({ formData, setFormData, onNext, onBack }) {
                                         e.stopPropagation()
                                         removeSocialLink(social.key)
                                     }}
-                                    className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600"
+                                    className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600"
                                 >
-                                    <X className="w-3 h-3" />
+                                    <X className="w-4 h-4" />
                                 </button>
                             )}
                         </div>
