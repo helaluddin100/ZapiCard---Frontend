@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams } from 'next/navigation'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
@@ -134,6 +134,7 @@ export default function PublicCardPage() {
     const [darkMode, setDarkMode] = useState(false)
     const [mounted, setMounted] = useState(false)
     const [tilt, setTilt] = useState({ x: 0, y: 0 })
+    const isLoadCardDataInProgress = useRef(false)
 
     // Check for dark mode preference on mount
     useEffect(() => {
@@ -189,41 +190,101 @@ export default function PublicCardPage() {
     const loadCardData = useCallback(async () => {
         if (!slug) return
 
+        // Prevent multiple simultaneous calls
+        if (isLoadCardDataInProgress.current) {
+            console.log('⚠️ Load card data already in progress, skipping...')
+            return
+        }
+
+        // Check if visitor has visited this card in the last 24 hours
+        const storageKey = `card_visit_${slug}`
+
         try {
+            isLoadCardDataInProgress.current = true
             setLoading(true)
             setError(null)
+            const currentTime = Date.now()
+            const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
 
-            // Collect visitor data (geolocation is now skipped to avoid permission prompts)
-            console.log('🔄 Starting visitor data collection...')
-            const visitorData = await getVisitorDataForAPI()
+            let shouldCountVisit = false
 
-            // Log collected data for debugging
-            console.log('✅ Collected visitor data:', visitorData)
+            if (typeof window !== 'undefined') {
+                // Get last visit timestamp
+                const lastVisitTimeStr = localStorage.getItem(storageKey)
 
-            // Send visitor data via POST body instead of query params to avoid URL length issues
-            // Filter out null/undefined values and large objects
-            const cleanedVisitorData = {}
-            Object.keys(visitorData).forEach(key => {
-                const value = visitorData[key]
-                // Skip null/undefined/empty values
-                if (value === null || value === undefined || value === '') {
-                    return
-                }
-                // Skip large nested objects (like fingerprint_components) - they're too large
-                if (key === 'additional_data' && typeof value === 'object') {
-                    // Only keep essential parts, skip large fingerprint components
-                    const cleaned = {}
-                    if (value.full_ua_parsed) {
-                        cleaned.full_ua_parsed = value.full_ua_parsed
-                    }
-                    // Skip fingerprint_components as it's too large
-                    cleanedVisitorData[key] = cleaned
+                if (!lastVisitTimeStr) {
+                    // First visit - store timestamp IMMEDIATELY before any API calls
+                    localStorage.setItem(storageKey, currentTime.toString())
+                    shouldCountVisit = true
+                    console.log('💾 First visit - timestamp stored:', new Date(currentTime).toISOString())
                 } else {
-                    cleanedVisitorData[key] = value
-                }
-            })
+                    const lastVisitTime = parseInt(lastVisitTimeStr)
+                    const timeDiff = currentTime - lastVisitTime
 
-            console.log('📤 Sending visitor data via POST body (keys:', Object.keys(cleanedVisitorData).length, ')')
+                    if (timeDiff >= TWENTY_FOUR_HOURS) {
+                        // 24 hours passed - update timestamp and count visit
+                        localStorage.setItem(storageKey, currentTime.toString())
+                        shouldCountVisit = true
+                        const hoursPassed = Math.round(timeDiff / 1000 / 60 / 60)
+                        console.log(`💾 24h+ passed (${hoursPassed}h) - timestamp updated:`, new Date(currentTime).toISOString())
+                    } else {
+                        // Within 24 hours - don't count
+                        shouldCountVisit = false
+                        const hoursSince = Math.round(timeDiff / 1000 / 60 / 60)
+                        const minutesSince = Math.round(timeDiff / 1000 / 60)
+                        console.log(`⏱️ Visit within 24h (${hoursSince}h/${minutesSince}m ago) - skipping count`)
+                        console.log(`Last visit: ${new Date(lastVisitTime).toISOString()}, Current: ${new Date(currentTime).toISOString()}`)
+                    }
+                }
+            } else {
+                // Server-side: always count (this shouldn't happen for client component)
+                shouldCountVisit = true
+            }
+
+            let cleanedVisitorData = null
+
+            if (shouldCountVisit) {
+
+                // Collect visitor data only if 24 hours have passed since last visit
+                console.log('🔄 Starting visitor data collection (first visit or 24h+ since last visit)...')
+                const visitorData = await getVisitorDataForAPI()
+
+                // Log collected data for debugging
+                console.log('✅ Collected visitor data:', visitorData)
+
+                // Send visitor data via POST body instead of query params to avoid URL length issues
+                // Filter out null/undefined values and large objects
+                cleanedVisitorData = {}
+                Object.keys(visitorData).forEach(key => {
+                    const value = visitorData[key]
+                    // Skip null/undefined/empty values
+                    if (value === null || value === undefined || value === '') {
+                        return
+                    }
+                    // Skip large nested objects (like fingerprint_components) - they're too large
+                    if (key === 'additional_data' && typeof value === 'object') {
+                        // Only keep essential parts, skip large fingerprint components
+                        const cleaned = {}
+                        if (value.full_ua_parsed) {
+                            cleaned.full_ua_parsed = value.full_ua_parsed
+                        }
+                        // Skip fingerprint_components as it's too large
+                        cleanedVisitorData[key] = cleaned
+                    } else {
+                        cleanedVisitorData[key] = value
+                    }
+                })
+
+                console.log('📤 Sending visitor data via POST body (keys:', Object.keys(cleanedVisitorData).length, ')')
+            } else {
+                // Send minimal data with skip flag to prevent backend from counting
+                cleanedVisitorData = {
+                    skip_visitor_count: true,
+                    _timestamp: currentTime.toString(),
+                    _reason: 'visit_within_24h'
+                }
+                console.log('⏭️ Skipping visitor count - sending skip flag to backend')
+            }
 
             const response = await cardAPI.getCardBySlug(slug, cleanedVisitorData)
 
@@ -240,17 +301,23 @@ export default function PublicCardPage() {
             } else {
                 setError('Card not found')
             }
+
         } catch (err) {
-            console.error('Error loading card:', err)
+            // console.error('Error loading card:', err)
             setError(err.message || 'Failed to load card')
         } finally {
             setLoading(false)
+            isLoadCardDataInProgress.current = false
         }
     }, [slug])
 
     useEffect(() => {
-        loadCardData()
-    }, [loadCardData])
+        // Only load if slug exists and component is mounted
+        if (slug && mounted) {
+            loadCardData()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [slug, mounted]) // Only depend on slug and mounted to prevent unnecessary re-runs
 
     // Set meta title when cardData is loaded
     useEffect(() => {
@@ -307,9 +374,10 @@ export default function PublicCardPage() {
             dribbble: FaDribbble,
             medium: FaMediumM,
             reddit: FaReddit,
-            threads: FaThreads,
         }
-        return icons[key] || LinkIcon
+        // Return icon or fallback to LinkIcon if not found
+        const Icon = icons[key.toLowerCase()] || LinkIcon
+        return Icon
     }
 
     const getSocialColor = (key) => {
@@ -512,7 +580,7 @@ N:${(cardData.name || '').replace(/[,;\\]/g, '')};;;;`
         }
     }
 
-    console.log('cardData', cardData.social_links)
+    // console.log('cardData', cardData.social_links)
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-4 sm:py-8 px-3 sm:px-4 lg:px-8">
             <div className="max-w-md sm:max-w-2xl lg:max-w-4xl mx-auto perspective-1000">
@@ -581,6 +649,7 @@ N:${(cardData.name || '').replace(/[,;\\]/g, '')};;;;`
                                                 width={160}
                                                 height={160}
                                                 className="w-full h-full object-cover relative z-10"
+                                                priority
                                                 unoptimized={cardData.profile_photo.startsWith('data:')}
                                             />
                                         </div>
@@ -749,6 +818,12 @@ N:${(cardData.name || '').replace(/[,;\\]/g, '')};;;;`
                                             if (!url) return null
                                             const Icon = getSocialIcon(key)
                                             const colorClass = getSocialColor(key)
+
+                                            // Safety check - ensure Icon is a valid component
+                                            if (!Icon || typeof Icon !== 'function') {
+                                                console.warn(`Invalid icon for social link: ${key}`)
+                                                return null
+                                            }
 
                                             return (
                                                 <motion.a

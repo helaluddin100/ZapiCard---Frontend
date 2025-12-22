@@ -10,13 +10,13 @@ export default function manifest() {
         theme_color: '#3b82f6',
         icons: [
             {
-                src: '/icon-192x192.png',
+                src: '/icon.png',
                 sizes: '192x192',
                 type: 'image/png',
                 purpose: 'any maskable',
             },
             {
-                src: '/icon-512x512.png',
+                src: '/icon.png',
                 sizes: '512x512',
                 type: 'image/png',
                 purpose: 'any maskable',

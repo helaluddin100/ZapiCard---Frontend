@@ -13,7 +13,10 @@ function FacebookPixelContent() {
         const testEventCode = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_TEST_CODE
 
         if (!pixelId) {
-            console.warn('Facebook Pixel ID is not set. Please add NEXT_PUBLIC_FACEBOOK_PIXEL_ID to your .env.local file')
+            // Only show warning in development, suppress in production
+            if (process.env.NODE_ENV === 'development') {
+                // Silently skip - don't show warning
+            }
             return
         }
 
