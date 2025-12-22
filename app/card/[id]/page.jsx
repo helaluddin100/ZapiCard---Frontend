@@ -252,6 +252,13 @@ export default function PublicCardPage() {
         loadCardData()
     }, [loadCardData])
 
+    // Set meta title when cardData is loaded
+    useEffect(() => {
+        if (cardData && cardData.name) {
+            document.title = `${cardData.name} - zapycard.com`
+        }
+    }, [cardData])
+
     // Track visit duration when component unmounts or page is closed
     useEffect(() => {
         return () => {
@@ -358,20 +365,114 @@ export default function PublicCardPage() {
         )
     }
 
+    // Helper function to strip HTML tags from text
+    const stripHTML = (html) => {
+        if (!html) return ''
+        const tmp = document.createElement('DIV')
+        tmp.innerHTML = html
+        return tmp.textContent || tmp.innerText || ''
+    }
+
+    // Helper function to convert image URL to base64
+    const imageToBase64 = async (imageUrl) => {
+        try {
+            // If already a data URL, extract base64 part
+            if (imageUrl.startsWith('data:image')) {
+                return imageUrl.split(',')[1]
+            }
+
+            // Otherwise fetch the image
+            const response = await fetch(imageUrl)
+            const blob = await response.blob()
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader()
+                reader.onloadend = () => {
+                    const base64data = reader.result.split(',')[1] // Remove data:image/jpeg;base64, prefix
+                    resolve(base64data)
+                }
+                reader.onerror = reject
+                reader.readAsDataURL(blob)
+            })
+        } catch (error) {
+            console.error('Error converting image to base64:', error)
+            return null
+        }
+    }
+
     const handleDownloadVCard = async () => {
         if (!cardData) return
 
-        const vcard = `BEGIN:VCARD
+        // Strip HTML from bio
+        const cleanBio = stripHTML(cardData.bio || '')
+
+        // Get current page URL
+        const pageUrl = typeof window !== 'undefined' ? window.location.href : ''
+
+        // Build vCard content
+        let vcard = `BEGIN:VCARD
 VERSION:3.0
-FN:${cardData.name || ''}
-ORG:${cardData.company || ''}
-TITLE:${cardData.title || ''}
-EMAIL:${cardData.email || ''}
-TEL:${cardData.phone || ''}
-URL:${cardData.website || ''}
-ADR:;;${cardData.address || ''};;;;
-NOTE:${cardData.bio || ''}
-END:VCARD`
+FN:${(cardData.name || '').replace(/[,;\\]/g, '')}
+N:${(cardData.name || '').replace(/[,;\\]/g, '')};;;;`
+
+        // Add organization
+        if (cardData.company) {
+            vcard += `\nORG:${cardData.company.replace(/[,;\\]/g, '')}`
+        }
+
+        // Add title
+        if (cardData.title) {
+            vcard += `\nTITLE:${cardData.title.replace(/[,;\\]/g, '')}`
+        }
+
+        // Add email
+        if (cardData.email) {
+            vcard += `\nEMAIL:${cardData.email}`
+        }
+
+        // Add all phone numbers
+        if (cardData.phone) {
+            vcard += `\nTEL;TYPE=CELL:${cardData.phone.replace(/[^0-9+]/g, '')}`
+        }
+        if (cardData.secondary_phone) {
+            vcard += `\nTEL;TYPE=HOME:${cardData.secondary_phone.replace(/[^0-9+]/g, '')}`
+        }
+        if (cardData.whatsapp) {
+            vcard += `\nTEL;TYPE=CELL,VOICE:${cardData.whatsapp.replace(/[^0-9+]/g, '')}`
+        }
+
+        // Add page URL instead of website
+        if (pageUrl) {
+            vcard += `\nURL:${pageUrl}`
+        }
+
+        // Add address
+        if (cardData.address) {
+            vcard += `\nADR;TYPE=WORK:;;${cardData.address.replace(/[,;\\]/g, '')};;;;`
+        }
+
+        // Add profile photo if available
+        if (cardData.profile_photo) {
+            try {
+                const base64Image = await imageToBase64(cardData.profile_photo)
+                if (base64Image) {
+                    // Split base64 into 75 character lines as per vCard spec
+                    const lines = base64Image.match(/.{1,75}/g) || []
+                    vcard += `\nPHOTO;ENCODING=b;TYPE=JPEG:${lines.join('\n ')}`
+                }
+            } catch (error) {
+                console.error('Error adding photo to vCard:', error)
+            }
+        }
+
+        // Add bio as note (HTML stripped)
+        if (cleanBio) {
+            // Escape special characters and split long lines
+            const escapedBio = cleanBio.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,')
+            const bioLines = escapedBio.match(/.{1,75}/g) || []
+            vcard += `\nNOTE:${bioLines.join('\n ')}`
+        }
+
+        vcard += '\nEND:VCARD'
 
         const blob = new Blob([vcard], { type: 'text/vcard' })
         const url = URL.createObjectURL(blob)
