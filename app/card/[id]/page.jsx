@@ -712,40 +712,40 @@ N:${(cardData.name || '').replace(/[,;\\]/g, '')};;;;`
                             {/* Bio */}
                             {cardData.bio && (
                                 <div
-                                    className="mb-6 sm:mb-8 p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-indigo-50 via-white to-blue-50 dark:from-gray-700 dark:via-gray-800 dark:to-gray-700 border border-indigo-100/50 dark:border-gray-600/50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.04),0_2px_8px_rgba(99,102,241,0.1)] dark:shadow-[inset_0_2px_4px_rgba(0,0,0,0.2),0_2px_8px_rgba(99,102,241,0.2)]"
+                                    className="mb-6 sm:mb-8 p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-indigo-50/50 via-white to-blue-50/50 dark:from-gray-700/80 dark:via-gray-800/80 dark:to-gray-700/80 shadow-sm dark:shadow-none"
                                 >
                                     <div className="flex items-center gap-3 mb-4">
-                                        <div className="p-2 rounded-xl bg-gradient-to-br from-indigo-100 to-indigo-200 dark:from-indigo-900/50 dark:to-indigo-800/50 shadow-[inset_0_1px_2px_rgba(255,255,255,0.5)] dark:shadow-[inset_0_1px_2px_rgba(0,0,0,0.3)]">
+                                        <div className="p-2 rounded-xl bg-indigo-100/70 dark:bg-indigo-900/30">
                                             <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600 dark:text-indigo-400" />
                                         </div>
-                                        <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100">About</h3>
+                                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">About</h3>
                                     </div>
                                     <div className="relative">
                                         <div
                                             ref={bioContentRef}
-                                            className={`text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed prose prose-sm dark:prose-invert max-w-none prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-a:text-indigo-600 dark:prose-a:text-indigo-400 prose-a:font-medium transition-all duration-300 overflow-hidden ${
+                                            className={`text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed prose prose-sm dark:prose-invert max-w-none prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-a:text-indigo-600 dark:prose-a:text-indigo-400 prose-a:font-medium transition-all duration-500 ease-in-out overflow-hidden ${
                                                 !bioExpanded && showBioToggle ? 'max-h-[120px]' : ''
                                             }`}
                                             dangerouslySetInnerHTML={{ __html: cardData.bio }}
                                         />
                                         {!bioExpanded && showBioToggle && (
-                                            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-indigo-50 via-indigo-50/80 to-transparent dark:from-gray-700 dark:via-gray-700/80 dark:to-transparent pointer-events-none" />
+                                            <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white via-white/60 to-transparent dark:from-gray-800/80 dark:via-gray-800/40 dark:to-transparent pointer-events-none" />
                                         )}
                                     </div>
                                     {showBioToggle && (
                                         <button
                                             onClick={() => setBioExpanded(!bioExpanded)}
-                                            className="mt-3 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors duration-200 inline-flex items-center gap-1"
+                                            className="mt-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-all duration-200 inline-flex items-center gap-1.5 hover:gap-2"
                                         >
                                             {bioExpanded ? (
                                                 <>
                                                     See Less
-                                                    <span className="transform transition-transform duration-200">↑</span>
+                                                    <span className="transform transition-transform duration-200 inline-block">↑</span>
                                                 </>
                                             ) : (
                                                 <>
                                                     See More
-                                                    <span className="transform transition-transform duration-200">↓</span>
+                                                    <span className="transform transition-transform duration-200 inline-block">↓</span>
                                                 </>
                                             )}
                                         </button>
