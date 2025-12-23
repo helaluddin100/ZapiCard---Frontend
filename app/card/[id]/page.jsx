@@ -135,6 +135,9 @@ export default function PublicCardPage() {
     const [mounted, setMounted] = useState(false)
     const [tilt, setTilt] = useState({ x: 0, y: 0 })
     const isLoadCardDataInProgress = useRef(false)
+    const [bioExpanded, setBioExpanded] = useState(false)
+    const bioContentRef = useRef(null)
+    const [showBioToggle, setShowBioToggle] = useState(false)
 
     // Check for dark mode preference on mount
     useEffect(() => {
@@ -325,6 +328,29 @@ export default function PublicCardPage() {
             document.title = `${cardData.name} - zapycard.com`
         }
     }, [cardData])
+
+    // Check if bio content exceeds max height and show toggle button
+    useEffect(() => {
+        // Reset expanded state when bio changes
+        setBioExpanded(false)
+        
+        if (cardData?.bio && bioContentRef.current) {
+            // Use setTimeout to ensure DOM is fully rendered
+            const timer = setTimeout(() => {
+                if (bioContentRef.current) {
+                    const contentHeight = bioContentRef.current.scrollHeight
+                    const maxHeight = 120 // Maximum height in pixels (roughly 5-6 lines)
+                    if (contentHeight > maxHeight) {
+                        setShowBioToggle(true)
+                    } else {
+                        setShowBioToggle(false)
+                    }
+                }
+            }, 100)
+            
+            return () => clearTimeout(timer)
+        }
+    }, [cardData?.bio])
 
     // Track visit duration when component unmounts or page is closed
     useEffect(() => {
@@ -694,10 +720,36 @@ N:${(cardData.name || '').replace(/[,;\\]/g, '')};;;;`
                                         </div>
                                         <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100">About</h3>
                                     </div>
-                                    <div
-                                        className="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed prose prose-sm dark:prose-invert max-w-none prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-a:text-indigo-600 dark:prose-a:text-indigo-400 prose-a:font-medium"
-                                        dangerouslySetInnerHTML={{ __html: cardData.bio }}
-                                    />
+                                    <div className="relative">
+                                        <div
+                                            ref={bioContentRef}
+                                            className={`text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed prose prose-sm dark:prose-invert max-w-none prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-a:text-indigo-600 dark:prose-a:text-indigo-400 prose-a:font-medium transition-all duration-300 overflow-hidden ${
+                                                !bioExpanded && showBioToggle ? 'max-h-[120px]' : ''
+                                            }`}
+                                            dangerouslySetInnerHTML={{ __html: cardData.bio }}
+                                        />
+                                        {!bioExpanded && showBioToggle && (
+                                            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-indigo-50 via-indigo-50/80 to-transparent dark:from-gray-700 dark:via-gray-700/80 dark:to-transparent pointer-events-none" />
+                                        )}
+                                    </div>
+                                    {showBioToggle && (
+                                        <button
+                                            onClick={() => setBioExpanded(!bioExpanded)}
+                                            className="mt-3 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors duration-200 inline-flex items-center gap-1"
+                                        >
+                                            {bioExpanded ? (
+                                                <>
+                                                    See Less
+                                                    <span className="transform transition-transform duration-200">↑</span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    See More
+                                                    <span className="transform transition-transform duration-200">↓</span>
+                                                </>
+                                            )}
+                                        </button>
+                                    )}
                                 </div>
                             )}
                             {/* Contact Information */}
