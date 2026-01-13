@@ -7,6 +7,7 @@ import DashboardLayout from '@/components/DashboardLayout'
 import { ArrowLeft, Upload, User, Calendar, Droplet, Users, Phone, AlertTriangle } from 'lucide-react'
 import { useToast } from '@/lib/toast'
 import { healthCardAPI } from '@/lib/api'
+import { trackHealthCardCreated } from '@/lib/facebook-pixel'
 
 export default function CreateHealthCardPage() {
   const router = useRouter()
@@ -87,6 +88,12 @@ export default function CreateHealthCardPage() {
       const response = await healthCardAPI.createHealthCard(cleanedData)
 
       if (response.status === 'success') {
+        // Track health card creation event (both client and server-side)
+        await trackHealthCardCreated(response.data, {
+          email: null, // Will be extracted from authenticated user on server-side
+          phone: null, // Will be extracted from authenticated user on server-side
+        })
+        
         success('Health card created successfully!')
         // Redirect after a short delay to show the success message
         setTimeout(() => {

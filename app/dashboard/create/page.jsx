@@ -125,9 +125,12 @@ END:VCARD`
 
       if (response.status === 'success') {
         // Track card creation event (both client and server-side)
+        // Note: Server-side tracking is already handled by backend automatically
+        // This ensures client-side pixel also gets the same data
         await trackCardCreated(response.data, {
           email: formData.email || null,
           phone: formData.phone || null,
+          // Facebook cookies will be automatically extracted
         })
 
         success('Card created successfully!')
