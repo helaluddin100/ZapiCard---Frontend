@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import Script from 'next/script'
 import { Download, Share2, ChevronDown, ChevronUp, Calendar, Stethoscope, TestTube, Pill, Utensils, Sun, Moon, Clock, Phone, Droplet, AlertTriangle, User, MapPin, Building2, Monitor } from 'lucide-react'
 import { useTheme } from '@/lib/theme'
+import { getApiBaseUrl } from '@/lib/api'
 
 export default function PublicHealthCardPage() {
   const params = useParams()
@@ -17,30 +18,8 @@ export default function PublicHealthCardPage() {
   const [mounted, setMounted] = useState(false)
   const [showThemeMenu, setShowThemeMenu] = useState(false)
 
-  // Get API URL from environment variable first (primary source of truth)
-  const getApiBase = () => {
-    let base = process.env.NEXT_PUBLIC_API_URL
-
-    // If env variable is not set, check if we're on production by hostname
-    if (!base && typeof window !== 'undefined') {
-      const isProduction = window.location.hostname === 'smart.buytiq.store' ||
-        window.location.hostname === 'www.smart.buytiq.store' ||
-        window.location.hostname.includes('buytiq.store')
-
-      if (isProduction) {
-        base = 'https://smart.buytiq.store/api'
-      }
-    }
-
-    // Fallback to localhost only if nothing else is available
-    if (!base) {
-      base = 'http://localhost:8000/api'
-    }
-
-    return base
-  }
-
-  const apiBase = getApiBase()
+  // Use shared API base (runtime-aware: production host → production API, fixes iOS "Load failed")
+  const apiBase = getApiBaseUrl()
 
   // Get base URL for images (remove /api if present, as images are served from public directory)
   const getImageBaseUrl = () => {
