@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import DashboardLayout from '@/components/DashboardLayout'
@@ -27,15 +27,7 @@ export default function ProductsPage() {
     const [currentPage, setCurrentPage] = useState(1)
     const [pagination, setPagination] = useState(null)
 
-    useEffect(() => {
-        loadCategories()
-    }, [])
-
-    useEffect(() => {
-        loadProducts()
-    }, [selectedCategory, searchTerm, currentPage])
-
-    const loadCategories = async () => {
+    const loadCategories = useCallback(async () => {
         try {
             const response = await categoryAPI.getCategories()
             if (response.status === 'success') {
@@ -44,9 +36,9 @@ export default function ProductsPage() {
         } catch (err) {
             console.error('Error loading categories:', err)
         }
-    }
+    }, [])
 
-    const loadProducts = async () => {
+    const loadProducts = useCallback(async () => {
         try {
             setLoading(true)
             const params = {
@@ -82,7 +74,17 @@ export default function ProductsPage() {
             setLoading(false)
             setInitialLoad(false)
         }
-    }
+    // initialLoad omitted to avoid re-fetch when it flips to false after first load
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedCategory, searchTerm, currentPage, showError])
+
+    useEffect(() => {
+        loadCategories()
+    }, [loadCategories])
+
+    useEffect(() => {
+        loadProducts()
+    }, [loadProducts])
 
     const handleCategoryFilter = (categoryId) => {
         setSelectedCategory(categoryId === selectedCategory ? null : categoryId)

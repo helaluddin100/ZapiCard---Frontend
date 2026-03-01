@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -56,18 +56,7 @@ export default function CheckoutPage() {
         quantity: 1,
     })
 
-    useEffect(() => {
-        if (params.slug) {
-            loadProduct()
-            loadCards()
-            const qty = searchParams.get('quantity')
-            if (qty) {
-                setFormData(prev => ({ ...prev, quantity: parseInt(qty) || 1 }))
-            }
-        }
-    }, [params.slug, searchParams])
-
-    const loadProduct = async () => {
+    const loadProduct = useCallback(async () => {
         try {
             setLoading(true)
             const response = await productAPI.getProductBySlug(params.slug)
@@ -84,9 +73,9 @@ export default function CheckoutPage() {
         } finally {
             setLoading(false)
         }
-    }
+    }, [params.slug, showError, router])
 
-    const loadCards = async () => {
+    const loadCards = useCallback(async () => {
         try {
             setLoadingCards(true)
             // Fetch both visiting cards and health cards
@@ -121,7 +110,18 @@ export default function CheckoutPage() {
         } finally {
             setLoadingCards(false)
         }
-    }
+    }, [])
+
+    useEffect(() => {
+        if (params.slug) {
+            loadProduct()
+            loadCards()
+            const qty = searchParams.get('quantity')
+            if (qty) {
+                setFormData(prev => ({ ...prev, quantity: parseInt(qty) || 1 }))
+            }
+        }
+    }, [params.slug, searchParams, loadProduct, loadCards])
 
     const handleInputChange = (e) => {
         const { name, value } = e.target

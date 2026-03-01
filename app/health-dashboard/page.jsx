@@ -29,6 +29,7 @@ export default function HealthDashboardPage() {
 
   useEffect(() => {
     loadHealthCards()
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on mount
   }, [])
 
   // Generate QR codes for all cards
@@ -36,6 +37,7 @@ export default function HealthDashboardPage() {
     if (healthCards.length > 0) {
       generateQRCodes()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- run when healthCards change
   }, [healthCards])
 
   const generateQRCodes = async () => {

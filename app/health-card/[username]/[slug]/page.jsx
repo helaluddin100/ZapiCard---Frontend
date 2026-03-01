@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import Script from 'next/script'
 import { Download, Share2, ChevronDown, ChevronUp, Calendar, Stethoscope, TestTube, Pill, Utensils, Sun, Moon, Clock, Phone, Droplet, AlertTriangle, User, MapPin, Building2, Monitor } from 'lucide-react'
@@ -76,12 +76,7 @@ export default function PublicHealthCardPage() {
     return `${imageBase}/${cleanPath}`
   }
 
-  useEffect(() => {
-    setMounted(true)
-    loadPublicCard()
-  }, [username, slug])
-
-  const loadPublicCard = async () => {
+  const loadPublicCard = useCallback(async () => {
     try {
       setLoading(true)
 
@@ -106,7 +101,12 @@ export default function PublicHealthCardPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [username, slug, apiBase])
+
+  useEffect(() => {
+    setMounted(true)
+    loadPublicCard()
+  }, [loadPublicCard])
 
   const toggleEntry = (entryId) => {
     setExpandedEntries(prev => ({

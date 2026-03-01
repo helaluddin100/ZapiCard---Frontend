@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import DashboardLayout from '@/components/DashboardLayout'
@@ -29,11 +29,7 @@ export default function EditHealthCardPage() {
   const [previewPhoto, setPreviewPhoto] = useState(null)
   const [pregnancyWeeks, setPregnancyWeeks] = useState(null)
 
-  useEffect(() => {
-    loadHealthCard()
-  }, [cardId])
-
-  const loadHealthCard = async () => {
+  const loadHealthCard = useCallback(async () => {
     try {
       setLoadingCard(true)
       const response = await healthCardAPI.getHealthCard(cardId)
@@ -84,7 +80,11 @@ export default function EditHealthCardPage() {
     } finally {
       setLoadingCard(false)
     }
-  }
+  }, [cardId, showError, router])
+
+  useEffect(() => {
+    loadHealthCard()
+  }, [loadHealthCard])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target

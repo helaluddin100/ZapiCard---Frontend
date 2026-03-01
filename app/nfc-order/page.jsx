@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import {
@@ -50,16 +50,7 @@ export default function NFCOrderPage() {
     ]
 
     // Load card data when selected
-    useEffect(() => {
-        if (selectedCardId) {
-            loadCardData(selectedCardId)
-        } else {
-            setSelectedCard(null)
-            setProfileImage(null)
-        }
-    }, [selectedCardId])
-
-    const loadCardData = async (cardId) => {
+    const loadCardData = useCallback(async (cardId) => {
         try {
             setLoadingCard(true)
             const response = await cardAPI.getCard(cardId)
@@ -100,7 +91,16 @@ export default function NFCOrderPage() {
         } finally {
             setLoadingCard(false)
         }
-    }
+    }, [showError])
+
+    useEffect(() => {
+        if (selectedCardId) {
+            loadCardData(selectedCardId)
+        } else {
+            setSelectedCard(null)
+            setProfileImage(null)
+        }
+    }, [selectedCardId, loadCardData])
 
     const handleCardSelect = (cardId) => {
         setSelectedCardId(cardId)

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import DashboardLayout from '@/components/DashboardLayout'
 import { motion } from 'framer-motion'
@@ -80,18 +80,23 @@ export default function MyCardsPage() {
         return fullUrl
     }
 
-    useEffect(() => {
-        fetchCards()
+    const fetchCards = useCallback(async () => {
+        try {
+            setLoading(true)
+            setError(null)
+            const response = await cardAPI.getCards()
+            if (response.status === 'success' && response.data) {
+                setCards(response.data)
+            }
+        } catch (err) {
+            setError(err.message || 'Failed to load cards')
+            console.error('Error fetching cards:', err)
+        } finally {
+            setLoading(false)
+        }
     }, [])
 
-    // Generate QR codes for all cards
-    useEffect(() => {
-        if (cards.length > 0) {
-            generateQRCodes()
-        }
-    }, [cards])
-
-    const generateQRCodes = async () => {
+    const generateQRCodes = useCallback(async () => {
         if (typeof window === 'undefined') return
 
         const newQrCodes = {}
@@ -114,7 +119,17 @@ export default function MyCardsPage() {
             }
         }
         setQrCodes(newQrCodes)
-    }
+    }, [cards])
+
+    useEffect(() => {
+        fetchCards()
+    }, [fetchCards])
+
+    useEffect(() => {
+        if (cards.length > 0) {
+            generateQRCodes()
+        }
+    }, [cards, generateQRCodes])
 
     const downloadQRCode = async (card) => {
         if (!card.slug || typeof window === 'undefined') return
@@ -142,34 +157,6 @@ export default function MyCardsPage() {
         } catch (error) {
             console.error('Error downloading QR code:', error)
             showError('Failed to download QR code')
-        }
-    }
-
-    const fetchCards = async () => {
-        try {
-            setLoading(true)
-            setError(null)
-            const response = await cardAPI.getCards()
-            if (response.status === 'success' && response.data) {
-                setCards(response.data)
-                // Debug: Check first card's image
-                if (response.data.length > 0 && response.data[0].profile_photo) {
-                    const firstCard = response.data[0]
-                    console.log('🔍 First card image debug:', {
-                        original: firstCard.profile_photo,
-                        converted: getImageUrl(firstCard.profile_photo),
-                        imageBase: getImageBaseUrl()
-                    })
-                }
-            } else {
-                setCards([])
-            }
-        } catch (err) {
-            console.error('Error fetching cards:', err)
-            setError(err.message || 'Failed to fetch cards')
-            setCards([])
-        } finally {
-            setLoading(false)
         }
     }
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import DashboardLayout from '@/components/DashboardLayout'
@@ -71,14 +71,7 @@ export default function EditCardPage() {
         { number: 4, title: 'Design', icon: Palette }
     ]
 
-    // Load card data on mount
-    useEffect(() => {
-        if (cardId) {
-            loadCardData()
-        }
-    }, [cardId])
-
-    const loadCardData = async () => {
+    const loadCardData = useCallback(async () => {
         try {
             setLoading(true)
             setError(null)
@@ -120,7 +113,13 @@ export default function EditCardPage() {
         } finally {
             setLoading(false)
         }
-    }
+    }, [cardId])
+
+    useEffect(() => {
+        if (cardId) {
+            loadCardData()
+        }
+    }, [cardId, loadCardData])
 
     const handleNext = () => {
         if (step < 4) setStep(step + 1)

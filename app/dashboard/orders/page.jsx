@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
@@ -27,11 +27,7 @@ export default function OrdersPage() {
     const [filterStatus, setFilterStatus] = useState('all')
     const [filterPaymentStatus, setFilterPaymentStatus] = useState('all')
 
-    useEffect(() => {
-        loadOrders()
-    }, [filterStatus, filterPaymentStatus])
-
-    const loadOrders = async () => {
+    const loadOrders = useCallback(async () => {
         try {
             setLoading(true)
             const params = {}
@@ -49,7 +45,11 @@ export default function OrdersPage() {
         } finally {
             setLoading(false)
         }
-    }
+    }, [filterStatus, filterPaymentStatus, searchTerm, showError])
+
+    useEffect(() => {
+        loadOrders()
+    }, [loadOrders])
 
     const handleSearch = () => {
         loadOrders()

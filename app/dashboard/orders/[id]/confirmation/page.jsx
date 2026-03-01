@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
@@ -31,13 +31,7 @@ export default function OrderConfirmationPage() {
     const [loading, setLoading] = useState(true)
     const [copied, setCopied] = useState(false)
 
-    useEffect(() => {
-        if (params.id) {
-            loadOrder()
-        }
-    }, [params.id])
-
-    const loadOrder = async () => {
+    const loadOrder = useCallback(async () => {
         try {
             setLoading(true)
             const response = await orderAPI.getOrder(params.id)
@@ -54,7 +48,13 @@ export default function OrderConfirmationPage() {
         } finally {
             setLoading(false)
         }
-    }
+    }, [params.id, showError, router])
+
+    useEffect(() => {
+        if (params.id) {
+            loadOrder()
+        }
+    }, [params.id, loadOrder])
 
     const copyOrderNumber = () => {
         if (order?.order_number) {

@@ -58,6 +58,7 @@ export default function ImageCropper({
                 }, 100)
             })
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- calculateImageDisplaySize uses refs, run when imageLoaded
     }, [imageLoaded])
 
     const calculateImageDisplaySize = () => {
@@ -121,6 +122,7 @@ export default function ImageCropper({
             // Recalculate when rotation changes
             calculateImageDisplaySize()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- calculateImageDisplaySize uses refs
     }, [imageRotation, imageLoaded])
 
     useEffect(() => {
@@ -140,6 +142,7 @@ export default function ImageCropper({
                 clearTimeout(timer)
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- calculateImageDisplaySize uses refs
     }, [imageLoaded])
 
     const getTouchPoint = (e) => {

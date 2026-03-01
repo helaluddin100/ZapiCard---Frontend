@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
     Calendar,
@@ -50,9 +50,17 @@ export default function AppointmentsListPage() {
         fetchAppointments()
     }, [])
 
+    const filterAppointments = useCallback(() => {
+        if (activeTab === 'all') {
+            setFilteredAppointments(appointments)
+        } else {
+            setFilteredAppointments(appointments.filter(apt => apt.status === activeTab))
+        }
+    }, [appointments, activeTab])
+
     useEffect(() => {
         filterAppointments()
-    }, [appointments, activeTab])
+    }, [filterAppointments])
 
     const fetchAppointments = async () => {
         try {
@@ -67,14 +75,6 @@ export default function AppointmentsListPage() {
             console.error('Error fetching appointments:', err)
         } finally {
             setLoading(false)
-        }
-    }
-
-    const filterAppointments = () => {
-        if (activeTab === 'all') {
-            setFilteredAppointments(appointments)
-        } else {
-            setFilteredAppointments(appointments.filter(apt => apt.status === activeTab))
         }
     }
 

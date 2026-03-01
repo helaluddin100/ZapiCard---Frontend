@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { CreditCard, CheckCircle2, Loader2 } from 'lucide-react'
 import { cardAPI } from '@/lib/api'
 import { useToast } from '@/lib/toast'
@@ -10,11 +10,7 @@ export default function CardSelector({ selectedCardId, onCardSelect }) {
     const [cards, setCards] = useState([])
     const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        loadCards()
-    }, [])
-
-    const loadCards = async () => {
+    const loadCards = useCallback(async () => {
         try {
             setLoading(true)
             const response = await cardAPI.getCards()
@@ -27,7 +23,11 @@ export default function CardSelector({ selectedCardId, onCardSelect }) {
         } finally {
             setLoading(false)
         }
-    }
+    }, [showError])
+
+    useEffect(() => {
+        loadCards()
+    }, [loadCards])
 
     const selectedCard = cards.find(card => card.id === selectedCardId)
 
