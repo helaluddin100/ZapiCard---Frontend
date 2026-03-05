@@ -219,12 +219,12 @@ export default function SignupPage() {
         const isProduction = typeof window !== 'undefined' &&
           (window.location.hostname === 'zapycard.com' ||
             window.location.hostname === 'www.zapycard.com' ||
-            window.location.hostname === 'smart.buytiq.store' ||
-            window.location.hostname === 'www.smart.buytiq.store')
+            window.location.hostname === 'admin.zapycard.com' ||
+            window.location.hostname === 'www.admin.zapycard.com')
 
         // Use appropriate backend URL
         const backendUrl = isProduction
-          ? 'https://smart.buytiq.store'
+          ? 'https://admin.zapycard.com'
           : 'http://localhost:8000'
 
         // Redirect to backend Google OAuth endpoint

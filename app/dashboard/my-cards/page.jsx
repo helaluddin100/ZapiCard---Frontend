@@ -37,13 +37,15 @@ export default function MyCardsPage() {
     const getImageBaseUrl = () => {
         // Check if we're on production
         const isProduction = typeof window !== 'undefined' &&
-            (window.location.hostname === 'smart.buytiq.store' ||
-                window.location.hostname === 'www.smart.buytiq.store')
+            (window.location.hostname === 'admin.zapycard.com' ||
+                window.location.hostname === 'www.admin.zapycard.com' ||
+                window.location.hostname === 'admin.zapycard.com' ||
+                window.location.hostname === 'www.admin.zapycard.com')
 
         // Use appropriate base URL
         let apiBase = isProduction
-            ? 'https://smart.buytiq.store/api'
-            : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api')
+            ? 'https://admin.zapycard.com/api'
+            : (process.env.NEXT_PUBLIC_API_URL || 'https://admin.zapycard.com/api')
 
         // Remove /api from the end if present
         if (apiBase.endsWith('/api')) {

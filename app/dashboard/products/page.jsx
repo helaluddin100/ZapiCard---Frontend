@@ -74,8 +74,8 @@ export default function ProductsPage() {
             setLoading(false)
             setInitialLoad(false)
         }
-    // initialLoad omitted to avoid re-fetch when it flips to false after first load
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // initialLoad omitted to avoid re-fetch when it flips to false after first load
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedCategory, searchTerm, currentPage, showError])
 
     useEffect(() => {
@@ -112,12 +112,12 @@ export default function ProductsPage() {
 
             // If env variable is not set, check if we're on production by hostname
             if (!apiBase && typeof window !== 'undefined') {
-                const isProduction = window.location.hostname === 'smart.buytiq.store' ||
-                    window.location.hostname === 'www.smart.buytiq.store' ||
+                const isProduction = window.location.hostname === 'admin.zapycard.com' ||
+                    window.location.hostname === 'www.admin.zapycard.com' ||
                     window.location.hostname.includes('buytiq.store')
 
                 if (isProduction) {
-                    apiBase = 'https://smart.buytiq.store/api'
+                    apiBase = 'https://admin.zapycard.com/api'
                 }
             }
 

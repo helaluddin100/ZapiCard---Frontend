@@ -15,12 +15,12 @@ export const getProductImages = (product) => {
 
     // If env variable is not set, check if we're on production by hostname
     if (!apiBase && typeof window !== 'undefined') {
-        const isProduction = window.location.hostname === 'smart.buytiq.store' ||
-            window.location.hostname === 'www.smart.buytiq.store' ||
+        const isProduction = window.location.hostname === 'admin.zapycard.com' ||
+            window.location.hostname === 'www.admin.zapycard.com' ||
             window.location.hostname.includes('buytiq.store')
 
         if (isProduction) {
-            apiBase = 'https://smart.buytiq.store/api'
+            apiBase = 'https://admin.zapycard.com/api'
         }
     }
 

@@ -1,7 +1,7 @@
 // Dynamic Sitemap for SEO
 export default async function sitemap() {
     // Use the actual production URL - change this to your domain
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://zapycard.com' // or 'https://smart.buytiq.store'
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://zapycard.com' // or 'https://admin.zapycard.com'
 
     // Static routes
     const routes = [
