@@ -86,15 +86,25 @@ export default function ProfilePage() {
 
     try {
       const response = await authAPI.updateUser(formData)
-      
+
       if (response.status === 'success' && response.data) {
         success('Profile updated successfully!')
-        // Refresh user data from server to get latest image URL
+        // Update auth context immediately, then refresh from server
+        updateAuthUser(response.data)
+        setFormData(prev => ({
+          ...prev,
+          name: response.data.name || '',
+          email: response.data.email || '',
+          phone: response.data.phone || '',
+          address: response.data.address || '',
+          city: response.data.city || '',
+          Region: response.data.Region || '',
+          country: response.data.country || '',
+          about: response.data.about || '',
+          image: null,
+        }))
+        setPreviewImage(response.data.image || null)
         await checkAuth()
-        // Update preview image if it was changed
-        if (response.data.image) {
-          setPreviewImage(response.data.image)
-        }
       } else {
         showError(response.message || 'Failed to update profile')
       }
@@ -105,7 +115,7 @@ export default function ProfilePage() {
         const firstError = Object.values(errors)[0]
         showError(Array.isArray(firstError) ? firstError[0] : firstError)
       } else {
-        showError(error.response?.data?.message || 'Failed to update profile. Please try again.')
+        showError(error.response?.data?.message || error.message || 'Failed to update profile. Please try again.')
       }
     } finally {
       setSaving(false)
@@ -233,7 +243,6 @@ export default function ProfilePage() {
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
-                required
                 className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                 placeholder="Enter your phone number"
               />
@@ -250,7 +259,6 @@ export default function ProfilePage() {
                 name="address"
                 value={formData.address}
                 onChange={handleInputChange}
-                required
                 rows={3}
                 className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
                 placeholder="Enter your address"
