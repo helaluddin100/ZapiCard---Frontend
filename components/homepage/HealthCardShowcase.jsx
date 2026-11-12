@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowRight, Brain, PenTool, AlertCircle, Heart, FileText, Shield } from 'lucide-react'
+import { ArrowRight, Camera, BellRing, CheckCircle2, Activity, History, Shield } from 'lucide-react'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 export default function HealthCardShowcase() {
@@ -10,11 +10,11 @@ export default function HealthCardShowcase() {
   const f = t.showcase.features
 
   const healthCardFeatures = [
-    { title: f.ai.title, description: f.ai.desc, icon: Brain },
-    { title: f.manual.title, description: f.manual.desc, icon: PenTool },
-    { title: f.emergency.title, description: f.emergency.desc, icon: AlertCircle },
-    { title: f.pregnancy.title, description: f.pregnancy.desc, icon: Heart },
-    { title: f.history.title, description: f.history.desc, icon: FileText },
+    { title: f.ai.title, description: f.ai.desc, icon: Camera },
+    { title: f.manual.title, description: f.manual.desc, icon: BellRing },
+    { title: f.emergency.title, description: f.emergency.desc, icon: CheckCircle2 },
+    { title: f.pregnancy.title, description: f.pregnancy.desc, icon: Activity },
+    { title: f.history.title, description: f.history.desc, icon: History },
     { title: f.secure.title, description: f.secure.desc, icon: Shield },
   ]
 

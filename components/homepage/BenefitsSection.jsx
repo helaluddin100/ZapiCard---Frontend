@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Zap, Shield, Clock, Users, Brain, Heart } from 'lucide-react'
+import { Bell, CheckCircle2, Smartphone, Users, Camera, History } from 'lucide-react'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 export default function BenefitsSection() {
@@ -9,12 +9,12 @@ export default function BenefitsSection() {
   const items = t.benefits.items
 
   const benefits = [
-    { icon: Zap, title: items.instant.title, description: items.instant.desc },
-    { icon: Shield, title: items.secure.title, description: items.secure.desc },
-    { icon: Clock, title: items.always.title, description: items.always.desc },
+    { icon: Bell, title: items.instant.title, description: items.instant.desc },
+    { icon: CheckCircle2, title: items.secure.title, description: items.secure.desc },
+    { icon: Smartphone, title: items.always.title, description: items.always.desc },
     { icon: Users, title: items.share.title, description: items.share.desc },
-    { icon: Brain, title: items.ai.title, description: items.ai.desc },
-    { icon: Heart, title: items.family.title, description: items.family.desc },
+    { icon: Camera, title: items.ai.title, description: items.ai.desc },
+    { icon: History, title: items.family.title, description: items.family.desc },
   ]
 
   return (

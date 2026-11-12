@@ -7,13 +7,14 @@ import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 import {
   HeroSection,
-  StatsSection,
-  HealthCardShowcase,
+  ProblemSection,
   HowItWorksSection,
   FeaturesSection,
+  HealthCardShowcase,
   BenefitsSection,
-  TestimonialsSection,
   ComparisonSection,
+  StatsSection,
+  TestimonialsSection,
   FinalCTASection,
   FAQSection
 } from '@/components/homepage'
@@ -43,14 +44,32 @@ export default function HomePageContent() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
+      {/* 1. Hook: problem + solution */}
       <HeroSection mounted={mounted} />
-      <StatsSection />
-      <HealthCardShowcase />
+
+      {/* 2. Real-life problem people know */}
+      <ProblemSection />
+
+      {/* 3. Step-by-step journey */}
       <HowItWorksSection />
+
+      {/* 4. Clear benefits from using the system */}
       <FeaturesSection />
+
+      {/* 5. Detailed capabilities */}
+      <HealthCardShowcase />
+
+      {/* 6. Ways users benefit */}
       <BenefitsSection />
-      <TestimonialsSection mounted={mounted} />
+
+      {/* 7. Before vs after */}
       <ComparisonSection />
+
+      {/* 8. Social proof */}
+      <StatsSection />
+      <TestimonialsSection mounted={mounted} />
+
+      {/* 9. Convert */}
       <FinalCTASection />
       <FAQSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
     </>
