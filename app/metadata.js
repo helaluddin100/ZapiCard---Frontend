@@ -1,12 +1,11 @@
 // SEO Metadata Configuration
 export const siteConfig = {
     name: 'Zapy Card',
-    title: 'Zapy Card - Smart Health Card & Digital Visiting Cards | NFC & QR Technology',
-    description: 'Revolutionary smart cards for business and healthcare. Create digital visiting cards with appointment booking, and smart health cards with AI prescription reading for patients and pregnant women. NFC & QR instant access.',
+    title: 'Zapy Card - Smart Health Card | NFC & QR Digital Medical Records',
+    description: 'Create a smart health card with AI prescription reading, emergency medical access, pregnancy tracking, and family health records. Instant NFC & QR access for patients and doctors.',
     url: process.env.NEXT_PUBLIC_SITE_URL || 'https://zapycard.com',
     ogImage: '/og-image.jpg',
     keywords: [
-        // Health Card Keywords (Primary Focus)
         'smart health card',
         'digital health card',
         'medical card app',
@@ -19,22 +18,14 @@ export const siteConfig = {
         'health information card',
         'medical history card',
         'prescription scanner app',
-        // Visiting Card Keywords
-        'digital business card',
-        'NFC visiting card',
-        'QR code business card',
-        'smart visiting card',
-        'virtual business card',
-        'contactless business card',
-        'digital networking',
-        'electronic business card',
-        'appointment booking card',
-        'professional digital card'
+        'family health card',
+        'QR medical card Bangladesh',
+        'স্মার্ট হেলথ কার্ড',
     ],
     author: 'Zapy Card',
     creator: '@zapycard',
     publisher: 'Zapy Card',
-    category: 'Healthcare & Business Technology',
+    category: 'Healthcare Technology',
 }
 
 // Generate metadata for pages

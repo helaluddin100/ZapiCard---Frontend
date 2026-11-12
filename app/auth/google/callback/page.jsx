@@ -7,154 +7,103 @@ import { CheckCircle2, XCircle, RefreshCw } from 'lucide-react'
 import { setAuthToken } from '@/lib/api'
 import { useAuth } from '@/lib/auth'
 import authAPI from '@/lib/api'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 function GoogleCallbackHandler() {
-    const router = useRouter()
-    const searchParams = useSearchParams()
-    const { updateUser } = useAuth()
-    const token = searchParams.get('token')
-    const status = searchParams.get('status')
-    const message = searchParams.get('message')
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const { updateUser } = useAuth()
+  const { t, lang } = useLanguage()
+  const a = t.auth
 
-    useEffect(() => {
-        if (status === 'success' && token) {
-            // Store token
-            setAuthToken(token)
-            console.log('Token stored:', token.substring(0, 20) + '...')
+  const token = searchParams.get('token')
+  const status = searchParams.get('status')
+  const message = searchParams.get('message')
 
-            // Fetch user data and update context
-            const fetchUser = async () => {
-                try {
-                    console.log('Fetching user data...')
-                    const response = await authAPI.getCurrentUser()
-                    console.log('User response:', response)
-                    
-                    let userData = null
-                    
-                    if (response && response.data) {
-                        userData = response.data
-                    } else if (response && response.id) {
-                        userData = response
-                    } else if (response) {
-                        userData = response
-                    }
-                    
-                    if (userData) {
-                        // Log image URL for debugging
-                        console.log('User image URL:', userData.image)
-                        updateUser(userData)
-                        console.log('User updated successfully', {
-                            name: userData.name,
-                            email: userData.email,
-                            hasImage: !!userData.image,
-                            imageUrl: userData.image ? userData.image.substring(0, 50) + '...' : 'N/A'
-                        })
-                    } else {
-                        console.warn('No user data in response')
-                    }
-                } catch (error) {
-                    console.error('Failed to fetch user:', error)
-                    // Even if user fetch fails, redirect to dashboard
-                    // The token is already stored, so user can access protected routes
-                }
-            }
-            fetchUser()
+  useEffect(() => {
+    if (status === 'success' && token) {
+      setAuthToken(token)
 
-            // Redirect to dashboard after a short delay
-            setTimeout(() => {
-                console.log('Redirecting to dashboard...')
-                router.push('/dashboard')
-            }, 1500)
-        } else if (status === 'error') {
-            // Redirect to login with error after a delay
-            setTimeout(() => {
-                router.push(`/login?error=${encodeURIComponent(message || 'Google login failed')}`)
-            }, 3000)
-        } else {
-            console.log('Waiting for status...', { status, token: token ? 'present' : 'missing' })
+      const fetchUser = async () => {
+        try {
+          const response = await authAPI.getCurrentUser()
+          let userData = null
+          if (response?.data) userData = response.data
+          else if (response?.id) userData = response
+          else if (response) userData = response
+          if (userData) updateUser(userData)
+        } catch (error) {
+          console.error('Failed to fetch user:', error)
         }
-    }, [token, status, message, router, updateUser])
+      }
+      fetchUser()
 
-    if (status === 'success') {
-        return (
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center px-4">
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="text-center"
-                >
-                    <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ type: 'spring', duration: 0.5 }}
-                        className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center"
-                    >
-                        <CheckCircle2 className="w-8 h-8 text-green-600" />
-                    </motion.div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Login Successful!</h2>
-                    <p className="text-gray-600">Redirecting to dashboard...</p>
-                </motion.div>
-            </div>
-        )
+      setTimeout(() => router.push('/dashboard'), 1500)
+    } else if (status === 'error') {
+      setTimeout(() => {
+        router.push(`/login?error=${encodeURIComponent(message || a.errors.googleFailed)}`)
+      }, 3000)
     }
+  }, [token, status, message, router, updateUser, a.errors.googleFailed])
 
-    if (status === 'error') {
-        return (
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center px-4">
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="text-center"
-                >
-                    <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ type: 'spring', duration: 0.5 }}
-                        className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 flex items-center justify-center"
-                    >
-                        <XCircle className="w-8 h-8 text-red-600" />
-                    </motion.div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Login Failed</h2>
-                    <p className="text-gray-600 mb-4">{message || 'An error occurred during Google login'}</p>
-                    <p className="text-sm text-gray-500">Redirecting to login page...</p>
-                </motion.div>
-            </div>
-        )
-    }
+  const shell = `min-h-screen bg-teal-50 dark:bg-gray-900 flex items-center justify-center px-4 ${lang === 'bn' ? 'font-bengali' : ''}`
 
+  if (status === 'success') {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center px-4">
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-center"
-            >
-                <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-                    className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-100 flex items-center justify-center"
-                >
-                    <RefreshCw className="w-8 h-8 text-blue-600" />
-                </motion.div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Processing...</h2>
-                <p className="text-gray-600">Please wait while we complete your login</p>
-            </motion.div>
-        </div>
+      <div className={shell}>
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
+            <CheckCircle2 className="w-8 h-8 text-teal-700 dark:text-teal-300" />
+          </div>
+          <h2 className="text-2xl font-bold text-teal-900 dark:text-teal-200 mb-2">{a.googleSuccess}</h2>
+          <p className="text-gray-600 dark:text-gray-400">{a.googleRedirect}</p>
+        </motion.div>
+      </div>
     )
+  }
+
+  if (status === 'error') {
+    return (
+      <div className={shell}>
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 dark:bg-red-900/20 flex items-center justify-center">
+            <XCircle className="w-8 h-8 text-red-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">{a.googleError}</h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-4">{message || a.errors.googleFailed}</p>
+          <p className="text-sm text-gray-500">{a.googleErrorDesc}</p>
+        </motion.div>
+      </div>
+    )
+  }
+
+  return (
+    <div className={shell}>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+          className="w-16 h-16 mx-auto mb-4 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center"
+        >
+          <RefreshCw className="w-8 h-8 text-teal-700 dark:text-teal-300" />
+        </motion.div>
+        <h2 className="text-2xl font-bold text-teal-900 dark:text-teal-200 mb-2">{a.googleProcessing}</h2>
+        <p className="text-gray-600 dark:text-gray-400">{a.loading}</p>
+      </motion.div>
+    </div>
+  )
 }
 
 export default function GoogleCallbackPage() {
-    return (
-        <Suspense fallback={
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center">
-                <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-                    <p className="mt-4 text-gray-600">Loading...</p>
-                </div>
-            </div>
-        }>
-            <GoogleCallbackHandler />
-        </Suspense>
-    )
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-teal-50 dark:bg-gray-900 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-700 mx-auto" />
+        </div>
+      }
+    >
+      <GoogleCallbackHandler />
+    </Suspense>
+  )
 }
-

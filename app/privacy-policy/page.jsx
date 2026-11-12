@@ -3,8 +3,12 @@
 import { motion } from 'framer-motion'
 import { Shield, Lock, Eye, FileText, Users, Database, Globe, CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 export default function PrivacyPolicyPage() {
+    const { t, lang } = useLanguage()
+    const legal = t.legal
+
     const sections = [
         {
             icon: <Shield className="w-6 h-6" />,
@@ -95,29 +99,24 @@ export default function PrivacyPolicyPage() {
     ]
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pt-16 md:pt-20">
-            {/* Header */}
-            <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white py-16">
+        <div className={`min-h-screen bg-white dark:bg-gray-900 pt-16 md:pt-20 ${lang === 'bn' ? 'font-bengali' : ''}`}>
+            <div className="bg-teal-700 text-white py-14 md:py-16">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <h1 className="text-4xl md:text-5xl font-bold mb-4">Privacy Policy</h1>
-                        <p className="text-xl text-blue-100">Last Updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+                        <h1 className="text-3xl md:text-5xl font-bold mb-3">{legal.privacyTitle}</h1>
+                        <p className="text-lg text-teal-50 mb-2">{legal.privacySubtitle}</p>
+                        <p className="text-teal-100/80">
+                            {legal.lastUpdated}: {new Date().toLocaleDateString(lang === 'bn' ? 'bn-BD' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                        </p>
                     </motion.div>
                 </div>
             </div>
 
-            {/* Content */}
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                {/* Introduction */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.1 }}
-                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8"
+                    className="bg-teal-50 dark:bg-gray-800 rounded-2xl border border-teal-100 dark:border-gray-700 p-6 md:p-8 mb-8"
                 >
                     <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
                         At <strong>Zapy Card</strong>, we are committed to protecting your privacy and personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our services, including our website, mobile applications, and physical NFC/QR cards.
@@ -134,20 +133,20 @@ export default function PrivacyPolicyPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.1 + index * 0.1 }}
-                        className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-6"
+                        className="bg-white dark:bg-gray-800 rounded-2xl border border-teal-100 dark:border-gray-700 p-6 md:p-8 mb-6"
                     >
                         <div className="flex items-start gap-4 mb-4">
-                            <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 text-white">
+                            <div className="p-3 rounded-xl bg-teal-700 text-white">
                                 {section.icon}
                             </div>
-                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex-1">
+                            <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white flex-1">
                                 {section.title}
                             </h2>
                         </div>
-                        <ul className="space-y-3 ml-16">
+                        <ul className="space-y-3 ml-0 md:ml-16">
                             {section.content.map((item, idx) => (
                                 <li key={idx} className="flex items-start gap-3">
-                                    <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
+                                    <span className="text-teal-700 dark:text-teal-300 mt-1">•</span>
                                     <span className="text-gray-700 dark:text-gray-300 leading-relaxed">{item}</span>
                                 </li>
                             ))}
@@ -155,15 +154,13 @@ export default function PrivacyPolicyPage() {
                     </motion.div>
                 ))}
 
-                {/* Contact Information */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.9 }}
-                    className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl shadow-lg p-8 text-white"
+                    className="bg-teal-700 rounded-2xl p-6 md:p-8 text-white"
                 >
-                    <h2 className="text-2xl font-bold mb-4">Contact Us</h2>
-                    <p className="mb-4">If you have questions about this Privacy Policy or wish to exercise your rights, please contact us:</p>
+                    <h2 className="text-2xl font-bold mb-4">{t.nav.contact}</h2>
+                    <p className="mb-4">{legal.contactCta}</p>
                     <ul className="space-y-2">
                         <li><strong>Email:</strong> privacy@zapycard.com</li>
                         <li><strong>Phone:</strong> +880 1744220807</li>
@@ -171,12 +168,10 @@ export default function PrivacyPolicyPage() {
                     </ul>
                 </motion.div>
 
-                {/* Changes to Policy */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 1.0 }}
-                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mt-6"
+                    className="bg-white dark:bg-gray-800 rounded-2xl border border-teal-100 dark:border-gray-700 p-6 md:p-8 mt-6"
                 >
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Changes to This Privacy Policy</h2>
                     <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
@@ -184,13 +179,12 @@ export default function PrivacyPolicyPage() {
                     </p>
                 </motion.div>
 
-                {/* Back to Home */}
                 <div className="mt-8 text-center">
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:shadow-lg transition-all"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-teal-700 hover:bg-teal-800 text-white rounded-lg transition"
                     >
-                        ← Back to Home
+                        ← {legal.backHome}
                     </Link>
                 </div>
             </div>

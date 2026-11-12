@@ -3,8 +3,12 @@
 import { motion } from 'framer-motion'
 import { FileText, Scale, AlertCircle, CreditCard, Shield, Users, Ban, CheckCircle2, XCircle } from 'lucide-react'
 import Link from 'next/link'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 export default function TermsOfServicePage() {
+    const { t, lang } = useLanguage()
+    const legal = t.legal
+
     const sections = [
         {
             icon: <FileText className="w-6 h-6" />,
@@ -20,9 +24,9 @@ export default function TermsOfServicePage() {
             icon: <Users className="w-6 h-6" />,
             title: "2. Service Description",
             content: [
-                "Zapy Card provides digital business cards and health cards accessible via NFC technology and QR codes.",
-                "We offer physical NFC cards, digital card management, appointment booking, and health record management services.",
-                "Services include AI-powered prescription reading, health card creation, and business card creation.",
+                "Zapy Card provides smart health cards accessible via NFC technology and QR codes.",
+                "We offer physical NFC cards, digital health card management, appointment booking, and health record management services.",
+                "Services include AI-powered prescription reading and health card creation.",
                 "We reserve the right to modify, suspend, or discontinue any part of our services at any time."
             ]
         },
@@ -118,32 +122,27 @@ export default function TermsOfServicePage() {
     ]
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pt-16 md:pt-20">
-            {/* Header */}
-            <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white py-16">
+        <div className={`min-h-screen bg-white dark:bg-gray-900 pt-16 md:pt-20 ${lang === 'bn' ? 'font-bengali' : ''}`}>
+            <div className="bg-teal-700 text-white py-14 md:py-16">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <h1 className="text-4xl md:text-5xl font-bold mb-4">Terms and Conditions</h1>
-                        <p className="text-xl text-blue-100">Last Updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+                        <h1 className="text-3xl md:text-5xl font-bold mb-3">{legal.termsTitle}</h1>
+                        <p className="text-lg text-teal-50 mb-2">{legal.termsSubtitle}</p>
+                        <p className="text-teal-100/80">
+                            {legal.lastUpdated}: {new Date().toLocaleDateString(lang === 'bn' ? 'bn-BD' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                        </p>
                     </motion.div>
                 </div>
             </div>
 
-            {/* Content */}
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                {/* Introduction */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.1 }}
-                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8"
+                    className="bg-teal-50 dark:bg-gray-800 rounded-2xl border border-teal-100 dark:border-gray-700 p-6 md:p-8 mb-8"
                 >
                     <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                        Welcome to <strong>Zapy Card</strong>. These Terms and Conditions (&quot;Terms&quot;) govern your use of our website, mobile applications, and services, including but not limited to digital business cards, health cards, NFC cards, and related services.
+                        Welcome to <strong>Zapy Card</strong>. These Terms and Conditions (&quot;Terms&quot;) govern your use of our website, mobile applications, and services, including smart health cards, NFC cards, and related services.
                     </p>
                     <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                         These Terms are governed by the laws of the <strong>People&apos;s Republic of Bangladesh</strong>, including the Contract Act, 1872, the Sale of Goods Act, 1930, the Consumer Rights Protection Act, 2009, and other applicable laws. By using our services, you agree to comply with these Terms and all applicable Bangladeshi laws.
@@ -157,20 +156,20 @@ export default function TermsOfServicePage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.1 + index * 0.1 }}
-                        className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-6"
+                        className="bg-white dark:bg-gray-800 rounded-2xl border border-teal-100 dark:border-gray-700 p-6 md:p-8 mb-6"
                     >
                         <div className="flex items-start gap-4 mb-4">
-                            <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 text-white">
+                            <div className="p-3 rounded-xl bg-teal-700 text-white">
                                 {section.icon}
                             </div>
-                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex-1">
+                            <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white flex-1">
                                 {section.title}
                             </h2>
                         </div>
-                        <ul className="space-y-3 ml-16">
+                        <ul className="space-y-3 ml-0 md:ml-16">
                             {section.content.map((item, idx) => (
                                 <li key={idx} className="flex items-start gap-3">
-                                    <span className="text-blue-600 dark:text-blue-400 mt-1">•</span>
+                                    <span className="text-teal-700 dark:text-teal-300 mt-1">•</span>
                                     <span className="text-gray-700 dark:text-gray-300 leading-relaxed">{item}</span>
                                 </li>
                             ))}
@@ -178,15 +177,13 @@ export default function TermsOfServicePage() {
                     </motion.div>
                 ))}
 
-                {/* Contact Information */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 1.1 }}
-                    className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl shadow-lg p-8 text-white"
+                    className="bg-teal-700 rounded-2xl p-6 md:p-8 text-white"
                 >
-                    <h2 className="text-2xl font-bold mb-4">Contact Us</h2>
-                    <p className="mb-4">If you have questions about these Terms and Conditions, please contact us:</p>
+                    <h2 className="text-2xl font-bold mb-4">{t.nav.contact}</h2>
+                    <p className="mb-4">{legal.contactCta}</p>
                     <ul className="space-y-2">
                         <li><strong>Email:</strong> legal@zapycard.com</li>
                         <li><strong>Phone:</strong> +880 1744220807</li>
@@ -194,12 +191,10 @@ export default function TermsOfServicePage() {
                     </ul>
                 </motion.div>
 
-                {/* Changes to Terms */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 1.2 }}
-                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mt-6"
+                    className="bg-white dark:bg-gray-800 rounded-2xl border border-teal-100 dark:border-gray-700 p-6 md:p-8 mt-6"
                 >
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Changes to Terms</h2>
                     <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
@@ -207,13 +202,12 @@ export default function TermsOfServicePage() {
                     </p>
                 </motion.div>
 
-                {/* Back to Home */}
                 <div className="mt-8 text-center">
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:shadow-lg transition-all"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-teal-700 hover:bg-teal-800 text-white rounded-lg transition"
                     >
-                        ← Back to Home
+                        ← {legal.backHome}
                     </Link>
                 </div>
             </div>

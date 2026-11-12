@@ -1,10 +1,14 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { RotateCcw, Package, CheckCircle2, XCircle, Clock, CreditCard, AlertCircle, FileText } from 'lucide-react'
+import { Package, CheckCircle2, XCircle, Clock, CreditCard, AlertCircle, FileText } from 'lucide-react'
 import Link from 'next/link'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
 
 export default function ReturnPolicyPage() {
+    const { t, lang } = useLanguage()
+    const legal = t.legal
+
     const returnReasons = [
         {
             icon: <XCircle className="w-6 h-6" />,
@@ -95,29 +99,24 @@ export default function ReturnPolicyPage() {
     ]
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pt-16 md:pt-20">
-            {/* Header */}
-            <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white py-16">
+        <div className={`min-h-screen bg-white dark:bg-gray-900 pt-16 md:pt-20 ${lang === 'bn' ? 'font-bengali' : ''}`}>
+            <div className="bg-teal-700 text-white py-14 md:py-16">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <h1 className="text-4xl md:text-5xl font-bold mb-4">Return & Refund Policy</h1>
-                        <p className="text-xl text-blue-100">Last Updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+                        <h1 className="text-3xl md:text-5xl font-bold mb-3">{legal.returnTitle}</h1>
+                        <p className="text-lg text-teal-50 mb-2">{legal.returnSubtitle}</p>
+                        <p className="text-teal-100/80">
+                            {legal.lastUpdated}: {new Date().toLocaleDateString(lang === 'bn' ? 'bn-BD' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                        </p>
                     </motion.div>
                 </div>
             </div>
 
-            {/* Content */}
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                {/* Introduction */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.1 }}
-                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 mb-8"
+                    className="bg-teal-50 dark:bg-gray-800 rounded-2xl border border-teal-100 dark:border-gray-700 p-6 md:p-8 mb-8"
                 >
                     <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
                         At <strong>Zapy Card</strong>, we stand behind the quality of our products and services. This Return & Refund Policy outlines the circumstances under which we accept returns and provide refunds for our NFC and QR code cards.
@@ -149,7 +148,7 @@ export default function ReturnPolicyPage() {
                             >
                                 <div className="flex items-start gap-4 mb-4">
                                     <div className={`p-3 rounded-xl ${reason.eligible
-                                            ? 'bg-gradient-to-br from-green-500 to-emerald-500 text-white'
+                                            ? 'bg-teal-700 text-white'
                                             : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
                                         }`}>
                                         {reason.icon}
@@ -197,10 +196,10 @@ export default function ReturnPolicyPage() {
                                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6"
                             >
                                 <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 text-white flex items-center justify-center font-bold text-xl">
+                                    <div className="w-12 h-12 rounded-full bg-teal-700 text-white flex items-center justify-center font-bold text-xl">
                                         {process.step}
                                     </div>
-                                    <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 text-white">
+                                    <div className="p-3 rounded-xl bg-teal-700 text-white">
                                         {process.icon}
                                     </div>
                                     <h3 className="text-xl font-bold text-gray-900 dark:text-white">
@@ -255,25 +254,24 @@ export default function ReturnPolicyPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 1.2 }}
-                    className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl shadow-lg p-8 text-white"
+                    className="bg-teal-700 rounded-2xl p-6 md:p-8 text-white"
                 >
-                    <h2 className="text-2xl font-bold mb-4">Need Help?</h2>
-                    <p className="mb-4">If you have questions about returns or refunds, please contact us:</p>
+                    <h2 className="text-2xl font-bold mb-4">{legal.contactCta}</h2>
+                    <p className="mb-4">{t.contact.subtitle}</p>
                     <ul className="space-y-2">
                         <li><strong>Email:</strong> support@zapycard.com</li>
                         <li><strong>Phone:</strong> +880 1744220807</li>
                         <li><strong>Address:</strong> Dhaka, Bangladesh</li>
-                        <li><strong>Business Hours:</strong> Sunday-Thursday, 9AM-5PM EST</li>
+                        <li><strong>Business Hours:</strong> Sunday-Thursday, 9AM-5PM</li>
                     </ul>
                 </motion.div>
 
-                {/* Back to Home */}
                 <div className="mt-8 text-center">
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:shadow-lg transition-all"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-teal-700 hover:bg-teal-800 text-white rounded-lg transition"
                     >
-                        ← Back to Home
+                        ← {legal.backHome}
                     </Link>
                 </div>
             </div>

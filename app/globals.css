@@ -1,8 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Bengali:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --brand: #0f766e;
+  --brand-hover: #0d9488;
+  --brand-dark: #115e59;
+  --brand-soft: #ccfbf1;
+  --brand-ink: #134e4a;
+}
 
 /* Custom Animations */
 @keyframes loading-bar {
@@ -406,35 +414,43 @@
 
 @layer components {
   .gradient-primary {
-    @apply bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500;
+    @apply bg-teal-700;
   }
   
   .gradient-secondary {
-    @apply bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600;
+    @apply bg-teal-600;
   }
   
   .gradient-accent {
-    @apply bg-gradient-to-r from-orange-400 via-pink-500 to-red-500;
+    @apply bg-emerald-600;
   }
   
   .glass-effect {
-    @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg border border-white/20 dark:border-gray-700/20 shadow-xl;
+    @apply bg-white/90 dark:bg-gray-800/90 backdrop-blur-lg border border-teal-100 dark:border-gray-700 shadow-xl;
   }
   
   .card-hover {
-    @apply transition-all duration-300 hover:shadow-2xl hover:-translate-y-1;
+    @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
   }
   
   .btn-primary {
-    @apply px-6 py-3 rounded-lg font-semibold text-white gradient-primary hover:shadow-lg transition-all duration-300 transform hover:scale-105;
+    @apply px-6 py-3 rounded-lg font-semibold text-white bg-teal-700 hover:bg-teal-800 hover:shadow-lg transition-all duration-300;
   }
   
   .btn-secondary {
-    @apply px-6 py-3 rounded-lg font-semibold text-white gradient-secondary hover:shadow-lg transition-all duration-300 transform hover:scale-105;
+    @apply px-6 py-3 rounded-lg font-semibold text-white bg-teal-600 hover:bg-teal-700 hover:shadow-lg transition-all duration-300;
   }
   
   .btn-outline {
-    @apply px-6 py-3 rounded-lg font-semibold border-2 border-blue-500 dark:border-blue-400 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-300;
+    @apply px-6 py-3 rounded-lg font-semibold border-2 border-teal-700 dark:border-teal-400 text-teal-700 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-all duration-300;
+  }
+
+  .brand-solid {
+    @apply bg-teal-700 text-white;
+  }
+
+  .section-soft {
+    @apply bg-teal-50/60 dark:bg-gray-900;
   }
 }
 

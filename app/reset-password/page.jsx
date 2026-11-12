@@ -6,178 +6,136 @@ import { motion } from 'framer-motion'
 import { useState, Suspense } from 'react'
 import { Lock, CheckCircle2, ArrowLeft } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
+import { useLanguage } from '@/lib/i18n/LanguageContext'
 import logo from '../assets/images/logo.png'
 
 function ResetPasswordForm() {
-    const searchParams = useSearchParams()
-    const token = searchParams.get('token')
-    const [formData, setFormData] = useState({
-        password: '',
-        confirmPassword: ''
-    })
-    const [isSuccess, setIsSuccess] = useState(false)
-    const [errors, setErrors] = useState({})
+  const searchParams = useSearchParams()
+  const token = searchParams.get('token')
+  const { t, lang } = useLanguage()
+  const a = t.auth
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
+  const [formData, setFormData] = useState({ password: '', confirmPassword: '' })
+  const [isSuccess, setIsSuccess] = useState(false)
+  const [errors, setErrors] = useState({})
 
-        // Validation
-        const newErrors = {}
-        if (formData.password.length < 8) {
-            newErrors.password = 'Password must be at least 8 characters'
-        }
-        if (formData.password !== formData.confirmPassword) {
-            newErrors.confirmPassword = 'Passwords do not match'
-        }
-
-        if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors)
-            return
-        }
-
-        // Mock reset password - no backend
-        console.log('Reset password with token:', token)
-        console.log('New password:', formData.password)
-        setIsSuccess(true)
-        setErrors({})
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const newErrors = {}
+    if (formData.password.length < 8) newErrors.password = a.errors.passwordMin8
+    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = a.errors.passwordMismatch
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      return
     }
+    console.log('Reset password with token:', token)
+    setIsSuccess(true)
+    setErrors({})
+  }
 
-    if (isSuccess) {
-        return (
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center px-4 py-12 pt-24">
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="w-full max-w-md"
-                >
-                    <div className="glass-effect rounded-2xl p-8 shadow-2xl text-center bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                        <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{ type: 'spring', duration: 0.5 }}
-                            className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 dark:bg-green-900/20 flex items-center justify-center"
-                        >
-                            <CheckCircle2 className="w-8 h-8 text-green-600 dark:text-green-400" />
-                        </motion.div>
-                        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Password Reset Successful!</h2>
-                        <p className="text-gray-600 dark:text-gray-400 mb-6">
-                            Your password has been successfully reset. You can now login with your new password.
-                        </p>
-                        <Link href="/login" className="btn-primary inline-flex items-center">
-                            Go to Login
-                            <ArrowLeft className="ml-2 w-5 h-5 rotate-180" />
-                        </Link>
-                    </div>
-                </motion.div>
-            </div>
-        )
-    }
-
+  if (isSuccess) {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center px-4 py-12 pt-24">
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="w-full max-w-md"
-            >
-                <div className="glass-effect rounded-2xl p-8 shadow-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                    <div className="text-center mb-8">
-                        <Link href="/" className="inline-block mb-4 hover:opacity-80 transition-opacity">
-                            <Image
-                                src={logo}
-                                alt="Zapy Card Logo"
-                                width={80}
-                                height={40}
-                                className="h-auto mx-auto"
-                                priority
-                            />
-                        </Link>
-                        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Reset Your Password</h2>
-                        <p className="text-gray-600 dark:text-gray-400 mt-2">Enter your new password below</p>
-                    </div>
-
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                New Password *
-                            </label>
-                            <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
-                                <input
-                                    type="password"
-                                    required
-                                    value={formData.password}
-                                    onChange={(e) => {
-                                        setFormData({ ...formData, password: e.target.value })
-                                        if (errors.password) setErrors({ ...errors, password: '' })
-                                    }}
-                                    className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${errors.password ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600'
-                                        }`}
-                                    placeholder="••••••••"
-                                />
-                            </div>
-                            {errors.password && (
-                                <p className="text-xs text-red-600 dark:text-red-400 mt-1">{errors.password}</p>
-                            )}
-                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Must be at least 8 characters</p>
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Confirm New Password *
-                            </label>
-                            <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
-                                <input
-                                    type="password"
-                                    required
-                                    value={formData.confirmPassword}
-                                    onChange={(e) => {
-                                        setFormData({ ...formData, confirmPassword: e.target.value })
-                                        if (errors.confirmPassword) setErrors({ ...errors, confirmPassword: '' })
-                                    }}
-                                    className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none transition bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 ${errors.confirmPassword ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600'
-                                        }`}
-                                    placeholder="••••••••"
-                                />
-                            </div>
-                            {errors.confirmPassword && (
-                                <p className="text-xs text-red-600 dark:text-red-400 mt-1">{errors.confirmPassword}</p>
-                            )}
-                        </div>
-
-                        <button
-                            type="submit"
-                            className="w-full btn-primary flex items-center justify-center"
-                        >
-                            Reset Password
-                        </button>
-                    </form>
-
-                    <div className="mt-6 text-center">
-                        <Link href="/login" className="text-blue-600 dark:text-blue-400 font-semibold hover:text-blue-700 dark:hover:text-blue-300 inline-flex items-center">
-                            <ArrowLeft className="mr-2 w-4 h-4" />
-                            Back to Login
-                        </Link>
-                    </div>
-                </div>
-            </motion.div>
-        </div>
+      <div className={`min-h-screen bg-teal-50 dark:bg-gray-900 flex items-center justify-center px-4 py-12 pt-24 ${lang === 'bn' ? 'font-bengali' : ''}`}>
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="w-full max-w-md">
+          <div className="rounded-2xl p-8 shadow-xl text-center bg-white dark:bg-gray-800 border border-teal-100 dark:border-gray-700">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
+              <CheckCircle2 className="w-8 h-8 text-teal-700 dark:text-teal-300" />
+            </div>
+            <h2 className="text-2xl font-bold text-teal-900 dark:text-teal-200 mb-2">{a.resetSuccessTitle}</h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">{a.resetSuccessDesc}</p>
+            <Link href="/login" className="btn-primary inline-flex items-center">
+              {a.goToLogin}
+              <ArrowLeft className="ml-2 w-5 h-5 rotate-180" />
+            </Link>
+          </div>
+        </motion.div>
+      </div>
     )
+  }
+
+  return (
+    <div className={`min-h-screen bg-teal-50 dark:bg-gray-900 flex items-center justify-center px-4 py-12 pt-24 ${lang === 'bn' ? 'font-bengali' : ''}`}>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
+        <div className="rounded-2xl p-8 shadow-xl bg-white dark:bg-gray-800 border border-teal-100 dark:border-gray-700">
+          <div className="text-center mb-8">
+            <Link href="/" className="inline-block mb-4 hover:opacity-80 transition-opacity">
+              <Image src={logo} alt="Zapy Card Logo" width={80} height={40} className="h-auto mx-auto" priority />
+            </Link>
+            <h2 className="text-2xl font-bold text-teal-900 dark:text-teal-200">{a.resetTitle}</h2>
+            <p className="text-gray-600 dark:text-gray-400 mt-2">{a.resetSubtitle}</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{a.newPassword}</label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="password"
+                  required
+                  value={formData.password}
+                  onChange={(e) => {
+                    setFormData({ ...formData, password: e.target.value })
+                    if (errors.password) setErrors({ ...errors, password: '' })
+                  }}
+                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-600 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 ${
+                    errors.password ? 'border-red-300' : 'border-gray-300 dark:border-gray-600'
+                  }`}
+                  placeholder="••••••••"
+                />
+              </div>
+              {errors.password && <p className="text-xs text-red-600 mt-1">{errors.password}</p>}
+              <p className="text-xs text-gray-500 mt-1">{a.passwordHint}</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{a.confirmNewPassword}</label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="password"
+                  required
+                  value={formData.confirmPassword}
+                  onChange={(e) => {
+                    setFormData({ ...formData, confirmPassword: e.target.value })
+                    if (errors.confirmPassword) setErrors({ ...errors, confirmPassword: '' })
+                  }}
+                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-600 outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 ${
+                    errors.confirmPassword ? 'border-red-300' : 'border-gray-300 dark:border-gray-600'
+                  }`}
+                  placeholder="••••••••"
+                />
+              </div>
+              {errors.confirmPassword && <p className="text-xs text-red-600 mt-1">{errors.confirmPassword}</p>}
+            </div>
+
+            <button type="submit" className="w-full btn-primary flex items-center justify-center">
+              {a.resetBtn}
+            </button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <Link href="/login" className="text-teal-700 dark:text-teal-300 font-semibold hover:underline inline-flex items-center">
+              <ArrowLeft className="mr-2 w-4 h-4" />
+              {a.backToLogin}
+            </Link>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  )
 }
 
 export default function ResetPasswordPage() {
-    return (
-        <Suspense fallback={
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center">
-                <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400 mx-auto"></div>
-                    <p className="mt-4 text-gray-600 dark:text-gray-400">Loading...</p>
-                </div>
-            </div>
-        }>
-            <ResetPasswordForm />
-        </Suspense>
-    )
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-teal-50 dark:bg-gray-900 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-700 mx-auto" />
+        </div>
+      }
+    >
+      <ResetPasswordForm />
+    </Suspense>
+  )
 }
-

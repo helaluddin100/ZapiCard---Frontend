@@ -8,12 +8,12 @@ export const metadata = {
 
 export default function NotFound() {
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4">
+        <div className="min-h-screen flex items-center justify-center bg-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4">
             <div className="max-w-2xl w-full text-center">
                 {/* 404 Illustration */}
                 <div className="mb-8">
                     <div className="relative inline-flex">
-                        <h1 className="text-9xl md:text-[12rem] font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                        <h1 className="text-9xl md:text-[12rem] font-bold text-teal-700 dark:text-teal-300">
                             404
                         </h1>
                         {/* Animated rings */}
@@ -35,14 +35,14 @@ export default function NotFound() {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
                     <Link
                         href="/"
-                        className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg"
+                        className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-teal-700 text-white font-semibold rounded-lg hover:bg-teal-800 transition-all transform hover:scale-105 shadow-lg"
                     >
                         <Home className="w-5 h-5" />
                         Go Home
                     </Link>
                     <Link
                         href="/dashboard"
-                        className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold rounded-lg border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all transform hover:scale-105"
+                        className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 font-semibold rounded-lg border-2 border-gray-300 dark:border-gray-600 hover:border-teal-600 dark:hover:border-teal-400 transition-all transform hover:scale-105"
                     >
                         <Search className="w-5 h-5" />
                         View Dashboard
@@ -57,25 +57,25 @@ export default function NotFound() {
                     <div className="flex flex-wrap gap-3 justify-center">
                         <Link
                             href="/dashboard/create"
-                            className="px-4 py-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+                            className="px-4 py-2 text-sm text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
                         >
                             Create Card
                         </Link>
                         <Link
                             href="/nfc-order"
-                            className="px-4 py-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+                            className="px-4 py-2 text-sm text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
                         >
                             Order NFC Card
                         </Link>
                         <Link
                             href="/about"
-                            className="px-4 py-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+                            className="px-4 py-2 text-sm text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
                         >
                             About Us
                         </Link>
                         <Link
                             href="/contact"
-                            className="px-4 py-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+                            className="px-4 py-2 text-sm text-teal-700 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
                         >
                             Contact
                         </Link>

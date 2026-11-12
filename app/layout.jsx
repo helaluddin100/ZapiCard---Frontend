@@ -1,5 +1,5 @@
 import './globals.css'
-import { Inter, Poppins } from 'next/font/google'
+import { Inter, Poppins, Noto_Sans_Bengali } from 'next/font/google'
 import ConditionalLayout from '@/components/ConditionalLayout'
 import AuthProviderWrapper from '@/lib/auth-wrapper'
 import { ThemeProvider } from '@/lib/theme'
@@ -7,6 +7,7 @@ import { ToastProvider } from '@/lib/toast'
 import Toast from '@/components/Toast'
 import ToastHelper from '@/components/ToastHelper'
 import FacebookPixel from '@/components/FacebookPixel'
+import { LanguageProvider } from '@/lib/i18n/LanguageContext'
 import { generateMetadata as generateMeta, generateOrganizationSchema, generateWebsiteSchema } from './metadata'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
@@ -14,7 +15,13 @@ const poppins = Poppins({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700', '800'],
   variable: '--font-poppins',
-  display: 'swap', // Optimize font loading
+  display: 'swap',
+})
+const notoBengali = Noto_Sans_Bengali({
+  subsets: ['bengali'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-bengali',
+  display: 'swap',
 })
 
 // Enhanced SEO metadata
@@ -25,7 +32,7 @@ export default function RootLayout({ children }) {
   const websiteSchema = generateWebsiteSchema()
 
   return (
-    <html lang="en" className={`${inter.variable} ${poppins.variable}`} suppressHydrationWarning>
+    <html lang="bn" className={`${inter.variable} ${poppins.variable} ${notoBengali.variable}`} suppressHydrationWarning>
       <head>
         {/* Theme Script - Must be in head for no-flash */}
         <script
@@ -83,17 +90,19 @@ export default function RootLayout({ children }) {
 
         <FacebookPixel />
         <ThemeProvider>
-          <AuthProviderWrapper>
-            <ToastProvider>
-              <ToastHelper />
-              <ConditionalLayout>
-                <main id="main-content">
-                  {children}
-                </main>
-              </ConditionalLayout>
-              <Toast />
-            </ToastProvider>
-          </AuthProviderWrapper>
+          <LanguageProvider>
+            <AuthProviderWrapper>
+              <ToastProvider>
+                <ToastHelper />
+                <ConditionalLayout>
+                  <main id="main-content">
+                    {children}
+                  </main>
+                </ConditionalLayout>
+                <Toast />
+              </ToastProvider>
+            </AuthProviderWrapper>
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>
